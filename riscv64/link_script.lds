@@ -105,5 +105,6 @@ SECTIONS
         *(.eh_frame*)
         *(.note .note.*)
         *(.interp)
+        *(.riscv.attributes)
     }
 }

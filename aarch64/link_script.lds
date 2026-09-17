@@ -101,5 +101,6 @@ SECTIONS
         *(.eh_frame*)
         *(.note .note.*)
         *(.interp)
+        *(.ARM.attributes)
     }
 }
