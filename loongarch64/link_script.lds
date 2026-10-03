@@ -66,9 +66,35 @@ SECTIONS
         *(.rodata .rodata.*)
     } :rodata
 
+    /* The dynamic tables and relocations of the PIE, which are only read. */
+    .gnu.hash : {
+        *(.gnu.hash)
+    } :rodata
+
+    .dynsym : {
+        *(.dynsym)
+    } :rodata
+
+    .dynstr : {
+        *(.dynstr)
+    } :rodata
+
+    .rela.dyn : {
+        *(.rela.*)
+    } :rodata
+
     .dynamic : {
         *(.dynamic)
     } :data :dynamic
+
+    /* Ahead of .bss, which entry.S zeroes before relocating. */
+    .got : {
+        *(.got)
+    } :data
+
+    .got.plt : {
+        *(.got.plt)
+    } :data
 
     .data : {
         *(.data .data.*)
