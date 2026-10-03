@@ -18,6 +18,8 @@
  * either version 2 of the License, or (at your option) any later version.
  */
 
+.option norelax
+
 .section .pe_header,"ax"
   .align 12
 
@@ -135,7 +137,6 @@
   .align 12
   .globl _start
   _start:
-  .option norelax
     addi sp, sp, -24
 
     sd a0, 0(sp)
