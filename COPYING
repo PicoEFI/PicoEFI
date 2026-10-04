@@ -11,7 +11,8 @@ GNU General Public License version 2 or later.
 
 More in depth information and license text follows:
 
-All code inside the "src" directory is licensed under the conditions
+All code inside the per-architecture directories ("aarch64", "ia32",
+"loongarch64", "riscv64", and "x86_64") is licensed under the conditions
 specified in each file's header.
 
 All code inside the "inc" directory is licensed under the BSD-2-Clause
