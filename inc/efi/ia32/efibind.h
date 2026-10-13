@@ -1,111 +1,54 @@
-/*++
-
-Copyright (c) 1998  Intel Corporation
-
-Module Name:
-
-    efefind.h
-
-Abstract:
-
-    EFI to compile bindings
-
-
-
-
-Revision History
-
---*/
-
 #ifndef EFI_IA32_EFIBIND_H_
 #define EFI_IA32_EFIBIND_H_
 
 #include <stdint.h>
 
-//
-// Basic EFI types of various widths
-//
-
-#include <stddef.h>
-
-typedef uint16_t CHAR16;
-#define WCHAR CHAR16
-
-
-typedef uint64_t   UINT64;
-typedef int64_t    INT64;
-
-typedef uint32_t   UINT32;
-typedef int32_t    INT32;
-
-typedef uint16_t   UINT16;
-typedef int16_t    INT16;
-
-typedef uint8_t    UINT8;
-typedef unsigned char       CHAR8;
-typedef int8_t     INT8;
-
-#undef VOID
-typedef void       VOID;
-
-
-typedef int32_t    INTN;
-typedef uint32_t   UINTN;
-
-
-#define EFIERR(a)           (0x80000000 | a)
-#define EFI_ERROR_MASK      0x80000000
-#define EFIERR_OEM(a)       (0xc0000000 | a)      
-
-
-#define BAD_POINTER         0xFBFBFBFB
-#define MAX_ADDRESS         0xFFFFFFFF
-
-#define BREAKPOINT()        while (TRUE);    // Make it hang on Bios[Dbg]32
-
-//
-// Pointers must be aligned to these address to function
-//
-
-#define MIN_ALIGNMENT_SIZE  4
-
-#define ALIGN_VARIABLE(Value ,Adjustment) \
-            (UINTN)Adjustment = 0; \
-            if((UINTN)Value % MIN_ALIGNMENT_SIZE) \
-                (UINTN)Adjustment = MIN_ALIGNMENT_SIZE - ((UINTN)Value % MIN_ALIGNMENT_SIZE); \
-            Value = (UINTN)Value + (UINTN)Adjustment
-
-
-//
-// Define macros to build data structure signatures from characters.
-//
-
-#define EFI_SIGNATURE_16(A,B)             ((A) | (B<<8))
-#define EFI_SIGNATURE_32(A,B,C,D)         (EFI_SIGNATURE_16(A,B)     | (EFI_SIGNATURE_16(C,D)     << 16))
-#define EFI_SIGNATURE_64(A,B,C,D,E,F,G,H) (EFI_SIGNATURE_32(A,B,C,D) | ((UINT64)(EFI_SIGNATURE_32(E,F,G,H)) << 32))
-
-
-//
-// EFIAPI - prototype calling convention for EFI function pointers
-//
-
-#ifndef EFIAPI                  // Forces EFI calling conventions reguardless of compiler options 
-    #define EFIAPI          // Substitute expresion to force C calling convention 
+#ifdef __cplusplus
+extern "C" {
 #endif
 
+typedef uint8_t EFI_UINT8;
+typedef int8_t EFI_INT8;
+typedef uint16_t EFI_UINT16;
+typedef int16_t EFI_INT16;
+typedef uint32_t EFI_UINT32;
+typedef int32_t EFI_INT32;
 
-#define VOLATILE    volatile
+/* UEFI wants 64-bit members naturally aligned; the i386 ABI aligns them to 4 in structures. */
+typedef uint64_t EFI_UINT64 __attribute__((__aligned__(8)));
+typedef int64_t EFI_INT64 __attribute__((__aligned__(8)));
 
-#define MEMORY_FENCE  __sync_synchronize
+/* No 128-bit integer type on ia32. */
+typedef struct __attribute__((__aligned__(16))) {
+    EFI_UINT64 Lo;
+    EFI_UINT64 Hi;
+} EFI_INT128;
 
-//
-// Some compilers don't support the forward reference construct:
-//  typedef struct XXXXX
-//
-// The following macro provide a workaround for such cases.
-//
-#define INTERFACE_DECL(x) struct x
+typedef struct __attribute__((__aligned__(16))) {
+    EFI_UINT64 Lo;
+    EFI_UINT64 Hi;
+} EFI_UINT128;
 
-#define EFI_FUNCTION
+typedef uint32_t EFI_UINTN;
+typedef int32_t EFI_INTN;
+
+typedef unsigned char EFI_CHAR8;
+typedef uint16_t EFI_CHAR16;
+
+#undef EFI_VOID
+typedef void EFI_VOID;
+
+/* Plain cdecl, whatever -mrtd or -mregparm the rest of the program uses. */
+#ifndef EFI_API
+#define EFI_API __attribute__((__cdecl__, __regparm__(0)))
+#endif
+
+#define EFI_ERROR_MASK ((EFI_UINTN)0x80000000)
+#define EFI_ERR(a) ((EFI_STATUS)(EFI_ERROR_MASK | (a)))
+#define EFI_ERR_OEM(a) ((EFI_STATUS)(0xc0000000 | (a)))
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

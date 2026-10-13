@@ -1,0 +1,36 @@
+#ifndef EFI_EFIISCSI_H_
+#define EFI_EFIISCSI_H_
+
+#include "efiapi.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define EFI_ISCSI_INITIATOR_NAME_PROTOCOL_GUID \
+    {0x59324945, 0xec44, 0x4c0d, {0xb1, 0xcd, 0x9d, 0xb1, 0x39, 0xdf, 0x07, 0x0c}}
+
+typedef struct _EFI_ISCSI_INITIATOR_NAME_PROTOCOL EFI_ISCSI_INITIATOR_NAME_PROTOCOL;
+
+typedef EFI_STATUS (EFI_API *EFI_ISCSI_INITIATOR_NAME_GET)(
+    EFI_IN EFI_ISCSI_INITIATOR_NAME_PROTOCOL *This,
+    EFI_IN EFI_OUT EFI_UINTN *BufferSize,
+    EFI_OUT EFI_VOID *Buffer
+);
+
+typedef EFI_STATUS (EFI_API *EFI_ISCSI_INITIATOR_NAME_SET)(
+    EFI_IN EFI_ISCSI_INITIATOR_NAME_PROTOCOL *This,
+    EFI_IN EFI_OUT EFI_UINTN *BufferSize,
+    EFI_IN EFI_VOID *Buffer
+);
+
+struct _EFI_ISCSI_INITIATOR_NAME_PROTOCOL {
+    EFI_ISCSI_INITIATOR_NAME_GET Get;
+    EFI_ISCSI_INITIATOR_NAME_SET Set;
+};
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

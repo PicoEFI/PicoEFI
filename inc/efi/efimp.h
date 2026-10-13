@@ -1,137 +1,120 @@
 #ifndef EFI_EFIMP_H_
 #define EFI_EFIMP_H_
 
+#include "efiapi.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define EFI_MP_SERVICES_PROTOCOL_GUID \
-    { 0x3fdda605, 0xa76e, 0x4f46, {0xad, 0x29, 0x12, 0xf4, 0x53, 0x1b, 0x3d, 0x08} }
+    {0x3fdda605, 0xa76e, 0x4f46, {0xad, 0x29, 0x12, 0xf4, 0x53, 0x1b, 0x3d, 0x08}}
 
-#define PROCESSOR_AS_BSP_BIT        (1 << 0)
-#define PROCESSOR_ENABLED_BIT       (1 << 1)
-#define PROCESSOR_HEALTH_STATUS_BIT (1 << 2)
+typedef struct _EFI_MP_SERVICES_PROTOCOL EFI_MP_SERVICES_PROTOCOL;
 
-INTERFACE_DECL(_EFI_MP_SERVICES_PROTOCOL);
+typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_GET_NUMBER_OF_PROCESSORS)(
+    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_OUT EFI_UINTN *NumberOfProcessors,
+    EFI_OUT EFI_UINTN *NumberOfEnabledProcessors
+);
 
+#define EFI_PROCESSOR_AS_BSP_BIT 0x00000001
+#define EFI_PROCESSOR_ENABLED_BIT 0x00000002
+#define EFI_PROCESSOR_HEALTH_STATUS_BIT 0x00000004
 
-typedef
-struct {
-    UINT32  Package;
-    UINT32  Core;
-    UINT32  Thread;
+typedef struct {
+    EFI_UINT32 Package;
+    EFI_UINT32 Core;
+    EFI_UINT32 Thread;
 } EFI_CPU_PHYSICAL_LOCATION;
 
-typedef
-struct {
-    UINT32  Package;
-    UINT32  Module;
-    UINT32  Tile;
-    UINT32  Die;
-    UINT32  Core;
-    UINT32  Thread;
+/* Bit 24, printed as BIT24, a macro the specification does not define. */
+#define EFI_CPU_V2_EXTENDED_TOPOLOGY 0x01000000
+
+typedef struct {
+    EFI_UINT32 Package;
+    EFI_UINT32 Module;
+    EFI_UINT32 Tile;
+    EFI_UINT32 Die;
+    EFI_UINT32 Core;
+    EFI_UINT32 Thread;
 } EFI_CPU_PHYSICAL_LOCATION2;
 
-typedef
-union {
-    EFI_CPU_PHYSICAL_LOCATION2  Location2;
-} EXTENDED_PROCESSOR_INFORMATION;
+typedef union {
+    EFI_CPU_PHYSICAL_LOCATION2 Location2;
+} EFI_EXTENDED_PROCESSOR_INFORMATION;
 
-
-typedef
-struct {
-    UINT64                          ProcessorId;
-    UINT32                          StatusFlag;
-    EFI_CPU_PHYSICAL_LOCATION       Location;
-    EXTENDED_PROCESSOR_INFORMATION ExtendedInformation;
+typedef struct {
+    EFI_UINT64 ProcessorId;
+    EFI_UINT32 StatusFlag;
+    EFI_CPU_PHYSICAL_LOCATION Location;
+    EFI_EXTENDED_PROCESSOR_INFORMATION ExtendedInformation;
 } EFI_PROCESSOR_INFORMATION;
 
-
-typedef
-VOID
-(EFIAPI *EFI_AP_PROCEDURE) (
-    IN VOID *ProcedureArgument
-);
-
-
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_MP_SERVICES_GET_NUMBER_OF_PROCESSORS) (
-    IN struct _EFI_MP_SERVICES_PROTOCOL *This,
-    OUT UINTN                           *NumberOfProcessors,
-    OUT UINTN                           *NumberOfEnabledProcessors
-);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_MP_SERVICES_GET_PROCESSOR_INFO) (
-    IN struct _EFI_MP_SERVICES_PROTOCOL *This,
-    IN UINTN                            ProcessorNumber,
-    OUT EFI_PROCESSOR_INFORMATION       *ProcessorInfoBuffer
-);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_MP_SERVICES_STARTUP_ALL_APS) (
-    IN struct _EFI_MP_SERVICES_PROTOCOL *This,
-    IN EFI_AP_PROCEDURE                 Procedure,
-    IN BOOLEAN                          SingleThread,
-    IN EFI_EVENT                        WaitEvent               OPTIONAL,
-    IN UINTN                            TimeoutInMicroseconds,
-    IN VOID                             *ProcedureArgument      OPTIONAL,
-    OUT UINTN                           **FailedCpuList         OPTIONAL
-);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_MP_SERVICES_STARTUP_THIS_AP) (
-    IN struct _EFI_MP_SERVICES_PROTOCOL *This,
-    IN EFI_AP_PROCEDURE                 Procedure,
-    IN UINTN                            ProcessorNumber,
-    IN EFI_EVENT                        WaitEvent               OPTIONAL,
-    IN UINTN                            TimeoutInMicroseconds,
-    IN VOID                             *ProcedureArgument      OPTIONAL,
-    OUT BOOLEAN                         *Finished               OPTIONAL
-);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_MP_SERVICES_SWITCH_BSP) (
-    IN struct _EFI_MP_SERVICES_PROTOCOL *This,
-    IN UINTN                            ProcessorNumber,
-    IN BOOLEAN                          EnableOldBSP
-);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_MP_SERVICES_ENABLEDISABLEAP) (
-    IN struct _EFI_MP_SERVICES_PROTOCOL *This,
-    IN UINTN                            ProcessorNumber,
-    IN BOOLEAN                          EnableAP,
-    IN UINT32                           *HealthFlag     OPTIONAL
-);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_MP_SERVICES_WHOAMI) (
-    IN struct _EFI_MP_SERVICES_PROTOCOL *This,
-    OUT UINTN                           *ProcessorNumber
-);
-
-
-/**
- * The primary protocol structure for MP service methods.
+/*
+ * ProcessorNumber is printed as a pointer; it is a number, which EFI_CPU_V2_EXTENDED_TOPOLOGY
+ * flags.
  */
-typedef
+typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_GET_PROCESSOR_INFO)(
+    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_IN EFI_UINTN ProcessorNumber,
+    EFI_OUT EFI_PROCESSOR_INFORMATION *ProcessorInfoBuffer
+);
+
+#define EFI_END_OF_CPU_LIST 0xffffffff
+
+typedef EFI_VOID (EFI_API *EFI_AP_PROCEDURE)(EFI_IN EFI_VOID *ProcedureArgument);
+
+typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_STARTUP_ALL_APS)(
+    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_IN EFI_AP_PROCEDURE Procedure,
+    EFI_IN EFI_BOOLEAN SingleThread,
+    EFI_IN EFI_EVENT WaitEvent EFI_OPTIONAL,
+    EFI_IN EFI_UINTN TimeoutInMicroseconds,
+    EFI_IN EFI_VOID *ProcedureArgument EFI_OPTIONAL,
+    EFI_OUT EFI_UINTN **FailedCpuList EFI_OPTIONAL
+);
+
+typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_STARTUP_THIS_AP)(
+    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_IN EFI_AP_PROCEDURE Procedure,
+    EFI_IN EFI_UINTN ProcessorNumber,
+    EFI_IN EFI_EVENT WaitEvent EFI_OPTIONAL,
+    EFI_IN EFI_UINTN TimeoutInMicroseconds,
+    EFI_IN EFI_VOID *ProcedureArgument EFI_OPTIONAL,
+    EFI_OUT EFI_BOOLEAN *Finished EFI_OPTIONAL
+);
+
+typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_SWITCH_BSP)(
+    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_IN EFI_UINTN ProcessorNumber,
+    EFI_IN EFI_BOOLEAN EnableOldBSP
+);
+
+typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_ENABLEDISABLEAP)(
+    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_IN EFI_UINTN ProcessorNumber,
+    EFI_IN EFI_BOOLEAN EnableAP,
+    EFI_IN EFI_UINT32 *HealthFlag EFI_OPTIONAL
+);
+
+typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_WHOAMI)(
+    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_OUT EFI_UINTN *ProcessorNumber
+);
+
 struct _EFI_MP_SERVICES_PROTOCOL {
-    EFI_MP_SERVICES_GET_NUMBER_OF_PROCESSORS    GetNumberOfProcessors;
-    EFI_MP_SERVICES_GET_PROCESSOR_INFO          GetProcessorInfo;
-    EFI_MP_SERVICES_STARTUP_ALL_APS             StartupAllAPs;
-    EFI_MP_SERVICES_STARTUP_THIS_AP             StartupThisAP;
-    EFI_MP_SERVICES_SWITCH_BSP                  SwitchBSP;
-    EFI_MP_SERVICES_ENABLEDISABLEAP             EnableDisableAP;
-    EFI_MP_SERVICES_WHOAMI                      WhoAmI;
-} EFI_MP_SERVICES_PROTOCOL;
+    EFI_MP_SERVICES_GET_NUMBER_OF_PROCESSORS GetNumberOfProcessors;
+    EFI_MP_SERVICES_GET_PROCESSOR_INFO GetProcessorInfo;
+    EFI_MP_SERVICES_STARTUP_ALL_APS StartupAllAPs;
+    EFI_MP_SERVICES_STARTUP_THIS_AP StartupThisAP;
+    EFI_MP_SERVICES_SWITCH_BSP SwitchBSP;
+    EFI_MP_SERVICES_ENABLEDISABLEAP EnableDisableAP;
+    EFI_MP_SERVICES_WHOAMI WhoAmI;
+};
 
+#ifdef __cplusplus
+}
+#endif
 
-
-#endif   /* _EFI_MP_H */
+#endif

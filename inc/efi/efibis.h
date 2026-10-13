@@ -1,0 +1,156 @@
+#ifndef EFI_EFIBIS_H_
+#define EFI_EFIBIS_H_
+
+#include "efidef.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define EFI_BIS_PROTOCOL_GUID \
+    {0x0b64aab0, 0x5429, 0x11d4, {0x98, 0x16, 0x00, 0xa0, 0xc9, 0x1f, 0xad, 0xcf}}
+
+typedef struct _EFI_BIS_PROTOCOL EFI_BIS_PROTOCOL;
+
+typedef EFI_VOID *EFI_BIS_APPLICATION_HANDLE;
+
+typedef struct _EFI_BIS_VERSION {
+    EFI_UINT32 Major;
+    EFI_UINT32 Minor;
+} EFI_BIS_VERSION;
+
+#define EFI_BIS_CURRENT_VERSION_MAJOR EFI_BIS_VERSION_1
+#define EFI_BIS_VERSION_1 1
+
+typedef struct _EFI_BIS_DATA {
+    EFI_UINT32 Length;
+    EFI_UINT8 *Data;
+} EFI_BIS_DATA;
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_INITIALIZE)(
+    EFI_IN EFI_BIS_PROTOCOL *This,
+    EFI_OUT EFI_BIS_APPLICATION_HANDLE *AppHandle,
+    EFI_IN EFI_OUT EFI_BIS_VERSION *InterfaceVersion,
+    EFI_IN EFI_BIS_DATA *TargetAddress
+);
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_SHUTDOWN)(EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle);
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_FREE)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_IN EFI_BIS_DATA *ToFree
+);
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CERTIFICATE)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_OUT EFI_BIS_DATA **Certificate
+);
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CHECKFLAG)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_OUT EFI_BOOLEAN *CheckIsRequired
+);
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_UPDATE_TOKEN)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_OUT EFI_BIS_DATA **UpdateToken
+);
+
+typedef EFI_UINT32 EFI_BIS_CERT_ID;
+
+typedef EFI_UINT16 EFI_BIS_ALG_ID;
+
+typedef struct _EFI_BIS_SIGNATURE_INFO {
+    EFI_BIS_CERT_ID CertificateID;
+    EFI_BIS_ALG_ID AlgorithmID;
+    EFI_UINT16 KeyLength;
+} EFI_BIS_SIGNATURE_INFO;
+
+#define EFI_BIS_GET_SIGINFO_COUNT(BisDataPtr) \
+    ((BisDataPtr)->Length / sizeof(EFI_BIS_SIGNATURE_INFO))
+
+#define EFI_BIS_GET_SIGINFO_ARRAY(BisDataPtr) ((EFI_BIS_SIGNATURE_INFO *)(BisDataPtr)->Data)
+
+#define EFI_BIS_CERT_ID_DSA EFI_BIS_ALG_DSA
+#define EFI_BIS_CERT_ID_RSA_MD5 EFI_BIS_ALG_RSA_MD5
+
+#define EFI_BIS_CERT_ID_MASK (0xFF7F7FFF)
+
+#define EFI_BIS_ALG_DSA (41)
+#define EFI_BIS_ALG_RSA_MD5 (42)
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_GET_SIGNATURE_INFO)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_OUT EFI_BIS_DATA **SignatureInfo
+);
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_UPDATE_BOOT_OBJECT_AUTHORIZATION)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_IN EFI_BIS_DATA *RequestCredential,
+    EFI_OUT EFI_BIS_DATA **NewUpdateToken
+);
+
+#define EFI_BOOT_OBJECT_AUTHORIZATION_PARMSET_GUID \
+    {0xedd35e31, 0x7b9, 0x11d2, {0x83, 0xa3, 0x0, 0xa0, 0xc9, 0x1f, 0xad, 0xcf}}
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_VERIFY_BOOT_OBJECT)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_IN EFI_BIS_DATA *Credentials,
+    EFI_IN EFI_BIS_DATA *DataObject,
+    EFI_OUT EFI_BOOLEAN *IsVerified
+);
+
+typedef EFI_STATUS (EFI_API *EFI_BIS_VERIFY_OBJECT_WITH_CREDENTIAL)(
+    EFI_IN EFI_BIS_APPLICATION_HANDLE AppHandle,
+    EFI_IN EFI_BIS_DATA *Credentials,
+    EFI_IN EFI_BIS_DATA *DataObject,
+    EFI_IN EFI_BIS_DATA *SectionName,
+    EFI_IN EFI_BIS_DATA *AuthorityCertificate,
+    EFI_OUT EFI_BOOLEAN *IsVerified
+);
+
+struct _EFI_BIS_PROTOCOL {
+    EFI_BIS_INITIALIZE Initialize;
+    EFI_BIS_SHUTDOWN Shutdown;
+    EFI_BIS_FREE Free;
+    EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CERTIFICATE GetBootObjectAuthorizationCertificate;
+    EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CHECKFLAG GetBootObjectAuthorizationCheckFlag;
+    EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_UPDATE_TOKEN GetBootObjectAuthorizationUpdateToken;
+    EFI_BIS_GET_SIGNATURE_INFO GetSignatureInfo;
+    EFI_BIS_UPDATE_BOOT_OBJECT_AUTHORIZATION UpdateBootObjectAuthorization;
+    EFI_BIS_VERIFY_BOOT_OBJECT VerifyBootObject;
+    EFI_BIS_VERIFY_OBJECT_WITH_CREDENTIAL VerifyObjectWithCredential;
+};
+
+#define EFI_HTTP_BOOT_CALLBACK_PROTOCOL_GUID \
+    {0xba23b311, 0x343d, 0x11e6, {0x91, 0x85, 0x58, 0x20, 0xb1, 0xd6, 0x52, 0x99}}
+
+typedef struct _EFI_HTTP_BOOT_CALLBACK_PROTOCOL EFI_HTTP_BOOT_CALLBACK_PROTOCOL;
+
+typedef enum {
+    EfiHttpBootDhcp4,
+    EfiHttpBootDhcp6,
+    EfiHttpBootHttpRequest,
+    EfiHttpBootHttpResponse,
+    EfiHttpBootHttpEntityBody,
+    EfiHttpBootHttpAuthInfo,
+    EfiHttpBootTypeMax
+} EFI_HTTP_BOOT_CALLBACK_DATA_TYPE;
+
+typedef EFI_STATUS (EFI_API *EFI_HTTP_BOOT_CALLBACK)(
+    EFI_IN EFI_HTTP_BOOT_CALLBACK_PROTOCOL *This,
+    EFI_IN EFI_HTTP_BOOT_CALLBACK_DATA_TYPE DataType,
+    EFI_IN EFI_BOOLEAN Received,
+    EFI_IN EFI_UINT32 DataLength,
+    EFI_IN EFI_VOID *Data EFI_OPTIONAL
+);
+
+struct _EFI_HTTP_BOOT_CALLBACK_PROTOCOL {
+    EFI_HTTP_BOOT_CALLBACK Callback;
+};
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

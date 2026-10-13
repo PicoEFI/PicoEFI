@@ -1,10 +1,15 @@
 PicoEFI
 =======
 
-PicoEFI is a minimal build environment for EFI applications, originally forked
-from GNU-EFI, that strips out all library code save for the relocation stubs
-and the EFI header files. It also features a rework and fixage of said
-relocation stubs, and provides updated linker scripts.
+PicoEFI is a minimal build environment for UEFI applications written in C, with
+headers compatible with C and C++.
+
+It provides the UEFI headers, and, for each supported architecture, the entry
+stub, self-relocator, and linker script needed to build a UEFI application as a
+position-independent ELF executable that is then converted into a PE image.
+
+Supported architectures: x86_64, ia32, aarch64, arm, riscv64, riscv32,
+loongarch64, and loongarch32.
 
 For an example on how to use this, see:
 https://github.com/PicoEFI/picoefi-c-template

@@ -1,0 +1,109 @@
+OUTPUT_FORMAT(elf32-littlearm)
+ENTRY(_start)
+
+PHDRS
+{
+    text    PT_LOAD    FLAGS(0x05);
+    rodata  PT_LOAD    FLAGS(0x04);
+    data    PT_LOAD    FLAGS(0x06);
+    dynamic PT_DYNAMIC FLAGS(0x06);
+}
+
+SECTIONS
+{
+    . = 0;
+    __slide = .;
+    __image_base = ABSOLUTE(.);
+    __image_size = ABSOLUTE(__image_end - __image_base);
+
+    .text : {
+        KEEP(*(.pe_header))
+
+        . = ALIGN(0x1000);
+
+        __text_start = ABSOLUTE(.);
+        *(.text .text.*)
+    } :text
+
+    . = ALIGN(0x1000);
+    __text_end = ABSOLUTE(.);
+    __text_size = ABSOLUTE(__text_end - __text_start);
+
+    .rodata : {
+        __reloc_start = ABSOLUTE(.);
+        *(.dummy_reloc)
+
+        . = ALIGN(0x1000);
+        __reloc_end = ABSOLUTE(.);
+        __reloc_size = ABSOLUTE(__reloc_end - __reloc_start);
+
+        __data_start = ABSOLUTE(.);
+        *(.rodata .rodata.*)
+    } :rodata
+
+    /* The dynamic tables and relocations of the PIE, which are only read. */
+    .gnu.hash : {
+        *(.gnu.hash)
+    } :rodata
+
+    .dynsym : {
+        *(.dynsym)
+    } :rodata
+
+    .dynstr : {
+        *(.dynstr)
+    } :rodata
+
+    .rel.dyn : {
+        *(.rel.*)
+    } :rodata
+
+    .dynamic : {
+        *(.dynamic)
+    } :data :dynamic
+
+    /* Ahead of .bss, which entry.S zeroes before relocating. */
+    .got : {
+        *(.got)
+    } :data
+
+    .got.plt : {
+        *(.got.plt)
+    } :data
+
+    .data : {
+        *(.data .data.*)
+    } :data
+
+    /* .bss must come last: nothing with file contents may follow it. Anchor the
+       raw end to __bss_start so linker-placed orphans cannot fall above it. */
+    __data_rawend = ABSOLUTE(ALIGN(__bss_start, 0x1000));
+    __data_rawsize = ABSOLUTE(__data_rawend - __data_start);
+
+    .bss : {
+        __bss_start = ABSOLUTE(.);
+        *(.bss .bss.*)
+        *(COMMON)
+    } :data
+
+    /* The image is padded to a 4096 multiple of the last byte with file
+       contents, so a coarser .bss would push __data_rawend past the file. */
+    ASSERT(ALIGNOF(.bss) <= 0x1000, ".bss alignment exceeds 4096")
+
+    __bss_end = ABSOLUTE(ALIGN(0x1000));
+    __bss_size = ABSOLUTE(__bss_end - __bss_start);
+
+    __data_end = ABSOLUTE(ALIGN(0x1000));
+    __data_size = ABSOLUTE(__data_end - __data_start);
+
+    __image_end = ABSOLUTE(ALIGN(0x1000));
+
+    /DISCARD/ : {
+        *(.eh_frame*)
+        *(.note .note.*)
+        *(.interp)
+        *(.ARM.attributes)
+        *(.ARM.exidx .ARM.exidx.*)
+        *(.ARM.extab .ARM.extab.*)
+    }
+}

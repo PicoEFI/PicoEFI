@@ -1,116 +1,18 @@
 #ifndef EFI_EFINET_H_
 #define EFI_EFINET_H_
 
+#include "efiapi.h"
 
-/*++
-Copyright (c) 1999  Intel Corporation
-
-Module Name:
-    efinet.h
-
-Abstract:
-    EFI Simple Network protocol
-
-Revision History
---*/
-
-
-///////////////////////////////////////////////////////////////////////////////
-//
-//      Simple Network Protocol
-//
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define EFI_SIMPLE_NETWORK_PROTOCOL_GUID \
-    { 0xA19832B9, 0xAC25, 0x11D3, {0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D} }
+    {0xA19832B9, 0xAC25, 0x11D3, {0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}}
 
-INTERFACE_DECL(_EFI_SIMPLE_NETWORK_PROTOCOL);
+#define EFI_SIMPLE_NETWORK_PROTOCOL_REVISION 0x00010000
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef struct {
-    //
-    // Total number of frames received.  Includes frames with errors and
-    // dropped frames.
-    //
-    UINT64  RxTotalFrames;
-
-    //
-    // Number of valid frames received and copied into receive buffers.
-    //
-    UINT64  RxGoodFrames;
-
-    //
-    // Number of frames below the minimum length for the media.
-    // This would be <64 for ethernet.
-    //
-    UINT64  RxUndersizeFrames;
-
-    //
-    // Number of frames longer than the maxminum length for the
-    // media.  This would be >1500 for ethernet.
-    //
-    UINT64  RxOversizeFrames;
-
-    //
-    // Valid frames that were dropped because receive buffers were full.
-    //
-    UINT64  RxDroppedFrames;
-
-    //
-    // Number of valid unicast frames received and not dropped.
-    //
-    UINT64  RxUnicastFrames;
-
-    //
-    // Number of valid broadcast frames received and not dropped.
-    //
-    UINT64  RxBroadcastFrames;
-
-    //
-    // Number of valid mutlicast frames received and not dropped.
-    //
-    UINT64  RxMulticastFrames;
-
-    //
-    // Number of frames w/ CRC or alignment errors.
-    //
-    UINT64  RxCrcErrorFrames;
-
-    //
-    // Total number of bytes received.  Includes frames with errors
-    // and dropped frames.
-    //
-    UINT64  RxTotalBytes;
-
-    //
-    // Transmit statistics.
-    //
-    UINT64  TxTotalFrames;
-    UINT64  TxGoodFrames;
-    UINT64  TxUndersizeFrames;
-    UINT64  TxOversizeFrames;
-    UINT64  TxDroppedFrames;
-    UINT64  TxUnicastFrames;
-    UINT64  TxBroadcastFrames;
-    UINT64  TxMulticastFrames;
-    UINT64  TxCrcErrorFrames;
-    UINT64  TxTotalBytes;
-
-    //
-    // Number of collisions detection on this subnet.
-    //
-    UINT64  Collisions;
-
-    //
-    // Number of frames destined for unsupported protocol.
-    //
-    UINT64  UnsupportedProtocol;
-
-} EFI_NETWORK_STATISTICS;
-
-///////////////////////////////////////////////////////////////////////////////
-//
+typedef struct _EFI_SIMPLE_NETWORK_PROTOCOL EFI_SIMPLE_NETWORK_PROTOCOL;
 
 typedef enum {
     EfiSimpleNetworkStopped,
@@ -119,230 +21,172 @@ typedef enum {
     EfiSimpleNetworkMaxState
 } EFI_SIMPLE_NETWORK_STATE;
 
-///////////////////////////////////////////////////////////////////////////////
-//
+#define EFI_MAX_MCAST_FILTER_CNT 16
 
-#define EFI_SIMPLE_NETWORK_RECEIVE_UNICAST               0x01
-#define EFI_SIMPLE_NETWORK_RECEIVE_MULTICAST             0x02
-#define EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST             0x04
-#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS           0x08
-#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS_MULTICAST 0x10
-
-///////////////////////////////////////////////////////////////////////////////
-//
-
-#define EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT        0x01
-#define EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT       0x02
-#define EFI_SIMPLE_NETWORK_COMMAND_INTERRUPT        0x04
-#define EFI_SIMPLE_NETWORK_SOFTWARE_INTERRUPT       0x08
-
-///////////////////////////////////////////////////////////////////////////////
-//
-#define MAX_MCAST_FILTER_CNT    16
 typedef struct {
-    UINT32                      State;
-    UINT32                      HwAddressSize;
-    UINT32                      MediaHeaderSize;
-    UINT32                      MaxPacketSize;
-    UINT32                      NvRamSize;
-    UINT32                      NvRamAccessSize;
-    UINT32                      ReceiveFilterMask;
-    UINT32                      ReceiveFilterSetting;
-    UINT32                      MaxMCastFilterCount;
-    UINT32                      MCastFilterCount;
-    EFI_MAC_ADDRESS             MCastFilter[MAX_MCAST_FILTER_CNT];
-    EFI_MAC_ADDRESS             CurrentAddress;
-    EFI_MAC_ADDRESS             BroadcastAddress;
-    EFI_MAC_ADDRESS             PermanentAddress;
-    UINT8                       IfType;
-    BOOLEAN                     MacAddressChangeable;
-    BOOLEAN                     MultipleTxSupported;
-    BOOLEAN                     MediaPresentSupported;
-    BOOLEAN                     MediaPresent;
+    EFI_UINT32 State;
+    EFI_UINT32 HwAddressSize;
+    EFI_UINT32 MediaHeaderSize;
+    EFI_UINT32 MaxPacketSize;
+    EFI_UINT32 NvRamSize;
+    EFI_UINT32 NvRamAccessSize;
+    EFI_UINT32 ReceiveFilterMask;
+    EFI_UINT32 ReceiveFilterSetting;
+    EFI_UINT32 MaxMCastFilterCount;
+    EFI_UINT32 MCastFilterCount;
+    EFI_MAC_ADDRESS MCastFilter[EFI_MAX_MCAST_FILTER_CNT];
+    EFI_MAC_ADDRESS CurrentAddress;
+    EFI_MAC_ADDRESS BroadcastAddress;
+    EFI_MAC_ADDRESS PermanentAddress;
+    EFI_UINT8 IfType;
+    EFI_BOOLEAN MacAddressChangeable;
+    EFI_BOOLEAN MultipleTxSupported;
+    EFI_BOOLEAN MediaPresentSupported;
+    EFI_BOOLEAN MediaPresent;
 } EFI_SIMPLE_NETWORK_MODE;
 
-///////////////////////////////////////////////////////////////////////////////
-//
+#define EFI_SIMPLE_NETWORK_RECEIVE_UNICAST 0x01
+#define EFI_SIMPLE_NETWORK_RECEIVE_MULTICAST 0x02
+#define EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST 0x04
+#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS 0x08
+#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS_MULTICAST 0x10
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_START) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_START)(EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This);
+
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_STOP)(EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This);
+
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_INITIALIZE)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_UINTN ExtraRxBufferSize EFI_OPTIONAL,
+    EFI_IN EFI_UINTN ExtraTxBufferSize EFI_OPTIONAL
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_STOP) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_RESET)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_BOOLEAN ExtendedVerification
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_SHUTDOWN)(EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This);
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_INITIALIZE) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN UINTN                                ExtraRxBufferSize  OPTIONAL,
-    IN UINTN                                ExtraTxBufferSize  OPTIONAL
+/* MCastFilter points to a list, as described; the prototype prints it by value. */
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_RECEIVE_FILTERS)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_UINT32 Enable,
+    EFI_IN EFI_UINT32 Disable,
+    EFI_IN EFI_BOOLEAN ResetMCastFilter,
+    EFI_IN EFI_UINTN MCastFilterCnt EFI_OPTIONAL,
+    EFI_IN EFI_MAC_ADDRESS *MCastFilter EFI_OPTIONAL
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_RESET) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN BOOLEAN                              ExtendedVerification
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_STATION_ADDRESS)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_BOOLEAN Reset,
+    EFI_IN EFI_MAC_ADDRESS *New EFI_OPTIONAL
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
+typedef struct {
+    EFI_UINT64 RxTotalFrames;
+    EFI_UINT64 RxGoodFrames;
+    EFI_UINT64 RxUndersizeFrames;
+    EFI_UINT64 RxOversizeFrames;
+    EFI_UINT64 RxDroppedFrames;
+    EFI_UINT64 RxUnicastFrames;
+    EFI_UINT64 RxBroadcastFrames;
+    EFI_UINT64 RxMulticastFrames;
+    EFI_UINT64 RxCrcErrorFrames;
+    EFI_UINT64 RxTotalBytes;
+    EFI_UINT64 TxTotalFrames;
+    EFI_UINT64 TxGoodFrames;
+    EFI_UINT64 TxUndersizeFrames;
+    EFI_UINT64 TxOversizeFrames;
+    EFI_UINT64 TxDroppedFrames;
+    EFI_UINT64 TxUnicastFrames;
+    EFI_UINT64 TxBroadcastFrames;
+    EFI_UINT64 TxMulticastFrames;
+    EFI_UINT64 TxCrcErrorFrames;
+    EFI_UINT64 TxTotalBytes;
+    EFI_UINT64 Collisions;
+    EFI_UINT64 UnsupportedProtocol;
+    EFI_UINT64 RxDuplicatedFrames;
+    EFI_UINT64 RxDecryptErrorFrames;
+    EFI_UINT64 TxErrorFrames;
+    EFI_UINT64 TxRetryFrames;
+} EFI_NETWORK_STATISTICS;
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_SHUTDOWN) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_STATISTICS)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_BOOLEAN Reset,
+    EFI_IN EFI_OUT EFI_UINTN *StatisticsSize EFI_OPTIONAL,
+    EFI_OUT EFI_NETWORK_STATISTICS *StatisticsTable EFI_OPTIONAL
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_RECEIVE_FILTERS) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN UINT32                               Enable,
-    IN UINT32                               Disable,
-    IN BOOLEAN                              ResetMCastFilter,
-    IN UINTN                                MCastFilterCnt     OPTIONAL,
-    IN EFI_MAC_ADDRESS                      *MCastFilter       OPTIONAL
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_MCAST_IP_TO_MAC)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_BOOLEAN IPv6,
+    EFI_IN EFI_IP_ADDRESS *IP,
+    EFI_OUT EFI_MAC_ADDRESS *MAC
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_STATION_ADDRESS) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN BOOLEAN                              Reset,
-    IN EFI_MAC_ADDRESS                      *New      OPTIONAL
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_NVDATA)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_BOOLEAN ReadWrite,
+    EFI_IN EFI_UINTN Offset,
+    EFI_IN EFI_UINTN BufferSize,
+    EFI_IN EFI_OUT EFI_VOID *Buffer
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_STATISTICS) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN BOOLEAN                              Reset,
-    IN OUT UINTN                            *StatisticsSize   OPTIONAL,
-    OUT EFI_NETWORK_STATISTICS              *StatisticsTable  OPTIONAL
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_GET_STATUS)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_OUT EFI_UINT32 *InterruptStatus EFI_OPTIONAL,
+    EFI_OUT EFI_VOID **TxBuf EFI_OPTIONAL
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
+#define EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT 0x01
+#define EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT 0x02
+#define EFI_SIMPLE_NETWORK_COMMAND_INTERRUPT 0x04
+#define EFI_SIMPLE_NETWORK_SOFTWARE_INTERRUPT 0x08
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_MCAST_IP_TO_MAC) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN BOOLEAN                              IPv6,
-    IN EFI_IP_ADDRESS                       *IP,
-    OUT EFI_MAC_ADDRESS                     *MAC
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_TRANSMIT)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_IN EFI_UINTN HeaderSize,
+    EFI_IN EFI_UINTN BufferSize,
+    EFI_IN EFI_VOID *Buffer,
+    EFI_IN EFI_MAC_ADDRESS *SrcAddr EFI_OPTIONAL,
+    EFI_IN EFI_MAC_ADDRESS *DestAddr EFI_OPTIONAL,
+    EFI_IN EFI_UINT16 *Protocol EFI_OPTIONAL
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_NVDATA) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN BOOLEAN                              ReadWrite,
-    IN UINTN                                Offset,
-    IN UINTN                                BufferSize,
-    IN OUT VOID                             *Buffer
+typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_RECEIVE)(
+    EFI_IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
+    EFI_OUT EFI_UINTN *HeaderSize EFI_OPTIONAL,
+    EFI_IN EFI_OUT EFI_UINTN *BufferSize,
+    EFI_OUT EFI_VOID *Buffer,
+    EFI_OUT EFI_MAC_ADDRESS *SrcAddr EFI_OPTIONAL,
+    EFI_OUT EFI_MAC_ADDRESS *DestAddr EFI_OPTIONAL,
+    EFI_OUT EFI_UINT16 *Protocol EFI_OPTIONAL
 );
 
-///////////////////////////////////////////////////////////////////////////////
-//
+struct _EFI_SIMPLE_NETWORK_PROTOCOL {
+    EFI_UINT64 Revision;
+    EFI_SIMPLE_NETWORK_START Start;
+    EFI_SIMPLE_NETWORK_STOP Stop;
+    EFI_SIMPLE_NETWORK_INITIALIZE Initialize;
+    EFI_SIMPLE_NETWORK_RESET Reset;
+    EFI_SIMPLE_NETWORK_SHUTDOWN Shutdown;
+    EFI_SIMPLE_NETWORK_RECEIVE_FILTERS ReceiveFilters;
+    EFI_SIMPLE_NETWORK_STATION_ADDRESS StationAddress;
+    EFI_SIMPLE_NETWORK_STATISTICS Statistics;
+    EFI_SIMPLE_NETWORK_MCAST_IP_TO_MAC MCastIpToMac;
+    EFI_SIMPLE_NETWORK_NVDATA NvData;
+    EFI_SIMPLE_NETWORK_GET_STATUS GetStatus;
+    EFI_SIMPLE_NETWORK_TRANSMIT Transmit;
+    EFI_SIMPLE_NETWORK_RECEIVE Receive;
+    EFI_EVENT WaitForPacket;
+    EFI_SIMPLE_NETWORK_MODE *Mode;
+};
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_GET_STATUS) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    OUT UINT32                              *InterruptStatus  OPTIONAL,
-    OUT VOID                                **TxBuf           OPTIONAL
-);
+#ifdef __cplusplus
+}
+#endif
 
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_TRANSMIT) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    IN UINTN                                HeaderSize,
-    IN UINTN                                BufferSize,
-    IN VOID                                 *Buffer,
-    IN EFI_MAC_ADDRESS                      *SrcAddr     OPTIONAL,
-    IN EFI_MAC_ADDRESS                      *DestAddr    OPTIONAL,
-    IN UINT16                               *Protocol    OPTIONAL
-);
-
-///////////////////////////////////////////////////////////////////////////////
-//
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SIMPLE_NETWORK_RECEIVE) (
-    IN struct _EFI_SIMPLE_NETWORK_PROTOCOL  *This,
-    OUT UINTN                               *HeaderSize  OPTIONAL,
-    IN OUT UINTN                            *BufferSize,
-    OUT VOID                                *Buffer,
-    OUT EFI_MAC_ADDRESS                     *SrcAddr     OPTIONAL,
-    OUT EFI_MAC_ADDRESS                     *DestAddr    OPTIONAL,
-    OUT UINT16                              *Protocol    OPTIONAL
-);
-
-///////////////////////////////////////////////////////////////////////////////
-//
-
-#define EFI_SIMPLE_NETWORK_PROTOCOL_REVISION  0x00010000
-#define EFI_SIMPLE_NETWORK_INTERFACE_REVISION EFI_SIMPLE_NETWORK_PROTOCOL_REVISION
-
-typedef struct _EFI_SIMPLE_NETWORK_PROTOCOL {
-    UINT64                              Revision;
-    EFI_SIMPLE_NETWORK_START            Start;
-    EFI_SIMPLE_NETWORK_STOP             Stop;
-    EFI_SIMPLE_NETWORK_INITIALIZE       Initialize;
-    EFI_SIMPLE_NETWORK_RESET            Reset;
-    EFI_SIMPLE_NETWORK_SHUTDOWN         Shutdown;
-    EFI_SIMPLE_NETWORK_RECEIVE_FILTERS  ReceiveFilters;
-    EFI_SIMPLE_NETWORK_STATION_ADDRESS  StationAddress;
-    EFI_SIMPLE_NETWORK_STATISTICS       Statistics;
-    EFI_SIMPLE_NETWORK_MCAST_IP_TO_MAC  MCastIpToMac;
-    EFI_SIMPLE_NETWORK_NVDATA           NvData;
-    EFI_SIMPLE_NETWORK_GET_STATUS       GetStatus;
-    EFI_SIMPLE_NETWORK_TRANSMIT         Transmit;
-    EFI_SIMPLE_NETWORK_RECEIVE          Receive;
-    EFI_EVENT                           WaitForPacket;
-    EFI_SIMPLE_NETWORK_MODE             *Mode;
-} EFI_SIMPLE_NETWORK_PROTOCOL;
-
-// Note: Because it conflicted with the EDK2 struct name, the
-// 'EFI_SIMPLE_NETWORK_PROTOCOL' GUID definition, from older
-// versions of gnu-efi, is now obsoleted.
-// Use 'EFI_SIMPLE_NETWORK_PROTOCOL_GUID' instead.
-
-typedef struct _EFI_SIMPLE_NETWORK_PROTOCOL _EFI_SIMPLE_NETWORK;
-typedef EFI_SIMPLE_NETWORK_PROTOCOL EFI_SIMPLE_NETWORK;
-
-#endif /* _EFINET_H */
+#endif

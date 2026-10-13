@@ -1,100 +1,91 @@
-/* reloc_x86_64.c - position independent x86_64 ELF shared object relocator
-   Copyright (C) 1999 Hewlett-Packard Co.
-    Contributed by David Mosberger <davidm@hpl.hp.com>.
-   Copyright (C) 2005 Intel Co.
-    Contributed by Fenghua Yu <fenghua.yu@intel.com>.
-   Copyright (C) 2022-2026 Mintsuki and contributors.
-
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions
-    are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials
-      provided with the distribution.
-    * Neither the name of Hewlett-Packard Co. nor the names of its
-      contributors may be used to endorse or promote products derived
-      from this software without specific prior written permission.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-    CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
-    BE LIABLE FOR ANYDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
-    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
-    THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-    SUCH DAMAGE.
-*/
-
-#include <efi.h>
-
+#include <stdbool.h>
+#include <stdint.h>
 #include <efi/elf.h>
 
-EFI_STATUS __relocate (long ldbase, Elf64_Dyn *dyn)
-{
-    long relsz = 0, relent = 0;
-    Elf64_Rela *rel = 0;
-    unsigned long *addr;
-    int i;
+/* EFI_LOAD_ERROR, the status _start returns to the firmware unchanged, as it does 0 (success). */
+#define LOAD_ERROR (~(UINTPTR_MAX >> 1) | 1)
 
-    for (i = 0; dyn[i].d_tag != DT_NULL; ++i) {
-        switch (dyn[i].d_tag) {
-            case DT_RELA:
-                rel = (Elf64_Rela*)
-                    ((unsigned long)dyn[i].d_un.d_ptr
-                     + ldbase);
-                break;
+/* The PE headers' page: a relocation there would be a header field turned into a dynamic one. */
+#define HEADER_PAGE_SIZE 0x1000
 
-            case DT_RELASZ:
-                relsz = dyn[i].d_un.d_val;
-                break;
+/*
+ * A relocation target need not be aligned (a pointer in a packed structure), and not every
+ * processor can store a word at an unaligned address.
+ */
+struct unaligned_addr {
+    Elf64_Addr value;
+} __attribute__((__packed__));
 
-            case DT_RELAENT:
-                relent = dyn[i].d_un.d_val;
-                break;
+/* The convention _start calls this with, whatever the user's compiler flags. */
+__attribute__((__ms_abi__)) uintptr_t __picoefi_relocate(
+    uintptr_t image_base,
+    const Elf64_Dyn *dynamic
+);
 
-            default:
-                break;
+/*
+ * This runs before the image is relocated, so it depends on no relocated value: no function
+ * pointers, no initialised pointers, no calls, and no tables, which compilers make for a switch
+ * or for a chain of comparisons of one value.
+ */
+uintptr_t __picoefi_relocate(uintptr_t image_base, const Elf64_Dyn *dynamic) {
+    bool has_table = false;
+    bool has_size = false;
+    bool has_entry_size = false;
+    Elf64_Addr table = 0;
+    Elf64_Xword size = 0;
+    Elf64_Xword entry_size = 0;
+    Elf64_Xword offset;
+
+    for (; dynamic->d_tag != DT_NULL; dynamic++) {
+        /* Read anew by every test, so that the tests cannot become a jump table. */
+        volatile Elf64_Sxword tag = dynamic->d_tag;
+
+        if (tag == DT_RELA) {
+            table = dynamic->d_un.d_ptr;
+            has_table = true;
+        } else if (tag == DT_RELASZ) {
+            size = dynamic->d_un.d_val;
+            has_size = true;
+        } else if (tag == DT_RELAENT) {
+            entry_size = dynamic->d_un.d_val;
+            has_entry_size = true;
+        } else if (tag == DT_REL || tag == DT_RELSZ || tag == DT_RELENT || tag == DT_JMPREL ||
+                tag == DT_RELRSZ || tag == DT_RELR || tag == DT_RELRENT) {
+            /* A table this does not apply: refuse the image rather than run it unrelocated. */
+            return LOAD_ERROR;
         }
     }
 
-    if (!rel && relent == 0)
-        return EFI_SUCCESS;
-
-    if (!rel || relent == 0)
-        return EFI_LOAD_ERROR;
-
-    while (relsz > 0) {
-        /* apply the relocs */
-        switch (ELF64_R_TYPE (rel->r_info)) {
-            case R_X86_64_NONE:
-                break;
-
-            case R_X86_64_RELATIVE:
-                if (rel->r_offset < 0x1000) {
-                    return EFI_LOAD_ERROR;
-                }
-
-                addr = (unsigned long *)
-                    (ldbase + rel->r_offset);
-                *addr = ldbase + rel->r_addend;
-                break;
-
-            default:
-                return EFI_LOAD_ERROR;
-        }
-        rel = (Elf64_Rela*) ((char *) rel + relent);
-        relsz -= relent;
+    if (!has_table && !has_size && !has_entry_size) {
+        return 0;
     }
-    return EFI_SUCCESS;
+    if (!has_table || !has_size || !has_entry_size || entry_size < sizeof(Elf64_Rela)) {
+        return LOAD_ERROR;
+    }
+
+    /* Every entry is checked before any is applied, so that a refused image is left as it was. */
+    for (offset = 0; size - offset >= entry_size; offset += entry_size) {
+        const Elf64_Rela *entry = (const Elf64_Rela *)(image_base + table + offset);
+        Elf64_Xword type = ELF64_R_TYPE(entry->r_info);
+
+        if (type == R_X86_64_NONE) {
+            continue;
+        }
+        if (type != R_X86_64_RELATIVE || entry->r_offset < HEADER_PAGE_SIZE) {
+            return LOAD_ERROR;
+        }
+    }
+    /* A partial last entry, found without a division, which may be a library call. */
+    if (offset != size) {
+        return LOAD_ERROR;
+    }
+    for (offset = 0; size - offset >= entry_size; offset += entry_size) {
+        const Elf64_Rela *entry = (const Elf64_Rela *)(image_base + table + offset);
+        struct unaligned_addr *target = (struct unaligned_addr *)(image_base + entry->r_offset);
+
+        if (ELF64_R_TYPE(entry->r_info) == R_X86_64_RELATIVE) {
+            target->value = image_base + (uintptr_t)entry->r_addend;
+        }
+    }
+    return 0;
 }

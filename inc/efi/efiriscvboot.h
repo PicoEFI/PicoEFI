@@ -1,0 +1,32 @@
+#ifndef EFI_EFIRISCVBOOT_H_
+#define EFI_EFIRISCVBOOT_H_
+
+#include "efiapi.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define EFI_RISCV_EFI_BOOT_PROTOCOL_GUID \
+    {0xccd15fec, 0x6f73, 0x4eec, {0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf}}
+
+#define EFI_RISCV_EFI_BOOT_PROTOCOL_REVISION 0x00010000
+#define EFI_RISCV_EFI_BOOT_PROTOCOL_LATEST_VERSION EFI_RISCV_EFI_BOOT_PROTOCOL_REVISION
+
+typedef struct _EFI_RISCV_EFI_BOOT_PROTOCOL EFI_RISCV_EFI_BOOT_PROTOCOL;
+
+typedef EFI_STATUS (EFI_API *EFI_GET_BOOT_HARTID)(
+    EFI_IN EFI_RISCV_EFI_BOOT_PROTOCOL *This,
+    EFI_OUT EFI_UINTN *BootHartId
+);
+
+struct _EFI_RISCV_EFI_BOOT_PROTOCOL {
+    EFI_UINT64 Revision;
+    EFI_GET_BOOT_HARTID GetBootHartId;
+};
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

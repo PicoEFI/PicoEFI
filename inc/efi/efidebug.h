@@ -1,600 +1,637 @@
 #ifndef EFI_EFIDEBUG_H_
 #define EFI_EFIDEBUG_H_
 
-/*++
+#include "efiprot.h"
 
-Copyright (c) 1998  Intel Corporation
-
-Module Name:
-
-    efidebug.h
-
-Abstract:
-
-    EFI library debug functions
-
-
-
-Revision History
-
---*/
-
-#if EFI_DEBUG
-
-    #define DBGASSERT(a)        DbgAssert(__FILE__, __LINE__, #a)
-    #define DEBUG(a)            DbgPrint a
-    
-#else
-
-    #define DBGASSERT(a)
-    #define DEBUG(a)
-    
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#if EFI_DEBUG_CLEAR_MEMORY
+#define EFI_DEBUG_SUPPORT_PROTOCOL_GUID \
+    {0x2755590C, 0x6F3C, 0x42FA, {0x9E, 0xA4, 0xA3, 0xBA, 0x54, 0x3C, 0xDA, 0x25}}
 
-    #define DBGSETMEM(a,l)      SetMem(a,l,(CHAR8)BAD_POINTER)
+typedef struct _EFI_DEBUG_SUPPORT_PROTOCOL EFI_DEBUG_SUPPORT_PROTOCOL;
 
-#else
+/* Printed as IMAGE_FILE_MACHINE_* names that nothing defines; these are their values. */
+typedef enum {
+    EfiIsaIa32 = 0x014C,
+    EfiIsaX64 = 0x8664,
+    EfiIsaIpf = 0x0200,
+    EfiIsaEbc = 0x0EBC,
+    EfiIsaArm = 0x1C2,
+    EfiIsaAArch64 = 0xAA64,
+    EfiIsaRISCV32 = 0x5032,
+    EfiIsaRISCV64 = 0x5064,
+    EfiIsaRISCV128 = 0x5128,
+    EfiIsaLoongArch32 = 0x6232,
+    EfiIsaLoongArch64 = 0x6264
+} EFI_INSTRUCTION_SET_ARCHITECTURE;
 
-    #define DBGSETMEM(a,l)
-
-#endif
-
-#define D_INIT        0x00000001          // Initialization style messages
-#define D_WARN        0x00000002          // Warnings
-#define D_LOAD        0x00000004          // Load events
-#define D_FS          0x00000008          // EFI File system
-#define D_POOL        0x00000010          // Alloc & Free's
-#define D_PAGE        0x00000020          // Alloc & Free's
-#define D_INFO        0x00000040          // Verbose
-#define D_VAR         0x00000100          // Variable
-#define D_PARSE       0x00000200          // Command parsing
-#define D_BM          0x00000400          // Boot manager
-#define D_BLKIO       0x00001000          // BlkIo Driver
-#define D_BLKIO_ULTRA 0x00002000          // BlkIo Driver
-#define D_NET         0x00004000          // SNI Driver
-#define D_NET_ULTRA   0x00008000          // SNI Driver
-#define D_TXTIN       0x00010000          // Simple Input Driver
-#define D_TXTOUT      0x00020000          // Simple Text Output Driver
-#define D_ERROR_ATA	  0x00040000		  		// ATA error messages 
-#define D_ERROR       0x80000000          // Error
-
-#define D_RESERVED    0x7fffC880          // Bits not reserved above
-
-//
-// Current Debug level of the system, value of EFIDebug
-//
-//#define EFI_DBUG_MASK   (D_ERROR | D_WARN | D_LOAD | D_BLKIO | D_INIT)
-#define EFI_DBUG_MASK   (D_ERROR)
-
-//
-//
-//
-
-#if EFI_DEBUG
-
-    #define ASSERT(a)               if(!(a))       DBGASSERT(a)
-    #define ASSERT_LOCKED(l)        if(!(l)->Lock) DBGASSERT(l not locked)
-    #define ASSERT_STRUCT(p,t)      DBGASSERT(t not structure), p
-
-#else
-
-    #define ASSERT(a)               
-    #define ASSERT_LOCKED(l)        
-    #define ASSERT_STRUCT(p,t)      
-
-#endif
-
-//
-// Instruction Set Architectures definitions for debuggers
-//
-
-typedef INTN EFI_EXCEPTION_TYPE;
-
-// IA32
-#define EXCEPT_IA32_DIVIDE_ERROR    0
-#define EXCEPT_IA32_DEBUG           1
-#define EXCEPT_IA32_NMI             2
-#define EXCEPT_IA32_BREAKPOINT      3
-#define EXCEPT_IA32_OVERFLOW        4
-#define EXCEPT_IA32_BOUND           5
-#define EXCEPT_IA32_INVALID_OPCODE  6
-#define EXCEPT_IA32_DOUBLE_FAULT    8
-#define EXCEPT_IA32_INVALID_TSS     10
-#define EXCEPT_IA32_SEG_NOT_PRESENT 11
-#define EXCEPT_IA32_STACK_FAULT     12
-#define EXCEPT_IA32_GP_FAULT        13
-#define EXCEPT_IA32_PAGE_FAULT      14
-#define EXCEPT_IA32_FP_ERROR        16
-#define EXCEPT_IA32_ALIGNMENT_CHECK 17
-#define EXCEPT_IA32_MACHINE_CHECK   18
-#define EXCEPT_IA32_SIMD            19
+typedef EFI_STATUS (EFI_API *EFI_GET_MAXIMUM_PROCESSOR_INDEX)(
+    EFI_IN EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    EFI_OUT EFI_UINTN *MaxProcessorIndex
+);
 
 typedef struct {
-    UINT16  Fcw;
-    UINT16  Fsw;
-    UINT16  Ftw;
-    UINT16  Opcode;
-    UINT32  Eip;
-    UINT16  Cs;
-    UINT16  Reserved1;
-    UINT32  DataOffset;
-    UINT16  Ds;
-    UINT8   Reserved2[10];
-    UINT8   St0Mm0[10], Reserved3[6];
-    UINT8   St1Mm1[10], Reserved4[6];
-    UINT8   St2Mm2[10], Reserved5[6];
-    UINT8   St3Mm3[10], Reserved6[6];
-    UINT8   St4Mm4[10], Reserved7[6];
-    UINT8   St5Mm5[10], Reserved8[6];
-    UINT8   St6Mm6[10], Reserved9[6];
-    UINT8   St7Mm7[10], Reserved10[6];
-    UINT8   Xmm0[16];
-    UINT8   Xmm1[16];
-    UINT8   Xmm2[16];
-    UINT8   Xmm3[16];
-    UINT8   Xmm4[16];
-    UINT8   Xmm5[16];
-    UINT8   Xmm6[16];
-    UINT8   Xmm7[16];
-    UINT8   Reserved11[14 * 16];
+    EFI_UINT64 R0, R1, R2, R3, R4, R5, R6, R7;
+    EFI_UINT64 Flags;
+    EFI_UINT64 ControlFlags;
+    EFI_UINT64 Ip;
+} EFI_SYSTEM_CONTEXT_EBC;
+
+typedef struct {
+    EFI_UINT32 Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
+    EFI_UINT32 S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
+    EFI_UINT32 S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
+    EFI_UINT32 T3, T4, T5, T6;
+
+    EFI_UINT128 Ft0, Ft1, Ft2, Ft3, Ft4, Ft5, Ft6, Ft7;
+    EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
+    EFI_UINT128 Fs2, Fs3, Fs4, Fs5, Fs6, Fs7, Fs8, Fs9, Fs10, Fs11;
+    EFI_UINT128 Ft8, Ft9, Ft10, Ft11;
+} EFI_SYSTEM_CONTEXT_RISCV32;
+
+typedef struct {
+    EFI_UINT64 Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
+    EFI_UINT64 S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
+    EFI_UINT64 S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
+    EFI_UINT64 T3, T4, T5, T6;
+
+    EFI_UINT128 Ft0, Ft1, Ft2, Ft3, Ft4, Ft5, Ft6, Ft7;
+    EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
+    EFI_UINT128 Fs2, Fs3, Fs4, Fs5, Fs6, Fs7, Fs8, Fs9, Fs10, Fs11;
+    EFI_UINT128 Ft8, Ft9, Ft10, Ft11;
+} EFI_SYSTEM_CONTEXT_RISCV64;
+
+typedef struct {
+    EFI_UINT128 Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
+    EFI_UINT128 S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
+    EFI_UINT128 S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
+    EFI_UINT128 T3, T4, T5, T6;
+
+    EFI_UINT128 Ft0, Ft1, Ft2, Ft3, Ft4, Ft5, Ft6, Ft7;
+    EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
+    EFI_UINT128 Fs2, Fs3, Fs4, Fs5, Fs6, Fs7, Fs8, Fs9, Fs10, Fs11;
+    EFI_UINT128 Ft8, Ft9, Ft10, Ft11;
+} EFI_SYSTEM_CONTEXT_RISCV128;
+
+typedef struct {
+    EFI_UINT16 Fcw;
+    EFI_UINT16 Fsw;
+    EFI_UINT16 Ftw;
+    EFI_UINT16 Opcode;
+    EFI_UINT32 Eip;
+    EFI_UINT16 Cs;
+    EFI_UINT16 Reserved1;
+    EFI_UINT32 DataOffset;
+    EFI_UINT16 Ds;
+    EFI_UINT8 Reserved2[10];
+    EFI_UINT8 St0Mm0[10], Reserved3[6];
+    EFI_UINT8 St1Mm1[10], Reserved4[6];
+    EFI_UINT8 St2Mm2[10], Reserved5[6];
+    EFI_UINT8 St3Mm3[10], Reserved6[6];
+    EFI_UINT8 St4Mm4[10], Reserved7[6];
+    EFI_UINT8 St5Mm5[10], Reserved8[6];
+    EFI_UINT8 St6Mm6[10], Reserved9[6];
+    EFI_UINT8 St7Mm7[10], Reserved10[6];
+    EFI_UINT8 Xmm0[16];
+    EFI_UINT8 Xmm1[16];
+    EFI_UINT8 Xmm2[16];
+    EFI_UINT8 Xmm3[16];
+    EFI_UINT8 Xmm4[16];
+    EFI_UINT8 Xmm5[16];
+    EFI_UINT8 Xmm6[16];
+    EFI_UINT8 Xmm7[16];
+    EFI_UINT8 Reserved11[14 * 16];
 } EFI_FX_SAVE_STATE_IA32;
 
 typedef struct {
-    UINT32                 ExceptionData;
+    EFI_UINT32 ExceptionData;
     EFI_FX_SAVE_STATE_IA32 FxSaveState;
-    UINT32                 Dr0;
-    UINT32                 Dr1;
-    UINT32                 Dr2;
-    UINT32                 Dr3;
-    UINT32                 Dr6;
-    UINT32                 Dr7;
-    UINT32                 Cr0;
-    UINT32                 Cr1;
-    UINT32                 Cr2;
-    UINT32                 Cr3;
-    UINT32                 Cr4;
-    UINT32                 Eflags;
-    UINT32                 Ldtr;
-    UINT32                 Tr;
-    UINT32                 Gdtr[2];
-    UINT32                 Idtr[2];
-    UINT32                 Eip;
-    UINT32                 Gs;
-    UINT32                 Fs;
-    UINT32                 Es;
-    UINT32                 Ds;
-    UINT32                 Cs;
-    UINT32                 Ss;
-    UINT32                 Edi;
-    UINT32                 Esi;
-    UINT32                 Ebp;
-    UINT32                 Esp;
-    UINT32                 Ebx;
-    UINT32                 Edx;
-    UINT32                 Ecx;
-    UINT32                 Eax;
+    EFI_UINT32 Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
+    EFI_UINT32 Cr0, Cr1, Cr2, Cr3, Cr4;
+    EFI_UINT32 Eflags;
+    EFI_UINT32 Ldtr, Tr;
+    EFI_UINT32 Gdtr[2], Idtr[2];
+    EFI_UINT32 Eip;
+    EFI_UINT32 Gs, Fs, Es, Ds, Cs, Ss;
+    EFI_UINT32 Edi, Esi, Ebp, Esp, Ebx, Edx, Ecx, Eax;
 } EFI_SYSTEM_CONTEXT_IA32;
 
-// X64
-#define EXCEPT_X64_DIVIDE_ERROR    0
-#define EXCEPT_X64_DEBUG           1
-#define EXCEPT_X64_NMI             2
-#define EXCEPT_X64_BREAKPOINT      3
-#define EXCEPT_X64_OVERFLOW        4
-#define EXCEPT_X64_BOUND           5
-#define EXCEPT_X64_INVALID_OPCODE  6
-#define EXCEPT_X64_DOUBLE_FAULT    8
-#define EXCEPT_X64_INVALID_TSS     10
-#define EXCEPT_X64_SEG_NOT_PRESENT 11
-#define EXCEPT_X64_STACK_FAULT     12
-#define EXCEPT_X64_GP_FAULT        13
-#define EXCEPT_X64_PAGE_FAULT      14
-#define EXCEPT_X64_FP_ERROR        16
-#define EXCEPT_X64_ALIGNMENT_CHECK 17
-#define EXCEPT_X64_MACHINE_CHECK   18
-#define EXCEPT_X64_SIMD            19
-
 typedef struct {
-    UINT16  Fcw;
-    UINT16  Fsw;
-    UINT16  Ftw;
-    UINT16  Opcode;
-    UINT64  Rip;
-    UINT64  DataOffset;
-    UINT8   Reserved1[8];
-    UINT8   St0Mm0[10], Reserved2[6];
-    UINT8   St1Mm1[10], Reserved3[6];
-    UINT8   St2Mm2[10], Reserved4[6];
-    UINT8   St3Mm3[10], Reserved5[6];
-    UINT8   St4Mm4[10], Reserved6[6];
-    UINT8   St5Mm5[10], Reserved7[6];
-    UINT8   St6Mm6[10], Reserved8[6];
-    UINT8   St7Mm7[10], Reserved9[6];
-    UINT8   Xmm0[16];
-    UINT8   Xmm1[16];
-    UINT8   Xmm2[16];
-    UINT8   Xmm3[16];
-    UINT8   Xmm4[16];
-    UINT8   Xmm5[16];
-    UINT8   Xmm6[16];
-    UINT8   Xmm7[16];
-    UINT8   Reserved11[14 * 16];
+    EFI_UINT16 Fcw;
+    EFI_UINT16 Fsw;
+    EFI_UINT16 Ftw;
+    EFI_UINT16 Opcode;
+    EFI_UINT64 Rip;
+    EFI_UINT64 DataOffset;
+    EFI_UINT8 Reserved1[8];
+    EFI_UINT8 St0Mm0[10], Reserved2[6];
+    EFI_UINT8 St1Mm1[10], Reserved3[6];
+    EFI_UINT8 St2Mm2[10], Reserved4[6];
+    EFI_UINT8 St3Mm3[10], Reserved5[6];
+    EFI_UINT8 St4Mm4[10], Reserved6[6];
+    EFI_UINT8 St5Mm5[10], Reserved7[6];
+    EFI_UINT8 St6Mm6[10], Reserved8[6];
+    EFI_UINT8 St7Mm7[10], Reserved9[6];
+    EFI_UINT8 Xmm0[16];
+    EFI_UINT8 Xmm1[16];
+    EFI_UINT8 Xmm2[16];
+    EFI_UINT8 Xmm3[16];
+    EFI_UINT8 Xmm4[16];
+    EFI_UINT8 Xmm5[16];
+    EFI_UINT8 Xmm6[16];
+    EFI_UINT8 Xmm7[16];
+    EFI_UINT8 Reserved11[14 * 16];
 } EFI_FX_SAVE_STATE_X64;
 
 typedef struct {
-    UINT64                ExceptionData;
+    EFI_UINT64 ExceptionData;
     EFI_FX_SAVE_STATE_X64 FxSaveState;
-    UINT64                Dr0;
-    UINT64                Dr1;
-    UINT64                Dr2;
-    UINT64                Dr3;
-    UINT64                Dr6;
-    UINT64                Dr7;
-    UINT64                Cr0;
-    UINT64                Cr1;
-    UINT64                Cr2;
-    UINT64                Cr3;
-    UINT64                Cr4;
-    UINT64                Cr8;
-    UINT64                Rflags;
-    UINT64                Ldtr;
-    UINT64                Tr;
-    UINT64                Gdtr[2];
-    UINT64                Idtr[2];
-    UINT64                Rip;
-    UINT64                Gs;
-    UINT64                Fs;
-    UINT64                Es;
-    UINT64                Ds;
-    UINT64                Cs;
-    UINT64                Ss;
-    UINT64                Rdi;
-    UINT64                Rsi;
-    UINT64                Rbp;
-    UINT64                Rsp;
-    UINT64                Rbx;
-    UINT64                Rdx;
-    UINT64                Rcx;
-    UINT64                Rax;
-    UINT64                R8;
-    UINT64                R9;
-    UINT64                R10;
-    UINT64                R11;
-    UINT64                R12;
-    UINT64                R13;
-    UINT64                R14;
-    UINT64                R15;
+    EFI_UINT64 Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
+    EFI_UINT64 Cr0, Cr1, Cr2, Cr3, Cr4, Cr8;
+    EFI_UINT64 Rflags;
+    EFI_UINT64 Ldtr, Tr;
+    EFI_UINT64 Gdtr[2], Idtr[2];
+    EFI_UINT64 Rip;
+    EFI_UINT64 Gs, Fs, Es, Ds, Cs, Ss;
+    EFI_UINT64 Rdi, Rsi, Rbp, Rsp, Rbx, Rdx, Rcx, Rax;
+    EFI_UINT64 R8, R9, R10, R11, R12, R13, R14, R15;
 } EFI_SYSTEM_CONTEXT_X64;
 
-/// IA64
-#define EXCEPT_IPF_VHTP_TRANSLATION               0
-#define EXCEPT_IPF_INSTRUCTION_TLB                1
-#define EXCEPT_IPF_DATA_TLB                       2
-#define EXCEPT_IPF_ALT_INSTRUCTION_TLB            3
-#define EXCEPT_IPF_ALT_DATA_TLB                   4
-#define EXCEPT_IPF_DATA_NESTED_TLB                5
-#define EXCEPT_IPF_INSTRUCTION_KEY_MISSED         6
-#define EXCEPT_IPF_DATA_KEY_MISSED                7
-#define EXCEPT_IPF_DIRTY_BIT                      8
-#define EXCEPT_IPF_INSTRUCTION_ACCESS_BIT         9
-#define EXCEPT_IPF_DATA_ACCESS_BIT                10
-#define EXCEPT_IPF_BREAKPOINT                     11
-#define EXCEPT_IPF_EXTERNAL_INTERRUPT             12
-#define EXCEPT_IPF_PAGE_NOT_PRESENT               20
-#define EXCEPT_IPF_KEY_PERMISSION                 21
-#define EXCEPT_IPF_INSTRUCTION_ACCESS_RIGHTS      22
-#define EXCEPT_IPF_DATA_ACCESS_RIGHTS             23
-#define EXCEPT_IPF_GENERAL_EXCEPTION              24
-#define EXCEPT_IPF_DISABLED_FP_REGISTER           25
-#define EXCEPT_IPF_NAT_CONSUMPTION                26
-#define EXCEPT_IPF_SPECULATION                    27
-#define EXCEPT_IPF_DEBUG                          29
-#define EXCEPT_IPF_UNALIGNED_REFERENCE            30
-#define EXCEPT_IPF_UNSUPPORTED_DATA_REFERENCE     31
-#define EXCEPT_IPF_FP_FAULT                       32
-#define EXCEPT_IPF_FP_TRAP                        33
-#define EXCEPT_IPF_LOWER_PRIVILEGE_TRANSFER_TRAP  34
-#define EXCEPT_IPF_TAKEN_BRANCH                   35
-#define EXCEPT_IPF_SINGLE_STEP                    36
-#define EXCEPT_IPF_IA32_EXCEPTION                 45
-#define EXCEPT_IPF_IA32_INTERCEPT                 46
-#define EXCEPT_IPF_IA32_INTERRUPT                 47
-
 typedef struct {
-    UINT64  Reserved;
-    UINT64  R1;
-    UINT64  R2;
-    UINT64  R3;
-    UINT64  R4;
-    UINT64  R5;
-    UINT64  R6;
-    UINT64  R7;
-    UINT64  R8;
-    UINT64  R9;
-    UINT64  R10;
-    UINT64  R11;
-    UINT64  R12;
-    UINT64  R13;
-    UINT64  R14;
-    UINT64  R15;
-    UINT64  R16;
-    UINT64  R17;
-    UINT64  R18;
-    UINT64  R19;
-    UINT64  R20;
-    UINT64  R21;
-    UINT64  R22;
-    UINT64  R23;
-    UINT64  R24;
-    UINT64  R25;
-    UINT64  R26;
-    UINT64  R27;
-    UINT64  R28;
-    UINT64  R29;
-    UINT64  R30;
-    UINT64  R31;
-    UINT64  F2[2];
-    UINT64  F3[2];
-    UINT64  F4[2];
-    UINT64  F5[2];
-    UINT64  F6[2];
-    UINT64  F7[2];
-    UINT64  F8[2];
-    UINT64  F9[2];
-    UINT64  F10[2];
-    UINT64  F11[2];
-    UINT64  F12[2];
-    UINT64  F13[2];
-    UINT64  F14[2];
-    UINT64  F15[2];
-    UINT64  F16[2];
-    UINT64  F17[2];
-    UINT64  F18[2];
-    UINT64  F19[2];
-    UINT64  F20[2];
-    UINT64  F21[2];
-    UINT64  F22[2];
-    UINT64  F23[2];
-    UINT64  F24[2];
-    UINT64  F25[2];
-    UINT64  F26[2];
-    UINT64  F27[2];
-    UINT64  F28[2];
-    UINT64  F29[2];
-    UINT64  F30[2];
-    UINT64  F31[2];
-    UINT64  Pr;
-    UINT64  B0;
-    UINT64  B1;
-    UINT64  B2;
-    UINT64  B3;
-    UINT64  B4;
-    UINT64  B5;
-    UINT64  B6;
-    UINT64  B7;
-    UINT64  ArRsc;
-    UINT64  ArBsp;
-    UINT64  ArBspstore;
-    UINT64  ArRnat;
-    UINT64  ArFcr;
-    UINT64  ArEflag;
-    UINT64  ArCsd;
-    UINT64  ArSsd;
-    UINT64  ArCflg;
-    UINT64  ArFsr;
-    UINT64  ArFir;
-    UINT64  ArFdr;
-    UINT64  ArCcv;
-    UINT64  ArUnat;
-    UINT64  ArFpsr;
-    UINT64  ArPfs;
-    UINT64  ArLc;
-    UINT64  ArEc;
-    UINT64  CrDcr;
-    UINT64  CrItm;
-    UINT64  CrIva;
-    UINT64  CrPta;
-    UINT64  CrIpsr;
-    UINT64  CrIsr;
-    UINT64  CrIip;
-    UINT64  CrIfa;
-    UINT64  CrItir;
-    UINT64  CrIipa;
-    UINT64  CrIfs;
-    UINT64  CrIim;
-    UINT64  CrIha;
-    UINT64  Dbr0;
-    UINT64  Dbr1;
-    UINT64  Dbr2;
-    UINT64  Dbr3;
-    UINT64  Dbr4;
-    UINT64  Dbr5;
-    UINT64  Dbr6;
-    UINT64  Dbr7;
-    UINT64  Ibr0;
-    UINT64  Ibr1;
-    UINT64  Ibr2;
-    UINT64  Ibr3;
-    UINT64  Ibr4;
-    UINT64  Ibr5;
-    UINT64  Ibr6;
-    UINT64  Ibr7;
-    UINT64  IntNat;
+    EFI_UINT64 Reserved;
+
+    EFI_UINT64 R1, R2, R3, R4, R5, R6, R7, R8, R9, R10,
+        R11, R12, R13, R14, R15, R16, R17, R18, R19, R20,
+        R21, R22, R23, R24, R25, R26, R27, R28, R29, R30,
+        R31;
+
+    EFI_UINT64 F2[2], F3[2], F4[2], F5[2], F6[2],
+        F7[2], F8[2], F9[2], F10[2], F11[2],
+        F12[2], F13[2], F14[2], F15[2], F16[2],
+        F17[2], F18[2], F19[2], F20[2], F21[2],
+        F22[2], F23[2], F24[2], F25[2], F26[2],
+        F27[2], F28[2], F29[2], F30[2], F31[2];
+
+    EFI_UINT64 Pr;
+
+    EFI_UINT64 B0, B1, B2, B3, B4, B5, B6, B7;
+
+    EFI_UINT64 ArRsc, ArBsp, ArBspstore, ArRnat;
+    EFI_UINT64 ArFcr;
+    EFI_UINT64 ArEflag, ArCsd, ArSsd, ArCflg;
+    EFI_UINT64 ArFsr, ArFir, ArFdr;
+    EFI_UINT64 ArCcv;
+    EFI_UINT64 ArUnat;
+    EFI_UINT64 ArFpsr;
+    EFI_UINT64 ArPfs, ArLc, ArEc;
+
+    EFI_UINT64 CrDcr, CrItm, CrIva, CrPta, CrIpsr, CrIsr;
+    EFI_UINT64 CrIip, CrIfa, CrItir, CrIipa, CrIfs, CrIim;
+    EFI_UINT64 CrIha;
+
+    EFI_UINT64 Dbr0, Dbr1, Dbr2, Dbr3, Dbr4, Dbr5, Dbr6, Dbr7;
+    EFI_UINT64 Ibr0, Ibr1, Ibr2, Ibr3, Ibr4, Ibr5, Ibr6, Ibr7;
+
+    EFI_UINT64 IntNat;
 } EFI_SYSTEM_CONTEXT_IPF;
 
-// EBC
-#define EXCEPT_EBC_UNDEFINED            0
-#define EXCEPT_EBC_DIVIDE_ERROR         1
-#define EXCEPT_EBC_DEBUG                2
-#define EXCEPT_EBC_BREAKPOINT           3
-#define EXCEPT_EBC_OVERFLOW             4
-#define EXCEPT_EBC_INVALID_OPCODE       5
-#define EXCEPT_EBC_STACK_FAULT          6
-#define EXCEPT_EBC_ALIGNMENT_CHECK      7
-#define EXCEPT_EBC_INSTRUCTION_ENCODING 8
-#define EXCEPT_EBC_BAD_BREAK            9
-#define EXCEPT_EBC_STEP                 10
-#define MAX_EBC_EXCEPTION               EXCEPT_EBC_STEP
-
+/* IFAR, the instruction fault address paired with IFSR, is missing from the print. */
 typedef struct {
-    UINT64  R0;
-    UINT64  R1;
-    UINT64  R2;
-    UINT64  R3;
-    UINT64  R4;
-    UINT64  R5;
-    UINT64  R6;
-    UINT64  R7;
-    UINT64  Flags;
-    UINT64  ControlFlags;
-    UINT64  Ip;
-} EFI_SYSTEM_CONTEXT_EBC;
-
-// ARM
-#define EXCEPT_ARM_RESET                    0
-#define EXCEPT_ARM_UNDEFINED_INSTRUCTION    1
-#define EXCEPT_ARM_SOFTWARE_INTERRUPT       2
-#define EXCEPT_ARM_PREFETCH_ABORT           3
-#define EXCEPT_ARM_DATA_ABORT               4
-#define EXCEPT_ARM_RESERVED                 5
-#define EXCEPT_ARM_IRQ                      6
-#define EXCEPT_ARM_FIQ                      7
-#define MAX_ARM_EXCEPTION                   EXCEPT_ARM_FIQ
-
-typedef struct {
-    UINT32  R0;
-    UINT32  R1;
-    UINT32  R2;
-    UINT32  R3;
-    UINT32  R4;
-    UINT32  R5;
-    UINT32  R6;
-    UINT32  R7;
-    UINT32  R8;
-    UINT32  R9;
-    UINT32  R10;
-    UINT32  R11;
-    UINT32  R12;
-    UINT32  SP;
-    UINT32  LR;
-    UINT32  PC;
-    UINT32  CPSR;
-    UINT32  DFSR;
-    UINT32  DFAR;
-    UINT32  IFSR;
-    UINT32  IFAR;
+    EFI_UINT32 R0;
+    EFI_UINT32 R1;
+    EFI_UINT32 R2;
+    EFI_UINT32 R3;
+    EFI_UINT32 R4;
+    EFI_UINT32 R5;
+    EFI_UINT32 R6;
+    EFI_UINT32 R7;
+    EFI_UINT32 R8;
+    EFI_UINT32 R9;
+    EFI_UINT32 R10;
+    EFI_UINT32 R11;
+    EFI_UINT32 R12;
+    EFI_UINT32 SP;
+    EFI_UINT32 LR;
+    EFI_UINT32 PC;
+    EFI_UINT32 CPSR;
+    EFI_UINT32 DFSR;
+    EFI_UINT32 DFAR;
+    EFI_UINT32 IFSR;
+    EFI_UINT32 IFAR;
 } EFI_SYSTEM_CONTEXT_ARM;
 
+typedef struct {
+    EFI_UINT64 X0;
+    EFI_UINT64 X1;
+    EFI_UINT64 X2;
+    EFI_UINT64 X3;
+    EFI_UINT64 X4;
+    EFI_UINT64 X5;
+    EFI_UINT64 X6;
+    EFI_UINT64 X7;
+    EFI_UINT64 X8;
+    EFI_UINT64 X9;
+    EFI_UINT64 X10;
+    EFI_UINT64 X11;
+    EFI_UINT64 X12;
+    EFI_UINT64 X13;
+    EFI_UINT64 X14;
+    EFI_UINT64 X15;
+    EFI_UINT64 X16;
+    EFI_UINT64 X17;
+    EFI_UINT64 X18;
+    EFI_UINT64 X19;
+    EFI_UINT64 X20;
+    EFI_UINT64 X21;
+    EFI_UINT64 X22;
+    EFI_UINT64 X23;
+    EFI_UINT64 X24;
+    EFI_UINT64 X25;
+    EFI_UINT64 X26;
+    EFI_UINT64 X27;
+    EFI_UINT64 X28;
+    EFI_UINT64 FP;
+    EFI_UINT64 LR;
+    EFI_UINT64 SP;
 
+    EFI_UINT64 V0[2];
+    EFI_UINT64 V1[2];
+    EFI_UINT64 V2[2];
+    EFI_UINT64 V3[2];
+    EFI_UINT64 V4[2];
+    EFI_UINT64 V5[2];
+    EFI_UINT64 V6[2];
+    EFI_UINT64 V7[2];
+    EFI_UINT64 V8[2];
+    EFI_UINT64 V9[2];
+    EFI_UINT64 V10[2];
+    EFI_UINT64 V11[2];
+    EFI_UINT64 V12[2];
+    EFI_UINT64 V13[2];
+    EFI_UINT64 V14[2];
+    EFI_UINT64 V15[2];
+    EFI_UINT64 V16[2];
+    EFI_UINT64 V17[2];
+    EFI_UINT64 V18[2];
+    EFI_UINT64 V19[2];
+    EFI_UINT64 V20[2];
+    EFI_UINT64 V21[2];
+    EFI_UINT64 V22[2];
+    EFI_UINT64 V23[2];
+    EFI_UINT64 V24[2];
+    EFI_UINT64 V25[2];
+    EFI_UINT64 V26[2];
+    EFI_UINT64 V27[2];
+    EFI_UINT64 V28[2];
+    EFI_UINT64 V29[2];
+    EFI_UINT64 V30[2];
+    EFI_UINT64 V31[2];
+
+    EFI_UINT64 ELR;
+    EFI_UINT64 SPSR;
+    EFI_UINT64 FPSR;
+    EFI_UINT64 ESR;
+    EFI_UINT64 FAR;
+} EFI_SYSTEM_CONTEXT_AARCH64;
+
+typedef struct {
+    EFI_UINT64 R0;
+    EFI_UINT64 R1;
+    EFI_UINT64 R2;
+    EFI_UINT64 R3;
+    EFI_UINT64 R4;
+    EFI_UINT64 R5;
+    EFI_UINT64 R6;
+    EFI_UINT64 R7;
+    EFI_UINT64 R8;
+    EFI_UINT64 R9;
+    EFI_UINT64 R10;
+    EFI_UINT64 R11;
+    EFI_UINT64 R12;
+    EFI_UINT64 R13;
+    EFI_UINT64 R14;
+    EFI_UINT64 R15;
+    EFI_UINT64 R16;
+    EFI_UINT64 R17;
+    EFI_UINT64 R18;
+    EFI_UINT64 R19;
+    EFI_UINT64 R20;
+    EFI_UINT64 R21;
+    EFI_UINT64 R22;
+    EFI_UINT64 R23;
+    EFI_UINT64 R24;
+    EFI_UINT64 R25;
+    EFI_UINT64 R26;
+    EFI_UINT64 R27;
+    EFI_UINT64 R28;
+    EFI_UINT64 R29;
+    EFI_UINT64 R30;
+    EFI_UINT64 R31;
+
+    EFI_UINT64 CRMD;
+    EFI_UINT64 PRMD;
+    EFI_UINT64 EUEN;
+    EFI_UINT64 MISC;
+    EFI_UINT64 ECFG;
+    EFI_UINT64 ESTAT;
+    EFI_UINT64 ERA;
+    EFI_UINT64 BADV;
+    EFI_UINT64 BADI;
+} EFI_SYSTEM_CONTEXT_LOONGARCH64;
+
+/* SystemContextRiscV128 and SystemContextLoongArch64 are misprinted Riscv128 and LongArch64. */
 typedef union {
-    EFI_SYSTEM_CONTEXT_EBC  *SystemContextEbc;
+    EFI_SYSTEM_CONTEXT_EBC *SystemContextEbc;
     EFI_SYSTEM_CONTEXT_IA32 *SystemContextIa32;
-    EFI_SYSTEM_CONTEXT_X64  *SystemContextX64;
-    EFI_SYSTEM_CONTEXT_IPF  *SystemContextIpf;
-    EFI_SYSTEM_CONTEXT_ARM  *SystemContextArm;
+    EFI_SYSTEM_CONTEXT_X64 *SystemContextX64;
+    EFI_SYSTEM_CONTEXT_IPF *SystemContextIpf;
+    EFI_SYSTEM_CONTEXT_ARM *SystemContextArm;
+    EFI_SYSTEM_CONTEXT_AARCH64 *SystemContextAArch64;
+    EFI_SYSTEM_CONTEXT_RISCV32 *SystemContextRiscV32;
+    EFI_SYSTEM_CONTEXT_RISCV64 *SystemContextRiscV64;
+    EFI_SYSTEM_CONTEXT_RISCV128 *SystemContextRiscV128;
+    EFI_SYSTEM_CONTEXT_LOONGARCH64 *SystemContextLoongArch64;
 } EFI_SYSTEM_CONTEXT;
 
-typedef
-VOID
-(EFIAPI *EFI_EXCEPTION_CALLBACK)(
-    IN     EFI_EXCEPTION_TYPE               ExceptionType,
-    IN OUT EFI_SYSTEM_CONTEXT               SystemContext);
+typedef EFI_VOID (EFI_API *EFI_PERIODIC_CALLBACK)(EFI_IN EFI_OUT EFI_SYSTEM_CONTEXT SystemContext);
 
-typedef
-VOID
-(EFIAPI *EFI_PERIODIC_CALLBACK)(
-    IN OUT EFI_SYSTEM_CONTEXT               SystemContext);
+typedef EFI_STATUS (EFI_API *EFI_REGISTER_PERIODIC_CALLBACK)(
+    EFI_IN EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    EFI_IN EFI_UINTN ProcessorIndex,
+    EFI_IN EFI_PERIODIC_CALLBACK PeriodicCallback
+);
 
-typedef enum {
-    IsaIa32 = EFI_IMAGE_MACHINE_IA32,
-    IsaX64 = EFI_IMAGE_MACHINE_X64,
-    IsaIpf = EFI_IMAGE_MACHINE_IA64,
-    IsaEbc = EFI_IMAGE_MACHINE_EBC,
-    IsaArm = EFI_IMAGE_MACHINE_ARMTHUMB_MIXED,
-//	IsaArm64 = EFI_IMAGE_MACHINE_AARCH64
-} EFI_INSTRUCTION_SET_ARCHITECTURE;
+typedef EFI_INTN EFI_EXCEPTION_TYPE;
 
-//
-// DEBUG_IMAGE_INFO
-//
+typedef EFI_VOID (EFI_API *EFI_EXCEPTION_CALLBACK)(
+    EFI_IN EFI_EXCEPTION_TYPE ExceptionType,
+    EFI_IN EFI_OUT EFI_SYSTEM_CONTEXT SystemContext
+);
 
-#define EFI_DEBUG_IMAGE_INFO_TABLE_GUID \
-    { 0x49152e77, 0x1ada, 0x4764, {0xb7, 0xa2, 0x7a, 0xfe, 0xfe, 0xd9, 0x5e, 0x8b} }
+#define EFI_EXCEPT_EBC_UNDEFINED 0
+#define EFI_EXCEPT_EBC_DIVIDE_ERROR 1
+#define EFI_EXCEPT_EBC_DEBUG 2
+#define EFI_EXCEPT_EBC_BREAKPOINT 3
+#define EFI_EXCEPT_EBC_OVERFLOW 4
+#define EFI_EXCEPT_EBC_INVALID_OPCODE 5
+#define EFI_EXCEPT_EBC_STACK_FAULT 6
+#define EFI_EXCEPT_EBC_ALIGNMENT_CHECK 7
+#define EFI_EXCEPT_EBC_INSTRUCTION_ENCODING 8
+#define EFI_EXCEPT_EBC_BAD_BREAK 9
+#define EFI_EXCEPT_EBC_SINGLE_STEP 10
 
-#define EFI_DEBUG_IMAGE_INFO_UPDATE_IN_PROGRESS 0x01
-#define EFI_DEBUG_IMAGE_INFO_TABLE_MODIFIED     0x02
-#define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE       (EFI_PAGE_SIZE / sizeof (UINTN))
-#define EFI_DEBUG_IMAGE_INFO_TYPE_NORMAL        0x01
+/* Not in the specification: the highest EBC exception type, like EFI_MAX_ARM_EXCEPTION. */
+#define EFI_MAX_EBC_EXCEPTION EFI_EXCEPT_EBC_SINGLE_STEP
 
-typedef struct {
-UINT64                Signature;
-EFI_PHYSICAL_ADDRESS  EfiSystemTableBase;
-UINT32                Crc32;
+#define EFI_EXCEPT_IA32_DIVIDE_ERROR 0
+#define EFI_EXCEPT_IA32_DEBUG 1
+#define EFI_EXCEPT_IA32_NMI 2
+#define EFI_EXCEPT_IA32_BREAKPOINT 3
+#define EFI_EXCEPT_IA32_OVERFLOW 4
+#define EFI_EXCEPT_IA32_BOUND 5
+#define EFI_EXCEPT_IA32_INVALID_OPCODE 6
+#define EFI_EXCEPT_IA32_DOUBLE_FAULT 8
+#define EFI_EXCEPT_IA32_INVALID_TSS 10
+#define EFI_EXCEPT_IA32_SEG_NOT_PRESENT 11
+#define EFI_EXCEPT_IA32_STACK_FAULT 12
+#define EFI_EXCEPT_IA32_GP_FAULT 13
+#define EFI_EXCEPT_IA32_PAGE_FAULT 14
+#define EFI_EXCEPT_IA32_FP_ERROR 16
+#define EFI_EXCEPT_IA32_ALIGNMENT_CHECK 17
+#define EFI_EXCEPT_IA32_MACHINE_CHECK 18
+#define EFI_EXCEPT_IA32_SIMD 19
+
+#define EFI_EXCEPT_X64_DIVIDE_ERROR 0
+#define EFI_EXCEPT_X64_DEBUG 1
+#define EFI_EXCEPT_X64_NMI 2
+#define EFI_EXCEPT_X64_BREAKPOINT 3
+#define EFI_EXCEPT_X64_OVERFLOW 4
+#define EFI_EXCEPT_X64_BOUND 5
+#define EFI_EXCEPT_X64_INVALID_OPCODE 6
+#define EFI_EXCEPT_X64_DOUBLE_FAULT 8
+#define EFI_EXCEPT_X64_INVALID_TSS 10
+#define EFI_EXCEPT_X64_SEG_NOT_PRESENT 11
+#define EFI_EXCEPT_X64_STACK_FAULT 12
+#define EFI_EXCEPT_X64_GP_FAULT 13
+#define EFI_EXCEPT_X64_PAGE_FAULT 14
+#define EFI_EXCEPT_X64_FP_ERROR 16
+#define EFI_EXCEPT_X64_ALIGNMENT_CHECK 17
+#define EFI_EXCEPT_X64_MACHINE_CHECK 18
+#define EFI_EXCEPT_X64_SIMD 19
+
+#define EFI_EXCEPT_IPF_VHTP_TRANSLATION 0
+#define EFI_EXCEPT_IPF_INSTRUCTION_TLB 1
+#define EFI_EXCEPT_IPF_DATA_TLB 2
+#define EFI_EXCEPT_IPF_ALT_INSTRUCTION_TLB 3
+#define EFI_EXCEPT_IPF_ALT_DATA_TLB 4
+#define EFI_EXCEPT_IPF_DATA_NESTED_TLB 5
+#define EFI_EXCEPT_IPF_INSTRUCTION_KEY_MISSED 6
+#define EFI_EXCEPT_IPF_DATA_KEY_MISSED 7
+#define EFI_EXCEPT_IPF_DIRTY_BIT 8
+#define EFI_EXCEPT_IPF_INSTRUCTION_ACCESS_BIT 9
+#define EFI_EXCEPT_IPF_DATA_ACCESS_BIT 10
+#define EFI_EXCEPT_IPF_BREAKPOINT 11
+#define EFI_EXCEPT_IPF_EXTERNAL_INTERRUPT 12
+#define EFI_EXCEPT_IPF_PAGE_NOT_PRESENT 20
+#define EFI_EXCEPT_IPF_KEY_PERMISSION 21
+#define EFI_EXCEPT_IPF_INSTRUCTION_ACCESS_RIGHTS 22
+#define EFI_EXCEPT_IPF_DATA_ACCESS_RIGHTS 23
+#define EFI_EXCEPT_IPF_GENERAL_EXCEPTION 24
+#define EFI_EXCEPT_IPF_DISABLED_FP_REGISTER 25
+#define EFI_EXCEPT_IPF_NAT_CONSUMPTION 26
+#define EFI_EXCEPT_IPF_SPECULATION 27
+#define EFI_EXCEPT_IPF_DEBUG 29
+#define EFI_EXCEPT_IPF_UNALIGNED_REFERENCE 30
+#define EFI_EXCEPT_IPF_UNSUPPORTED_DATA_REFERENCE 31
+#define EFI_EXCEPT_IPF_FP_FAULT 32
+#define EFI_EXCEPT_IPF_FP_TRAP 33
+#define EFI_EXCEPT_IPF_LOWER_PRIVILEGE_TRANSFER_TRAP 34
+#define EFI_EXCEPT_IPF_TAKEN_BRANCH 35
+#define EFI_EXCEPT_IPF_SINGLE_STEP 36
+#define EFI_EXCEPT_IPF_IA32_EXCEPTION 45
+#define EFI_EXCEPT_IPF_IA32_INTERCEPT 46
+#define EFI_EXCEPT_IPF_IA32_INTERRUPT 47
+
+#define EFI_EXCEPT_ARM_RESET 0
+#define EFI_EXCEPT_ARM_UNDEFINED_INSTRUCTION 1
+#define EFI_EXCEPT_ARM_SOFTWARE_INTERRUPT 2
+#define EFI_EXCEPT_ARM_PREFETCH_ABORT 3
+#define EFI_EXCEPT_ARM_DATA_ABORT 4
+#define EFI_EXCEPT_ARM_RESERVED 5
+#define EFI_EXCEPT_ARM_IRQ 6
+#define EFI_EXCEPT_ARM_FIQ 7
+
+#define EFI_MAX_ARM_EXCEPTION EFI_EXCEPT_ARM_FIQ
+
+#define EFI_EXCEPT_AARCH64_SYNCHRONOUS_EXCEPTIONS 0
+#define EFI_EXCEPT_AARCH64_IRQ 1
+#define EFI_EXCEPT_AARCH64_FIQ 2
+#define EFI_EXCEPT_AARCH64_SERROR 3
+
+#define EFI_MAX_AARCH64_EXCEPTION EFI_EXCEPT_AARCH64_SERROR
+
+#define EFI_EXCEPT_RISCV_INST_MISALIGNED 0
+#define EFI_EXCEPT_RISCV_INST_ACCESS_FAULT 1
+#define EFI_EXCEPT_RISCV_ILLEGAL_INST 2
+#define EFI_EXCEPT_RISCV_BREAKPOINT 3
+#define EFI_EXCEPT_RISCV_LOAD_ADDRESS_MISALIGNED 4
+#define EFI_EXCEPT_RISCV_LOAD_ACCESS_FAULT 5
+#define EFI_EXCEPT_RISCV_STORE_AMO_ADDRESS_MISALIGNED 6
+#define EFI_EXCEPT_RISCV_STORE_AMO_ACCESS_FAULT 7
+#define EFI_EXCEPT_RISCV_ENV_CALL_FROM_UMODE 8
+#define EFI_EXCEPT_RISCV_ENV_CALL_FROM_SMODE 9
+#define EFI_EXCEPT_RISCV_ENV_CALL_FROM_MMODE 11
+#define EFI_EXCEPT_RISCV_INST_PAGE_FAULT 12
+#define EFI_EXCEPT_RISCV_LOAD_PAGE_FAULT 13
+#define EFI_EXCEPT_RISCV_STORE_AMO_PAGE_FAULT 15
+
+#define EFI_EXCEPT_RISCV_SUPERVISOR_SOFTWARE_INT 1
+#define EFI_EXCEPT_RISCV_MACHINE_SOFTWARE_INT 3
+#define EFI_EXCEPT_RISCV_SUPERVISOR_TIMER_INT 5
+#define EFI_EXCEPT_RISCV_MACHINE_TIMER_INT 7
+#define EFI_EXCEPT_RISCV_SUPERVISOR_EXTERNAL_INT 9
+#define EFI_EXCEPT_RISCV_MACHINE_EXTERNAL_INT 11
+
+#define EFI_EXCEPT_LOONGARCH_INT 0
+#define EFI_EXCEPT_LOONGARCH_PIL 1
+#define EFI_EXCEPT_LOONGARCH_PIS 2
+#define EFI_EXCEPT_LOONGARCH_PIF 3
+#define EFI_EXCEPT_LOONGARCH_PME 4
+#define EFI_EXCEPT_LOONGARCH_PNR 5
+#define EFI_EXCEPT_LOONGARCH_PNX 6
+#define EFI_EXCEPT_LOONGARCH_PPI 7
+#define EFI_EXCEPT_LOONGARCH_ADE 8
+#define EFI_EXCEPT_LOONGARCH_ALE 9
+#define EFI_EXCEPT_LOONGARCH_BCE 10
+#define EFI_EXCEPT_LOONGARCH_SYS 11
+#define EFI_EXCEPT_LOONGARCH_BRK 12
+#define EFI_EXCEPT_LOONGARCH_INE 13
+#define EFI_EXCEPT_LOONGARCH_IPE 14
+#define EFI_EXCEPT_LOONGARCH_FPD 15
+#define EFI_EXCEPT_LOONGARCH_SXD 16
+#define EFI_EXCEPT_LOONGARCH_ASXD 17
+#define EFI_EXCEPT_LOONGARCH_FPE 18
+#define EFI_EXCEPT_LOONGARCH_WPE 19
+#define EFI_EXCEPT_LOONGARCH_BTD 20
+#define EFI_EXCEPT_LOONGARCH_BTE 21
+#define EFI_EXCEPT_LOONGARCH_GSPR 22
+#define EFI_EXCEPT_LOONGARCH_HVC 23
+#define EFI_EXCEPT_LOONGARCH_GCXC 24
+
+#define EFI_MAX_LOONGARCH_EXCEPTION 64
+
+#define EFI_EXCEPT_LOONGARCH_INT_SIP0 0
+#define EFI_EXCEPT_LOONGARCH_INT_SIP1 1
+#define EFI_EXCEPT_LOONGARCH_INT_IP0 2
+#define EFI_EXCEPT_LOONGARCH_INT_IP1 3
+#define EFI_EXCEPT_LOONGARCH_INT_IP2 4
+#define EFI_EXCEPT_LOONGARCH_INT_IP3 5
+#define EFI_EXCEPT_LOONGARCH_INT_IP4 6
+#define EFI_EXCEPT_LOONGARCH_INT_IP5 7
+#define EFI_EXCEPT_LOONGARCH_INT_IP6 8
+#define EFI_EXCEPT_LOONGARCH_INT_IP7 9
+#define EFI_EXCEPT_LOONGARCH_INT_PMC 10
+#define EFI_EXCEPT_LOONGARCH_INT_TIMER 11
+#define EFI_EXCEPT_LOONGARCH_INT_IPI 12
+
+#define EFI_MAX_LOONGARCH_INTERRUPT 16
+
+/* Printed as REGISTER_EXCEPTION_CALLBACK; the protocol structure uses this name. */
+typedef EFI_STATUS (EFI_API *EFI_REGISTER_EXCEPTION_CALLBACK)(
+    EFI_IN EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    EFI_IN EFI_UINTN ProcessorIndex,
+    EFI_IN EFI_EXCEPTION_CALLBACK ExceptionCallback,
+    EFI_IN EFI_EXCEPTION_TYPE ExceptionType
+);
+
+typedef EFI_STATUS (EFI_API *EFI_INVALIDATE_INSTRUCTION_CACHE)(
+    EFI_IN EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    EFI_IN EFI_UINTN ProcessorIndex,
+    EFI_IN EFI_VOID *Start,
+    EFI_IN EFI_UINT64 Length
+);
+
+struct _EFI_DEBUG_SUPPORT_PROTOCOL {
+    EFI_INSTRUCTION_SET_ARCHITECTURE Isa;
+    EFI_GET_MAXIMUM_PROCESSOR_INDEX GetMaximumProcessorIndex;
+    EFI_REGISTER_PERIODIC_CALLBACK RegisterPeriodicCallback;
+    EFI_REGISTER_EXCEPTION_CALLBACK RegisterExceptionCallback;
+    EFI_INVALIDATE_INSTRUCTION_CACHE InvalidateInstructionCache;
+};
+
+#define EFI_DEBUGPORT_PROTOCOL_GUID \
+    {0xEBA4E8D2, 0x3858, 0x41EC, {0xA2, 0x81, 0x26, 0x47, 0xBA, 0x96, 0x60, 0xD0}}
+
+typedef struct _EFI_DEBUGPORT_PROTOCOL EFI_DEBUGPORT_PROTOCOL;
+
+typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_RESET)(EFI_IN EFI_DEBUGPORT_PROTOCOL *This);
+
+typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_WRITE)(
+    EFI_IN EFI_DEBUGPORT_PROTOCOL *This,
+    EFI_IN EFI_UINT32 Timeout,
+    EFI_IN EFI_OUT EFI_UINTN *BufferSize,
+    EFI_IN EFI_VOID *Buffer
+);
+
+typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_READ)(
+    EFI_IN EFI_DEBUGPORT_PROTOCOL *This,
+    EFI_IN EFI_UINT32 Timeout,
+    EFI_IN EFI_OUT EFI_UINTN *BufferSize,
+    EFI_OUT EFI_VOID *Buffer
+);
+
+typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_POLL)(EFI_IN EFI_DEBUGPORT_PROTOCOL *This);
+
+struct _EFI_DEBUGPORT_PROTOCOL {
+    EFI_DEBUGPORT_RESET Reset;
+    EFI_DEBUGPORT_WRITE Write;
+    EFI_DEBUGPORT_READ Read;
+    EFI_DEBUGPORT_POLL Poll;
+};
+
+#define EFI_DEVICE_PATH_MESSAGING_DEBUGPORT EFI_DEBUGPORT_PROTOCOL_GUID
+
+#define EFI_DEBUGPORT_VARIABLE_NAME L"DEBUGPORT"
+#define EFI_DEBUGPORT_VARIABLE_GUID EFI_DEBUGPORT_PROTOCOL_GUID
+
+typedef struct _EFI_SYSTEM_TABLE_POINTER {
+    EFI_UINT64 Signature;
+    EFI_PHYSICAL_ADDRESS EfiSystemTableBase;
+    EFI_UINT32 Crc32;
 } EFI_SYSTEM_TABLE_POINTER;
 
+#define EFI_DEBUG_IMAGE_INFO_TABLE_GUID \
+    {0x49152E77, 0x1ADA, 0x4764, {0xB7, 0xA2, 0x7A, 0xFE, 0xFE, 0xD9, 0x5E, 0x8B}}
+
+#define EFI_DEBUG_IMAGE_INFO_UPDATE_IN_PROGRESS 0x01
+#define EFI_DEBUG_IMAGE_INFO_TABLE_MODIFIED 0x02
+
+#define EFI_DEBUG_IMAGE_INFO_TYPE_NORMAL 0x01
+
 typedef struct {
-UINT32                    ImageInfoType;
-EFI_LOADED_IMAGE_PROTOCOL *LoadedImageProtocolInstance;
-EFI_HANDLE                *ImageHandle;
+    EFI_UINT32 ImageInfoType;
+    EFI_LOADED_IMAGE_PROTOCOL *LoadedImageProtocolInstance;
+    EFI_HANDLE ImageHandle;
 } EFI_DEBUG_IMAGE_INFO_NORMAL;
 
 typedef union {
-UINT32                      *ImageInfoType;
-EFI_DEBUG_IMAGE_INFO_NORMAL *NormalImage;
+    EFI_UINT32 *ImageInfoType;
+    EFI_DEBUG_IMAGE_INFO_NORMAL *NormalImage;
 } EFI_DEBUG_IMAGE_INFO;
 
+/* Not in the specification: how many EFI_DEBUG_IMAGE_INFO entries, pointer-sized, fill a page. */
+#define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE (EFI_PAGE_SIZE / sizeof(EFI_UINTN))
+
 typedef struct {
-volatile UINT32       UpdateStatus;
-UINT32                TableSize;
-EFI_DEBUG_IMAGE_INFO  *EfiDebugImageInfoTable;
+    volatile EFI_UINT32 UpdateStatus;
+    EFI_UINT32 TableSize;
+    EFI_DEBUG_IMAGE_INFO *EfiDebugImageInfoTable;
 } EFI_DEBUG_IMAGE_INFO_TABLE_HEADER;
 
-//
-// EFI_DEBUGGER_PROTOCOL
-//
-
-#define EFI_DEBUG_SUPPORT_PROTOCOL_GUID \
-    { 0x2755590c, 0x6f3c, 0x42fa, {0x9e, 0xa4, 0xa3, 0xba, 0x54, 0x3c, 0xda, 0x25} }
-
-INTERFACE_DECL(_EFI_DEBUG_SUPPORT_PROTOCOL);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_GET_MAXIMUM_PROCESSOR_INDEX)(
-    IN struct _EFI_DEBUG_SUPPORT_PROTOCOL  *This,
-    OUT UINTN                              *MaxProcessorIndex);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_REGISTER_PERIODIC_CALLBACK)(
-    IN struct _EFI_DEBUG_SUPPORT_PROTOCOL  *This,
-    IN UINTN                               ProcessorIndex,
-    IN EFI_PERIODIC_CALLBACK               PeriodicCallback);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_REGISTER_EXCEPTION_CALLBACK)(
-    IN struct _EFI_DEBUG_SUPPORT_PROTOCOL  *This,
-    IN UINTN                               ProcessorIndex,
-    IN EFI_EXCEPTION_CALLBACK              ExceptionCallback,
-    IN EFI_EXCEPTION_TYPE                  ExceptionType);
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_INVALIDATE_INSTRUCTION_CACHE)(
-    IN struct _EFI_DEBUG_SUPPORT_PROTOCOL  *This,
-    IN UINTN                               ProcessorIndex,
-    IN VOID                                *Start,
-    IN UINT64                              Length);
-
-typedef struct _EFI_DEBUG_SUPPORT_PROTOCOL {
-    EFI_INSTRUCTION_SET_ARCHITECTURE  Isa;
-    EFI_GET_MAXIMUM_PROCESSOR_INDEX   GetMaximumProcessorIndex;
-    EFI_REGISTER_PERIODIC_CALLBACK    RegisterPeriodicCallback;
-    EFI_REGISTER_EXCEPTION_CALLBACK   RegisterExceptionCallback;
-    EFI_INVALIDATE_INSTRUCTION_CACHE  InvalidateInstructionCache;
-} EFI_DEBUG_SUPPORT_PROTOCOL;
+#ifdef __cplusplus
+}
+#endif
 
 #endif

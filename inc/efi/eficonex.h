@@ -1,111 +1,112 @@
 #ifndef EFI_EFICONEX_H_
 #define EFI_EFICONEX_H_
 
-/*++
+#include "eficon.h"
 
-Copyright (c) 2020 Kagurazaka Kotori <kagurazakakotori@gmail.com>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-Module Name:
-
-    eficonex.h
-
-Abstract:
-
-    EFI console extension protocols
-
---*/
-
-//
-// Simple Text Input Ex Protocol
-//
+/* The specification lists these scan codes without names. */
+#define EFI_SCAN_PAUSE 0x0048
+#define EFI_SCAN_F13 0x0068
+#define EFI_SCAN_F14 0x0069
+#define EFI_SCAN_F15 0x006A
+#define EFI_SCAN_F16 0x006B
+#define EFI_SCAN_F17 0x006C
+#define EFI_SCAN_F18 0x006D
+#define EFI_SCAN_F19 0x006E
+#define EFI_SCAN_F20 0x006F
+#define EFI_SCAN_F21 0x0070
+#define EFI_SCAN_F22 0x0071
+#define EFI_SCAN_F23 0x0072
+#define EFI_SCAN_F24 0x0073
+#define EFI_SCAN_MUTE 0x007F
+#define EFI_SCAN_VOLUME_UP 0x0080
+#define EFI_SCAN_VOLUME_DOWN 0x0081
+#define EFI_SCAN_BRIGHTNESS_UP 0x0100
+#define EFI_SCAN_BRIGHTNESS_DOWN 0x0101
+#define EFI_SCAN_SUSPEND 0x0102
+#define EFI_SCAN_HIBERNATE 0x0103
+#define EFI_SCAN_TOGGLE_DISPLAY 0x0104
+#define EFI_SCAN_RECOVERY 0x0105
+#define EFI_SCAN_EJECT 0x0106
 
 #define EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID \
-    { 0xdd9e7534, 0x7762, 0x4698, {0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa} }
+    {0xdd9e7534, 0x7762, 0x4698, {0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa}}
 
-INTERFACE_DECL(_EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL);
+typedef struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL;
 
-typedef UINT8 EFI_KEY_TOGGLE_STATE;
+typedef EFI_STATUS (EFI_API *EFI_INPUT_RESET_EX)(
+    EFI_IN EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
+    EFI_IN EFI_BOOLEAN ExtendedVerification
+);
+
+typedef EFI_UINT8 EFI_KEY_TOGGLE_STATE;
+
+#define EFI_TOGGLE_STATE_VALID 0x80
+#define EFI_KEY_STATE_EXPOSED 0x40
+#define EFI_SCROLL_LOCK_ACTIVE 0x01
+#define EFI_NUM_LOCK_ACTIVE 0x02
+#define EFI_CAPS_LOCK_ACTIVE 0x04
 
 typedef struct EFI_KEY_STATE {
-    UINT32                                         KeyShiftState;
-    EFI_KEY_TOGGLE_STATE                           KeyToggleState;
+    EFI_UINT32 KeyShiftState;
+    EFI_KEY_TOGGLE_STATE KeyToggleState;
 } EFI_KEY_STATE;
 
+#define EFI_SHIFT_STATE_VALID 0x80000000
+#define EFI_RIGHT_SHIFT_PRESSED 0x00000001
+#define EFI_LEFT_SHIFT_PRESSED 0x00000002
+#define EFI_RIGHT_CONTROL_PRESSED 0x00000004
+#define EFI_LEFT_CONTROL_PRESSED 0x00000008
+#define EFI_RIGHT_ALT_PRESSED 0x00000010
+#define EFI_LEFT_ALT_PRESSED 0x00000020
+#define EFI_RIGHT_LOGO_PRESSED 0x00000040
+#define EFI_LEFT_LOGO_PRESSED 0x00000080
+#define EFI_MENU_KEY_PRESSED 0x00000100
+#define EFI_SYS_REQ_PRESSED 0x00000200
+
 typedef struct {
-    EFI_INPUT_KEY                                  Key;
-    EFI_KEY_STATE                                  KeyState;
+    EFI_INPUT_KEY Key;
+    EFI_KEY_STATE KeyState;
 } EFI_KEY_DATA;
 
-// Shift states
-#define EFI_SHIFT_STATE_VALID                      0x80000000
-#define EFI_RIGHT_SHIFT_PRESSED                    0x00000001
-#define EFI_LEFT_SHIFT_PRESSED                     0x00000002
-#define EFI_RIGHT_CONTROL_PRESSED                  0x00000004
-#define EFI_LEFT_CONTROL_PRESSED                   0x00000008
-#define EFI_RIGHT_ALT_PRESSED                      0x00000010
-#define EFI_LEFT_ALT_PRESSED                       0x00000020
-#define EFI_RIGHT_LOGO_PRESSED                     0x00000040
-#define EFI_LEFT_LOGO_PRESSED                      0x00000080
-#define EFI_MENU_KEY_PRESSED                       0x00000100
-#define EFI_SYS_REQ_PRESSED                        0x00000200
+typedef EFI_STATUS (EFI_API *EFI_INPUT_READ_KEY_EX)(
+    EFI_IN EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
+    EFI_OUT EFI_KEY_DATA *KeyData
+);
 
-// Toggle states
-#define EFI_TOGGLE_STATE_VALID                     0x80
-#define EFI_KEY_STATE_EXPOSED                      0x40
-#define EFI_SCROLL_LOCK_ACTIVE                     0x01
-#define EFI_NUM_LOCK_ACTIVE                        0x02
-#define EFI_CAPS_LOCK_ACTIVE                       0x04
+typedef EFI_STATUS (EFI_API *EFI_SET_STATE)(
+    EFI_IN EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
+    EFI_IN EFI_KEY_TOGGLE_STATE *KeyToggleState
+);
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_INPUT_RESET_EX) (
-    IN struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL   *This,
-    IN BOOLEAN                                     ExtendedVerification
-    );
+typedef EFI_STATUS (EFI_API *EFI_KEY_NOTIFY_FUNCTION)(EFI_IN EFI_KEY_DATA *KeyData);
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_INPUT_READ_KEY_EX) (
-    IN struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL   *This,
-    OUT EFI_KEY_DATA                               *KeyData
-    );
+typedef EFI_STATUS (EFI_API *EFI_REGISTER_KEYSTROKE_NOTIFY)(
+    EFI_IN EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
+    EFI_IN EFI_KEY_DATA *KeyData,
+    EFI_IN EFI_KEY_NOTIFY_FUNCTION KeyNotificationFunction,
+    EFI_OUT EFI_VOID **NotifyHandle
+);
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_SET_STATE) (
-    IN struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL   *This,
-    IN EFI_KEY_TOGGLE_STATE                        *KeyToggleState
-    );
+typedef EFI_STATUS (EFI_API *EFI_UNREGISTER_KEYSTROKE_NOTIFY)(
+    EFI_IN EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
+    EFI_IN EFI_VOID *NotificationHandle
+);
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_KEY_NOTIFY_FUNCTION) (
-    IN EFI_KEY_DATA                                *KeyData
-    );
+struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL {
+    EFI_INPUT_RESET_EX Reset;
+    EFI_INPUT_READ_KEY_EX ReadKeyStrokeEx;
+    EFI_EVENT WaitForKeyEx;
+    EFI_SET_STATE SetState;
+    EFI_REGISTER_KEYSTROKE_NOTIFY RegisterKeyNotify;
+    EFI_UNREGISTER_KEYSTROKE_NOTIFY UnregisterKeyNotify;
+};
 
-typedef
-EFI_STATUS
-(EFIAPI *EFI_REGISTER_KEYSTROKE_NOTIFY) (
-    IN struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL   *This,
-    IN EFI_KEY_DATA                                *KeyData,
-    IN EFI_KEY_NOTIFY_FUNCTION                     KeyNotificationFunction,
-    OUT VOID                                       **NotifyHandle
-    );
-
-typedef
-EFI_STATUS
-(EFIAPI *EFI_UNREGISTER_KEYSTROKE_NOTIFY) (
-    IN struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL   *This,
-    IN VOID                                        *NotificationHandle
-    );
-
-typedef struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL{
-    EFI_INPUT_RESET_EX                             Reset;
-    EFI_INPUT_READ_KEY_EX                          ReadKeyStrokeEx;
-    EFI_EVENT                                      WaitForKeyEx;
-    EFI_SET_STATE                                  SetState;
-    EFI_REGISTER_KEYSTROKE_NOTIFY                  RegisterKeyNotify;
-    EFI_UNREGISTER_KEYSTROKE_NOTIFY                UnregisterKeyNotify;
-} EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL;
+#ifdef __cplusplus
+}
+#endif
 
 #endif

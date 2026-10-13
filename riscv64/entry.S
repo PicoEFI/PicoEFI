@@ -1,178 +1,234 @@
+    .option norelax
+
+#define EFI_IMAGE_MACHINE_RISCV64 0x5064
+#define EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION 10
+
+#define IMAGE_FILE_EXECUTABLE_IMAGE 0x0002
+#define IMAGE_FILE_LINE_NUMS_STRIPPED 0x0004
+#define IMAGE_FILE_32BIT_MACHINE 0x0100
+#define IMAGE_FILE_DEBUG_STRIPPED 0x0200
+
+#define IMAGE_SCN_CNT_CODE 0x00000020
+#define IMAGE_SCN_CNT_INITIALIZED_DATA 0x00000040
+#define IMAGE_SCN_MEM_DISCARDABLE 0x02000000
+#define IMAGE_SCN_MEM_EXECUTE 0x20000000
+#define IMAGE_SCN_MEM_READ 0x40000000
+#define IMAGE_SCN_MEM_WRITE 0x80000000
+
+#define IMAGE_REL_BASED_ABSOLUTE 0
+
 /*
- * crt0-efi-riscv64.S - PE/COFF header for RISC-V 64 EFI applications
- *
- * Copyright (C) 2014 Linaro Ltd. <ard.biesheuvel@linaro.org>
- * Copyright (C) 2018 Alexander Graf <agraf@suse.de>
- * Copyright (C) 2022-2026 Mintsuki and contributors.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice and this list of conditions, without modification.
- * 2. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
- *
- * Alternatively, this software may be distributed under the terms of the
- * GNU General Public License as published by the Free Software Foundation;
- * either version 2 of the License, or (at your option) any later version.
+ * The image is linked at address 0 with .pe_header first, so "symbol - .Lheader" is the symbol's
+ * value. Every header value taken from a symbol is written so: the assemblers emit it as a
+ * PC-relative relocation or an ADD32/SUB32 pair, which GNU ld and LLD resolve at link time,
+ * whereas the plain symbol, an absolute relocation, is rejected or made dynamic in a PIE.
  */
+    .section .pe_header, "ax"
+    .balign 0x1000
+.Lheader:
+    .ascii "MZ" /* e_magic */
+    .short 0x0090 /* e_cblp */
+    .short 0x0003 /* e_cp */
+    .short 0 /* e_crlc */
+    .short 0x0004 /* e_cparhdr */
+    .short 0 /* e_minalloc */
+    .short 0xffff /* e_maxalloc */
+    .short 0 /* e_ss */
+    .short 0x00b8 /* e_sp */
+    .short 0 /* e_csum */
+    .short 0 /* e_ip */
+    .short 0 /* e_cs */
+    .short 0x0040 /* e_lfarlc */
+    .short 0 /* e_ovno */
+    .org .Lheader + 0x3c /* e_res, e_oemid, e_oeminfo, e_res2 */
+    .long .Lpe_signature - .Lheader /* e_lfanew */
 
-.option norelax
+    /* The DOS program at the header's entry point: print the message, exit with return code 1. */
+.Ldos_program:
+    .byte 0x0e /* push cs */
+    .byte 0x1f /* pop ds */
+    .byte 0xba /* mov dx, offset of the message */
+    .short .Ldos_message - .Ldos_program
+    .byte 0xb4, 0x09 /* mov ah, 0x09 */
+    .byte 0xcd, 0x21 /* int 0x21 */
+    .byte 0xb8 /* mov ax, 0x4c01 */
+    .short 0x4c01
+    .byte 0xcd, 0x21 /* int 0x21 */
+.Ldos_message:
+    .ascii "This program cannot be run in DOS mode.\r\r\n$"
+    .org .Lheader + 0x80
 
-.section .pe_header,"ax"
-  .align 12
+.Lpe_signature:
+    .ascii "PE\0\0"
+    .short EFI_IMAGE_MACHINE_RISCV64 /* Machine */
+    .short (.Lsections_end - .Lsections) / 40 /* NumberOfSections */
+    .long 0 /* TimeDateStamp */
+    .long 0 /* PointerToSymbolTable */
+    .long 0 /* NumberOfSymbols */
+    .short .Lsections - .Loptional_header /* SizeOfOptionalHeader */
+    .short IMAGE_FILE_EXECUTABLE_IMAGE | IMAGE_FILE_LINE_NUMS_STRIPPED | \
+        IMAGE_FILE_DEBUG_STRIPPED /* Characteristics */
 
-  fbase:
+.Loptional_header:
+    .short 0x20b /* Magic: PE32+ */
+    .byte 2 /* MajorLinkerVersion */
+    .byte 38 /* MinorLinkerVersion */
+    .long __text_size - .Lheader /* SizeOfCode */
+    /* SizeOfInitializedData: the page of .reloc and the file data of the data section. */
+    .long __data_rawsize - .Lheader + 0x1000
+    .long __bss_size - .Lheader /* SizeOfUninitializedData */
+    .long _start - .Lheader /* AddressOfEntryPoint */
+    .long __text_start - .Lheader /* BaseOfCode */
+    .quad 0 /* ImageBase */
+    .long 0x1000 /* SectionAlignment */
+    .long 0x1000 /* FileAlignment */
+    .short 0 /* MajorOperatingSystemVersion */
+    .short 0 /* MinorOperatingSystemVersion */
+    .short 0 /* MajorImageVersion */
+    .short 0 /* MinorImageVersion */
+    .short 0 /* MajorSubsystemVersion */
+    .short 0 /* MinorSubsystemVersion */
+    .long 0 /* Win32VersionValue */
+    .long __image_size - .Lheader /* SizeOfImage */
+    .long __text_start - .Lheader /* SizeOfHeaders */
+    .long 0 /* CheckSum */
+    .short EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION /* Subsystem */
+    .short 0 /* DllCharacteristics */
+    .quad 0 /* SizeOfStackReserve */
+    .quad 0 /* SizeOfStackCommit */
+    .quad 0 /* SizeOfHeapReserve */
+    .quad 0 /* SizeOfHeapCommit */
+    .long 0 /* LoaderFlags */
+    .long (.Lsections - .Ldirectories) / 8 /* NumberOfRvaAndSizes */
 
-  mz_stub:
-    .short 0x5a4d, 0x0090, 0x0003, 0x0000, 0x0004, 0x0000, 0xffff, 0x0000
-    .short 0x00b8, 0x0000, 0x0000, 0x0000, 0x0040, 0x0000, 0x0000, 0x0000
-    .short 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000
-    .short 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0080, 0x0000
-    .byte 0x0e, 0x1f, 0xba, 0x0e, 0x00, 0xb4, 0x09, 0xcd, 0x21, 0xb8, 0x01
-    .byte 0x4c, 0xcd, 0x21, 0x54, 0x68, 0x69, 0x73, 0x20, 0x70, 0x72, 0x6f
-    .byte 0x67, 0x72, 0x61, 0x6d, 0x20, 0x63, 0x61, 0x6e, 0x6e, 0x6f, 0x74
-    .byte 0x20, 0x62, 0x65, 0x20, 0x72, 0x75, 0x6e, 0x20, 0x69, 0x6e, 0x20
-    .byte 0x44, 0x4f, 0x53, 0x20, 0x6d, 0x6f, 0x64, 0x65, 0x2e, 0x0d, 0x0d
-    .byte 0x0a, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+.Ldirectories:
+    .quad 0 /* Export Table */
+    .quad 0 /* Import Table */
+    .quad 0 /* Resource Table */
+    .quad 0 /* Exception Table */
+    .quad 0 /* Certificate Table */
+    /*
+     * Base Relocation Table. Referring to the block, not to __reloc_start, is what keeps
+     * .dummy_reloc from --gc-sections.
+     */
+    .long .Lbase_relocations - .Lheader
+    .long .Lbase_relocations_end - .Lbase_relocations
 
-  pe_header:
-    .long 0x00004550 // magic
-    .short 0x5064    // machine
-    .short 0x0003    // section #
-    .long 0          // timestamp
-    .long 0          // symbol table ptr
-    .long 0          // symbol #
-    .short data_dirs_end - opt_header // opt header size
-    .short 0x0206    // characteristics
+.Lsections:
+    .ascii ".text\0\0\0"
+    .long __text_size - .Lheader /* VirtualSize */
+    .long __text_start - .Lheader /* VirtualAddress */
+    .long __text_size - .Lheader /* SizeOfRawData */
+    .long __text_start - .Lheader /* PointerToRawData */
+    .long 0 /* PointerToRelocations */
+    .long 0 /* PointerToLinenumbers */
+    .short 0 /* NumberOfRelocations */
+    .short 0 /* NumberOfLinenumbers */
+    .long IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ
 
-  opt_header:
-    .short 0x020b      // magic
-    .byte 0x02         // maj linker ver
-    .byte 0x26         // min linker ver
-    .long __text_size - fbase // code size
-    .long __data_rawsize - fbase // data size
-    .long __bss_size - fbase // uninitialised data size
-    .long _start - fbase // entry point
-    .long __text_start - fbase // code base
-    .quad __image_base - fbase // image base
-    .long 0x1000       // section alignment
-    .long 0x1000       // file alignment
-    .short 0           // OS maj
-    .short 0           // OS min
-    .short 0           // image maj
-    .short 0           // image min
-    .short 0           // subsystem maj
-    .short 0           // subsystem min
-    .long 0            // win32 ver
-    .long __image_size - fbase // image size
-    .long __text_start - fbase // headers size
-    .long 0            // checksum
-    .short 0x0a        // subsystem
-    .short 0           // dll characteristics
-    .quad 0            // stack reserve size
-    .quad 0            // stack commit size
-    .quad 0            // heap reserve size
-    .quad 0            // heap commit size
-    .long 0            // loader flags
-    .long 6            // rvas and size count
-  opt_header_end:
+    .ascii ".reloc\0\0"
+    /* VirtualSize: exactly the base relocation data; SizeOfRawData is its whole page. */
+    .long .Lbase_relocations_end - .Lbase_relocations
+    .long __reloc_start - .Lheader /* VirtualAddress */
+    .long __reloc_size - .Lheader /* SizeOfRawData */
+    .long __reloc_start - .Lheader /* PointerToRawData */
+    .long 0 /* PointerToRelocations */
+    .long 0 /* PointerToLinenumbers */
+    .short 0 /* NumberOfRelocations */
+    .short 0 /* NumberOfLinenumbers */
+    .long IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ
 
-  data_dirs:
-    // export table
-    .long 0, 0
+    .ascii ".data\0\0\0"
+    .long __data_size - .Lheader /* VirtualSize */
+    .long __data_start - .Lheader /* VirtualAddress */
+    .long __data_rawsize - .Lheader /* SizeOfRawData */
+    .long __data_start - .Lheader /* PointerToRawData */
+    .long 0 /* PointerToRelocations */
+    .long 0 /* PointerToLinenumbers */
+    .short 0 /* NumberOfRelocations */
+    .short 0 /* NumberOfLinenumbers */
+    .long IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE
+.Lsections_end:
 
-    // import table
-    .long 0, 0
+    .section .dummy_reloc, "a"
+    /*
+     * Without base relocations, firmware may load the image at ImageBase only. One block of
+     * IMAGE_REL_BASED_ABSOLUTE entries, which change nothing; two keep it a multiple of 4. Its
+     * page is given as the dummy word's address less the block's own, a link-time constant.
+     */
+.Lbase_relocations:
+    .long .Ldummy - .Lbase_relocations /* Page RVA */
+    .long .Lbase_relocations_end - .Lbase_relocations /* Block Size */
+    .short IMAGE_REL_BASED_ABSOLUTE << 12
+    .short IMAGE_REL_BASED_ABSOLUTE << 12
+.Lbase_relocations_end:
 
-    // resource table
-    .long 0, 0
+    /* The word the base relocation block names; nothing reads it. */
+    .data
+    .balign 0x1000
+.Ldummy:
+    .long 0
 
-    // exception table
-    .long 0, 0
+    .text
+    .balign 0x1000
+    .globl _start
+    .type _start, %function
+_start:
+    /*
+     * Save what the UEFI convention preserves beyond the C one and the registers used here, and
+     * give the calls the stack alignment, and on x86 the clear direction flag, that not all
+     * firmware provides. ImageHandle and SystemTable wait where the relocator leaves them.
+     */
+    addi sp, sp, -48
+    sd ra, 40(sp)
+    sd s0, 32(sp)
+    sd s1, 24(sp)
+    sd s2, 16(sp)
+    sd gp, 8(sp)
+    sd tp, 0(sp)
+    mv s0, sp
+    andi sp, sp, -16
+    mv s1, a0
+    mv s2, a1
 
-    // certificate table
-    .long 0, 0
-
-    // base relocation table
-    .long reloc - fbase, 12
-  data_dirs_end:
-
-  sect_table:
-    .ascii ".text\0\0\0" // name
-    .long __text_size - fbase // virtual size
-    .long __text_start - fbase // rva
-    .long __text_size - fbase // file size
-    .long __text_start - fbase // file location
-    .long 0              // relocs
-    .long 0              // line nums
-    .short 0             // relocs count
-    .short 0             // line nums count
-    .long 0x60000020     // characteristics
-
-    .ascii ".reloc\0\0"  // name
-    .long 12             // virtual size
-    .long reloc - fbase  // rva
-    .long 0x1000         // file size
-    .long reloc - fbase  // file location
-    .long 0              // relocs
-    .long 0              // line nums
-    .short 0             // relocs count
-    .short 0             // line nums count
-    .long 0x42000040     // characteristics
-
-    .ascii ".data\0\0\0" // name
-    .long __data_size - fbase // virtual size
-    .long __data_start - fbase // rva
-    .long __data_rawsize - fbase // file size
-    .long __data_start - fbase // file location
-    .long 0              // relocs
-    .long 0              // line nums
-    .short 0             // relocs count
-    .short 0             // line nums count
-    .long 0xc0000040     // characteristics
-
-.section .text
-  .align 12
-  .globl _start
-  _start:
-    addi sp, sp, -24
-
-    sd a0, 0(sp)
-    sd a1, 8(sp)
-    sd ra, 16(sp)
-
-    // Not all loaders zero the gap between SizeOfRawData and VirtualSize.
+    /* Zero .bss: firmware need not zero a section beyond its file data. */
     lla t0, __bss_start
     lla t1, __bss_end
-8:  bgeu t0, t1, 9f
+.Lzero:
+    bgeu t0, t1, .Lzeroed
+    andi t2, t0, 7
+    bnez t2, .Lzero_byte
+    sub t2, t1, t0
+    li t3, 8
+    bltu t2, t3, .Lzero_byte
+    sd zero, 0(t0)
+    addi t0, t0, 8
+    j .Lzero
+.Lzero_byte:
     sb zero, 0(t0)
     addi t0, t0, 1
-    j 8b
-9:
+    j .Lzero
+.Lzeroed:
+
+    /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
     lla a0, __image_base
     lla a1, _DYNAMIC
-    call __relocate
-    bne a0, zero, 0f
+    call __picoefi_relocate
+    /* An image that cannot be relocated must not run: return the status. */
+    bnez a0, .Lreturn
 
-    ld a1, 8(sp)
-    ld a0, 0(sp)
+    mv a0, s1
+    mv a1, s2
     call efi_main
-    ld ra, 16(sp)
 
-0:
-    addi sp, sp, 24
+.Lreturn:
+    mv sp, s0
+    ld tp, 0(sp)
+    ld gp, 8(sp)
+    ld s2, 16(sp)
+    ld s1, 24(sp)
+    ld s0, 32(sp)
+    ld ra, 40(sp)
+    addi sp, sp, 48
     ret
-
-// hand-craft a dummy .reloc section so EFI knows it's a relocatable executable:
-
-.section .data
-  .align 12
-    dummy: .long 0
-
-.section .dummy_reloc,"a"
-    reloc:
-      .long dummy - reloc // Page RVA
-      .long 12            // Block Size (2*4+2*2), must be aligned by 32 Bits
-      .long 0             // reloc for dummy
+    .size _start, . - _start
