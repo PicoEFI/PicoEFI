@@ -1,7 +1,0 @@
-*.efi
-*.efi.debug
-*.o
-*.d
-*.a
-*.tar.*
-*.tar
