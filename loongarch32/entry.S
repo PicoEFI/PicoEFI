@@ -24,7 +24,6 @@
  * whereas the plain symbol, an absolute relocation, is rejected or made dynamic in a PIE.
  */
     .section .pe_header, "ax"
-    .balign 0x1000
 .Lheader:
     .ascii "MZ" /* e_magic */
     .short 0x0090 /* e_cblp */
@@ -182,7 +181,6 @@
     .long 0
 
     .text
-    .balign 0x1000
     .globl _start
     .type _start, %function
 _start:
