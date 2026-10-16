@@ -17,7 +17,7 @@ struct unaligned_addr {
 } __attribute__((__packed__));
 
 /* The convention _start calls this with, whatever the user's compiler flags. */
-__attribute__((__cdecl__, __regparm__(0))) uintptr_t __picoefi_relocate(
+__attribute__((__regparm__(0), __cdecl__)) uintptr_t __picoefi_relocate(
     uintptr_t image_base,
     const Elf32_Dyn *dynamic
 );

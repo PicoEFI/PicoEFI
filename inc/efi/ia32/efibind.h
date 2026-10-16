@@ -38,9 +38,12 @@ typedef uint16_t EFI_CHAR16;
 #undef EFI_VOID
 typedef void EFI_VOID;
 
-/* Plain cdecl, whatever -mrtd or -mregparm the rest of the program uses. */
+/*
+ * Plain cdecl, whatever -mrtd or -mregparm the rest of the program uses. regparm(0) comes first:
+ * Clang 9 crashes on the other order when a macro supplies it.
+ */
 #ifndef EFI_API
-#define EFI_API __attribute__((__cdecl__, __regparm__(0)))
+#define EFI_API __attribute__((__regparm__(0), __cdecl__))
 #endif
 
 #define EFI_ERROR_MASK ((EFI_UINTN)0x80000000)
