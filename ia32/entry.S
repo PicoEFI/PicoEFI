@@ -6,6 +6,8 @@
 #define IMAGE_FILE_32BIT_MACHINE 0x0100
 #define IMAGE_FILE_DEBUG_STRIPPED 0x0200
 
+#define IMAGE_DLLCHARACTERISTICS_NX_COMPAT 0x0100
+
 #define IMAGE_SCN_CNT_CODE 0x00000020
 #define IMAGE_SCN_CNT_INITIALIZED_DATA 0x00000040
 #define IMAGE_SCN_MEM_DISCARDABLE 0x02000000
@@ -92,7 +94,7 @@
     .long __text_start - .Lheader /* SizeOfHeaders */
     .long 0 /* CheckSum */
     .short EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION /* Subsystem */
-    .short 0 /* DllCharacteristics */
+    .short IMAGE_DLLCHARACTERISTICS_NX_COMPAT /* DllCharacteristics */
     .long 0 /* SizeOfStackReserve */
     .long 0 /* SizeOfStackCommit */
     .long 0 /* SizeOfHeapReserve */
