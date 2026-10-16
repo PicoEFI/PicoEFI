@@ -10,7 +10,7 @@ extern "C" {
 #define EFI_TIMESTAMP_PROTOCOL_GUID \
     {0xafbfde41, 0x2e6e, 0x4262, {0xba, 0x65, 0x62, 0xb9, 0x23, 0x6e, 0x54, 0x95}}
 
-typedef EFI_UINT64 (EFI_API *EFI_TIMESTAMP_GET)(EFI_VOID);
+typedef EFI_UINT64 (EFI_API *EFI_TIMESTAMP_GET)(void);
 
 typedef struct {
     EFI_UINT64 Frequency;
