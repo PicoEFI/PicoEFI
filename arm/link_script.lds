@@ -58,7 +58,10 @@ SECTIONS
         *(.rel.*)
     } :rodata
 
+    /* A page even when empty, as some loaders refuse an empty section. Not
+       with MAX or ?:, which gold miscomputes. */
     . = ALIGN(0x1000);
+    . += (. == __rodata_start) * 0x1000;
     __rodata_end = ABSOLUTE(.);
     __rodata_size = ABSOLUTE(__rodata_end - __rodata_start);
 
