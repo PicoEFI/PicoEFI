@@ -27,7 +27,10 @@ uintptr_t __picoefi_relocate(
  * pointers, no initialised pointers, no calls, and no tables, which compilers make for a switch
  * or for a chain of comparisons of one value.
  */
-uintptr_t __picoefi_relocate(uintptr_t image_base, const Elf64_Dyn *dynamic) {
+uintptr_t __picoefi_relocate(
+    uintptr_t image_base,
+    const Elf64_Dyn *dynamic
+) {
     bool has_table = false;
     bool has_size = false;
     bool has_entry_size = false;
