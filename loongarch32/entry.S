@@ -72,12 +72,12 @@
     .byte 2 /* MajorLinkerVersion */
     .byte 38 /* MinorLinkerVersion */
     .long __text_size - .Lheader /* SizeOfCode */
-    /* SizeOfInitializedData: the page of .reloc and the file data of the data section. */
-    .long __data_rawsize - .Lheader + 0x1000
+    /* SizeOfInitializedData: the file data of .reloc, .rdata and .data. */
+    .long __initialized_data_size - .Lheader
     .long __bss_size - .Lheader /* SizeOfUninitializedData */
     .long _start - .Lheader /* AddressOfEntryPoint */
     .long __text_start - .Lheader /* BaseOfCode */
-    .long __data_start - .Lheader /* BaseOfData */
+    .long __rodata_start - .Lheader /* BaseOfData */
     .long 0 /* ImageBase */
     .long 0x1000 /* SectionAlignment */
     .long 0x1000 /* FileAlignment */
@@ -136,6 +136,17 @@
     .short 0 /* NumberOfRelocations */
     .short 0 /* NumberOfLinenumbers */
     .long IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ
+
+    .ascii ".rdata\0\0"
+    .long __rodata_size - .Lheader /* VirtualSize */
+    .long __rodata_start - .Lheader /* VirtualAddress */
+    .long __rodata_size - .Lheader /* SizeOfRawData */
+    .long __rodata_start - .Lheader /* PointerToRawData */
+    .long 0 /* PointerToRelocations */
+    .long 0 /* PointerToLinenumbers */
+    .short 0 /* NumberOfRelocations */
+    .short 0 /* NumberOfLinenumbers */
+    .long IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ
 
     .ascii ".data\0\0\0"
     .long __data_size - .Lheader /* VirtualSize */

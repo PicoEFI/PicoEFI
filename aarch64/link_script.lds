@@ -37,7 +37,7 @@ SECTIONS
         __reloc_end = ABSOLUTE(.);
         __reloc_size = ABSOLUTE(__reloc_end - __reloc_start);
 
-        __data_start = ABSOLUTE(.);
+        __rodata_start = ABSOLUTE(.);
         *(.rodata .rodata.*)
     } :rodata
 
@@ -58,7 +58,12 @@ SECTIONS
         *(.rela.*)
     } :rodata
 
+    . = ALIGN(0x1000);
+    __rodata_end = ABSOLUTE(.);
+    __rodata_size = ABSOLUTE(__rodata_end - __rodata_start);
+
     .dynamic : {
+        __data_start = ABSOLUTE(.);
         *(.dynamic)
     } :data :dynamic
 
@@ -79,6 +84,7 @@ SECTIONS
        raw end to __bss_start so linker-placed orphans cannot fall above it. */
     __data_rawend = ABSOLUTE(ALIGN(__bss_start, 0x1000));
     __data_rawsize = ABSOLUTE(__data_rawend - __data_start);
+    __initialized_data_size = ABSOLUTE(__reloc_size + __rodata_size + __data_rawsize);
 
     .bss : {
         __bss_start = ABSOLUTE(.);
