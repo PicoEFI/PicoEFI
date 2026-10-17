@@ -34,10 +34,17 @@ uintptr_t __picoefi_relocate(
     bool has_table = false;
     bool has_size = false;
     bool has_entry_size = false;
+    bool has_relr_table = false;
+    bool has_relr_size = false;
+    bool has_relr_entry_size = false;
     Elf32_Addr table = 0;
     Elf32_Word size = 0;
     Elf32_Word entry_size = 0;
+    Elf32_Addr relr_table = 0;
+    Elf32_Word relr_size = 0;
+    Elf32_Word relr_entry_size = 0;
     Elf32_Word offset;
+    Elf32_Addr last = 0;
 
     for (; dynamic->d_tag != DT_NULL; dynamic++) {
         /* Read anew by every test, so that the tests cannot become a jump table. */
@@ -52,42 +59,100 @@ uintptr_t __picoefi_relocate(
         } else if (tag == DT_RELENT) {
             entry_size = dynamic->d_un.d_val;
             has_entry_size = true;
-        } else if (tag == DT_RELA || tag == DT_RELASZ || tag == DT_RELAENT || tag == DT_JMPREL ||
-                tag == DT_RELRSZ || tag == DT_RELR || tag == DT_RELRENT) {
+        } else if (tag == DT_RELR) {
+            relr_table = dynamic->d_un.d_ptr;
+            has_relr_table = true;
+        } else if (tag == DT_RELRSZ) {
+            relr_size = dynamic->d_un.d_val;
+            has_relr_size = true;
+        } else if (tag == DT_RELRENT) {
+            relr_entry_size = dynamic->d_un.d_val;
+            has_relr_entry_size = true;
+        } else if (tag == DT_RELA || tag == DT_RELASZ || tag == DT_RELAENT || tag == DT_JMPREL) {
             /* A table this does not apply: refuse the image rather than run it unrelocated. */
             return LOAD_ERROR;
         }
     }
 
-    if (!has_table && !has_size && !has_entry_size) {
-        return 0;
+    /* Either table may be left out, but not in part. */
+    if (has_table != has_size || has_table != has_entry_size ||
+            (has_table && entry_size < sizeof(Elf32_Rel))) {
+        return LOAD_ERROR;
     }
-    if (!has_table || !has_size || !has_entry_size || entry_size < sizeof(Elf32_Rel)) {
+    if (has_relr_table != has_relr_size || has_relr_table != has_relr_entry_size ||
+            (has_relr_table && relr_entry_size != sizeof(Elf32_Relr))) {
         return LOAD_ERROR;
     }
 
     /* Every entry is checked before any is applied, so that a refused image is left as it was. */
-    for (offset = 0; size - offset >= entry_size; offset += entry_size) {
-        const Elf32_Rel *entry = (const Elf32_Rel *)(image_base + table + offset);
-        Elf32_Word type = ELF32_R_TYPE(entry->r_info);
+    if (has_table) {
+        for (offset = 0; size - offset >= entry_size; offset += entry_size) {
+            const Elf32_Rel *entry = (const Elf32_Rel *)(image_base + table + offset);
+            Elf32_Word type = ELF32_R_TYPE(entry->r_info);
 
-        if (type == R_ARM_NONE) {
-            continue;
+            if (type == R_ARM_NONE) {
+                continue;
+            }
+            if (type != R_ARM_RELATIVE || entry->r_offset < HEADER_PAGE_SIZE) {
+                return LOAD_ERROR;
+            }
         }
-        if (type != R_ARM_RELATIVE || entry->r_offset < HEADER_PAGE_SIZE) {
+        /* A partial last entry, found without a division, which may be a library call. */
+        if (offset != size) {
             return LOAD_ERROR;
         }
     }
-    /* A partial last entry, found without a division, which may be a library call. */
-    if (offset != size) {
-        return LOAD_ERROR;
-    }
-    for (offset = 0; size - offset >= entry_size; offset += entry_size) {
-        const Elf32_Rel *entry = (const Elf32_Rel *)(image_base + table + offset);
-        struct unaligned_addr *target = (struct unaligned_addr *)(image_base + entry->r_offset);
+    /*
+     * An even RELR entry is the address of a word to relocate, and an odd one is a bitmap of the
+     * words after the last that an entry covered, bit n standing for the nth.
+     */
+    if (has_relr_table) {
+        for (offset = 0; relr_size - offset >= relr_entry_size; offset += relr_entry_size) {
+            Elf32_Relr entry = *(const Elf32_Relr *)(image_base + relr_table + offset);
 
-        if (ELF32_R_TYPE(entry->r_info) == R_ARM_RELATIVE) {
-            target->value += image_base;
+            if ((entry & 1) == 0) {
+                if (entry < HEADER_PAGE_SIZE) {
+                    return LOAD_ERROR;
+                }
+            } else if (offset == 0) {
+                /* A bitmap carries on from an address, so it cannot come first. */
+                return LOAD_ERROR;
+            }
+        }
+        if (offset != relr_size) {
+            return LOAD_ERROR;
+        }
+    }
+    if (has_table) {
+        for (offset = 0; size - offset >= entry_size; offset += entry_size) {
+            const Elf32_Rel *entry = (const Elf32_Rel *)(image_base + table + offset);
+            struct unaligned_addr *target = (struct unaligned_addr *)(image_base + entry->r_offset);
+
+            if (ELF32_R_TYPE(entry->r_info) == R_ARM_RELATIVE) {
+                target->value += image_base;
+            }
+        }
+    }
+    if (has_relr_table) {
+        for (offset = 0; relr_size - offset >= relr_entry_size; offset += relr_entry_size) {
+            Elf32_Relr entry = *(const Elf32_Relr *)(image_base + relr_table + offset);
+            unsigned int bit;
+
+            if ((entry & 1) == 0) {
+                struct unaligned_addr *target = (struct unaligned_addr *)(image_base + entry);
+
+                target->value += image_base;
+                last = entry;
+                continue;
+            }
+            for (bit = 1; bit < sizeof(entry) * 8; bit++) {
+                last += sizeof(Elf32_Addr);
+                if (((entry >> bit) & 1) != 0) {
+                    struct unaligned_addr *target = (struct unaligned_addr *)(image_base + last);
+
+                    target->value += image_base;
+                }
+            }
         }
     }
     return 0;

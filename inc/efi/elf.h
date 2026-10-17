@@ -48,6 +48,9 @@ typedef struct {
     Elf64_Sxword r_addend;
 } Elf64_Rela;
 
+typedef Elf32_Word Elf32_Relr;
+typedef Elf64_Xword Elf64_Relr;
+
 #define DT_NULL 0
 #define DT_RELA 7
 #define DT_RELASZ 8

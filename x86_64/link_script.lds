@@ -65,6 +65,10 @@ SECTIONS
         *(.rela.*)
     } :rodata
 
+    .relr.dyn : {
+        *(.relr.dyn)
+    } :rodata
+
     /* A page even when empty, as some loaders refuse an empty section. Not
        with MAX or ?:, which gold miscomputes. */
     . = ALIGN(0x1000);
