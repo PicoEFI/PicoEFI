@@ -98,6 +98,16 @@ SECTIONS
         __init_array_end = .;
     } :data
 
+    /* The constructors Clang 10 and older emit for x86, which the program runs
+       backwards: their names count down from 65535 by priority, so sorted by
+       name they run in priority order. */
+    .ctors : {
+        __ctors_start = .;
+        KEEP(*(.ctors))
+        KEEP(*(SORT(.ctors.*)))
+        __ctors_end = .;
+    } :data
+
     .data : {
         *(.data .data.*)
     } :data
