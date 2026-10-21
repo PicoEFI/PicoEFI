@@ -224,7 +224,7 @@ _start:
     movl %eax, (%esp)
     leal _DYNAMIC - .Lpc(%ebx), %eax
     movl %eax, 4(%esp)
-    call __picoefi_relocate
+    call picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     testl %eax, %eax
     jnz .Lreturn

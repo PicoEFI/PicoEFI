@@ -230,7 +230,7 @@ _start:
 .Ldynamic_pc:
     pcaddu12i $a1, %pcadd_hi20(_DYNAMIC)
     addi.w $a1, $a1, %pcadd_lo12(.Ldynamic_pc)
-    bl __picoefi_relocate
+    bl picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     bne $a0, $zero, .Lreturn
 

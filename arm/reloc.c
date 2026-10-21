@@ -17,7 +17,7 @@ struct unaligned_addr {
 } __attribute__((__packed__));
 
 /* The convention _start calls this with, whatever the user's compiler flags. */
-uintptr_t __picoefi_relocate(
+uintptr_t picoefi_relocate(
     uintptr_t image_base,
     const Elf32_Dyn *dynamic
 );
@@ -27,7 +27,7 @@ uintptr_t __picoefi_relocate(
  * pointers, no initialised pointers, no calls, and no tables, which compilers make for a switch
  * or for a chain of comparisons of one value.
  */
-uintptr_t __picoefi_relocate(
+uintptr_t picoefi_relocate(
     uintptr_t image_base,
     const Elf32_Dyn *dynamic
 ) {

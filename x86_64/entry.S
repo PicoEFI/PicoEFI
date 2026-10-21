@@ -232,7 +232,7 @@ _start:
     /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
     leaq picoefi_image_base(%rip), %rcx
     leaq _DYNAMIC(%rip), %rdx
-    call __picoefi_relocate
+    call picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     testq %rax, %rax
     jnz .Lreturn

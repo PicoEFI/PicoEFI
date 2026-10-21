@@ -220,7 +220,7 @@ _start:
     add x0, x0, :lo12:picoefi_image_base
     adrp x1, _DYNAMIC
     add x1, x1, :lo12:_DYNAMIC
-    bl __picoefi_relocate
+    bl picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     cbnz x0, .Lreturn
 

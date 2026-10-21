@@ -228,7 +228,7 @@ _start:
     ldr r1, .Ldynamic_offset
 .Ldynamic_pc:
     add r1, pc, r1
-    bl __picoefi_relocate
+    bl picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     cmp r0, #0
     bne .Lreturn
