@@ -72,12 +72,12 @@
     .short 0x20b /* Magic: PE32+ */
     .byte 2 /* MajorLinkerVersion */
     .byte 38 /* MinorLinkerVersion */
-    .long __text_size - .Lheader /* SizeOfCode */
+    .long picoefi_text_size - .Lheader /* SizeOfCode */
     /* SizeOfInitializedData: the file data of .reloc, .rdata and .data. */
-    .long __initialized_data_size - .Lheader
-    .long __bss_size - .Lheader /* SizeOfUninitializedData */
+    .long picoefi_initialized_data_size - .Lheader
+    .long picoefi_bss_size - .Lheader /* SizeOfUninitializedData */
     .long _start - .Lheader /* AddressOfEntryPoint */
-    .long __text_start - .Lheader /* BaseOfCode */
+    .long picoefi_text_start - .Lheader /* BaseOfCode */
     .quad 0 /* ImageBase */
     .long 0x1000 /* SectionAlignment */
     .long 0x1000 /* FileAlignment */
@@ -88,8 +88,8 @@
     .short 0 /* MajorSubsystemVersion */
     .short 0 /* MinorSubsystemVersion */
     .long 0 /* Win32VersionValue */
-    .long __image_size - .Lheader /* SizeOfImage */
-    .long __text_start - .Lheader /* SizeOfHeaders */
+    .long picoefi_image_size - .Lheader /* SizeOfImage */
+    .long picoefi_text_start - .Lheader /* SizeOfHeaders */
     .long 0 /* CheckSum */
     .short EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION /* Subsystem */
     .short IMAGE_DLLCHARACTERISTICS_NX_COMPAT /* DllCharacteristics */
@@ -107,7 +107,7 @@
     .quad 0 /* Exception Table */
     .quad 0 /* Certificate Table */
     /*
-     * Base Relocation Table. Referring to the block, not to __reloc_start, is what keeps
+     * Base Relocation Table. Referring to the block, not to picoefi_reloc_start, is what keeps
      * .dummy_reloc from --gc-sections.
      */
     .long .Lbase_relocations - .Lheader
@@ -115,10 +115,10 @@
 
 .Lsections:
     .ascii ".text\0\0\0"
-    .long __text_size - .Lheader /* VirtualSize */
-    .long __text_start - .Lheader /* VirtualAddress */
-    .long __text_size - .Lheader /* SizeOfRawData */
-    .long __text_start - .Lheader /* PointerToRawData */
+    .long picoefi_text_size - .Lheader /* VirtualSize */
+    .long picoefi_text_start - .Lheader /* VirtualAddress */
+    .long picoefi_text_size - .Lheader /* SizeOfRawData */
+    .long picoefi_text_start - .Lheader /* PointerToRawData */
     .long 0 /* PointerToRelocations */
     .long 0 /* PointerToLinenumbers */
     .short 0 /* NumberOfRelocations */
@@ -128,9 +128,9 @@
     .ascii ".reloc\0\0"
     /* VirtualSize: exactly the base relocation data; SizeOfRawData is its whole page. */
     .long .Lbase_relocations_end - .Lbase_relocations
-    .long __reloc_start - .Lheader /* VirtualAddress */
-    .long __reloc_size - .Lheader /* SizeOfRawData */
-    .long __reloc_start - .Lheader /* PointerToRawData */
+    .long picoefi_reloc_start - .Lheader /* VirtualAddress */
+    .long picoefi_reloc_size - .Lheader /* SizeOfRawData */
+    .long picoefi_reloc_start - .Lheader /* PointerToRawData */
     .long 0 /* PointerToRelocations */
     .long 0 /* PointerToLinenumbers */
     .short 0 /* NumberOfRelocations */
@@ -138,10 +138,10 @@
     .long IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ
 
     .ascii ".rdata\0\0"
-    .long __rodata_size - .Lheader /* VirtualSize */
-    .long __rodata_start - .Lheader /* VirtualAddress */
-    .long __rodata_size - .Lheader /* SizeOfRawData */
-    .long __rodata_start - .Lheader /* PointerToRawData */
+    .long picoefi_rodata_size - .Lheader /* VirtualSize */
+    .long picoefi_rodata_start - .Lheader /* VirtualAddress */
+    .long picoefi_rodata_size - .Lheader /* SizeOfRawData */
+    .long picoefi_rodata_start - .Lheader /* PointerToRawData */
     .long 0 /* PointerToRelocations */
     .long 0 /* PointerToLinenumbers */
     .short 0 /* NumberOfRelocations */
@@ -149,10 +149,10 @@
     .long IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ
 
     .ascii ".data\0\0\0"
-    .long __data_size - .Lheader /* VirtualSize */
-    .long __data_start - .Lheader /* VirtualAddress */
-    .long __data_rawsize - .Lheader /* SizeOfRawData */
-    .long __data_start - .Lheader /* PointerToRawData */
+    .long picoefi_data_size - .Lheader /* VirtualSize */
+    .long picoefi_data_start - .Lheader /* VirtualAddress */
+    .long picoefi_data_rawsize - .Lheader /* SizeOfRawData */
+    .long picoefi_data_start - .Lheader /* PointerToRawData */
     .long 0 /* PointerToRelocations */
     .long 0 /* PointerToLinenumbers */
     .short 0 /* NumberOfRelocations */
@@ -209,8 +209,8 @@ _start:
     movq %rdx, %rsi
 
     /* Zero .bss: firmware need not zero a section beyond its file data. */
-    leaq __bss_start(%rip), %rax
-    leaq __bss_end(%rip), %rcx
+    leaq picoefi_bss_start(%rip), %rax
+    leaq picoefi_bss_end(%rip), %rcx
 .Lzero:
     cmpq %rcx, %rax
     jae .Lzeroed
@@ -230,7 +230,7 @@ _start:
 .Lzeroed:
 
     /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
-    leaq __image_base(%rip), %rcx
+    leaq picoefi_image_base(%rip), %rcx
     leaq _DYNAMIC(%rip), %rdx
     call __picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */

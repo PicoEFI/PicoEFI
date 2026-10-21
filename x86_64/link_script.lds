@@ -12,32 +12,32 @@ PHDRS
 SECTIONS
 {
     . = 0;
-    __slide = .;
-    __image_base = ABSOLUTE(.);
-    __image_size = ABSOLUTE(__image_end - __image_base);
+    picoefi_slide = .;
+    picoefi_image_base = ABSOLUTE(.);
+    picoefi_image_size = ABSOLUTE(picoefi_image_end - picoefi_image_base);
 
     .text : {
         KEEP(*(.pe_header))
 
         . = ALIGN(0x1000);
 
-        __text_start = ABSOLUTE(.);
+        picoefi_text_start = ABSOLUTE(.);
         *(.text .text.*)
     } :text
 
     . = ALIGN(0x1000);
-    __text_end = ABSOLUTE(.);
-    __text_size = ABSOLUTE(__text_end - __text_start);
+    picoefi_text_end = ABSOLUTE(.);
+    picoefi_text_size = ABSOLUTE(picoefi_text_end - picoefi_text_start);
 
     .rodata : {
-        __reloc_start = ABSOLUTE(.);
+        picoefi_reloc_start = ABSOLUTE(.);
         *(.dummy_reloc)
 
         . = ALIGN(0x1000);
-        __reloc_end = ABSOLUTE(.);
-        __reloc_size = ABSOLUTE(__reloc_end - __reloc_start);
+        picoefi_reloc_end = ABSOLUTE(.);
+        picoefi_reloc_size = ABSOLUTE(picoefi_reloc_end - picoefi_reloc_start);
 
-        __rodata_start = ABSOLUTE(.);
+        picoefi_rodata_start = ABSOLUTE(.);
         *(.rodata .rodata.*)
     } :rodata
 
@@ -72,12 +72,12 @@ SECTIONS
     /* A page even when empty, as some loaders refuse an empty section. Not
        with MAX or ?:, which gold miscomputes. */
     . = ALIGN(0x1000);
-    . += (. == __rodata_start) * 0x1000;
-    __rodata_end = ABSOLUTE(.);
-    __rodata_size = ABSOLUTE(__rodata_end - __rodata_start);
+    . += (. == picoefi_rodata_start) * 0x1000;
+    picoefi_rodata_end = ABSOLUTE(.);
+    picoefi_rodata_size = ABSOLUTE(picoefi_rodata_end - picoefi_rodata_start);
 
     .dynamic : {
-        __data_start = ABSOLUTE(.);
+        picoefi_data_start = ABSOLUTE(.);
         *(.dynamic)
     } :data :dynamic
 
@@ -108,28 +108,30 @@ SECTIONS
     .pad : {
         BYTE(0)
         . = ALIGN(0x1000);
-        __data_rawend = ABSOLUTE(.);
+        picoefi_data_rawend = ABSOLUTE(.);
     } :data
-    __data_rawsize = ABSOLUTE(__data_rawend - __data_start);
-    __initialized_data_size = ABSOLUTE(__reloc_size + __rodata_size + __data_rawsize);
+    picoefi_data_rawsize = ABSOLUTE(picoefi_data_rawend - picoefi_data_start);
+    picoefi_initialized_data_size = ABSOLUTE(picoefi_reloc_size +
+        picoefi_rodata_size + picoefi_data_rawsize);
 
     /* .bss must come last: nothing with file contents may follow it. */
     .bss : {
-        __bss_start = ABSOLUTE(.);
+        picoefi_bss_start = ABSOLUTE(.);
         *(.bss .bss.*)
         *(COMMON)
     } :data
 
     /* Anything between the padding and .bss would be left out of the file. */
-    ASSERT(__bss_start == __data_rawend, ".bss does not follow the padding")
+    ASSERT(picoefi_bss_start == picoefi_data_rawend,
+        ".bss does not follow the padding")
 
-    __bss_end = ABSOLUTE(ALIGN(0x1000));
-    __bss_size = ABSOLUTE(__bss_end - __bss_start);
+    picoefi_bss_end = ABSOLUTE(ALIGN(0x1000));
+    picoefi_bss_size = ABSOLUTE(picoefi_bss_end - picoefi_bss_start);
 
-    __data_end = ABSOLUTE(ALIGN(0x1000));
-    __data_size = ABSOLUTE(__data_end - __data_start);
+    picoefi_data_end = ABSOLUTE(ALIGN(0x1000));
+    picoefi_data_size = ABSOLUTE(picoefi_data_end - picoefi_data_start);
 
-    __image_end = ABSOLUTE(ALIGN(0x1000));
+    picoefi_image_end = ABSOLUTE(ALIGN(0x1000));
 
     /DISCARD/ : {
         *(.eh_frame*)
