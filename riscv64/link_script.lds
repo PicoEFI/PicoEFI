@@ -98,12 +98,18 @@ SECTIONS
         *(.sdata .sdata.*)
     } :data
 
-    /* .bss must come last: nothing with file contents may follow it. Anchor the
-       raw end to __bss_start so linker-placed orphans cannot fall above it. */
-    __data_rawend = ABSOLUTE(ALIGN(__bss_start, 0x1000));
+    /* Pad the file to a page, after any orphans. A dot assignment alone
+       writes nothing in GNU ld, and an input section draws orphans after it
+       in LLD. */
+    .pad : {
+        BYTE(0)
+        . = ALIGN(0x1000);
+        __data_rawend = ABSOLUTE(.);
+    } :data
     __data_rawsize = ABSOLUTE(__data_rawend - __data_start);
     __initialized_data_size = ABSOLUTE(__reloc_size + __rodata_size + __data_rawsize);
 
+    /* .bss must come last: nothing with file contents may follow it. */
     .bss : {
         __bss_start = ABSOLUTE(.);
         *(.bss .bss.*)
@@ -111,9 +117,8 @@ SECTIONS
         *(COMMON)
     } :data
 
-    /* The image is padded to a 4096 multiple of the last byte with file
-       contents, so a coarser .bss would push __data_rawend past the file. */
-    ASSERT(ALIGNOF(.bss) <= 0x1000, ".bss alignment exceeds 4096")
+    /* Anything between the padding and .bss would be left out of the file. */
+    ASSERT(__bss_start == __data_rawend, ".bss does not follow the padding")
 
     __bss_end = ABSOLUTE(ALIGN(0x1000));
     __bss_size = ABSOLUTE(__bss_end - __bss_start);
