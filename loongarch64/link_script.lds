@@ -83,10 +83,17 @@ SECTIONS
         *(.got.plt)
     } :data
 
-    /* The global constructors, which the program calls itself. */
+    /* The global constructors, which the program calls itself. GNU ld before
+       2.22 and gold before 2.27 cannot sort them by priority, so they are
+       sorted by name a width at a time, as Clang does not pad priorities. */
     .init_array : {
         __init_array_start = .;
-        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
+        KEEP(*(SORT(.init_array.?)))
+        KEEP(*(SORT(.init_array.??)))
+        KEEP(*(SORT(.init_array.???)))
+        KEEP(*(SORT(.init_array.????)))
+        KEEP(*(SORT(.init_array.?????)))
+        KEEP(*(.init_array.*))
         KEEP(*(.init_array))
         __init_array_end = .;
     } :data
