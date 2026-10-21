@@ -77,7 +77,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
 
     /* Either table may be left out, but not in part. */
     if (has_table != has_size || has_table != has_entry_size ||
-            (has_table && entry_size < sizeof(Elf64_Rela))) {
+            (has_table && entry_size != sizeof(Elf64_Rela))) {
         return LOAD_ERROR;
     }
     if (has_relr_table != has_relr_size || has_relr_table != has_relr_entry_size ||
