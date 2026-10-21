@@ -229,9 +229,11 @@ _start:
     jmp .Lzero
 .Lzeroed:
 
-    /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
+    /* Nothing is relocated yet, so the arguments are reached PC-relatively. */
     leaq picoefi_image_base(%rip), %rcx
     leaq _DYNAMIC(%rip), %rdx
+    leaq picoefi_data_start(%rip), %r8
+    leaq picoefi_data_end(%rip), %r9
     call picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     testq %rax, %rax

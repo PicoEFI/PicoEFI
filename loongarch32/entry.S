@@ -223,13 +223,19 @@ _start:
     b .Lzero
 .Lzeroed:
 
-    /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
+    /* Nothing is relocated yet, so the arguments are reached PC-relatively. */
 .Limage_base_pc:
     pcaddu12i $a0, %pcadd_hi20(picoefi_image_base)
     addi.w $a0, $a0, %pcadd_lo12(.Limage_base_pc)
 .Ldynamic_pc:
     pcaddu12i $a1, %pcadd_hi20(_DYNAMIC)
     addi.w $a1, $a1, %pcadd_lo12(.Ldynamic_pc)
+.Ldata_start_pc:
+    pcaddu12i $a2, %pcadd_hi20(picoefi_data_start)
+    addi.w $a2, $a2, %pcadd_lo12(.Ldata_start_pc)
+.Ldata_end_pc:
+    pcaddu12i $a3, %pcadd_hi20(picoefi_data_end)
+    addi.w $a3, $a3, %pcadd_lo12(.Ldata_end_pc)
     bl picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     bne $a0, $zero, .Lreturn

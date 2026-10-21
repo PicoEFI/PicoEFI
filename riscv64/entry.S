@@ -221,9 +221,11 @@ _start:
     j .Lzero
 .Lzeroed:
 
-    /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
+    /* Nothing is relocated yet, so the arguments are reached PC-relatively. */
     lla a0, picoefi_image_base
     lla a1, _DYNAMIC
+    lla a2, picoefi_data_start
+    lla a3, picoefi_data_end
     call picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     bnez a0, .Lreturn

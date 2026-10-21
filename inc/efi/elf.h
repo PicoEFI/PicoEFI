@@ -52,18 +52,42 @@ typedef Elf32_Word Elf32_Relr;
 typedef Elf64_Xword Elf64_Relr;
 
 #define DT_NULL 0
+#define DT_PLTGOT 3
+#define DT_HASH 4
+#define DT_STRTAB 5
+#define DT_SYMTAB 6
 #define DT_RELA 7
 #define DT_RELASZ 8
 #define DT_RELAENT 9
+#define DT_STRSZ 10
+#define DT_SYMENT 11
+#define DT_INIT 12
+#define DT_FINI 13
+#define DT_SYMBOLIC 16
 #define DT_REL 17
 #define DT_RELSZ 18
 #define DT_RELENT 19
+#define DT_DEBUG 21
 #define DT_JMPREL 23
+#define DT_BIND_NOW 24
+#define DT_INIT_ARRAY 25
+#define DT_FINI_ARRAY 26
+#define DT_INIT_ARRAYSZ 27
+#define DT_FINI_ARRAYSZ 28
+#define DT_FLAGS 30
+#define DT_PREINIT_ARRAY 32
+#define DT_PREINIT_ARRAYSZ 33
 #define DT_RELRSZ 35
 #define DT_RELR 36
 #define DT_RELRENT 37
+#define DT_GNU_HASH 0x6ffffef5
+#define DT_RELACOUNT 0x6ffffff9
+#define DT_RELCOUNT 0x6ffffffa
+#define DT_FLAGS_1 0x6ffffffb
 
+#define ELF32_R_SYM(i) ((i) >> 8)
 #define ELF32_R_TYPE(i) ((unsigned char)(i))
+#define ELF64_R_SYM(i) ((i) >> 32)
 #define ELF64_R_TYPE(i) ((i) & 0xffffffffL)
 
 #define R_386_NONE 0

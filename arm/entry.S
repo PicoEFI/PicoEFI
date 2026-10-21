@@ -221,13 +221,19 @@ _start:
     b .Lzero
 .Lzeroed:
 
-    /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
+    /* Nothing is relocated yet, so the arguments are reached PC-relatively. */
     ldr r0, .Limage_base_offset
 .Limage_base_pc:
     add r0, pc, r0
     ldr r1, .Ldynamic_offset
 .Ldynamic_pc:
     add r1, pc, r1
+    ldr r2, .Ldata_start_offset
+.Ldata_start_pc:
+    add r2, pc, r2
+    ldr r3, .Ldata_end_offset
+.Ldata_end_pc:
+    add r3, pc, r3
     bl picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     cmp r0, #0
@@ -251,4 +257,8 @@ _start:
     .long picoefi_image_base - (.Limage_base_pc + 8)
 .Ldynamic_offset:
     .long _DYNAMIC - (.Ldynamic_pc + 8)
+.Ldata_start_offset:
+    .long picoefi_data_start - (.Ldata_start_pc + 8)
+.Ldata_end_offset:
+    .long picoefi_data_end - (.Ldata_end_pc + 8)
     .size _start, . - _start

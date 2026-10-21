@@ -215,11 +215,15 @@ _start:
     b .Lzero
 .Lzeroed:
 
-    /* Nothing is relocated yet: the image base and _DYNAMIC are reached PC-relatively. */
+    /* Nothing is relocated yet, so the arguments are reached PC-relatively. */
     adrp x0, picoefi_image_base
     add x0, x0, :lo12:picoefi_image_base
     adrp x1, _DYNAMIC
     add x1, x1, :lo12:_DYNAMIC
+    adrp x2, picoefi_data_start
+    add x2, x2, :lo12:picoefi_data_start
+    adrp x3, picoefi_data_end
+    add x3, x3, :lo12:picoefi_data_end
     bl picoefi_relocate
     /* An image that cannot be relocated must not run: return the status. */
     cbnz x0, .Lreturn
