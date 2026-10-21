@@ -10,11 +10,12 @@
 
 /*
  * A relocation target need not be aligned (a pointer in a packed structure), and not every
- * processor can store a word at an unaligned address.
+ * processor can store a word at an unaligned address. It may hold an object of any type, hence
+ * __may_alias__.
  */
 struct unaligned_addr {
     Elf32_Addr value;
-} __attribute__((__packed__));
+} __attribute__((__packed__, __may_alias__));
 
 /* The convention _start calls this with, whatever the user's compiler flags. */
 uintptr_t picoefi_relocate(
