@@ -187,6 +187,25 @@ EfiLoadSlide:
 .Ldummy:
     .long 0
 
+    /*
+     * The bounds of the constructors, for the program to call them: labels, as EfiLoadSlide is, in
+     * empty sections that the link script places first and last in .init_array and .ctors.
+     */
+    .globl __init_array_start, __init_array_end, __ctors_start, __ctors_end
+    .hidden __init_array_start, __init_array_end, __ctors_start, __ctors_end
+
+    .section .picoefi_init_array_start, "aw", @init_array
+__init_array_start:
+
+    .section .picoefi_init_array_end, "aw", @init_array
+__init_array_end:
+
+    .section .picoefi_ctors_start, "aw", @progbits
+__ctors_start:
+
+    .section .picoefi_ctors_end, "aw", @progbits
+__ctors_end:
+
     .text
     .globl _start
     .type _start, %function
