@@ -26,6 +26,13 @@
  * whereas the plain symbol, an absolute relocation, is rejected or made dynamic in a PIE.
  */
     .section .pe_header, "ax"
+    /*
+     * Where the image was loaded, for the program. A label, as gold leaves stored pointers to a
+     * link script symbol unrelocated, and older GNU ld gives them symbolic relocations.
+     */
+    .globl EfiLoadSlide
+    .hidden EfiLoadSlide
+EfiLoadSlide:
 .Lheader:
     .ascii "MZ" /* e_magic */
     .short 0x0090 /* e_cblp */

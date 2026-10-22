@@ -12,7 +12,6 @@ PHDRS
 SECTIONS
 {
     . = 0;
-    picoefi_slide = .;
     picoefi_image_base = ABSOLUTE(.);
     picoefi_image_size = ABSOLUTE(picoefi_image_end - picoefi_image_base);
 

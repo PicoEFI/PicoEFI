@@ -62,4 +62,18 @@
 #include "efi/efishell.h"
 #include "efi/efiriscvboot.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ * Where the image was loaded. As it is linked at address 0, this is also how far everything in it
+ * slid: subtracting it from an address in the image gives the one it was linked at.
+ */
+extern EFI_CONST EFI_UINT8 EfiLoadSlide[];
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif
