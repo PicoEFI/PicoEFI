@@ -188,8 +188,8 @@ EfiLoadSlide:
     .long 0
 
     /*
-     * The bounds of the constructors, for the program to call them: labels, as EfiLoadSlide is, in
-     * empty sections that the link script places first and last in .init_array and .ctors.
+     * The constructors' bounds, for the program to call them: labels, as EfiLoadSlide is, in empty
+     * sections the link script places first and last in .picoefi_init_array and .picoefi_ctors.
      */
     .globl __init_array_start, __init_array_end, __ctors_start, __ctors_end
     .hidden __init_array_start, __init_array_end, __ctors_start, __ctors_end

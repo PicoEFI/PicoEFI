@@ -90,10 +90,11 @@ SECTIONS
     } :data
 
     /* The global constructors, which the program calls itself, between the
-       bounds that entry.S places first and last. GNU ld before 2.22 and gold
-       before 2.27 cannot sort them by priority, so they are sorted by name a
-       width at a time, as Clang does not pad priorities. */
-    .init_array : {
+       bounds that entry.S places first and last. Not named .init_array, as
+       GNU ld warns when a section of that name is empty. GNU ld before 2.22
+       and gold before 2.27 cannot sort them by priority, so they are sorted
+       by name a width at a time, as Clang does not pad priorities. */
+    .picoefi_init_array : {
         KEEP(*(.picoefi_init_array_start))
         KEEP(*(SORT(.init_array.?)))
         KEEP(*(SORT(.init_array.??)))
@@ -108,7 +109,7 @@ SECTIONS
     /* The constructors Clang 10 and older emit for x86, which the program runs
        backwards: their names count down from 65535 by priority, so sorted by
        name they run in priority order. */
-    .ctors : {
+    .picoefi_ctors : {
         KEEP(*(.picoefi_ctors_start))
         KEEP(*(.ctors))
         KEEP(*(SORT(.ctors.*)))
