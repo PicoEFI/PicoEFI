@@ -72,6 +72,12 @@ extern "C" {
  */
 extern EFI_CONST EFI_UINT8 EfiLoadSlide[];
 
+/*
+ * The size of the image in memory, .bss included: what the firmware allocated at EfiLoadSlide, a
+ * whole number of pages.
+ */
+extern EFI_CONST EFI_UINT32 EfiImageSize;
+
 #ifdef __cplusplus
 }
 #endif

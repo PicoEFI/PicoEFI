@@ -98,6 +98,13 @@ EfiLoadSlide:
     .short 0 /* MajorSubsystemVersion */
     .short 0 /* MinorSubsystemVersion */
     .long 0 /* Win32VersionValue */
+    /*
+     * The image's size in memory, for the program to read from the header, as linkers disagree on
+     * how to relocate a link script symbol.
+     */
+    .globl EfiImageSize
+    .hidden EfiImageSize
+EfiImageSize:
     .long picoefi_image_size - .Lheader /* SizeOfImage */
     .long picoefi_text_start - .Lheader /* SizeOfHeaders */
     .long 0 /* CheckSum */
