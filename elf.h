@@ -77,7 +77,7 @@ struct elf64_rela {
 #define ELF32_R_SYM(i) ((i) >> 8)
 #define ELF32_R_TYPE(i) ((unsigned char)(i))
 #define ELF64_R_SYM(i) ((i) >> 32)
-#define ELF64_R_TYPE(i) ((i) & 0xffffffffL)
+#define ELF64_R_TYPE(i) ((i) & (uint64_t)0xffffffff)
 
 #define R_386_NONE 0
 #define R_386_RELATIVE 8

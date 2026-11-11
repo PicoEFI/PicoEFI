@@ -1,5 +1,10 @@
+#ifdef __cplusplus
+#   error "This file is C, not C++."
+#endif
+
 #include <stdbool.h>
 #include <stdint.h>
+
 #include "../elf.h"
 
 // EFI_LOAD_ERROR, the status _start returns to the firmware unchanged, as it
@@ -52,15 +57,15 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
 
     // _start passes the bounds of the data, which is all that relocations may
     // change.
-    if (data_start < image_base || data_end < data_start || (uintptr_t)dynamic < data_start ||
-            (uintptr_t)dynamic > data_end ||
-            ((uintptr_t)dynamic & (__alignof__(struct elf64_dyn) - 1)) != 0) {
+    if (data_start < image_base || data_end < data_start || (uintptr_t)dynamic < data_start
+     || (uintptr_t)dynamic > data_end
+     || ((uintptr_t)dynamic & (__alignof__(struct elf64_dyn) - 1)) != 0) {
         return LOAD_ERROR;
     }
     data_lo = data_start - image_base;
     data_hi = data_end - image_base;
 
-    for (;; dynamic++) {
+    for (; ; dynamic++) {
         // Read anew by every test, so that the tests cannot become a jump
         // table.
         volatile int64_t tag;
@@ -91,12 +96,12 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
         } else if (tag == DT_RELRENT && !has_relr_entry_size) {
             relr_entry_size = dynamic->d_un.d_val;
             has_relr_entry_size = true;
-        } else if (tag != DT_RELACOUNT && tag != DT_HASH && tag != DT_GNU_HASH &&
-                tag != DT_STRTAB && tag != DT_SYMTAB && tag != DT_STRSZ && tag != DT_SYMENT &&
-                tag != DT_PLTGOT && tag != DT_DEBUG && tag != DT_SYMBOLIC && tag != DT_BIND_NOW &&
-                tag != DT_FLAGS && tag != DT_FLAGS_1 && tag != DT_INIT && tag != DT_FINI &&
-                tag != DT_INIT_ARRAY && tag != DT_INIT_ARRAYSZ && tag != DT_FINI_ARRAY &&
-                tag != DT_FINI_ARRAYSZ && tag != DT_PREINIT_ARRAY && tag != DT_PREINIT_ARRAYSZ) {
+        } else if (tag != DT_RELACOUNT && tag != DT_HASH && tag != DT_GNU_HASH && tag != DT_STRTAB
+                && tag != DT_SYMTAB && tag != DT_STRSZ && tag != DT_SYMENT && tag != DT_PLTGOT
+                && tag != DT_DEBUG && tag != DT_SYMBOLIC && tag != DT_BIND_NOW && tag != DT_FLAGS
+                && tag != DT_FLAGS_1 && tag != DT_INIT && tag != DT_FINI && tag != DT_INIT_ARRAY
+                && tag != DT_INIT_ARRAYSZ && tag != DT_FINI_ARRAY && tag != DT_FINI_ARRAYSZ
+                && tag != DT_PREINIT_ARRAY && tag != DT_PREINIT_ARRAYSZ) {
             // Any other tag, or a table given twice, may mean relocations not
             // applied here.
             return LOAD_ERROR;
@@ -105,16 +110,17 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
 
     // Either table may be left out, but not in part, and must lie aligned
     // before the data.
-    if (has_table != has_size || has_table != has_entry_size ||
-            (has_table && (entry_size != sizeof(struct elf64_rela) || size > data_lo ||
-            table > data_lo - size ||
-            ((image_base + table) & (__alignof__(struct elf64_rela) - 1)) != 0))) {
+    if (has_table != has_size || has_table != has_entry_size
+     || (has_table
+      && (entry_size != sizeof(struct elf64_rela) || size > data_lo || table > data_lo - size
+       || ((image_base + table) & (__alignof__(struct elf64_rela) - 1)) != 0))) {
         return LOAD_ERROR;
     }
-    if (has_relr_table != has_relr_size || has_relr_table != has_relr_entry_size ||
-            (has_relr_table && (relr_entry_size != sizeof(uint64_t) || relr_size > data_lo ||
-            relr_table > data_lo - relr_size ||
-            ((image_base + relr_table) & (__alignof__(uint64_t) - 1)) != 0))) {
+    if (has_relr_table != has_relr_size || has_relr_table != has_relr_entry_size
+     || (has_relr_table
+      && (relr_entry_size != sizeof(uint64_t) || relr_size > data_lo
+       || relr_table > data_lo - relr_size
+       || ((image_base + relr_table) & (__alignof__(uint64_t) - 1)) != 0))) {
         return LOAD_ERROR;
     }
 
@@ -123,7 +129,8 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
     if (has_table) {
         next = data_lo;
         for (offset = 0; size - offset >= entry_size; offset += entry_size) {
-            const struct elf64_rela *entry = (const struct elf64_rela *)(image_base + table + offset);
+            const struct elf64_rela *entry = (const struct elf64_rela *)(image_base + table
+                                                                       + offset);
             uint64_t type = ELF64_R_TYPE(entry->r_info);
 
             if (type == R_X86_64_NONE) {
@@ -131,8 +138,8 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
             }
             // Relative only, each in the data and after the last, as linkers
             // sort them.
-            if (type != R_X86_64_RELATIVE || ELF64_R_SYM(entry->r_info) != 0 ||
-                    entry->r_offset < next || entry->r_offset > data_hi - sizeof(uint64_t)) {
+            if (type != R_X86_64_RELATIVE || ELF64_R_SYM(entry->r_info) != 0
+             || entry->r_offset < next || entry->r_offset > data_hi - sizeof(uint64_t)) {
                 return LOAD_ERROR;
             }
             next = entry->r_offset + sizeof(uint64_t);
@@ -167,7 +174,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
                 }
                 word = last + sizeof(uint64_t);
                 bits = entry >> 1;
-                last += (sizeof(entry) * 8 - 1) * sizeof(uint64_t);
+                last += (sizeof(uint64_t) * 8 - 1) * sizeof(uint64_t);
             }
             for (; bits != 0; bits >>= 1, word += sizeof(uint64_t)) {
                 if ((bits & 1) == 0) {
@@ -178,12 +185,12 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
                 }
                 next = word + sizeof(uint64_t);
                 for (; has_table && size - other_offset >= entry_size;
-                        other_offset += entry_size) {
-                    const struct elf64_rela *other =
-                        (const struct elf64_rela *)(image_base + table + other_offset);
+                     other_offset += entry_size) {
+                    const struct elf64_rela *other = (const struct elf64_rela *)(image_base + table
+                                                                               + other_offset);
 
-                    if (ELF64_R_TYPE(other->r_info) != R_X86_64_NONE &&
-                            other->r_offset + sizeof(uint64_t) > word) {
+                    if (ELF64_R_TYPE(other->r_info) != R_X86_64_NONE
+                     && other->r_offset + sizeof(uint64_t) > word) {
                         if (other->r_offset < next) {
                             return LOAD_ERROR;
                         }
@@ -199,11 +206,12 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
 
     if (has_table) {
         for (offset = 0; size - offset >= entry_size; offset += entry_size) {
-            const struct elf64_rela *entry = (const struct elf64_rela *)(image_base + table + offset);
+            const struct elf64_rela *entry = (const struct elf64_rela *)(image_base + table
+                                                                       + offset);
 
             if (ELF64_R_TYPE(entry->r_info) == R_X86_64_RELATIVE) {
-                struct unaligned_addr *target =
-                    (struct unaligned_addr *)(image_base + entry->r_offset);
+                struct unaligned_addr *target = (struct unaligned_addr *)(image_base
+                                                                        + entry->r_offset);
 
                 target->value = image_base + (uintptr_t)entry->r_addend;
             }
@@ -222,7 +230,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
             } else {
                 word = last + sizeof(uint64_t);
                 bits = entry >> 1;
-                last += (sizeof(entry) * 8 - 1) * sizeof(uint64_t);
+                last += (sizeof(uint64_t) * 8 - 1) * sizeof(uint64_t);
             }
             for (; bits != 0; bits >>= 1, word += sizeof(uint64_t)) {
                 if ((bits & 1) != 0) {
