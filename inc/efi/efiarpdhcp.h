@@ -151,11 +151,11 @@ struct efi_dhcp4_header {
 struct efi_dhcp4_packet {
     uint32_t size;
     uint32_t length;
-    struct __attribute__((__packed__)) {
+    struct {
         struct efi_dhcp4_header header;
         uint32_t magik;
         uint8_t option[1];
-    } dhcp4;
+    } __attribute__((__packed__)) dhcp4;
 } __attribute__((__packed__));
 
 struct efi_dhcp4_packet_option {
@@ -325,10 +325,10 @@ struct efi_dhcp6_header {
 struct efi_dhcp6_packet {
     uint32_t size;
     uint32_t length;
-    struct __attribute__((__packed__)) {
+    struct {
         struct efi_dhcp6_header header;
         uint8_t option[1];
-    } dhcp6;
+    } __attribute__((__packed__)) dhcp6;
 } __attribute__((__packed__));
 
 struct efi_dhcp6_ia {

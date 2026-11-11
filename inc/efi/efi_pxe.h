@@ -365,12 +365,12 @@ union efi_pxe_ip_addr {
 } __attribute__((__packed__));
 
 union efi_pxe_device {
-    struct __attribute__((__packed__)) {
+    struct {
         uint32_t bus_type;
         uint16_t bus;
         uint8_t device;
         uint8_t function;
-    } pci, pcc;
+    } __attribute__((__packed__)) pci, pcc;
 } __attribute__((__packed__));
 
 // Bounds for the arrays printed with [n]; the CDB's cpb_size and db_size give
@@ -442,11 +442,11 @@ struct efi_pxe_pci_config_info {
     uint16_t bus;
     uint8_t device;
     uint8_t function;
-    union __attribute__((__packed__)) {
+    union {
         uint8_t byte[256];
         uint16_t word[128];
         uint32_t dword[64];
-    } config;
+    } __attribute__((__packed__)) config;
 } __attribute__((__packed__));
 
 struct efi_pxe_pcc_config_info {
@@ -454,11 +454,11 @@ struct efi_pxe_pcc_config_info {
     uint16_t bus;
     uint8_t device;
     uint8_t function;
-    union __attribute__((__packed__)) {
+    union {
         uint8_t byte[256];
         uint16_t word[128];
         uint32_t dword[64];
-    } config;
+    } __attribute__((__packed__)) config;
 } __attribute__((__packed__));
 
 union efi_pxe_db_get_config_info {
@@ -555,14 +555,14 @@ struct efi_pxe_db_mcast_ip_to_mac {
 } __attribute__((__packed__));
 
 struct efi_pxe_cpb_nvdata_sparse {
-    struct __attribute__((__packed__)) {
+    struct {
         uint32_t addr;
-        union __attribute__((__packed__)) {
+        union {
             uint8_t byte;
             uint16_t word;
             uint32_t dword;
-        } data;
-    } item[EFI_MAX_EEPROM_LEN];
+        } __attribute__((__packed__)) data;
+    } __attribute__((__packed__)) item[EFI_MAX_EEPROM_LEN];
 } __attribute__((__packed__));
 
 union efi_pxe_cpb_nvdata_bulk {
@@ -572,11 +572,11 @@ union efi_pxe_cpb_nvdata_bulk {
 } __attribute__((__packed__));
 
 struct efi_pxe_db_nvdata {
-    union __attribute__((__packed__)) {
+    union {
         uint8_t byte[EFI_MAX_EEPROM_LEN << 2];
         uint16_t word[EFI_MAX_EEPROM_LEN << 1];
         uint32_t dword[EFI_MAX_EEPROM_LEN];
-    } data;
+    } __attribute__((__packed__)) data;
 } __attribute__((__packed__));
 
 struct efi_pxe_db_get_status {
@@ -605,11 +605,11 @@ struct efi_pxe_cpb_fill_header_fragmented {
     uint16_t media_header_len;
     uint16_t frag_cnt;
     uint16_t reserved;
-    struct __attribute__((__packed__)) {
+    struct {
         uint64_t frag_addr;
         uint32_t frag_len;
         uint32_t reserved;
-    } frag_desc[EFI_MAX_XMIT_FRAGMENTS];
+    } __attribute__((__packed__)) frag_desc[EFI_MAX_XMIT_FRAGMENTS];
 } __attribute__((__packed__));
 
 struct efi_pxe_cpb_transmit {
@@ -623,11 +623,11 @@ struct efi_pxe_cpb_transmit_fragments {
     uint32_t frame_len;
     uint16_t mediaheader_len;
     uint16_t frag_cnt;
-    struct __attribute__((__packed__)) {
+    struct {
         uint64_t frag_addr;
         uint32_t frag_len;
         uint32_t reserved;
-    } frag_desc[EFI_MAX_XMIT_FRAGMENTS];
+    } __attribute__((__packed__)) frag_desc[EFI_MAX_XMIT_FRAGMENTS];
 } __attribute__((__packed__));
 
 struct efi_pxe_cpb_receive {

@@ -1355,10 +1355,10 @@ struct efi_ccix_per_log_error_data {
 
 union efi_cxl_agent_address {
     uint64_t bits;
-    struct __attribute__((__packed__)) {
+    struct {
         uint32_t low;
         uint32_t high;
-    } rcrb_base;
+    } __attribute__((__packed__)) rcrb_base;
 } __attribute__((__packed__));
 
 #define EFI_CXL_AGENT_ADDRESS_FUNCTION_SHIFT 0

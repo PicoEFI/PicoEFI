@@ -39,15 +39,15 @@ __extension__ typedef __int128 efi_int128;
 __extension__ typedef unsigned __int128 efi_uint128;
 #else
 // No 128-bit integer type on 32-bit targets.
-typedef struct __attribute__((__aligned__(16))) {
+typedef struct {
     uint64_t lo;
     uint64_t hi;
-} efi_int128;
+} __attribute__((__aligned__(16))) efi_int128;
 
-typedef struct __attribute__((__aligned__(16))) {
+typedef struct {
     uint64_t lo;
     uint64_t hi;
-} efi_uint128;
+} __attribute__((__aligned__(16))) efi_uint128;
 #endif
 
 typedef uintptr_t efi_status;
@@ -201,7 +201,7 @@ struct efi_managed_network_config_data {
 #define EFI_PAGE_SHIFT 12
 
 // Rounds up without computing a + EFI_PAGE_MASK, which could overflow.
-#define EFI_SIZE_TO_PAGES(a) (((a) >> EFI_PAGE_SHIFT) + (((a) & EFI_PAGE_MASK) ? 1 : 0))
+#define EFI_SIZE_TO_PAGES(a) (((a) >> EFI_PAGE_SHIFT) + (((a) & EFI_PAGE_MASK) != 0 ? 1 : 0))
 
 #define EFI_SIGNATURE_16(A, B) ((uint16_t)((uint8_t)(A) | ((uint8_t)(B) << 8)))
 #define EFI_SIGNATURE_32(A, B, C, D) \

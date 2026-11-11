@@ -476,18 +476,18 @@ typedef efi_status (EFI_API *efi_bluetooth_attribute_register_for_server_notific
 // packing.
 struct efi_bluetooth_uuid {
     uint8_t length;
-    union __attribute__((__packed__)) {
+    union {
         uint16_t uuid16;
         uint32_t uuid32;
         uint8_t uuid128[16];
-    } data;
+    } __attribute__((__packed__)) data;
 } __attribute__((__packed__));
 
 union efi_bluetooth_attribute_permission {
-    struct __attribute__((__packed__)) {
+    struct {
         uint16_t read;
         uint16_t write;
-    } permission;
+    } __attribute__((__packed__)) permission;
     uint32_t data32;
 } __attribute__((__packed__));
 

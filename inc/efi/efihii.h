@@ -554,10 +554,10 @@ struct efi_ifr_question_header {
     struct efi_ifr_statement_header header;
     efi_question_id question_id;
     efi_varstore_id var_store_id;
-    union __attribute__((__packed__)) {
+    union {
         efi_string_id var_name;
         uint16_t var_offset;
-    } var_store_info;
+    } __attribute__((__packed__)) var_store_info;
     uint8_t flags;
 } __attribute__((__packed__));
 
@@ -604,26 +604,26 @@ union efi_ifr_type_value {
 // Printed inline in struct efi_ifr_numeric and struct efi_ifr_one_of; named at
 // file scope for both.
 union efi_minmaxstep_data {
-    struct __attribute__((__packed__)) {
+    struct {
         uint8_t min_value;
         uint8_t max_value;
         uint8_t step;
-    } u8;
-    struct __attribute__((__packed__)) {
+    } __attribute__((__packed__)) u8;
+    struct {
         uint16_t min_value;
         uint16_t max_value;
         uint16_t step;
-    } u16;
-    struct __attribute__((__packed__)) {
+    } __attribute__((__packed__)) u16;
+    struct {
         uint32_t min_value;
         uint32_t max_value;
         uint32_t step;
-    } u32;
-    struct __attribute__((__packed__)) {
+    } __attribute__((__packed__)) u32;
+    struct {
         uint64_t min_value;
         uint64_t max_value;
         uint64_t step;
-    } u64;
+    } __attribute__((__packed__)) u64;
 } __attribute__((__packed__));
 
 #define EFI_IFR_ACTION_OP 0x0c
@@ -851,10 +851,10 @@ struct efi_ifr_form_set {
 struct efi_ifr_get {
     struct efi_ifr_op_header header;
     efi_varstore_id var_store_id;
-    union __attribute__((__packed__)) {
+    union {
         efi_string_id var_name;
         uint16_t var_offset;
-    } var_store_info;
+    } __attribute__((__packed__)) var_store_info;
     uint8_t var_store_type;
 } __attribute__((__packed__));
 
@@ -1194,10 +1194,10 @@ struct efi_ifr_security {
 struct efi_ifr_set {
     struct efi_ifr_op_header header;
     efi_varstore_id var_store_id;
-    union __attribute__((__packed__)) {
+    union {
         efi_string_id var_name;
         uint16_t var_offset;
-    } var_store_info;
+    } __attribute__((__packed__)) var_store_info;
     uint8_t var_store_type;
 } __attribute__((__packed__));
 
