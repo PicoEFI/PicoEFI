@@ -13,14 +13,12 @@ extern "C" {
 
 struct efi_ip4_config2_protocol;
 
-typedef enum {
-    EfiIp4Config2DataTypeInterfaceInfo,
-    EfiIp4Config2DataTypePolicy,
-    EfiIp4Config2DataTypeManualAddress,
-    EfiIp4Config2DataTypeGateway,
-    EfiIp4Config2DataTypeDnsServer,
-    EfiIp4Config2DataTypeMaximum
-} EFI_IP4_CONFIG2_DATA_TYPE;
+#define EFI_IP4_CONFIG2_DATA_TYPE_INTERFACE_INFO ((uint32_t)0)
+#define EFI_IP4_CONFIG2_DATA_TYPE_POLICY ((uint32_t)1)
+#define EFI_IP4_CONFIG2_DATA_TYPE_MANUAL_ADDRESS ((uint32_t)2)
+#define EFI_IP4_CONFIG2_DATA_TYPE_GATEWAY ((uint32_t)3)
+#define EFI_IP4_CONFIG2_DATA_TYPE_DNS_SERVER ((uint32_t)4)
+#define EFI_IP4_CONFIG2_DATA_TYPE_MAXIMUM ((uint32_t)5)
 
 #define EFI_IP4_CONFIG2_INTERFACE_INFO_NAME_SIZE 32
 
@@ -35,11 +33,9 @@ struct efi_ip4_config2_interface_info {
     struct efi_ip4_route_table *RouteTable;
 };
 
-typedef enum {
-    EfiIp4Config2PolicyStatic,
-    EfiIp4Config2PolicyDhcp,
-    EfiIp4Config2PolicyMax
-} EFI_IP4_CONFIG2_POLICY;
+#define EFI_IP4_CONFIG2_POLICY_STATIC ((uint32_t)0)
+#define EFI_IP4_CONFIG2_POLICY_DHCP ((uint32_t)1)
+#define EFI_IP4_CONFIG2_POLICY_MAX ((uint32_t)2)
 
 struct efi_ip4_config2_manual_address {
     struct efi_ipv4_address Address;
@@ -48,27 +44,27 @@ struct efi_ip4_config2_manual_address {
 
 typedef EFI_STATUS (EFI_API *EFI_IP4_CONFIG2_SET_DATA)(
     struct efi_ip4_config2_protocol *This,
-    EFI_IP4_CONFIG2_DATA_TYPE DataType,
+    uint32_t DataType,
     size_t DataSize,
     void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IP4_CONFIG2_GET_DATA)(
     struct efi_ip4_config2_protocol *This,
-    EFI_IP4_CONFIG2_DATA_TYPE DataType,
+    uint32_t DataType,
     size_t *DataSize,
     void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IP4_CONFIG2_REGISTER_NOTIFY)(
     struct efi_ip4_config2_protocol *This,
-    EFI_IP4_CONFIG2_DATA_TYPE DataType,
+    uint32_t DataType,
     EFI_EVENT Event
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IP4_CONFIG2_UNREGISTER_NOTIFY)(
     struct efi_ip4_config2_protocol *This,
-    EFI_IP4_CONFIG2_DATA_TYPE DataType,
+    uint32_t DataType,
     EFI_EVENT Event
 );
 
@@ -84,16 +80,14 @@ struct efi_ip4_config2_protocol {
 
 struct efi_ip6_config_protocol;
 
-typedef enum {
-    EfiIp6ConfigDataTypeInterfaceInfo,
-    EfiIp6ConfigDataTypeAltInterfaceId,
-    EfiIp6ConfigDataTypePolicy,
-    EfiIp6ConfigDataTypeDupAddrDetectTransmits,
-    EfiIp6ConfigDataTypeManualAddress,
-    EfiIp6ConfigDataTypeGateway,
-    EfiIp6ConfigDataTypeDnsServer,
-    EfiIp6ConfigDataTypeMaximum
-} EFI_IP6_CONFIG_DATA_TYPE;
+#define EFI_IP6_CONFIG_DATA_TYPE_INTERFACE_INFO ((uint32_t)0)
+#define EFI_IP6_CONFIG_DATA_TYPE_ALT_INTERFACE_ID ((uint32_t)1)
+#define EFI_IP6_CONFIG_DATA_TYPE_POLICY ((uint32_t)2)
+#define EFI_IP6_CONFIG_DATA_TYPE_DUP_ADDR_DETECT_TRANSMITS ((uint32_t)3)
+#define EFI_IP6_CONFIG_DATA_TYPE_MANUAL_ADDRESS ((uint32_t)4)
+#define EFI_IP6_CONFIG_DATA_TYPE_GATEWAY ((uint32_t)5)
+#define EFI_IP6_CONFIG_DATA_TYPE_DNS_SERVER ((uint32_t)6)
+#define EFI_IP6_CONFIG_DATA_TYPE_MAXIMUM ((uint32_t)7)
 
 struct efi_ip6_config_interface_info {
     uint16_t Name[32];
@@ -110,10 +104,8 @@ struct efi_ip6_config_interface_id {
     uint8_t Id[8];
 };
 
-typedef enum {
-    EfiIp6ConfigPolicyManual,
-    EfiIp6ConfigPolicyAutomatic
-} EFI_IP6_CONFIG_POLICY;
+#define EFI_IP6_CONFIG_POLICY_MANUAL ((uint32_t)0)
+#define EFI_IP6_CONFIG_POLICY_AUTOMATIC ((uint32_t)1)
 
 struct efi_ip6_config_dup_addr_detect_transmits {
     uint32_t DupAddrDetectTransmits;
@@ -127,27 +119,27 @@ struct efi_ip6_config_manual_address {
 
 typedef EFI_STATUS (EFI_API *EFI_IP6_CONFIG_SET_DATA)(
     struct efi_ip6_config_protocol *This,
-    EFI_IP6_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     size_t DataSize,
     void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IP6_CONFIG_GET_DATA)(
     struct efi_ip6_config_protocol *This,
-    EFI_IP6_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     size_t *DataSize,
     void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IP6_CONFIG_REGISTER_NOTIFY)(
     struct efi_ip6_config_protocol *This,
-    EFI_IP6_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     EFI_EVENT Event
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IP6_CONFIG_UNREGISTER_NOTIFY)(
     struct efi_ip6_config_protocol *This,
-    EFI_IP6_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     EFI_EVENT Event
 );
 
@@ -163,12 +155,10 @@ struct efi_ip6_config_protocol {
 
 struct efi_ipsec_config_protocol;
 
-typedef enum {
-    EfiIPsecConfigDataTypeSpd,
-    EfiIPsecConfigDataTypeSad,
-    EfiIPsecConfigDataTypePad,
-    EfiIPsecConfigDataTypeMaximum
-} EFI_IPSEC_CONFIG_DATA_TYPE;
+#define EFI_IPSEC_CONFIG_DATA_TYPE_SPD ((uint32_t)0)
+#define EFI_IPSEC_CONFIG_DATA_TYPE_SAD ((uint32_t)1)
+#define EFI_IPSEC_CONFIG_DATA_TYPE_PAD ((uint32_t)2)
+#define EFI_IPSEC_CONFIG_DATA_TYPE_MAXIMUM ((uint32_t)3)
 
 struct efi_ip_address_info {
     union efi_ip_address Address;
@@ -187,14 +177,12 @@ struct efi_ipsec_spd_selector {
     uint16_t RemotePortRange;
 };
 
-typedef enum {
-    EfiIPsecAH,
-    EfiIPsecESP
-} EFI_IPSEC_PROTOCOL_TYPE;
+#define EFI_IPSEC_AH ((uint32_t)0)
+#define EFI_IPSEC_ESP ((uint32_t)1)
 
 struct efi_ipsec_sa_id {
     uint32_t Spi;
-    EFI_IPSEC_PROTOCOL_TYPE Proto;
+    uint32_t Proto;
     union efi_ip_address DestAddress;
 };
 
@@ -214,16 +202,12 @@ union efi_ipsec_config_selector {
     struct efi_ipsec_pad_id PadId;
 };
 
-typedef enum {
-    EfiIPsecInBound,
-    EfiIPsecOutBound
-} EFI_IPSEC_TRAFFIC_DIR;
+#define EFI_IPSEC_IN_BOUND ((uint32_t)0)
+#define EFI_IPSEC_OUT_BOUND ((uint32_t)1)
 
-typedef enum {
-    EfiIPsecActionDiscard,
-    EfiIPsecActionBypass,
-    EfiIPsecActionProtect
-} EFI_IPSEC_ACTION;
+#define EFI_IPSEC_ACTION_DISCARD ((uint32_t)0)
+#define EFI_IPSEC_ACTION_BYPASS ((uint32_t)1)
+#define EFI_IPSEC_ACTION_PROTECT ((uint32_t)2)
 
 struct efi_ipsec_sa_lifetime {
     uint64_t ByteCount;
@@ -231,21 +215,17 @@ struct efi_ipsec_sa_lifetime {
     uint64_t HardLifetime;
 };
 
-typedef enum {
-    EfiIPsecTransport,
-    EfiIPsecTunnel
-} EFI_IPSEC_MODE;
+#define EFI_IPSEC_TRANSPORT ((uint32_t)0)
+#define EFI_IPSEC_TUNNEL ((uint32_t)1)
 
-typedef enum {
-    EfiIPsecTunnelClearDf,
-    EfiIPsecTunnelSetDf,
-    EfiIPsecTunnelCopyDf
-} EFI_IPSEC_TUNNEL_DF_OPTION;
+#define EFI_IPSEC_TUNNEL_CLEAR_DF ((uint32_t)0)
+#define EFI_IPSEC_TUNNEL_SET_DF ((uint32_t)1)
+#define EFI_IPSEC_TUNNEL_COPY_DF ((uint32_t)2)
 
 struct efi_ipsec_tunnel_option {
     union efi_ip_address LocalTunnelAddress;
     union efi_ip_address RemoteTunnelAddress;
-    EFI_IPSEC_TUNNEL_DF_OPTION DF;
+    uint32_t DF;
 };
 
 struct efi_ipsec_process_policy {
@@ -253,9 +233,9 @@ struct efi_ipsec_process_policy {
     uint8_t SeqOverflow;
     uint8_t FragCheck;
     struct efi_ipsec_sa_lifetime SaLifetime;
-    EFI_IPSEC_MODE Mode;
+    uint32_t Mode;
     struct efi_ipsec_tunnel_option *TunnelOption;
-    EFI_IPSEC_PROTOCOL_TYPE Proto;
+    uint32_t Proto;
     uint8_t AuthAlgoId;
     uint8_t EncAlgoId;
 };
@@ -264,8 +244,8 @@ struct efi_ipsec_process_policy {
 struct efi_ipsec_spd_data {
     uint8_t Name[EFI_MAX_PEERID_LEN];
     uint32_t PackageFlag;
-    EFI_IPSEC_TRAFFIC_DIR TrafficDirection;
-    EFI_IPSEC_ACTION Action;
+    uint32_t TrafficDirection;
+    uint32_t Action;
     struct efi_ipsec_process_policy *ProcessingPolicy;
     size_t SaIdCount;
     struct efi_ipsec_sa_id *SaId[1];
@@ -292,7 +272,7 @@ union efi_ipsec_algo_info {
 };
 
 struct efi_ipsec_sa_data {
-    EFI_IPSEC_MODE Mode;
+    uint32_t Mode;
     uint64_t SNCount;
     uint8_t AntiReplayWindows;
     union efi_ipsec_algo_info AlgoInfo;
@@ -303,7 +283,7 @@ struct efi_ipsec_sa_data {
 };
 
 struct efi_ipsec_sa_data2 {
-    EFI_IPSEC_MODE Mode;
+    uint32_t Mode;
     uint64_t SNCount;
     uint8_t AntiReplayWindows;
     union efi_ipsec_algo_info AlgoInfo;
@@ -315,21 +295,17 @@ struct efi_ipsec_sa_data2 {
     union efi_ip_address TunnelDestinationAddress;
 };
 
-typedef enum {
-    EfiIPsecAuthProtocolIKEv1,
-    EfiIPsecAuthProtocolIKEv2,
-    EfiIPsecAuthProtocolMaximum
-} EFI_IPSEC_AUTH_PROTOCOL_TYPE;
+#define EFI_IPSEC_AUTH_PROTOCOL_IKEV1 ((uint32_t)0)
+#define EFI_IPSEC_AUTH_PROTOCOL_IKEV2 ((uint32_t)1)
+#define EFI_IPSEC_AUTH_PROTOCOL_MAXIMUM ((uint32_t)2)
 
-typedef enum {
-    EfiIPsecAuthMethodPreSharedSecret,
-    EfiIPsecAuthMethodCertificates,
-    EfiIPsecAuthMethodMaximum
-} EFI_IPSEC_AUTH_METHOD;
+#define EFI_IPSEC_AUTH_METHOD_PRE_SHARED_SECRET ((uint32_t)0)
+#define EFI_IPSEC_AUTH_METHOD_CERTIFICATES ((uint32_t)1)
+#define EFI_IPSEC_AUTH_METHOD_MAXIMUM ((uint32_t)2)
 
 struct efi_ipsec_pad_data {
-    EFI_IPSEC_AUTH_PROTOCOL_TYPE AuthProtocol;
-    EFI_IPSEC_AUTH_METHOD AuthMethod;
+    uint32_t AuthProtocol;
+    uint32_t AuthMethod;
     uint8_t IkeIdFlag;
     size_t AuthDataSize;
     void *AuthData;
@@ -339,7 +315,7 @@ struct efi_ipsec_pad_data {
 
 typedef EFI_STATUS (EFI_API *EFI_IPSEC_CONFIG_SET_DATA)(
     struct efi_ipsec_config_protocol *This,
-    EFI_IPSEC_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     union efi_ipsec_config_selector *Selector,
     void *Data,
     union efi_ipsec_config_selector *InsertBefore
@@ -347,7 +323,7 @@ typedef EFI_STATUS (EFI_API *EFI_IPSEC_CONFIG_SET_DATA)(
 
 typedef EFI_STATUS (EFI_API *EFI_IPSEC_CONFIG_GET_DATA)(
     struct efi_ipsec_config_protocol *This,
-    EFI_IPSEC_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     union efi_ipsec_config_selector *Selector,
     size_t *DataSize,
     void *Data
@@ -355,20 +331,20 @@ typedef EFI_STATUS (EFI_API *EFI_IPSEC_CONFIG_GET_DATA)(
 
 typedef EFI_STATUS (EFI_API *EFI_IPSEC_CONFIG_GET_NEXT_SELECTOR)(
     struct efi_ipsec_config_protocol *This,
-    EFI_IPSEC_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     size_t *SelectorSize,
     union efi_ipsec_config_selector *Selector
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IPSEC_CONFIG_REGISTER_NOTIFY)(
     struct efi_ipsec_config_protocol *This,
-    EFI_IPSEC_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     EFI_EVENT Event
 );
 
 typedef EFI_STATUS (EFI_API *EFI_IPSEC_CONFIG_UNREGISTER_NOTIFY)(
     struct efi_ipsec_config_protocol *This,
-    EFI_IPSEC_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     EFI_EVENT Event
 );
 
@@ -400,7 +376,7 @@ typedef EFI_STATUS (EFI_API *EFI_IPSEC_PROCESS)(
     uint32_t OptionsLength,
     struct efi_ipsec_fragment_data **FragmentTable,
     uint32_t *FragmentCount,
-    EFI_IPSEC_TRAFFIC_DIR TrafficDirection,
+    uint32_t TrafficDirection,
     EFI_EVENT *RecycleSignal
 );
 
@@ -425,7 +401,7 @@ typedef EFI_STATUS (EFI_API *EFI_IPSEC_PROCESSEXT)(
     uint32_t *OptionsLength,
     struct efi_ipsec_fragment_data **FragmentTable,
     uint32_t *FragmentCount,
-    EFI_IPSEC_TRAFFIC_DIR TrafficDirection,
+    uint32_t TrafficDirection,
     EFI_EVENT *RecycleSignal
 );
 
@@ -537,31 +513,27 @@ struct efi_ftp4_protocol {
 
 struct efi_tls_protocol;
 
-typedef enum {
-    EfiTlsVersion,
-    EfiTlsConnectionEnd,
-    EfiTlsCipherList,
-    EfiTlsCompressionMethod,
-    EfiTlsExtensionData,
-    EfiTlsVerifyMethod,
-    EfiTlsSessionID,
-    EfiTlsSessionState,
-    EfiTlsClientRandom,
-    EfiTlsServerRandom,
-    EfiTlsKeyMaterial,
-    EfiTlsVerifyHost,
-    EfiTlsSessionDataTypeMaximum
-} EFI_TLS_SESSION_DATA_TYPE;
+#define EFI_TLS_VERSION ((uint32_t)0)
+#define EFI_TLS_CONNECTION_END ((uint32_t)1)
+#define EFI_TLS_CIPHER_LIST ((uint32_t)2)
+#define EFI_TLS_COMPRESSION_METHOD ((uint32_t)3)
+#define EFI_TLS_EXTENSION_DATA ((uint32_t)4)
+#define EFI_TLS_VERIFY_METHOD ((uint32_t)5)
+#define EFI_TLS_SESSION_ID ((uint32_t)6)
+#define EFI_TLS_SESSION_STATE ((uint32_t)7)
+#define EFI_TLS_CLIENT_RANDOM ((uint32_t)8)
+#define EFI_TLS_SERVER_RANDOM ((uint32_t)9)
+#define EFI_TLS_KEY_MATERIAL ((uint32_t)10)
+#define EFI_TLS_VERIFY_HOST ((uint32_t)11)
+#define EFI_TLS_SESSION_DATA_TYPE_MAXIMUM ((uint32_t)12)
 
 struct efi_tls_version {
     uint8_t Major;
     uint8_t Minor;
 };
 
-typedef enum {
-    EfiTlsClient,
-    EfiTlsServer
-} EFI_TLS_CONNECTION_END;
+#define EFI_TLS_CLIENT ((uint32_t)0)
+#define EFI_TLS_SERVER ((uint32_t)1)
 
 struct efi_tls_cipher {
     uint8_t Data1;
@@ -616,25 +588,23 @@ struct efi_tls_session_id {
     uint8_t Data[EFI_MAX_TLS_SESSION_ID_LENGTH];
 };
 
-typedef enum {
-    EfiTlsSessionNotStarted,
-    EfiTlsSessionHandShaking,
-    EfiTlsSessionDataTransferring,
-    EfiTlsSessionClosing,
-    EfiTlsSessionError,
-    EfiTlsSessionStateMaximum
-} EFI_TLS_SESSION_STATE;
+#define EFI_TLS_SESSION_NOT_STARTED ((uint32_t)0)
+#define EFI_TLS_SESSION_HAND_SHAKING ((uint32_t)1)
+#define EFI_TLS_SESSION_DATA_TRANSFERRING ((uint32_t)2)
+#define EFI_TLS_SESSION_CLOSING ((uint32_t)3)
+#define EFI_TLS_SESSION_ERROR ((uint32_t)4)
+#define EFI_TLS_SESSION_STATE_MAXIMUM ((uint32_t)5)
 
 typedef EFI_STATUS (EFI_API *EFI_TLS_SET_SESSION_DATA)(
     struct efi_tls_protocol *This,
-    EFI_TLS_SESSION_DATA_TYPE DataType,
+    uint32_t DataType,
     void *Data,
     size_t DataSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TLS_GET_SESSION_DATA)(
     struct efi_tls_protocol *This,
-    EFI_TLS_SESSION_DATA_TYPE DataType,
+    uint32_t DataType,
     void *Data,
     size_t *DataSize
 );
@@ -652,16 +622,14 @@ struct efi_tls_fragment_data {
     void *FragmentBuffer;
 };
 
-typedef enum {
-    EfiTlsEncrypt,
-    EfiTlsDecrypt
-} EFI_TLS_CRYPT_MODE;
+#define EFI_TLS_ENCRYPT ((uint32_t)0)
+#define EFI_TLS_DECRYPT ((uint32_t)1)
 
 typedef EFI_STATUS (EFI_API *EFI_TLS_PROCESS_PACKET)(
     struct efi_tls_protocol *This,
     struct efi_tls_fragment_data **FragmentTable,
     uint32_t *FragmentCount,
-    EFI_TLS_CRYPT_MODE CryptMode
+    uint32_t CryptMode
 );
 
 struct efi_tls_protocol {
@@ -676,24 +644,22 @@ struct efi_tls_protocol {
 
 struct efi_tls_configuration_protocol;
 
-typedef enum {
-    EfiTlsConfigDataTypeHostPublicCert,
-    EfiTlsConfigDataTypeHostPrivateKey,
-    EfiTlsConfigDataTypeCACertificate,
-    EfiTlsConfigDataTypeCertRevocationList,
-    EfiTlsConfigDataTypeMaximum
-} EFI_TLS_CONFIG_DATA_TYPE;
+#define EFI_TLS_CONFIG_DATA_TYPE_HOST_PUBLIC_CERT ((uint32_t)0)
+#define EFI_TLS_CONFIG_DATA_TYPE_HOST_PRIVATE_KEY ((uint32_t)1)
+#define EFI_TLS_CONFIG_DATA_TYPE_CA_CERTIFICATE ((uint32_t)2)
+#define EFI_TLS_CONFIG_DATA_TYPE_CERT_REVOCATION_LIST ((uint32_t)3)
+#define EFI_TLS_CONFIG_DATA_TYPE_MAXIMUM ((uint32_t)4)
 
 typedef EFI_STATUS (EFI_API *EFI_TLS_CONFIGURATION_SET_DATA)(
     struct efi_tls_configuration_protocol *This,
-    EFI_TLS_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     void *Data,
     size_t DataSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TLS_CONFIGURATION_GET_DATA)(
     struct efi_tls_configuration_protocol *This,
-    EFI_TLS_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     void *Data,
     size_t *DataSize
 );

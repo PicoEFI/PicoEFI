@@ -155,15 +155,13 @@ typedef EFI_STATUS (EFI_API *EFI_WAIT_FOR_EVENT)(
 
 typedef EFI_STATUS (EFI_API *EFI_CHECK_EVENT)(EFI_EVENT Event);
 
-typedef enum {
-    EfiTimerCancel,
-    EfiTimerPeriodic,
-    EfiTimerRelative
-} EFI_TIMER_DELAY;
+#define EFI_TIMER_CANCEL ((uint32_t)0)
+#define EFI_TIMER_PERIODIC ((uint32_t)1)
+#define EFI_TIMER_RELATIVE ((uint32_t)2)
 
 typedef EFI_STATUS (EFI_API *EFI_SET_TIMER)(
     EFI_EVENT Event,
-    EFI_TIMER_DELAY Type,
+    uint32_t Type,
     uint64_t TriggerTime
 );
 
@@ -177,8 +175,8 @@ typedef EFI_TPL (EFI_API *EFI_RAISE_TPL)(EFI_TPL NewTpl);
 typedef void (EFI_API *EFI_RESTORE_TPL)(EFI_TPL OldTpl);
 
 typedef EFI_STATUS (EFI_API *EFI_ALLOCATE_PAGES)(
-    EFI_ALLOCATE_TYPE Type,
-    EFI_MEMORY_TYPE MemoryType,
+    uint32_t Type,
+    uint32_t MemoryType,
     size_t Pages,
     EFI_PHYSICAL_ADDRESS *Memory
 );
@@ -200,21 +198,19 @@ typedef EFI_STATUS (EFI_API *EFI_GET_MEMORY_MAP)(
 #define EfiNextMemoryDescriptor(Ptr, Size) ((struct efi_memory_descriptor *)((uint8_t *)(Ptr) + (Size)))
 
 typedef EFI_STATUS (EFI_API *EFI_ALLOCATE_POOL)(
-    EFI_MEMORY_TYPE PoolType,
+    uint32_t PoolType,
     size_t Size,
     void **Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_FREE_POOL)(void *Buffer);
 
-typedef enum {
-    EFI_NATIVE_INTERFACE
-} EFI_INTERFACE_TYPE;
+#define EFI_NATIVE_INTERFACE ((uint32_t)0)
 
 typedef EFI_STATUS (EFI_API *EFI_INSTALL_PROTOCOL_INTERFACE)(
     EFI_HANDLE *Handle,
     struct efi_guid *Protocol,
-    EFI_INTERFACE_TYPE InterfaceType,
+    uint32_t InterfaceType,
     void *Interface
 );
 
@@ -237,14 +233,12 @@ typedef EFI_STATUS (EFI_API *EFI_REGISTER_PROTOCOL_NOTIFY)(
     void **Registration
 );
 
-typedef enum {
-    EfiAllHandles,
-    EfiByRegisterNotify,
-    EfiByProtocol
-} EFI_LOCATE_SEARCH_TYPE;
+#define EFI_ALL_HANDLES ((uint32_t)0)
+#define EFI_BY_REGISTER_NOTIFY ((uint32_t)1)
+#define EFI_BY_PROTOCOL ((uint32_t)2)
 
 typedef EFI_STATUS (EFI_API *EFI_LOCATE_HANDLE)(
-    EFI_LOCATE_SEARCH_TYPE SearchType,
+    uint32_t SearchType,
     struct efi_guid *Protocol,
     void *SearchKey,
     size_t *BufferSize,
@@ -320,7 +314,7 @@ typedef EFI_STATUS (EFI_API *EFI_PROTOCOLS_PER_HANDLE)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_LOCATE_HANDLE_BUFFER)(
-    EFI_LOCATE_SEARCH_TYPE SearchType,
+    uint32_t SearchType,
     struct efi_guid *Protocol,
     void *SearchKey,
     size_t *NoHandles,
@@ -488,15 +482,13 @@ typedef EFI_STATUS (EFI_API *EFI_CONVERT_POINTER)(
 
 #define EFI_OPTIONAL_PTR 0x00000001
 
-typedef enum {
-    EfiResetCold,
-    EfiResetWarm,
-    EfiResetShutdown,
-    EfiResetPlatformSpecific
-} EFI_RESET_TYPE;
+#define EFI_RESET_COLD ((uint32_t)0)
+#define EFI_RESET_WARM ((uint32_t)1)
+#define EFI_RESET_SHUTDOWN ((uint32_t)2)
+#define EFI_RESET_PLATFORM_SPECIFIC ((uint32_t)3)
 
 typedef void (EFI_API *EFI_RESET_SYSTEM)(
-    EFI_RESET_TYPE ResetType,
+    uint32_t ResetType,
     EFI_STATUS ResetStatus,
     size_t DataSize,
     void *ResetData
@@ -558,7 +550,7 @@ typedef EFI_STATUS (EFI_API *EFI_QUERY_CAPSULE_CAPABILITIES)(
     struct efi_capsule_header **CapsuleHeaderArray,
     size_t CapsuleCount,
     uint64_t *MaximumCapsuleSize,
-    EFI_RESET_TYPE *ResetType
+    uint32_t *ResetType
 );
 
 #define EFI_CAPSULE_REPORT_GUID \
@@ -815,39 +807,33 @@ struct efi_conformance_profiles_table {
 #define EFI_DXE_SERVICES_SIGNATURE 0x565245535f455844
 #define EFI_DXE_SERVICES_REVISION EFI_PI_SPECIFICATION_VERSION
 
-typedef enum {
-    EfiGcdMemoryTypeNonExistent,
-    EfiGcdMemoryTypeReserved,
-    EfiGcdMemoryTypeSystemMemory,
-    EfiGcdMemoryTypeMemoryMappedIo,
-    EfiGcdMemoryTypePersistent,
-    EfiGcdMemoryTypeMoreReliable,
-    EfiGcdMemoryTypeUnaccepted,
-    EfiGcdMemoryTypeMaximum
-} EFI_GCD_MEMORY_TYPE;
+#define EFI_GCD_MEMORY_TYPE_NON_EXISTENT ((uint32_t)0)
+#define EFI_GCD_MEMORY_TYPE_RESERVED ((uint32_t)1)
+#define EFI_GCD_MEMORY_TYPE_SYSTEM_MEMORY ((uint32_t)2)
+#define EFI_GCD_MEMORY_TYPE_MEMORY_MAPPED_IO ((uint32_t)3)
+#define EFI_GCD_MEMORY_TYPE_PERSISTENT ((uint32_t)4)
+#define EFI_GCD_MEMORY_TYPE_MORE_RELIABLE ((uint32_t)5)
+#define EFI_GCD_MEMORY_TYPE_UNACCEPTED ((uint32_t)6)
+#define EFI_GCD_MEMORY_TYPE_MAXIMUM ((uint32_t)7)
 
-typedef enum {
-    EfiGcdIoTypeNonExistent,
-    EfiGcdIoTypeReserved,
-    EfiGcdIoTypeIo,
-    EfiGcdIoTypeMaximum
-} EFI_GCD_IO_TYPE;
+#define EFI_GCD_IO_TYPE_NON_EXISTENT ((uint32_t)0)
+#define EFI_GCD_IO_TYPE_RESERVED ((uint32_t)1)
+#define EFI_GCD_IO_TYPE_IO ((uint32_t)2)
+#define EFI_GCD_IO_TYPE_MAXIMUM ((uint32_t)3)
 
-typedef enum {
-    EfiGcdAllocateAnySearchBottomUp,
-    EfiGcdAllocateMaxAddressSearchBottomUp,
-    EfiGcdAllocateAddress,
-    EfiGcdAllocateAnySearchTopDown,
-    EfiGcdAllocateMaxAddressSearchTopDown,
-    EfiGcdMaxAllocateType
-} EFI_GCD_ALLOCATE_TYPE;
+#define EFI_GCD_ALLOCATE_ANY_SEARCH_BOTTOM_UP ((uint32_t)0)
+#define EFI_GCD_ALLOCATE_MAX_ADDRESS_SEARCH_BOTTOM_UP ((uint32_t)1)
+#define EFI_GCD_ALLOCATE_ADDRESS ((uint32_t)2)
+#define EFI_GCD_ALLOCATE_ANY_SEARCH_TOP_DOWN ((uint32_t)3)
+#define EFI_GCD_ALLOCATE_MAX_ADDRESS_SEARCH_TOP_DOWN ((uint32_t)4)
+#define EFI_GCD_MAX_ALLOCATE_TYPE ((uint32_t)5)
 
 struct efi_gcd_memory_space_descriptor {
     EFI_PHYSICAL_ADDRESS BaseAddress;
     uint64_t Length;
     uint64_t Capabilities;
     uint64_t Attributes;
-    EFI_GCD_MEMORY_TYPE GcdMemoryType;
+    uint32_t GcdMemoryType;
     EFI_HANDLE ImageHandle;
     EFI_HANDLE DeviceHandle;
 };
@@ -855,21 +841,21 @@ struct efi_gcd_memory_space_descriptor {
 struct efi_gcd_io_space_descriptor {
     EFI_PHYSICAL_ADDRESS BaseAddress;
     uint64_t Length;
-    EFI_GCD_IO_TYPE GcdIoType;
+    uint32_t GcdIoType;
     EFI_HANDLE ImageHandle;
     EFI_HANDLE DeviceHandle;
 };
 
 typedef EFI_STATUS (EFI_API *EFI_ADD_MEMORY_SPACE)(
-    EFI_GCD_MEMORY_TYPE GcdMemoryType,
+    uint32_t GcdMemoryType,
     EFI_PHYSICAL_ADDRESS BaseAddress,
     uint64_t Length,
     uint64_t Capabilities
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ALLOCATE_MEMORY_SPACE)(
-    EFI_GCD_ALLOCATE_TYPE GcdAllocateType,
-    EFI_GCD_MEMORY_TYPE GcdMemoryType,
+    uint32_t GcdAllocateType,
+    uint32_t GcdMemoryType,
     size_t Alignment,
     uint64_t Length,
     EFI_PHYSICAL_ADDRESS *BaseAddress,
@@ -910,14 +896,14 @@ typedef EFI_STATUS (EFI_API *EFI_GET_MEMORY_SPACE_MAP)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ADD_IO_SPACE)(
-    EFI_GCD_IO_TYPE GcdIoType,
+    uint32_t GcdIoType,
     EFI_PHYSICAL_ADDRESS BaseAddress,
     uint64_t Length
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ALLOCATE_IO_SPACE)(
-    EFI_GCD_ALLOCATE_TYPE GcdAllocateType,
-    EFI_GCD_IO_TYPE GcdIoType,
+    uint32_t GcdAllocateType,
+    uint32_t GcdIoType,
     size_t Alignment,
     uint64_t Length,
     EFI_PHYSICAL_ADDRESS *BaseAddress,

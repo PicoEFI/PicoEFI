@@ -204,18 +204,16 @@ struct efi_ip6_route_table {
     uint8_t PrefixLength;
 };
 
-typedef enum {
-    EfiNeighborInComplete,
-    EfiNeighborReachable,
-    EfiNeighborStale,
-    EfiNeighborDelay,
-    EfiNeighborProbe
-} EFI_IP6_NEIGHBOR_STATE;
+#define EFI_NEIGHBOR_IN_COMPLETE ((uint32_t)0)
+#define EFI_NEIGHBOR_REACHABLE ((uint32_t)1)
+#define EFI_NEIGHBOR_STALE ((uint32_t)2)
+#define EFI_NEIGHBOR_DELAY ((uint32_t)3)
+#define EFI_NEIGHBOR_PROBE ((uint32_t)4)
 
 struct efi_ip6_neighbor_cache {
     struct efi_ipv6_address Neighbor;
     struct efi_mac_address LinkAddress;
-    EFI_IP6_NEIGHBOR_STATE State;
+    uint32_t State;
 };
 
 struct efi_ip6_icmp_type {

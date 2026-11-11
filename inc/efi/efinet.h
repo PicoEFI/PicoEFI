@@ -14,12 +14,10 @@ extern "C" {
 
 struct efi_simple_network_protocol;
 
-typedef enum {
-    EfiSimpleNetworkStopped,
-    EfiSimpleNetworkStarted,
-    EfiSimpleNetworkInitialized,
-    EfiSimpleNetworkMaxState
-} EFI_SIMPLE_NETWORK_STATE;
+#define EFI_SIMPLE_NETWORK_STOPPED ((uint32_t)0)
+#define EFI_SIMPLE_NETWORK_STARTED ((uint32_t)1)
+#define EFI_SIMPLE_NETWORK_INITIALIZED ((uint32_t)2)
+#define EFI_SIMPLE_NETWORK_MAX_STATE ((uint32_t)3)
 
 #define EFI_MAX_MCAST_FILTER_CNT 16
 

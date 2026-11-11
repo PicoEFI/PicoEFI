@@ -221,33 +221,27 @@ struct efi_form_browser2_protocol {
 
 struct efi_hii_popup_protocol;
 
-typedef enum {
-    EfiHiiPopupStyleInfo,
-    EfiHiiPopupStyleWarning,
-    EfiHiiPopupStyleError
-} EFI_HII_POPUP_STYLE;
+#define EFI_HII_POPUP_STYLE_INFO ((uint32_t)0)
+#define EFI_HII_POPUP_STYLE_WARNING ((uint32_t)1)
+#define EFI_HII_POPUP_STYLE_ERROR ((uint32_t)2)
 
-typedef enum {
-    EfiHiiPopupTypeOk,
-    EfiHiiPopupTypeOkCancel,
-    EfiHiiPopupTypeYesNo,
-    EfiHiiPopupTypeYesNoCancel
-} EFI_HII_POPUP_TYPE;
+#define EFI_HII_POPUP_TYPE_OK ((uint32_t)0)
+#define EFI_HII_POPUP_TYPE_OK_CANCEL ((uint32_t)1)
+#define EFI_HII_POPUP_TYPE_YES_NO ((uint32_t)2)
+#define EFI_HII_POPUP_TYPE_YES_NO_CANCEL ((uint32_t)3)
 
-typedef enum {
-    EfiHiiPopupSelectionOk,
-    EfiHiiPopupSelectionCancel,
-    EfiHiiPopupSelectionYes,
-    EfiHiiPopupSelectionNo
-} EFI_HII_POPUP_SELECTION;
+#define EFI_HII_POPUP_SELECTION_OK ((uint32_t)0)
+#define EFI_HII_POPUP_SELECTION_CANCEL ((uint32_t)1)
+#define EFI_HII_POPUP_SELECTION_YES ((uint32_t)2)
+#define EFI_HII_POPUP_SELECTION_NO ((uint32_t)3)
 
 typedef EFI_STATUS (EFI_API *EFI_HII_CREATE_POPUP)(
     struct efi_hii_popup_protocol *This,
-    EFI_HII_POPUP_STYLE PopupStyle,
-    EFI_HII_POPUP_TYPE PopupType,
+    uint32_t PopupStyle,
+    uint32_t PopupType,
     EFI_HII_HANDLE HiiHandle,
     EFI_STRING_ID Message,
-    EFI_HII_POPUP_SELECTION *UserSelection
+    uint32_t *UserSelection
 );
 
 struct efi_hii_popup_protocol {

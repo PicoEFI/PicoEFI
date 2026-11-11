@@ -10,11 +10,6 @@
 #error "PicoEFI does not support the target architecture."
 #endif
 
-/* UEFI enumerations are 32-bit; bare-metal Arm toolchains default to short ones. */
-#if defined(__ARM_SIZEOF_MINIMAL_ENUM) && __ARM_SIZEOF_MINIMAL_ENUM != 4
-#error "UEFI enumerations are 32-bit: compile with -fno-short-enums."
-#endif
-
 #ifndef EFI_API
 #if defined(__x86_64__) || defined(__amd64__)
 #define EFI_API __attribute__((__ms_abi__))
@@ -112,32 +107,28 @@ struct efi_time {
 typedef uint64_t EFI_PHYSICAL_ADDRESS;
 typedef uint64_t EFI_VIRTUAL_ADDRESS;
 
-typedef enum {
-    EfiAllocateAnyPages,
-    EfiAllocateMaxAddress,
-    EfiAllocateAddress,
-    EfiMaxAllocateType
-} EFI_ALLOCATE_TYPE;
+#define EFI_ALLOCATE_ANY_PAGES ((uint32_t)0)
+#define EFI_ALLOCATE_MAX_ADDRESS ((uint32_t)1)
+#define EFI_ALLOCATE_ADDRESS ((uint32_t)2)
+#define EFI_MAX_ALLOCATE_TYPE ((uint32_t)3)
 
-typedef enum {
-    EfiReservedMemoryType,
-    EfiLoaderCode,
-    EfiLoaderData,
-    EfiBootServicesCode,
-    EfiBootServicesData,
-    EfiRuntimeServicesCode,
-    EfiRuntimeServicesData,
-    EfiConventionalMemory,
-    EfiUnusableMemory,
-    EfiACPIReclaimMemory,
-    EfiACPIMemoryNVS,
-    EfiMemoryMappedIO,
-    EfiMemoryMappedIOPortSpace,
-    EfiPalCode,
-    EfiPersistentMemory,
-    EfiUnacceptedMemoryType,
-    EfiMaxMemoryType
-} EFI_MEMORY_TYPE;
+#define EFI_RESERVED_MEMORY_TYPE ((uint32_t)0)
+#define EFI_LOADER_CODE ((uint32_t)1)
+#define EFI_LOADER_DATA ((uint32_t)2)
+#define EFI_BOOT_SERVICES_CODE ((uint32_t)3)
+#define EFI_BOOT_SERVICES_DATA ((uint32_t)4)
+#define EFI_RUNTIME_SERVICES_CODE ((uint32_t)5)
+#define EFI_RUNTIME_SERVICES_DATA ((uint32_t)6)
+#define EFI_CONVENTIONAL_MEMORY ((uint32_t)7)
+#define EFI_UNUSABLE_MEMORY ((uint32_t)8)
+#define EFI_ACPI_RECLAIM_MEMORY ((uint32_t)9)
+#define EFI_ACPI_MEMORY_NVS ((uint32_t)10)
+#define EFI_MEMORY_MAPPED_IO ((uint32_t)11)
+#define EFI_MEMORY_MAPPED_IO_PORT_SPACE ((uint32_t)12)
+#define EFI_PAL_CODE ((uint32_t)13)
+#define EFI_PERSISTENT_MEMORY ((uint32_t)14)
+#define EFI_UNACCEPTED_MEMORY_TYPE ((uint32_t)15)
+#define EFI_MAX_MEMORY_TYPE ((uint32_t)16)
 
 #define EFI_MEMORY_UC 0x0000000000000001
 #define EFI_MEMORY_WC 0x0000000000000002

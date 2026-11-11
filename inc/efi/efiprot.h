@@ -28,8 +28,8 @@ struct efi_loaded_image_protocol {
 
     void *ImageBase;
     uint64_t ImageSize;
-    EFI_MEMORY_TYPE ImageCodeType;
-    EFI_MEMORY_TYPE ImageDataType;
+    uint32_t ImageCodeType;
+    uint32_t ImageDataType;
     EFI_IMAGE_UNLOAD Unload;
 };
 
@@ -181,19 +181,17 @@ struct efi_pixel_bitmask {
     uint32_t ReservedMask;
 };
 
-typedef enum {
-    EfiPixelRedGreenBlueReserved8BitPerColor,
-    EfiPixelBlueGreenRedReserved8BitPerColor,
-    EfiPixelBitMask,
-    EfiPixelBltOnly,
-    EfiPixelFormatMax
-} EFI_GRAPHICS_PIXEL_FORMAT;
+#define EFI_PIXEL_RED_GREEN_BLUE_RESERVED_8_BIT_PER_COLOR ((uint32_t)0)
+#define EFI_PIXEL_BLUE_GREEN_RED_RESERVED_8_BIT_PER_COLOR ((uint32_t)1)
+#define EFI_PIXEL_BIT_MASK ((uint32_t)2)
+#define EFI_PIXEL_BLT_ONLY ((uint32_t)3)
+#define EFI_PIXEL_FORMAT_MAX ((uint32_t)4)
 
 struct efi_graphics_output_mode_information {
     uint32_t Version;
     uint32_t HorizontalResolution;
     uint32_t VerticalResolution;
-    EFI_GRAPHICS_PIXEL_FORMAT PixelFormat;
+    uint32_t PixelFormat;
     struct efi_pixel_bitmask PixelInformation;
     uint32_t PixelsPerScanLine;
 };
@@ -232,18 +230,16 @@ union efi_graphics_output_blt_pixel_union {
     uint32_t Raw;
 };
 
-typedef enum {
-    EfiBltVideoFill,
-    EfiBltVideoToBltBuffer,
-    EfiBltBufferToVideo,
-    EfiBltVideoToVideo,
-    EfiGraphicsOutputBltOperationMax
-} EFI_GRAPHICS_OUTPUT_BLT_OPERATION;
+#define EFI_BLT_VIDEO_FILL ((uint32_t)0)
+#define EFI_BLT_VIDEO_TO_BLT_BUFFER ((uint32_t)1)
+#define EFI_BLT_BUFFER_TO_VIDEO ((uint32_t)2)
+#define EFI_BLT_VIDEO_TO_VIDEO ((uint32_t)3)
+#define EFI_GRAPHICS_OUTPUT_BLT_OPERATION_MAX ((uint32_t)4)
 
 typedef EFI_STATUS (EFI_API *EFI_GRAPHICS_OUTPUT_PROTOCOL_BLT)(
     struct efi_graphics_output_protocol *This,
     struct efi_graphics_output_blt_pixel *BltBuffer,
-    EFI_GRAPHICS_OUTPUT_BLT_OPERATION BltOperation,
+    uint32_t BltOperation,
     size_t SourceX,
     size_t SourceY,
     size_t DestinationX,

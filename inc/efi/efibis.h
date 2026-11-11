@@ -127,19 +127,17 @@ struct efi_bis_protocol {
 
 struct efi_http_boot_callback_protocol;
 
-typedef enum {
-    EfiHttpBootDhcp4,
-    EfiHttpBootDhcp6,
-    EfiHttpBootHttpRequest,
-    EfiHttpBootHttpResponse,
-    EfiHttpBootHttpEntityBody,
-    EfiHttpBootHttpAuthInfo,
-    EfiHttpBootTypeMax
-} EFI_HTTP_BOOT_CALLBACK_DATA_TYPE;
+#define EFI_HTTP_BOOT_DHCP4 ((uint32_t)0)
+#define EFI_HTTP_BOOT_DHCP6 ((uint32_t)1)
+#define EFI_HTTP_BOOT_HTTP_REQUEST ((uint32_t)2)
+#define EFI_HTTP_BOOT_HTTP_RESPONSE ((uint32_t)3)
+#define EFI_HTTP_BOOT_HTTP_ENTITY_BODY ((uint32_t)4)
+#define EFI_HTTP_BOOT_HTTP_AUTH_INFO ((uint32_t)5)
+#define EFI_HTTP_BOOT_TYPE_MAX ((uint32_t)6)
 
 typedef EFI_STATUS (EFI_API *EFI_HTTP_BOOT_CALLBACK)(
     struct efi_http_boot_callback_protocol *This,
-    EFI_HTTP_BOOT_CALLBACK_DATA_TYPE DataType,
+    uint32_t DataType,
     bool Received,
     uint32_t DataLength,
     void *Data

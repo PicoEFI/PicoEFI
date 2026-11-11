@@ -25,21 +25,17 @@ struct efi_serial_io_mode {
     uint32_t StopBits;
 };
 
-typedef enum {
-    EfiDefaultParity,
-    EfiNoParity,
-    EfiEvenParity,
-    EfiOddParity,
-    EfiMarkParity,
-    EfiSpaceParity
-} EFI_PARITY_TYPE;
+#define EFI_DEFAULT_PARITY ((uint32_t)0)
+#define EFI_NO_PARITY ((uint32_t)1)
+#define EFI_EVEN_PARITY ((uint32_t)2)
+#define EFI_ODD_PARITY ((uint32_t)3)
+#define EFI_MARK_PARITY ((uint32_t)4)
+#define EFI_SPACE_PARITY ((uint32_t)5)
 
-typedef enum {
-    EfiDefaultStopBits,
-    EfiOneStopBit,
-    EfiOneFiveStopBits,
-    EfiTwoStopBits
-} EFI_STOP_BITS_TYPE;
+#define EFI_DEFAULT_STOP_BITS ((uint32_t)0)
+#define EFI_ONE_STOP_BIT ((uint32_t)1)
+#define EFI_ONE_FIVE_STOP_BITS ((uint32_t)2)
+#define EFI_TWO_STOP_BITS ((uint32_t)3)
 
 typedef EFI_STATUS (EFI_API *EFI_SERIAL_RESET)(struct efi_serial_io_protocol *This);
 
@@ -48,9 +44,9 @@ typedef EFI_STATUS (EFI_API *EFI_SERIAL_SET_ATTRIBUTES)(
     uint64_t BaudRate,
     uint32_t ReceiveFifoDepth,
     uint32_t Timeout,
-    EFI_PARITY_TYPE Parity,
+    uint32_t Parity,
     uint8_t DataBits,
-    EFI_STOP_BITS_TYPE StopBits
+    uint32_t StopBits
 );
 
 #define EFI_SERIAL_CLEAR_TO_SEND 0x0010

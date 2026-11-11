@@ -9,11 +9,9 @@
 extern "C" {
 #endif
 
-typedef enum {
-    EfiUsbDataIn,
-    EfiUsbDataOut,
-    EfiUsbNoData
-} EFI_USB_DATA_DIRECTION;
+#define EFI_USB_DATA_IN ((uint32_t)0)
+#define EFI_USB_DATA_OUT ((uint32_t)1)
+#define EFI_USB_NO_DATA ((uint32_t)2)
 
 #define EFI_USB_NOERROR 0x0000
 #define EFI_USB_ERR_NOTEXECUTE 0x0001
@@ -68,21 +66,19 @@ typedef EFI_STATUS (EFI_API *EFI_USB2_HC_PROTOCOL_RESET)(
     uint16_t Attributes
 );
 
-typedef enum {
-    EfiUsbHcStateHalt,
-    EfiUsbHcStateOperational,
-    EfiUsbHcStateSuspend,
-    EfiUsbHcStateMaximum
-} EFI_USB_HC_STATE;
+#define EFI_USB_HC_STATE_HALT ((uint32_t)0)
+#define EFI_USB_HC_STATE_OPERATIONAL ((uint32_t)1)
+#define EFI_USB_HC_STATE_SUSPEND ((uint32_t)2)
+#define EFI_USB_HC_STATE_MAXIMUM ((uint32_t)3)
 
 typedef EFI_STATUS (EFI_API *EFI_USB2_HC_PROTOCOL_GET_STATE)(
     struct efi_usb2_hc_protocol *This,
-    EFI_USB_HC_STATE *State
+    uint32_t *State
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USB2_HC_PROTOCOL_SET_STATE)(
     struct efi_usb2_hc_protocol *This,
-    EFI_USB_HC_STATE State
+    uint32_t State
 );
 
 struct efi_usb2_hc_transaction_translator {
@@ -96,7 +92,7 @@ typedef EFI_STATUS (EFI_API *EFI_USB2_HC_PROTOCOL_CONTROL_TRANSFER)(
     uint8_t DeviceSpeed,
     size_t MaximumPacketLength,
     struct efi_usb_device_request *Request,
-    EFI_USB_DATA_DIRECTION TransferDirection,
+    uint32_t TransferDirection,
     void *Data,
     size_t *DataLength,
     uintptr_t TimeOut,
@@ -209,29 +205,27 @@ typedef EFI_STATUS (EFI_API *EFI_USB2_HC_PROTOCOL_GET_ROOTHUB_PORT_STATUS)(
     struct efi_usb_port_status *PortStatus
 );
 
-typedef enum {
-    EfiUsbPortEnable = 1,
-    EfiUsbPortSuspend = 2,
-    EfiUsbPortReset = 4,
-    EfiUsbPortPower = 8,
-    EfiUsbPortOwner = 13,
-    EfiUsbPortConnectChange = 16,
-    EfiUsbPortEnableChange = 17,
-    EfiUsbPortSuspendChange = 18,
-    EfiUsbPortOverCurrentChange = 19,
-    EfiUsbPortResetChange = 20
-} EFI_USB_PORT_FEATURE;
+#define EFI_USB_PORT_ENABLE ((uint32_t)1)
+#define EFI_USB_PORT_SUSPEND ((uint32_t)2)
+#define EFI_USB_PORT_RESET ((uint32_t)4)
+#define EFI_USB_PORT_POWER ((uint32_t)8)
+#define EFI_USB_PORT_OWNER ((uint32_t)13)
+#define EFI_USB_PORT_CONNECT_CHANGE ((uint32_t)16)
+#define EFI_USB_PORT_ENABLE_CHANGE ((uint32_t)17)
+#define EFI_USB_PORT_SUSPEND_CHANGE ((uint32_t)18)
+#define EFI_USB_PORT_OVER_CURRENT_CHANGE ((uint32_t)19)
+#define EFI_USB_PORT_RESET_CHANGE ((uint32_t)20)
 
 typedef EFI_STATUS (EFI_API *EFI_USB2_HC_PROTOCOL_SET_ROOTHUB_PORT_FEATURE)(
     struct efi_usb2_hc_protocol *This,
     uint8_t PortNumber,
-    EFI_USB_PORT_FEATURE PortFeature
+    uint32_t PortFeature
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USB2_HC_PROTOCOL_CLEAR_ROOTHUB_PORT_FEATURE)(
     struct efi_usb2_hc_protocol *This,
     uint8_t PortNumber,
-    EFI_USB_PORT_FEATURE PortFeature
+    uint32_t PortFeature
 );
 
 /* The specification's structure body types SyncInterruptTransfer as the asynchronous call. */
@@ -261,7 +255,7 @@ struct efi_usb_io_protocol;
 typedef EFI_STATUS (EFI_API *EFI_USB_IO_CONTROL_TRANSFER)(
     struct efi_usb_io_protocol *This,
     struct efi_usb_device_request *Request,
-    EFI_USB_DATA_DIRECTION Direction,
+    uint32_t Direction,
     uint32_t Timeout,
     void *Data,
     size_t DataLength,
@@ -422,17 +416,15 @@ struct efi_usb_io_protocol {
 
 struct efi_usbfn_io_protocol;
 
-typedef enum _EFI_USBFN_PORT_TYPE {
-    EfiUsbUnknownPort = 0,
-    EfiUsbStandardDownstreamPort,
-    EfiUsbChargingDownstreamPort,
-    EfiUsbDedicatedChargingPort,
-    EfiUsbInvalidDedicatedChargingPort
-} EFI_USBFN_PORT_TYPE;
+#define EFI_USB_UNKNOWN_PORT ((uint32_t)0)
+#define EFI_USB_STANDARD_DOWNSTREAM_PORT ((uint32_t)1)
+#define EFI_USB_CHARGING_DOWNSTREAM_PORT ((uint32_t)2)
+#define EFI_USB_DEDICATED_CHARGING_PORT ((uint32_t)3)
+#define EFI_USB_INVALID_DEDICATED_CHARGING_PORT ((uint32_t)4)
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_DETECT_PORT)(
     struct efi_usbfn_io_protocol *This,
-    EFI_USBFN_PORT_TYPE *PortType
+    uint32_t *PortType
 );
 
 struct efi_usb_interface_info {
@@ -456,37 +448,31 @@ typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_CONFIGURE_ENABLE_ENDPOINTS)(
 );
 
 /* No isochronous (0x01) or interrupt (0x03) type: the protocol supports neither. */
-typedef enum _EFI_USB_ENDPOINT_TYPE {
-    EfiUsbEndpointControl = 0x00,
-    EfiUsbEndpointBulk = 0x02
-} EFI_USB_ENDPOINT_TYPE;
+#define EFI_USB_ENDPOINT_CONTROL ((uint32_t)0x00)
+#define EFI_USB_ENDPOINT_BULK ((uint32_t)0x02)
 
-typedef enum _EFI_USB_BUS_SPEED {
-    EfiUsbBusSpeedUnknown = 0,
-    EfiUsbBusSpeedLow,
-    EfiUsbBusSpeedFull,
-    EfiUsbBusSpeedHigh,
-    EfiUsbBusSpeedSuper,
-    EfiUsbBusSpeedMaximum = EfiUsbBusSpeedSuper
-} EFI_USB_BUS_SPEED;
+#define EFI_USB_BUS_SPEED_UNKNOWN ((uint32_t)0)
+#define EFI_USB_BUS_SPEED_LOW ((uint32_t)1)
+#define EFI_USB_BUS_SPEED_FULL ((uint32_t)2)
+#define EFI_USB_BUS_SPEED_HIGH ((uint32_t)3)
+#define EFI_USB_BUS_SPEED_SUPER ((uint32_t)4)
+#define EFI_USB_BUS_SPEED_MAXIMUM EFI_USB_BUS_SPEED_SUPER
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_GET_ENDPOINT_MAXPACKET_SIZE)(
     struct efi_usbfn_io_protocol *This,
-    EFI_USB_ENDPOINT_TYPE EndpointType,
-    EFI_USB_BUS_SPEED BusSpeed,
+    uint32_t EndpointType,
+    uint32_t BusSpeed,
     uint16_t *MaxPacketSize
 );
 
-typedef enum _EFI_USBFN_DEVICE_INFO_ID {
-    EfiUsbDeviceInfoUnknown = 0,
-    EfiUsbDeviceInfoSerialNumber,
-    EfiUsbDeviceInfoManufacturerName,
-    EfiUsbDeviceInfoProductName
-} EFI_USBFN_DEVICE_INFO_ID;
+#define EFI_USB_DEVICE_INFO_UNKNOWN ((uint32_t)0)
+#define EFI_USB_DEVICE_INFO_SERIAL_NUMBER ((uint32_t)1)
+#define EFI_USB_DEVICE_INFO_MANUFACTURER_NAME ((uint32_t)2)
+#define EFI_USB_DEVICE_INFO_PRODUCT_NAME ((uint32_t)3)
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_GET_DEVICE_INFO)(
     struct efi_usbfn_io_protocol *This,
-    EFI_USBFN_DEVICE_INFO_ID Id,
+    uint32_t Id,
     size_t *BufferSize,
     void *Buffer
 );
@@ -497,71 +483,65 @@ typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_GET_VENDOR_ID_PRODUCT_ID)(
     uint16_t *Pid
 );
 
-typedef enum _EFI_USBFN_ENDPOINT_DIRECTION {
-    EfiUsbEndpointDirectionHostOut = 0,
-    EfiUsbEndpointDirectionHostIn,
-    EfiUsbEndpointDirectionDeviceTx = EfiUsbEndpointDirectionHostIn,
-    EfiUsbEndpointDirectionDeviceRx = EfiUsbEndpointDirectionHostOut
-} EFI_USBFN_ENDPOINT_DIRECTION;
+#define EFI_USB_ENDPOINT_DIRECTION_HOST_OUT ((uint32_t)0)
+#define EFI_USB_ENDPOINT_DIRECTION_HOST_IN ((uint32_t)1)
+#define EFI_USB_ENDPOINT_DIRECTION_DEVICE_TX EFI_USB_ENDPOINT_DIRECTION_HOST_IN
+#define EFI_USB_ENDPOINT_DIRECTION_DEVICE_RX EFI_USB_ENDPOINT_DIRECTION_HOST_OUT
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_ABORT_TRANSFER)(
     struct efi_usbfn_io_protocol *This,
     uint8_t EndpointIndex,
-    EFI_USBFN_ENDPOINT_DIRECTION Direction
+    uint32_t Direction
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_GET_ENDPOINT_STALL_STATE)(
     struct efi_usbfn_io_protocol *This,
     uint8_t EndpointIndex,
-    EFI_USBFN_ENDPOINT_DIRECTION Direction,
+    uint32_t Direction,
     bool *State
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_SET_ENDPOINT_STALL_STATE)(
     struct efi_usbfn_io_protocol *This,
     uint8_t EndpointIndex,
-    EFI_USBFN_ENDPOINT_DIRECTION Direction,
+    uint32_t Direction,
     bool State
 );
 
-typedef enum _EFI_USBFN_MESSAGE {
-    EfiUsbMsgNone = 0,
-    EfiUsbMsgSetupPacket,
-    EfiUsbMsgEndpointStatusChangedRx,
-    EfiUsbMsgEndpointStatusChangedTx,
-    EfiUsbMsgBusEventDetach,
-    EfiUsbMsgBusEventAttach,
-    EfiUsbMsgBusEventReset,
-    EfiUsbMsgBusEventSuspend,
-    EfiUsbMsgBusEventResume,
-    EfiUsbMsgBusEventSpeed
-} EFI_USBFN_MESSAGE;
+#define EFI_USB_MSG_NONE ((uint32_t)0)
+#define EFI_USB_MSG_SETUP_PACKET ((uint32_t)1)
+#define EFI_USB_MSG_ENDPOINT_STATUS_CHANGED_RX ((uint32_t)2)
+#define EFI_USB_MSG_ENDPOINT_STATUS_CHANGED_TX ((uint32_t)3)
+#define EFI_USB_MSG_BUS_EVENT_DETACH ((uint32_t)4)
+#define EFI_USB_MSG_BUS_EVENT_ATTACH ((uint32_t)5)
+#define EFI_USB_MSG_BUS_EVENT_RESET ((uint32_t)6)
+#define EFI_USB_MSG_BUS_EVENT_SUSPEND ((uint32_t)7)
+#define EFI_USB_MSG_BUS_EVENT_RESUME ((uint32_t)8)
+#define EFI_USB_MSG_BUS_EVENT_SPEED ((uint32_t)9)
 
-typedef enum _EFI_USBFN_TRANSFER_STATUS {
-    EfiUsbTransferStatusUnknown = 0,
-    EfiUsbTransferStatusComplete,
-    EfiUsbTransferStatusAborted,
-    EfiUsbTransferStatusActive,
-    EfiUsbTransferStatusNone
-} EFI_USBFN_TRANSFER_STATUS;
+#define EFI_USB_TRANSFER_STATUS_UNKNOWN ((uint32_t)0)
+#define EFI_USB_TRANSFER_STATUS_COMPLETE ((uint32_t)1)
+#define EFI_USB_TRANSFER_STATUS_ABORTED ((uint32_t)2)
+#define EFI_USB_TRANSFER_STATUS_ACTIVE ((uint32_t)3)
+#define EFI_USB_TRANSFER_STATUS_NONE ((uint32_t)4)
 
 struct efi_usbfn_transfer_result {
     size_t BytesTransferred;
-    EFI_USBFN_TRANSFER_STATUS TransferStatus;
+    uint32_t TransferStatus;
     uint8_t EndpointIndex;
-    EFI_USBFN_ENDPOINT_DIRECTION Direction;
+    uint32_t Direction;
     void *Buffer;
 };
 
 union efi_usbfn_message_payload {
     struct efi_usb_device_request udr;
     struct efi_usbfn_transfer_result utr;
-    EFI_USB_BUS_SPEED ubs;
+    uint32_t ubs;
 };
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_EVENTHANDLER)(
     struct efi_usbfn_io_protocol *This,
-    EFI_USBFN_MESSAGE *Message,
+    uint32_t *Message,
     size_t *PayloadSize,
     union efi_usbfn_message_payload *Payload
 );
@@ -569,7 +549,7 @@ typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_EVENTHANDLER)(
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_TRANSFER)(
     struct efi_usbfn_io_protocol *This,
     uint8_t EndpointIndex,
-    EFI_USBFN_ENDPOINT_DIRECTION Direction,
+    uint32_t Direction,
     size_t *BufferSize,
     void *Buffer
 );
@@ -594,19 +574,17 @@ typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_START_CONTROLLER)(struct efi_usbfn_io_
 
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_STOP_CONTROLLER)(struct efi_usbfn_io_protocol *This);
 
-typedef enum _EFI_USBFN_POLICY_TYPE {
-    EfiUsbPolicyUndefined = 0,
-    EfiUsbPolicyMaxTransactionSize,
-    EfiUsbPolicyZeroLengthTerminationSupport,
-    EfiUsbPolicyZeroLengthTermination
-} EFI_USBFN_POLICY_TYPE;
+#define EFI_USB_POLICY_UNDEFINED ((uint32_t)0)
+#define EFI_USB_POLICY_MAX_TRANSACTION_SIZE ((uint32_t)1)
+#define EFI_USB_POLICY_ZERO_LENGTH_TERMINATION_SUPPORT ((uint32_t)2)
+#define EFI_USB_POLICY_ZERO_LENGTH_TERMINATION ((uint32_t)3)
 
 /* Named as the protocol structure names them; the prototypes print these two without _IO. */
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_SET_ENDPOINT_POLICY)(
     struct efi_usbfn_io_protocol *This,
     uint8_t EndpointIndex,
-    EFI_USBFN_ENDPOINT_DIRECTION Direction,
-    EFI_USBFN_POLICY_TYPE PolicyType,
+    uint32_t Direction,
+    uint32_t PolicyType,
     size_t BufferSize,
     void *Buffer
 );
@@ -614,8 +592,8 @@ typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_SET_ENDPOINT_POLICY)(
 typedef EFI_STATUS (EFI_API *EFI_USBFN_IO_GET_ENDPOINT_POLICY)(
     struct efi_usbfn_io_protocol *This,
     uint8_t EndpointIndex,
-    EFI_USBFN_ENDPOINT_DIRECTION Direction,
-    EFI_USBFN_POLICY_TYPE PolicyType,
+    uint32_t Direction,
+    uint32_t PolicyType,
     size_t *BufferSize,
     void *Buffer
 );

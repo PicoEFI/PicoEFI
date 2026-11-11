@@ -25,9 +25,7 @@ struct efi_network_interface_identifier_protocol {
     uint16_t IfNum;
 };
 
-typedef enum {
-    EfiNetworkInterfaceUndi = 1
-} EFI_NETWORK_INTERFACE_TYPE;
+#define EFI_NETWORK_INTERFACE_UNDI ((uint32_t)1)
 
 #ifdef __cplusplus
 }

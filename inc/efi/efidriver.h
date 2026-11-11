@@ -13,19 +13,17 @@ extern "C" {
 
 struct efi_driver_diagnostics2_protocol;
 
-typedef enum {
-    EfiDriverDiagnosticTypeStandard = 0,
-    EfiDriverDiagnosticTypeExtended = 1,
-    EfiDriverDiagnosticTypeManufacturing = 2,
-    EfiDriverDiagnosticTypeCancel = 3,
-    EfiDriverDiagnosticTypeMaximum
-} EFI_DRIVER_DIAGNOSTIC_TYPE;
+#define EFI_DRIVER_DIAGNOSTIC_TYPE_STANDARD ((uint32_t)0)
+#define EFI_DRIVER_DIAGNOSTIC_TYPE_EXTENDED ((uint32_t)1)
+#define EFI_DRIVER_DIAGNOSTIC_TYPE_MANUFACTURING ((uint32_t)2)
+#define EFI_DRIVER_DIAGNOSTIC_TYPE_CANCEL ((uint32_t)3)
+#define EFI_DRIVER_DIAGNOSTIC_TYPE_MAXIMUM ((uint32_t)4)
 
 typedef EFI_STATUS (EFI_API *EFI_DRIVER_DIAGNOSTICS2_RUN_DIAGNOSTICS)(
     struct efi_driver_diagnostics2_protocol *This,
     EFI_HANDLE ControllerHandle,
     EFI_HANDLE ChildHandle,
-    EFI_DRIVER_DIAGNOSTIC_TYPE DiagnosticType,
+    uint32_t DiagnosticType,
     char *Language,
     struct efi_guid **ErrorType,
     size_t *BufferSize,
@@ -53,15 +51,13 @@ typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_QUERY)(
     size_t *ParameterBlockSize
 );
 
-typedef enum {
-    EfiPlatformConfigurationActionNone = 0,
-    EfiPlatformConfigurationActionStopController = 1,
-    EfiPlatformConfigurationActionRestartController = 2,
-    EfiPlatformConfigurationActionRestartPlatform = 3,
-    EfiPlatformConfigurationActionNvramFailed = 4,
-    EfiPlatformConfigurationActionUnsupportedGuid = 5,
-    EfiPlatformConfigurationActionMaximum
-} EFI_PLATFORM_CONFIGURATION_ACTION;
+#define EFI_PLATFORM_CONFIGURATION_ACTION_NONE ((uint32_t)0)
+#define EFI_PLATFORM_CONFIGURATION_ACTION_STOP_CONTROLLER ((uint32_t)1)
+#define EFI_PLATFORM_CONFIGURATION_ACTION_RESTART_CONTROLLER ((uint32_t)2)
+#define EFI_PLATFORM_CONFIGURATION_ACTION_RESTART_PLATFORM ((uint32_t)3)
+#define EFI_PLATFORM_CONFIGURATION_ACTION_NVRAM_FAILED ((uint32_t)4)
+#define EFI_PLATFORM_CONFIGURATION_ACTION_UNSUPPORTED_GUID ((uint32_t)5)
+#define EFI_PLATFORM_CONFIGURATION_ACTION_MAXIMUM ((uint32_t)6)
 
 typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_RESPONSE)(
     struct efi_platform_to_driver_configuration_protocol *This,
@@ -71,7 +67,7 @@ typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_RESPONSE)(
     struct efi_guid *ParameterTypeGuid,
     void *ParameterBlock,
     size_t ParameterBlockSize,
-    EFI_PLATFORM_CONFIGURATION_ACTION ConfigurationAction
+    uint32_t ConfigurationAction
 );
 
 struct efi_platform_to_driver_configuration_protocol {
@@ -105,14 +101,12 @@ struct efi_driver_supported_efi_version_protocol {
 
 struct efi_driver_health_protocol;
 
-typedef enum {
-    EfiDriverHealthStatusHealthy,
-    EfiDriverHealthStatusRepairRequired,
-    EfiDriverHealthStatusConfigurationRequired,
-    EfiDriverHealthStatusFailed,
-    EfiDriverHealthStatusReconnectRequired,
-    EfiDriverHealthStatusRebootRequired
-} EFI_DRIVER_HEALTH_STATUS;
+#define EFI_DRIVER_HEALTH_STATUS_HEALTHY ((uint32_t)0)
+#define EFI_DRIVER_HEALTH_STATUS_REPAIR_REQUIRED ((uint32_t)1)
+#define EFI_DRIVER_HEALTH_STATUS_CONFIGURATION_REQUIRED ((uint32_t)2)
+#define EFI_DRIVER_HEALTH_STATUS_FAILED ((uint32_t)3)
+#define EFI_DRIVER_HEALTH_STATUS_RECONNECT_REQUIRED ((uint32_t)4)
+#define EFI_DRIVER_HEALTH_STATUS_REBOOT_REQUIRED ((uint32_t)5)
 
 struct efi_driver_health_hii_message {
     EFI_HII_HANDLE HiiHandle;
@@ -124,7 +118,7 @@ typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_GET_HEALTH_STATUS)(
     struct efi_driver_health_protocol *This,
     EFI_HANDLE ControllerHandle,
     EFI_HANDLE ChildHandle,
-    EFI_DRIVER_HEALTH_STATUS *HealthStatus,
+    uint32_t *HealthStatus,
     struct efi_driver_health_hii_message **MessageList,
     EFI_HII_HANDLE *FormHiiHandle
 );

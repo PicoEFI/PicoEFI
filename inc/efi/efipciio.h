@@ -14,25 +14,23 @@ extern "C" {
 
 struct efi_pci_root_bridge_io_protocol;
 
-typedef enum {
-    EfiPciWidthUint8,
-    EfiPciWidthUint16,
-    EfiPciWidthUint32,
-    EfiPciWidthUint64,
-    EfiPciWidthFifoUint8,
-    EfiPciWidthFifoUint16,
-    EfiPciWidthFifoUint32,
-    EfiPciWidthFifoUint64,
-    EfiPciWidthFillUint8,
-    EfiPciWidthFillUint16,
-    EfiPciWidthFillUint32,
-    EfiPciWidthFillUint64,
-    EfiPciWidthMaximum
-} EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH;
+#define EFI_PCI_WIDTH_UINT8 ((uint32_t)0)
+#define EFI_PCI_WIDTH_UINT16 ((uint32_t)1)
+#define EFI_PCI_WIDTH_UINT32 ((uint32_t)2)
+#define EFI_PCI_WIDTH_UINT64 ((uint32_t)3)
+#define EFI_PCI_WIDTH_FIFO_UINT8 ((uint32_t)4)
+#define EFI_PCI_WIDTH_FIFO_UINT16 ((uint32_t)5)
+#define EFI_PCI_WIDTH_FIFO_UINT32 ((uint32_t)6)
+#define EFI_PCI_WIDTH_FIFO_UINT64 ((uint32_t)7)
+#define EFI_PCI_WIDTH_FILL_UINT8 ((uint32_t)8)
+#define EFI_PCI_WIDTH_FILL_UINT16 ((uint32_t)9)
+#define EFI_PCI_WIDTH_FILL_UINT32 ((uint32_t)10)
+#define EFI_PCI_WIDTH_FILL_UINT64 ((uint32_t)11)
+#define EFI_PCI_WIDTH_MAXIMUM ((uint32_t)12)
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM)(
     struct efi_pci_root_bridge_io_protocol *This,
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
+    uint32_t Width,
     uint64_t Address,
     uint64_t Mask,
     uint64_t Value,
@@ -42,7 +40,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM)(
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM)(
     struct efi_pci_root_bridge_io_protocol *This,
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
+    uint32_t Width,
     uint64_t Address,
     size_t Count,
     void *Buffer
@@ -68,15 +66,13 @@ struct efi_pci_root_bridge_io_protocol_access {
 #define EFI_PCI_ATTRIBUTE_VGA_PALETTE_IO_16 0x20000
 #define EFI_PCI_ATTRIBUTE_VGA_IO_16 0x40000
 
-typedef enum {
-    EfiPciOperationBusMasterRead,
-    EfiPciOperationBusMasterWrite,
-    EfiPciOperationBusMasterCommonBuffer,
-    EfiPciOperationBusMasterRead64,
-    EfiPciOperationBusMasterWrite64,
-    EfiPciOperationBusMasterCommonBuffer64,
-    EfiPciOperationMaximum
-} EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_OPERATION;
+#define EFI_PCI_OPERATION_BUS_MASTER_READ ((uint32_t)0)
+#define EFI_PCI_OPERATION_BUS_MASTER_WRITE ((uint32_t)1)
+#define EFI_PCI_OPERATION_BUS_MASTER_COMMON_BUFFER ((uint32_t)2)
+#define EFI_PCI_OPERATION_BUS_MASTER_READ64 ((uint32_t)3)
+#define EFI_PCI_OPERATION_BUS_MASTER_WRITE64 ((uint32_t)4)
+#define EFI_PCI_OPERATION_BUS_MASTER_COMMON_BUFFER64 ((uint32_t)5)
+#define EFI_PCI_OPERATION_MAXIMUM ((uint32_t)6)
 
 /* Layout of the uint64_t Address that Pci.Read() and Pci.Write() take. */
 struct efi_pci_root_bridge_io_protocol_pci_address {
@@ -89,7 +85,7 @@ struct efi_pci_root_bridge_io_protocol_pci_address {
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM)(
     struct efi_pci_root_bridge_io_protocol *This,
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
+    uint32_t Width,
     uint64_t DestAddress,
     uint64_t SrcAddress,
     size_t Count
@@ -97,7 +93,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM)(
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_MAP)(
     struct efi_pci_root_bridge_io_protocol *This,
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_OPERATION Operation,
+    uint32_t Operation,
     void *HostAddress,
     size_t *NumberOfBytes,
     EFI_PHYSICAL_ADDRESS *DeviceAddress,
@@ -111,8 +107,8 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_UNMAP)(
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ALLOCATE_BUFFER)(
     struct efi_pci_root_bridge_io_protocol *This,
-    EFI_ALLOCATE_TYPE Type,
-    EFI_MEMORY_TYPE MemoryType,
+    uint32_t Type,
+    uint32_t MemoryType,
     size_t Pages,
     void **HostAddress,
     uint64_t Attributes
@@ -200,27 +196,25 @@ struct efi_pci_root_bridge_io_protocol {
 
 struct efi_pci_io_protocol;
 
-typedef enum {
-    EfiPciIoWidthUint8,
-    EfiPciIoWidthUint16,
-    EfiPciIoWidthUint32,
-    EfiPciIoWidthUint64,
-    EfiPciIoWidthFifoUint8,
-    EfiPciIoWidthFifoUint16,
-    EfiPciIoWidthFifoUint32,
-    EfiPciIoWidthFifoUint64,
-    EfiPciIoWidthFillUint8,
-    EfiPciIoWidthFillUint16,
-    EfiPciIoWidthFillUint32,
-    EfiPciIoWidthFillUint64,
-    EfiPciIoWidthMaximum
-} EFI_PCI_IO_PROTOCOL_WIDTH;
+#define EFI_PCI_IO_WIDTH_UINT8 ((uint32_t)0)
+#define EFI_PCI_IO_WIDTH_UINT16 ((uint32_t)1)
+#define EFI_PCI_IO_WIDTH_UINT32 ((uint32_t)2)
+#define EFI_PCI_IO_WIDTH_UINT64 ((uint32_t)3)
+#define EFI_PCI_IO_WIDTH_FIFO_UINT8 ((uint32_t)4)
+#define EFI_PCI_IO_WIDTH_FIFO_UINT16 ((uint32_t)5)
+#define EFI_PCI_IO_WIDTH_FIFO_UINT32 ((uint32_t)6)
+#define EFI_PCI_IO_WIDTH_FIFO_UINT64 ((uint32_t)7)
+#define EFI_PCI_IO_WIDTH_FILL_UINT8 ((uint32_t)8)
+#define EFI_PCI_IO_WIDTH_FILL_UINT16 ((uint32_t)9)
+#define EFI_PCI_IO_WIDTH_FILL_UINT32 ((uint32_t)10)
+#define EFI_PCI_IO_WIDTH_FILL_UINT64 ((uint32_t)11)
+#define EFI_PCI_IO_WIDTH_MAXIMUM ((uint32_t)12)
 
 #define EFI_PCI_IO_PASS_THROUGH_BAR 0xff
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_POLL_IO_MEM)(
     struct efi_pci_io_protocol *This,
-    EFI_PCI_IO_PROTOCOL_WIDTH Width,
+    uint32_t Width,
     uint8_t BarIndex,
     uint64_t Offset,
     uint64_t Mask,
@@ -231,7 +225,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_POLL_IO_MEM)(
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_IO_MEM)(
     struct efi_pci_io_protocol *This,
-    EFI_PCI_IO_PROTOCOL_WIDTH Width,
+    uint32_t Width,
     uint8_t BarIndex,
     uint64_t Offset,
     size_t Count,
@@ -245,7 +239,7 @@ struct efi_pci_io_protocol_access {
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_CONFIG)(
     struct efi_pci_io_protocol *This,
-    EFI_PCI_IO_PROTOCOL_WIDTH Width,
+    uint32_t Width,
     uint32_t Offset,
     size_t Count,
     void *Buffer
@@ -276,16 +270,14 @@ struct efi_pci_io_protocol_config_access {
 #define EFI_PCI_IO_ATTRIBUTE_VGA_PALETTE_IO_16 0x20000
 #define EFI_PCI_IO_ATTRIBUTE_VGA_IO_16 0x40000
 
-typedef enum {
-    EfiPciIoOperationBusMasterRead,
-    EfiPciIoOperationBusMasterWrite,
-    EfiPciIoOperationBusMasterCommonBuffer,
-    EfiPciIoOperationMaximum
-} EFI_PCI_IO_PROTOCOL_OPERATION;
+#define EFI_PCI_IO_OPERATION_BUS_MASTER_READ ((uint32_t)0)
+#define EFI_PCI_IO_OPERATION_BUS_MASTER_WRITE ((uint32_t)1)
+#define EFI_PCI_IO_OPERATION_BUS_MASTER_COMMON_BUFFER ((uint32_t)2)
+#define EFI_PCI_IO_OPERATION_MAXIMUM ((uint32_t)3)
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_COPY_MEM)(
     struct efi_pci_io_protocol *This,
-    EFI_PCI_IO_PROTOCOL_WIDTH Width,
+    uint32_t Width,
     uint8_t DestBarIndex,
     uint64_t DestOffset,
     uint8_t SrcBarIndex,
@@ -295,7 +287,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_COPY_MEM)(
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_MAP)(
     struct efi_pci_io_protocol *This,
-    EFI_PCI_IO_PROTOCOL_OPERATION Operation,
+    uint32_t Operation,
     void *HostAddress,
     size_t *NumberOfBytes,
     EFI_PHYSICAL_ADDRESS *DeviceAddress,
@@ -309,8 +301,8 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_UNMAP)(
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ALLOCATE_BUFFER)(
     struct efi_pci_io_protocol *This,
-    EFI_ALLOCATE_TYPE Type,
-    EFI_MEMORY_TYPE MemoryType,
+    uint32_t Type,
+    uint32_t MemoryType,
     size_t Pages,
     void **HostAddress,
     uint64_t Attributes
@@ -332,18 +324,16 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_LOCATION)(
     uintptr_t *FunctionNumber
 );
 
-typedef enum {
-    EfiPciIoAttributeOperationGet,
-    EfiPciIoAttributeOperationSet,
-    EfiPciIoAttributeOperationEnable,
-    EfiPciIoAttributeOperationDisable,
-    EfiPciIoAttributeOperationSupported,
-    EfiPciIoAttributeOperationMaximum
-} EFI_PCI_IO_PROTOCOL_ATTRIBUTE_OPERATION;
+#define EFI_PCI_IO_ATTRIBUTE_OPERATION_GET ((uint32_t)0)
+#define EFI_PCI_IO_ATTRIBUTE_OPERATION_SET ((uint32_t)1)
+#define EFI_PCI_IO_ATTRIBUTE_OPERATION_ENABLE ((uint32_t)2)
+#define EFI_PCI_IO_ATTRIBUTE_OPERATION_DISABLE ((uint32_t)3)
+#define EFI_PCI_IO_ATTRIBUTE_OPERATION_SUPPORTED ((uint32_t)4)
+#define EFI_PCI_IO_ATTRIBUTE_OPERATION_MAXIMUM ((uint32_t)5)
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ATTRIBUTES)(
     struct efi_pci_io_protocol *This,
-    EFI_PCI_IO_PROTOCOL_ATTRIBUTE_OPERATION Operation,
+    uint32_t Operation,
     uint64_t Attributes,
     uint64_t *Result
 );

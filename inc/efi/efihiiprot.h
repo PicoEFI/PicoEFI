@@ -391,19 +391,17 @@ typedef EFI_STATUS (EFI_API *EFI_HII_IMAGE_DECODER_GET_NAME)(
 #define EFI_HII_IMAGE_DECODER_NAME_PNG_GUID \
     {0xaf060190, 0x5e3a, 0x4025, {0xaf, 0xbd, 0xe1, 0xf9, 0x5, 0xbf, 0xaa, 0x4c}}
 
-typedef enum {
-    EFI_HII_IMAGE_DECODER_COLOR_TYPE_RGB = 0,
-    EFI_HII_IMAGE_DECODER_COLOR_TYPE_RGBA = 1,
-    EFI_HII_IMAGE_DECODER_COLOR_TYPE_CMYK = 2,
-    EFI_HII_IMAGE_DECODER_COLOR_TYPE_UNKNOWN = 0xff
-} EFI_HII_IMAGE_DECODER_COLOR_TYPE;
+#define EFI_HII_IMAGE_DECODER_COLOR_TYPE_RGB ((uint32_t)0)
+#define EFI_HII_IMAGE_DECODER_COLOR_TYPE_RGBA ((uint32_t)1)
+#define EFI_HII_IMAGE_DECODER_COLOR_TYPE_CMYK ((uint32_t)2)
+#define EFI_HII_IMAGE_DECODER_COLOR_TYPE_UNKNOWN ((uint32_t)0xff)
 
 struct efi_hii_image_decoder_image_info_header {
     struct efi_guid DecoderName;
     uint16_t ImageInfoSize;
     uint16_t ImageWidth;
     uint16_t ImageHeight;
-    EFI_HII_IMAGE_DECODER_COLOR_TYPE ColorType;
+    uint32_t ColorType;
     uint8_t ColorDepthInBits;
 };
 
@@ -554,126 +552,124 @@ typedef EFI_STATUS (EFI_API *EFI_HII_FIND_KEYBOARD_LAYOUTS)(
     struct efi_guid *KeyGuidBuffer
 );
 
-typedef enum {
-    EfiKeyLCtrl,
-    EfiKeyA0,
-    EfiKeyLAlt,
-    EfiKeySpaceBar,
-    EfiKeyA2,
-    EfiKeyA3,
-    EfiKeyA4,
-    EfiKeyRCtrl,
-    EfiKeyLeftArrow,
-    EfiKeyDownArrow,
-    EfiKeyRightArrow,
-    EfiKeyZero,
-    EfiKeyPeriod,
-    EfiKeyEnter,
-    EfiKeyLShift,
-    EfiKeyB0,
-    EfiKeyB1,
-    EfiKeyB2,
-    EfiKeyB3,
-    EfiKeyB4,
-    EfiKeyB5,
-    EfiKeyB6,
-    EfiKeyB7,
-    EfiKeyB8,
-    EfiKeyB9,
-    EfiKeyB10,
-    EfiKeyRShift,
-    EfiKeyUpArrow,
-    EfiKeyOne,
-    EfiKeyTwo,
-    EfiKeyThree,
-    EfiKeyCapsLock,
-    EfiKeyC1,
-    EfiKeyC2,
-    EfiKeyC3,
-    EfiKeyC4,
-    EfiKeyC5,
-    EfiKeyC6,
-    EfiKeyC7,
-    EfiKeyC8,
-    EfiKeyC9,
-    EfiKeyC10,
-    EfiKeyC11,
-    EfiKeyC12,
-    EfiKeyFour,
-    EfiKeyFive,
-    EfiKeySix,
-    EfiKeyPlus,
-    EfiKeyTab,
-    EfiKeyD1,
-    EfiKeyD2,
-    EfiKeyD3,
-    EfiKeyD4,
-    EfiKeyD5,
-    EfiKeyD6,
-    EfiKeyD7,
-    EfiKeyD8,
-    EfiKeyD9,
-    EfiKeyD10,
-    EfiKeyD11,
-    EfiKeyD12,
-    EfiKeyD13,
-    EfiKeyDel,
-    EfiKeyEnd,
-    EfiKeyPgDn,
-    EfiKeySeven,
-    EfiKeyEight,
-    EfiKeyNine,
-    EfiKeyE0,
-    EfiKeyE1,
-    EfiKeyE2,
-    EfiKeyE3,
-    EfiKeyE4,
-    EfiKeyE5,
-    EfiKeyE6,
-    EfiKeyE7,
-    EfiKeyE8,
-    EfiKeyE9,
-    EfiKeyE10,
-    EfiKeyE11,
-    EfiKeyE12,
-    EfiKeyBackSpace,
-    EfiKeyIns,
-    EfiKeyHome,
-    EfiKeyPgUp,
-    EfiKeyNLck,
-    EfiKeySlash,
-    EfiKeyAsterisk,
-    EfiKeyMinus,
-    EfiKeyEsc,
-    EfiKeyF1,
-    EfiKeyF2,
-    EfiKeyF3,
-    EfiKeyF4,
-    EfiKeyF5,
-    EfiKeyF6,
-    EfiKeyF7,
-    EfiKeyF8,
-    EfiKeyF9,
-    EfiKeyF10,
-    EfiKeyF11,
-    EfiKeyF12,
-    EfiKeyPrint,
-    EfiKeySLck,
-    EfiKeyPause,
-    EfiKeyIntl0,
-    EfiKeyIntl1,
-    EfiKeyIntl2,
-    EfiKeyIntl3,
-    EfiKeyIntl4,
-    EfiKeyIntl5,
-    EfiKeyIntl6,
-    EfiKeyIntl7,
-    EfiKeyIntl8,
-    EfiKeyIntl9
-} EFI_KEY;
+#define EFI_KEY_LCTRL ((uint32_t)0)
+#define EFI_KEY_A0 ((uint32_t)1)
+#define EFI_KEY_LALT ((uint32_t)2)
+#define EFI_KEY_SPACE_BAR ((uint32_t)3)
+#define EFI_KEY_A2 ((uint32_t)4)
+#define EFI_KEY_A3 ((uint32_t)5)
+#define EFI_KEY_A4 ((uint32_t)6)
+#define EFI_KEY_RCTRL ((uint32_t)7)
+#define EFI_KEY_LEFT_ARROW ((uint32_t)8)
+#define EFI_KEY_DOWN_ARROW ((uint32_t)9)
+#define EFI_KEY_RIGHT_ARROW ((uint32_t)10)
+#define EFI_KEY_ZERO ((uint32_t)11)
+#define EFI_KEY_PERIOD ((uint32_t)12)
+#define EFI_KEY_ENTER ((uint32_t)13)
+#define EFI_KEY_LSHIFT ((uint32_t)14)
+#define EFI_KEY_B0 ((uint32_t)15)
+#define EFI_KEY_B1 ((uint32_t)16)
+#define EFI_KEY_B2 ((uint32_t)17)
+#define EFI_KEY_B3 ((uint32_t)18)
+#define EFI_KEY_B4 ((uint32_t)19)
+#define EFI_KEY_B5 ((uint32_t)20)
+#define EFI_KEY_B6 ((uint32_t)21)
+#define EFI_KEY_B7 ((uint32_t)22)
+#define EFI_KEY_B8 ((uint32_t)23)
+#define EFI_KEY_B9 ((uint32_t)24)
+#define EFI_KEY_B10 ((uint32_t)25)
+#define EFI_KEY_RSHIFT ((uint32_t)26)
+#define EFI_KEY_UP_ARROW ((uint32_t)27)
+#define EFI_KEY_ONE ((uint32_t)28)
+#define EFI_KEY_TWO ((uint32_t)29)
+#define EFI_KEY_THREE ((uint32_t)30)
+#define EFI_KEY_CAPS_LOCK ((uint32_t)31)
+#define EFI_KEY_C1 ((uint32_t)32)
+#define EFI_KEY_C2 ((uint32_t)33)
+#define EFI_KEY_C3 ((uint32_t)34)
+#define EFI_KEY_C4 ((uint32_t)35)
+#define EFI_KEY_C5 ((uint32_t)36)
+#define EFI_KEY_C6 ((uint32_t)37)
+#define EFI_KEY_C7 ((uint32_t)38)
+#define EFI_KEY_C8 ((uint32_t)39)
+#define EFI_KEY_C9 ((uint32_t)40)
+#define EFI_KEY_C10 ((uint32_t)41)
+#define EFI_KEY_C11 ((uint32_t)42)
+#define EFI_KEY_C12 ((uint32_t)43)
+#define EFI_KEY_FOUR ((uint32_t)44)
+#define EFI_KEY_FIVE ((uint32_t)45)
+#define EFI_KEY_SIX ((uint32_t)46)
+#define EFI_KEY_PLUS ((uint32_t)47)
+#define EFI_KEY_TAB ((uint32_t)48)
+#define EFI_KEY_D1 ((uint32_t)49)
+#define EFI_KEY_D2 ((uint32_t)50)
+#define EFI_KEY_D3 ((uint32_t)51)
+#define EFI_KEY_D4 ((uint32_t)52)
+#define EFI_KEY_D5 ((uint32_t)53)
+#define EFI_KEY_D6 ((uint32_t)54)
+#define EFI_KEY_D7 ((uint32_t)55)
+#define EFI_KEY_D8 ((uint32_t)56)
+#define EFI_KEY_D9 ((uint32_t)57)
+#define EFI_KEY_D10 ((uint32_t)58)
+#define EFI_KEY_D11 ((uint32_t)59)
+#define EFI_KEY_D12 ((uint32_t)60)
+#define EFI_KEY_D13 ((uint32_t)61)
+#define EFI_KEY_DEL ((uint32_t)62)
+#define EFI_KEY_END ((uint32_t)63)
+#define EFI_KEY_PG_DN ((uint32_t)64)
+#define EFI_KEY_SEVEN ((uint32_t)65)
+#define EFI_KEY_EIGHT ((uint32_t)66)
+#define EFI_KEY_NINE ((uint32_t)67)
+#define EFI_KEY_E0 ((uint32_t)68)
+#define EFI_KEY_E1 ((uint32_t)69)
+#define EFI_KEY_E2 ((uint32_t)70)
+#define EFI_KEY_E3 ((uint32_t)71)
+#define EFI_KEY_E4 ((uint32_t)72)
+#define EFI_KEY_E5 ((uint32_t)73)
+#define EFI_KEY_E6 ((uint32_t)74)
+#define EFI_KEY_E7 ((uint32_t)75)
+#define EFI_KEY_E8 ((uint32_t)76)
+#define EFI_KEY_E9 ((uint32_t)77)
+#define EFI_KEY_E10 ((uint32_t)78)
+#define EFI_KEY_E11 ((uint32_t)79)
+#define EFI_KEY_E12 ((uint32_t)80)
+#define EFI_KEY_BACK_SPACE ((uint32_t)81)
+#define EFI_KEY_INS ((uint32_t)82)
+#define EFI_KEY_HOME ((uint32_t)83)
+#define EFI_KEY_PG_UP ((uint32_t)84)
+#define EFI_KEY_NLCK ((uint32_t)85)
+#define EFI_KEY_SLASH ((uint32_t)86)
+#define EFI_KEY_ASTERISK ((uint32_t)87)
+#define EFI_KEY_MINUS ((uint32_t)88)
+#define EFI_KEY_ESC ((uint32_t)89)
+#define EFI_KEY_F1 ((uint32_t)90)
+#define EFI_KEY_F2 ((uint32_t)91)
+#define EFI_KEY_F3 ((uint32_t)92)
+#define EFI_KEY_F4 ((uint32_t)93)
+#define EFI_KEY_F5 ((uint32_t)94)
+#define EFI_KEY_F6 ((uint32_t)95)
+#define EFI_KEY_F7 ((uint32_t)96)
+#define EFI_KEY_F8 ((uint32_t)97)
+#define EFI_KEY_F9 ((uint32_t)98)
+#define EFI_KEY_F10 ((uint32_t)99)
+#define EFI_KEY_F11 ((uint32_t)100)
+#define EFI_KEY_F12 ((uint32_t)101)
+#define EFI_KEY_PRINT ((uint32_t)102)
+#define EFI_KEY_SLCK ((uint32_t)103)
+#define EFI_KEY_PAUSE ((uint32_t)104)
+#define EFI_KEY_INTL0 ((uint32_t)105)
+#define EFI_KEY_INTL1 ((uint32_t)106)
+#define EFI_KEY_INTL2 ((uint32_t)107)
+#define EFI_KEY_INTL3 ((uint32_t)108)
+#define EFI_KEY_INTL4 ((uint32_t)109)
+#define EFI_KEY_INTL5 ((uint32_t)110)
+#define EFI_KEY_INTL6 ((uint32_t)111)
+#define EFI_KEY_INTL7 ((uint32_t)112)
+#define EFI_KEY_INTL8 ((uint32_t)113)
+#define EFI_KEY_INTL9 ((uint32_t)114)
 
 struct efi_key_descriptor {
-    EFI_KEY Key;
+    uint32_t Key;
     uint16_t Unicode;
     uint16_t ShiftedUnicode;
     uint16_t AltGrUnicode;

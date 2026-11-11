@@ -99,32 +99,28 @@ struct efi_arp_protocol {
 
 struct efi_dhcp4_protocol;
 
-typedef enum {
-    EfiDhcp4Stopped = 0x0,
-    EfiDhcp4Init = 0x1,
-    EfiDhcp4Selecting = 0x2,
-    EfiDhcp4Requesting = 0x3,
-    EfiDhcp4Bound = 0x4,
-    EfiDhcp4Renewing = 0x5,
-    EfiDhcp4Rebinding = 0x6,
-    EfiDhcp4InitReboot = 0x7,
-    EfiDhcp4Rebooting = 0x8
-} EFI_DHCP4_STATE;
+#define EFI_DHCP4_STOPPED ((uint32_t)0x0)
+#define EFI_DHCP4_INIT ((uint32_t)0x1)
+#define EFI_DHCP4_SELECTING ((uint32_t)0x2)
+#define EFI_DHCP4_REQUESTING ((uint32_t)0x3)
+#define EFI_DHCP4_BOUND ((uint32_t)0x4)
+#define EFI_DHCP4_RENEWING ((uint32_t)0x5)
+#define EFI_DHCP4_REBINDING ((uint32_t)0x6)
+#define EFI_DHCP4_INIT_REBOOT ((uint32_t)0x7)
+#define EFI_DHCP4_REBOOTING ((uint32_t)0x8)
 
-typedef enum {
-    EfiDhcp4SendDiscover = 0x01,
-    EfiDhcp4RcvdOffer = 0x02,
-    EfiDhcp4SelectOffer = 0x03,
-    EfiDhcp4SendRequest = 0x04,
-    EfiDhcp4RcvdAck = 0x05,
-    EfiDhcp4RcvdNak = 0x06,
-    EfiDhcp4SendDecline = 0x07,
-    EfiDhcp4BoundCompleted = 0x08,
-    EfiDhcp4EnterRenewing = 0x09,
-    EfiDhcp4EnterRebinding = 0x0a,
-    EfiDhcp4AddressLost = 0x0b,
-    EfiDhcp4Fail = 0x0c
-} EFI_DHCP4_EVENT;
+#define EFI_DHCP4_SEND_DISCOVER ((uint32_t)0x01)
+#define EFI_DHCP4_RCVD_OFFER ((uint32_t)0x02)
+#define EFI_DHCP4_SELECT_OFFER ((uint32_t)0x03)
+#define EFI_DHCP4_SEND_REQUEST ((uint32_t)0x04)
+#define EFI_DHCP4_RCVD_ACK ((uint32_t)0x05)
+#define EFI_DHCP4_RCVD_NAK ((uint32_t)0x06)
+#define EFI_DHCP4_SEND_DECLINE ((uint32_t)0x07)
+#define EFI_DHCP4_BOUND_COMPLETED ((uint32_t)0x08)
+#define EFI_DHCP4_ENTER_RENEWING ((uint32_t)0x09)
+#define EFI_DHCP4_ENTER_REBINDING ((uint32_t)0x0a)
+#define EFI_DHCP4_ADDRESS_LOST ((uint32_t)0x0b)
+#define EFI_DHCP4_FAIL ((uint32_t)0x0c)
 
 struct efi_dhcp4_header {
     uint8_t OpCode;
@@ -162,8 +158,8 @@ struct efi_dhcp4_packet_option {
 typedef EFI_STATUS (EFI_API *EFI_DHCP4_CALLBACK)(
     struct efi_dhcp4_protocol *This,
     void *Context,
-    EFI_DHCP4_STATE CurrentState,
-    EFI_DHCP4_EVENT Dhcp4Event,
+    uint32_t CurrentState,
+    uint32_t Dhcp4Event,
     struct efi_dhcp4_packet *Packet,
     struct efi_dhcp4_packet **NewPacket
 );
@@ -181,7 +177,7 @@ struct efi_dhcp4_config_data {
 };
 
 struct efi_dhcp4_mode_data {
-    EFI_DHCP4_STATE State;
+    uint32_t State;
     struct efi_dhcp4_config_data ConfigData;
     struct efi_ipv4_address ClientAddress;
     struct efi_mac_address ClientMacAddress;
@@ -292,17 +288,15 @@ struct efi_dhcp6_ia_descriptor {
 #define EFI_DHCP6_IA_TYPE_NA 3
 #define EFI_DHCP6_IA_TYPE_TA 4
 
-typedef enum {
-    EfiDhcp6Init = 0x0,
-    EfiDhcp6Selecting = 0x1,
-    EfiDhcp6Requesting = 0x2,
-    EfiDhcp6Declining = 0x3,
-    EfiDhcp6Confirming = 0x4,
-    EfiDhcp6Releasing = 0x5,
-    EfiDhcp6Bound = 0x6,
-    EfiDhcp6Renewing = 0x7,
-    EfiDhcp6Rebinding = 0x8
-} EFI_DHCP6_STATE;
+#define EFI_DHCP6_INIT ((uint32_t)0x0)
+#define EFI_DHCP6_SELECTING ((uint32_t)0x1)
+#define EFI_DHCP6_REQUESTING ((uint32_t)0x2)
+#define EFI_DHCP6_DECLINING ((uint32_t)0x3)
+#define EFI_DHCP6_CONFIRMING ((uint32_t)0x4)
+#define EFI_DHCP6_RELEASING ((uint32_t)0x5)
+#define EFI_DHCP6_BOUND ((uint32_t)0x6)
+#define EFI_DHCP6_RENEWING ((uint32_t)0x7)
+#define EFI_DHCP6_REBINDING ((uint32_t)0x8)
 
 struct efi_dhcp6_ia_address {
     struct efi_ipv6_address IpAddress;
@@ -326,7 +320,7 @@ struct efi_dhcp6_packet {
 
 struct efi_dhcp6_ia {
     struct efi_dhcp6_ia_descriptor Descriptor;
-    EFI_DHCP6_STATE State;
+    uint32_t State;
     struct efi_dhcp6_packet *ReplyPacket;
     uint32_t IaAddressCount;
     struct efi_dhcp6_ia_address IaAddress[1];
@@ -343,25 +337,23 @@ struct efi_dhcp6_packet_option {
     uint8_t Data[1];
 } __attribute__((__packed__));
 
-typedef enum {
-    EfiDhcp6SendSolicit = 0x0,
-    EfiDhcp6RcvdAdvertise = 0x1,
-    EfiDhcp6SelectAdvertise = 0x2,
-    EfiDhcp6SendRequest = 0x3,
-    EfiDhcp6RcvdReply = 0x4,
-    EfiDhcp6RcvdReconfigure = 0x5,
-    EfiDhcp6SendDecline = 0x6,
-    EfiDhcp6SendConfirm = 0x7,
-    EfiDhcp6SendRelease = 0x8,
-    EfiDhcp6SendRenew = 0x9,
-    EfiDhcp6SendRebind = 0xa
-} EFI_DHCP6_EVENT;
+#define EFI_DHCP6_SEND_SOLICIT ((uint32_t)0x0)
+#define EFI_DHCP6_RCVD_ADVERTISE ((uint32_t)0x1)
+#define EFI_DHCP6_SELECT_ADVERTISE ((uint32_t)0x2)
+#define EFI_DHCP6_SEND_REQUEST ((uint32_t)0x3)
+#define EFI_DHCP6_RCVD_REPLY ((uint32_t)0x4)
+#define EFI_DHCP6_RCVD_RECONFIGURE ((uint32_t)0x5)
+#define EFI_DHCP6_SEND_DECLINE ((uint32_t)0x6)
+#define EFI_DHCP6_SEND_CONFIRM ((uint32_t)0x7)
+#define EFI_DHCP6_SEND_RELEASE ((uint32_t)0x8)
+#define EFI_DHCP6_SEND_RENEW ((uint32_t)0x9)
+#define EFI_DHCP6_SEND_REBIND ((uint32_t)0xa)
 
 typedef EFI_STATUS (EFI_API *EFI_DHCP6_CALLBACK)(
     struct efi_dhcp6_protocol *This,
     void *Context,
-    EFI_DHCP6_STATE CurrentState,
-    EFI_DHCP6_EVENT Dhcp6Event,
+    uint32_t CurrentState,
+    uint32_t Dhcp6Event,
     struct efi_dhcp6_packet *Packet,
     struct efi_dhcp6_packet **NewPacket
 );
@@ -710,11 +702,9 @@ struct efi_dns6_protocol {
 
 struct efi_http_protocol;
 
-typedef enum {
-    EfiHttpVersion10,
-    EfiHttpVersion11,
-    EfiHttpVersionUnsupported
-} EFI_HTTP_VERSION;
+#define EFI_HTTP_VERSION10 ((uint32_t)0)
+#define EFI_HTTP_VERSION11 ((uint32_t)1)
+#define EFI_HTTP_VERSION_UNSUPPORTED ((uint32_t)2)
 
 struct efi_httpv4_access_point {
     uint8_t UseDefaultAddress;
@@ -729,7 +719,7 @@ struct efi_httpv6_access_point {
 };
 
 struct efi_http_config_data {
-    EFI_HTTP_VERSION HttpVersion;
+    uint32_t HttpVersion;
     uint32_t TimeOutMillisec;
     uint8_t LocalAddressIsIPv6;
     union {
@@ -748,21 +738,19 @@ typedef EFI_STATUS (EFI_API *EFI_HTTP_CONFIGURE)(
     struct efi_http_config_data *HttpConfigData
 );
 
-typedef enum {
-    EfiHttpMethodGet,
-    EfiHttpMethodPost,
-    EfiHttpMethodPatch,
-    EfiHttpMethodOptions,
-    EfiHttpMethodConnect,
-    EfiHttpMethodHead,
-    EfiHttpMethodPut,
-    EfiHttpMethodDelete,
-    EfiHttpMethodTrace,
-    EfiHttpMethodMax
-} EFI_HTTP_METHOD;
+#define EFI_HTTP_METHOD_GET ((uint32_t)0)
+#define EFI_HTTP_METHOD_POST ((uint32_t)1)
+#define EFI_HTTP_METHOD_PATCH ((uint32_t)2)
+#define EFI_HTTP_METHOD_OPTIONS ((uint32_t)3)
+#define EFI_HTTP_METHOD_CONNECT ((uint32_t)4)
+#define EFI_HTTP_METHOD_HEAD ((uint32_t)5)
+#define EFI_HTTP_METHOD_PUT ((uint32_t)6)
+#define EFI_HTTP_METHOD_DELETE ((uint32_t)7)
+#define EFI_HTTP_METHOD_TRACE ((uint32_t)8)
+#define EFI_HTTP_METHOD_MAX ((uint32_t)9)
 
 struct efi_http_request_data {
-    EFI_HTTP_METHOD Method;
+    uint32_t Method;
     uint16_t *Url;
 };
 
@@ -771,53 +759,51 @@ struct efi_http_connect_request_data {
     uint16_t *ProxyUrl;
 };
 
-typedef enum {
-    EFI_HTTP_STATUS_UNSUPPORTED_STATUS = 0,
-    EFI_HTTP_STATUS_100_CONTINUE,
-    EFI_HTTP_STATUS_101_SWITCHING_PROTOCOLS,
-    EFI_HTTP_STATUS_200_OK,
-    EFI_HTTP_STATUS_201_CREATED,
-    EFI_HTTP_STATUS_202_ACCEPTED,
-    EFI_HTTP_STATUS_203_NON_AUTHORITATIVE_INFORMATION,
-    EFI_HTTP_STATUS_204_NO_CONTENT,
-    EFI_HTTP_STATUS_205_RESET_CONTENT,
-    EFI_HTTP_STATUS_206_PARTIAL_CONTENT,
-    EFI_HTTP_STATUS_300_MULTIPLE_CHOICES,
-    EFI_HTTP_STATUS_301_MOVED_PERMANENTLY,
-    EFI_HTTP_STATUS_302_FOUND,
-    EFI_HTTP_STATUS_303_SEE_OTHER,
-    EFI_HTTP_STATUS_304_NOT_MODIFIED,
-    EFI_HTTP_STATUS_305_USE_PROXY,
-    EFI_HTTP_STATUS_307_TEMPORARY_REDIRECT,
-    EFI_HTTP_STATUS_400_BAD_REQUEST,
-    EFI_HTTP_STATUS_401_UNAUTHORIZED,
-    EFI_HTTP_STATUS_402_PAYMENT_REQUIRED,
-    EFI_HTTP_STATUS_403_FORBIDDEN,
-    EFI_HTTP_STATUS_404_NOT_FOUND,
-    EFI_HTTP_STATUS_405_METHOD_NOT_ALLOWED,
-    EFI_HTTP_STATUS_406_NOT_ACCEPTABLE,
-    EFI_HTTP_STATUS_407_PROXY_AUTHENTICATION_REQUIRED,
-    EFI_HTTP_STATUS_408_REQUEST_TIME_OUT,
-    EFI_HTTP_STATUS_409_CONFLICT,
-    EFI_HTTP_STATUS_410_GONE,
-    EFI_HTTP_STATUS_411_LENGTH_REQUIRED,
-    EFI_HTTP_STATUS_412_PRECONDITION_FAILED,
-    EFI_HTTP_STATUS_413_REQUEST_ENTITY_TOO_LARGE,
-    EFI_HTTP_STATUS_414_REQUEST_URI_TOO_LARGE,
-    EFI_HTTP_STATUS_415_UNSUPPORTED_MEDIA_TYPE,
-    EFI_HTTP_STATUS_416_REQUESTED_RANGE_NOT_SATISFIED,
-    EFI_HTTP_STATUS_417_EXPECTATION_FAILED,
-    EFI_HTTP_STATUS_500_INTERNAL_SERVER_ERROR,
-    EFI_HTTP_STATUS_501_NOT_IMPLEMENTED,
-    EFI_HTTP_STATUS_502_BAD_GATEWAY,
-    EFI_HTTP_STATUS_503_SERVICE_UNAVAILABLE,
-    EFI_HTTP_STATUS_504_GATEWAY_TIME_OUT,
-    EFI_HTTP_STATUS_505_HTTP_VERSION_NOT_SUPPORTED,
-    EFI_HTTP_STATUS_308_PERMANENT_REDIRECT
-} EFI_HTTP_STATUS_CODE;
+#define EFI_HTTP_STATUS_UNSUPPORTED_STATUS ((uint32_t)0)
+#define EFI_HTTP_STATUS_100_CONTINUE ((uint32_t)1)
+#define EFI_HTTP_STATUS_101_SWITCHING_PROTOCOLS ((uint32_t)2)
+#define EFI_HTTP_STATUS_200_OK ((uint32_t)3)
+#define EFI_HTTP_STATUS_201_CREATED ((uint32_t)4)
+#define EFI_HTTP_STATUS_202_ACCEPTED ((uint32_t)5)
+#define EFI_HTTP_STATUS_203_NON_AUTHORITATIVE_INFORMATION ((uint32_t)6)
+#define EFI_HTTP_STATUS_204_NO_CONTENT ((uint32_t)7)
+#define EFI_HTTP_STATUS_205_RESET_CONTENT ((uint32_t)8)
+#define EFI_HTTP_STATUS_206_PARTIAL_CONTENT ((uint32_t)9)
+#define EFI_HTTP_STATUS_300_MULTIPLE_CHOICES ((uint32_t)10)
+#define EFI_HTTP_STATUS_301_MOVED_PERMANENTLY ((uint32_t)11)
+#define EFI_HTTP_STATUS_302_FOUND ((uint32_t)12)
+#define EFI_HTTP_STATUS_303_SEE_OTHER ((uint32_t)13)
+#define EFI_HTTP_STATUS_304_NOT_MODIFIED ((uint32_t)14)
+#define EFI_HTTP_STATUS_305_USE_PROXY ((uint32_t)15)
+#define EFI_HTTP_STATUS_307_TEMPORARY_REDIRECT ((uint32_t)16)
+#define EFI_HTTP_STATUS_400_BAD_REQUEST ((uint32_t)17)
+#define EFI_HTTP_STATUS_401_UNAUTHORIZED ((uint32_t)18)
+#define EFI_HTTP_STATUS_402_PAYMENT_REQUIRED ((uint32_t)19)
+#define EFI_HTTP_STATUS_403_FORBIDDEN ((uint32_t)20)
+#define EFI_HTTP_STATUS_404_NOT_FOUND ((uint32_t)21)
+#define EFI_HTTP_STATUS_405_METHOD_NOT_ALLOWED ((uint32_t)22)
+#define EFI_HTTP_STATUS_406_NOT_ACCEPTABLE ((uint32_t)23)
+#define EFI_HTTP_STATUS_407_PROXY_AUTHENTICATION_REQUIRED ((uint32_t)24)
+#define EFI_HTTP_STATUS_408_REQUEST_TIME_OUT ((uint32_t)25)
+#define EFI_HTTP_STATUS_409_CONFLICT ((uint32_t)26)
+#define EFI_HTTP_STATUS_410_GONE ((uint32_t)27)
+#define EFI_HTTP_STATUS_411_LENGTH_REQUIRED ((uint32_t)28)
+#define EFI_HTTP_STATUS_412_PRECONDITION_FAILED ((uint32_t)29)
+#define EFI_HTTP_STATUS_413_REQUEST_ENTITY_TOO_LARGE ((uint32_t)30)
+#define EFI_HTTP_STATUS_414_REQUEST_URI_TOO_LARGE ((uint32_t)31)
+#define EFI_HTTP_STATUS_415_UNSUPPORTED_MEDIA_TYPE ((uint32_t)32)
+#define EFI_HTTP_STATUS_416_REQUESTED_RANGE_NOT_SATISFIED ((uint32_t)33)
+#define EFI_HTTP_STATUS_417_EXPECTATION_FAILED ((uint32_t)34)
+#define EFI_HTTP_STATUS_500_INTERNAL_SERVER_ERROR ((uint32_t)35)
+#define EFI_HTTP_STATUS_501_NOT_IMPLEMENTED ((uint32_t)36)
+#define EFI_HTTP_STATUS_502_BAD_GATEWAY ((uint32_t)37)
+#define EFI_HTTP_STATUS_503_SERVICE_UNAVAILABLE ((uint32_t)38)
+#define EFI_HTTP_STATUS_504_GATEWAY_TIME_OUT ((uint32_t)39)
+#define EFI_HTTP_STATUS_505_HTTP_VERSION_NOT_SUPPORTED ((uint32_t)40)
+#define EFI_HTTP_STATUS_308_PERMANENT_REDIRECT ((uint32_t)41)
 
 struct efi_http_response_data {
-    EFI_HTTP_STATUS_CODE StatusCode;
+    uint32_t StatusCode;
 };
 
 struct efi_http_header {
@@ -939,34 +925,28 @@ struct efi_rest_ex_service_info_header {
     struct efi_rest_ex_service_info_ver RestServiceInfoVer;
 };
 
-typedef enum {
-    EFI_REST_EX_SERVICE_UNSPECIFIC = 1,
-    EFI_REST_EX_SERVICE_REDFISH,
-    EFI_REST_EX_SERVICE_ODATA,
-    EFI_REST_EX_SERVICE_VENDOR_SPECIFIC = 0xff,
-    EFI_REST_EX_SERVICE_TYPE_MAX
-} EFI_REST_EX_SERVICE_TYPE;
+#define EFI_REST_EX_SERVICE_UNSPECIFIC ((uint32_t)1)
+#define EFI_REST_EX_SERVICE_REDFISH ((uint32_t)2)
+#define EFI_REST_EX_SERVICE_ODATA ((uint32_t)3)
+#define EFI_REST_EX_SERVICE_VENDOR_SPECIFIC ((uint32_t)0xff)
+#define EFI_REST_EX_SERVICE_TYPE_MAX ((uint32_t)256)
 
-typedef enum {
-    EFI_REST_EX_SERVICE_IN_BAND_ACCESS = 1,
-    EFI_REST_EX_SERVICE_OUT_OF_BAND_ACCESS = 2,
-    EFI_REST_EX_SERVICE_ACCESS_MODE_MAX
-} EFI_REST_EX_SERVICE_ACCESS_MODE;
+#define EFI_REST_EX_SERVICE_IN_BAND_ACCESS ((uint32_t)1)
+#define EFI_REST_EX_SERVICE_OUT_OF_BAND_ACCESS ((uint32_t)2)
+#define EFI_REST_EX_SERVICE_ACCESS_MODE_MAX ((uint32_t)3)
 
-typedef enum {
-    EFI_REST_EX_CONFIG_TYPE_HTTP,
-    EFI_REST_EX_CONFIG_TYPE_UNSPECIFIC,
-    EFI_REST_EX_CONFIG_TYPE_MAX
-} EFI_REST_EX_CONFIG_TYPE;
+#define EFI_REST_EX_CONFIG_TYPE_HTTP ((uint32_t)0)
+#define EFI_REST_EX_CONFIG_TYPE_UNSPECIFIC ((uint32_t)1)
+#define EFI_REST_EX_CONFIG_TYPE_MAX ((uint32_t)2)
 
 struct efi_rest_ex_service_info_v_1_0 {
     struct efi_rest_ex_service_info_header EfiRestExServiceInfoHeader;
-    EFI_REST_EX_SERVICE_TYPE RestExServiceType;
-    EFI_REST_EX_SERVICE_ACCESS_MODE RestServiceAccessMode;
+    uint32_t RestExServiceType;
+    uint32_t RestServiceAccessMode;
     struct efi_guid VendorRestServiceName;
     uint32_t VendorSpecificDataLength;
     uint8_t *VendorSpecifcData;
-    EFI_REST_EX_CONFIG_TYPE RestExConfigType;
+    uint32_t RestExConfigType;
     uint8_t RestExConfigDataLength;
 };
 

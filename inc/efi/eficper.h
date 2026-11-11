@@ -107,26 +107,24 @@ struct efi_generic_error_status {
     uint64_t Resv2:41;
 } __attribute__((__packed__));
 
-typedef enum {
-    EfiErrorInternal = 1,
-    EfiErrorBus = 16,
-    EfiErrorMemStorage = 4,
-    EfiErrorTlbStorage = 5,
-    EfiErrorCacheStorage = 6,
-    EfiErrorFunctionalUnit = 7,
-    EfiErrorSelftest = 8,
-    EfiErrorOverflow = 9,
-    EfiErrorVirtualMap = 17,
-    EfiErrorAccessInvalid = 18,
-    EfiErrorUnimplAccess = 19,
-    EfiErrorLossOfLockstep = 20,
-    EfiErrorResponseInvalid = 21,
-    EfiErrorParity = 22,
-    EfiErrorProtocol = 23,
-    EfiErrorPath = 24,
-    EfiErrorTimeout = 25,
-    EfiErrorPoisoned = 26
-} EFI_GENERIC_ERROR_STATUS_ERROR_TYPE;
+#define EFI_ERROR_INTERNAL ((uint32_t)1)
+#define EFI_ERROR_BUS ((uint32_t)16)
+#define EFI_ERROR_MEM_STORAGE ((uint32_t)4)
+#define EFI_ERROR_TLB_STORAGE ((uint32_t)5)
+#define EFI_ERROR_CACHE_STORAGE ((uint32_t)6)
+#define EFI_ERROR_FUNCTIONAL_UNIT ((uint32_t)7)
+#define EFI_ERROR_SELFTEST ((uint32_t)8)
+#define EFI_ERROR_OVERFLOW ((uint32_t)9)
+#define EFI_ERROR_VIRTUAL_MAP ((uint32_t)17)
+#define EFI_ERROR_ACCESS_INVALID ((uint32_t)18)
+#define EFI_ERROR_UNIMPL_ACCESS ((uint32_t)19)
+#define EFI_ERROR_LOSS_OF_LOCKSTEP ((uint32_t)20)
+#define EFI_ERROR_RESPONSE_INVALID ((uint32_t)21)
+#define EFI_ERROR_PARITY ((uint32_t)22)
+#define EFI_ERROR_PROTOCOL ((uint32_t)23)
+#define EFI_ERROR_PATH ((uint32_t)24)
+#define EFI_ERROR_TIMEOUT ((uint32_t)25)
+#define EFI_ERROR_POISONED ((uint32_t)26)
 
 #define EFI_ERROR_SECTION_REVISION 0x0100
 

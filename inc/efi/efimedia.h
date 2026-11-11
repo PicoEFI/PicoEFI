@@ -518,24 +518,20 @@ struct efi_sd_mmc_status_block {
     uint32_t Resp3;
 };
 
-typedef enum {
-    EfiSdMmcCommandTypeBc,
-    EfiSdMmcCommandTypeBcr,
-    EfiSdMmcCommandTypeAc,
-    EfiSdMmcCommandTypeAdtc
-} EFI_SD_MMC_COMMAND_TYPE;
+#define EFI_SD_MMC_COMMAND_TYPE_BC ((uint32_t)0)
+#define EFI_SD_MMC_COMMAND_TYPE_BCR ((uint32_t)1)
+#define EFI_SD_MMC_COMMAND_TYPE_AC ((uint32_t)2)
+#define EFI_SD_MMC_COMMAND_TYPE_ADTC ((uint32_t)3)
 
-typedef enum {
-    EfiSdMmcResponceTypeR1,
-    EfiSdMmcResponceTypeR1b,
-    EfiSdMmcResponceTypeR2,
-    EfiSdMmcResponceTypeR3,
-    EfiSdMmcResponceTypeR4,
-    EfiSdMmcResponceTypeR5,
-    EfiSdMmcResponceTypeR5b,
-    EfiSdMmcResponceTypeR6,
-    EfiSdMmcResponceTypeR7
-} EFI_SD_MMC_RESPONSE_TYPE;
+#define EFI_SD_MMC_RESPONCE_TYPE_R1 ((uint32_t)0)
+#define EFI_SD_MMC_RESPONCE_TYPE_R1B ((uint32_t)1)
+#define EFI_SD_MMC_RESPONCE_TYPE_R2 ((uint32_t)2)
+#define EFI_SD_MMC_RESPONCE_TYPE_R3 ((uint32_t)3)
+#define EFI_SD_MMC_RESPONCE_TYPE_R4 ((uint32_t)4)
+#define EFI_SD_MMC_RESPONCE_TYPE_R5 ((uint32_t)5)
+#define EFI_SD_MMC_RESPONCE_TYPE_R5B ((uint32_t)6)
+#define EFI_SD_MMC_RESPONCE_TYPE_R6 ((uint32_t)7)
+#define EFI_SD_MMC_RESPONCE_TYPE_R7 ((uint32_t)8)
 
 struct efi_sd_mmc_pass_thru_command_packet {
     struct efi_sd_mmc_command_block *SdMmcCmdBlk;

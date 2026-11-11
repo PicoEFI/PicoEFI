@@ -109,16 +109,14 @@ typedef EFI_STATUS (EFI_API *EFI_EAP_USER_LOGON)(struct efi_eap_management_proto
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_USER_LOGOFF)(struct efi_eap_management_protocol *This);
 
-typedef enum _EFI_EAPOL_SUPPLICANT_PAE_STATE {
-    EfiLogoff,
-    EfiDisconnected,
-    EfiConnecting,
-    EfiAcquired,
-    EfiAuthenticating,
-    EfiHeld,
-    EfiAuthenticated,
-    EfiMaxSupplicantPaeState
-} EFI_EAPOL_SUPPLICANT_PAE_STATE;
+#define EFI_LOGOFF ((uint32_t)0)
+#define EFI_DISCONNECTED ((uint32_t)1)
+#define EFI_CONNECTING ((uint32_t)2)
+#define EFI_ACQUIRED ((uint32_t)3)
+#define EFI_AUTHENTICATING ((uint32_t)4)
+#define EFI_HELD ((uint32_t)5)
+#define EFI_AUTHENTICATED ((uint32_t)6)
+#define EFI_MAX_SUPPLICANT_PAE_STATE ((uint32_t)7)
 
 #define EFI_AUTH_PERIOD_FIELD_VALID 0x01
 #define EFI_HELD_PERIOD_FIELD_VALID 0x02
@@ -135,7 +133,7 @@ struct efi_eapol_supplicant_pae_configuration {
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_GET_SUPPLICANT_STATUS)(
     struct efi_eap_management_protocol *This,
-    EFI_EAPOL_SUPPLICANT_PAE_STATE *CurrentState,
+    uint32_t *CurrentState,
     struct efi_eapol_supplicant_pae_configuration *Configuration
 );
 
@@ -206,19 +204,17 @@ struct efi_eap_management2_protocol {
 
 struct efi_eap_configuration_protocol;
 
-typedef enum {
-    EfiEapConfigEapAuthMethod,
-    EfiEapConfigEapSupportedAuthMethod,
-    EfiEapConfigIdentityString,
-    EfiEapConfigEapTlsCACert,
-    EfiEapConfigEapTlsClientCert,
-    EfiEapConfigEapTlsClientPrivateKeyFile,
-    EfiEapConfigEapTlsClientPrivateKeyFilePassword,
-    EfiEapConfigEapTlsCipherSuite,
-    EfiEapConfigEapTlsSupportedCipherSuite,
-    EfiEapConfigEapMSChapV2Password,
-    EfiEapConfigEap2ndAuthMethod
-} EFI_EAP_CONFIG_DATA_TYPE;
+#define EFI_EAP_CONFIG_EAP_AUTH_METHOD ((uint32_t)0)
+#define EFI_EAP_CONFIG_EAP_SUPPORTED_AUTH_METHOD ((uint32_t)1)
+#define EFI_EAP_CONFIG_IDENTITY_STRING ((uint32_t)2)
+#define EFI_EAP_CONFIG_EAP_TLS_CA_CERT ((uint32_t)3)
+#define EFI_EAP_CONFIG_EAP_TLS_CLIENT_CERT ((uint32_t)4)
+#define EFI_EAP_CONFIG_EAP_TLS_CLIENT_PRIVATE_KEY_FILE ((uint32_t)5)
+#define EFI_EAP_CONFIG_EAP_TLS_CLIENT_PRIVATE_KEY_FILE_PASSWORD ((uint32_t)6)
+#define EFI_EAP_CONFIG_EAP_TLS_CIPHER_SUITE ((uint32_t)7)
+#define EFI_EAP_CONFIG_EAP_TLS_SUPPORTED_CIPHER_SUITE ((uint32_t)8)
+#define EFI_EAP_CONFIG_EAP_MS_CHAP_V2_PASSWORD ((uint32_t)9)
+#define EFI_EAP_CONFIG_EAP2ND_AUTH_METHOD ((uint32_t)10)
 
 typedef uint8_t EFI_EAP_TYPE;
 
@@ -239,7 +235,7 @@ typedef uint8_t EFI_EAP_TYPE;
 typedef EFI_STATUS (EFI_API *EFI_EAP_CONFIGURATION_SET_DATA)(
     struct efi_eap_configuration_protocol *This,
     EFI_EAP_TYPE EapType,
-    EFI_EAP_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     void *Data,
     size_t DataSize
 );
@@ -247,7 +243,7 @@ typedef EFI_STATUS (EFI_API *EFI_EAP_CONFIGURATION_SET_DATA)(
 typedef EFI_STATUS (EFI_API *EFI_EAP_CONFIGURATION_GET_DATA)(
     struct efi_eap_configuration_protocol *This,
     EFI_EAP_TYPE EapType,
-    EFI_EAP_CONFIG_DATA_TYPE DataType,
+    uint32_t DataType,
     void *Data,
     size_t *DataSize
 );
@@ -262,12 +258,10 @@ struct efi_eap_configuration_protocol {
 
 struct efi_wireless_mac_connection_protocol;
 
-typedef enum {
-    EfiIeeeInfrastructureBSS,
-    EfiIeeeIndependentBSS,
-    EfiIeeeMeshBSS,
-    EfiIeeeAnyBss
-} EFI_80211_BSS_TYPE;
+#define EFI_IEEE_INFRASTRUCTURE_BSS ((uint32_t)0)
+#define EFI_IEEE_INDEPENDENT_BSS ((uint32_t)1)
+#define EFI_IEEE_MESH_BSS ((uint32_t)2)
+#define EFI_IEEE_ANY_BSS ((uint32_t)3)
 
 struct efi_80211_mac_address {
     uint8_t Addr[6];
@@ -288,19 +282,17 @@ struct efi_80211_element_ssid {
     uint8_t SSId[32];
 };
 
-typedef enum {
-    EfiIeeePrivate = 0,
-    EfiIeeePrivatewithGuest = 1,
-    EfiIeeeChargeablePublic = 2,
-    EfiIeeeFreePublic = 3,
-    EfiIeeePersonal = 4,
-    EfiIeeeEmergencyServOnly = 5,
-    EfiIeeeTestOrExp = 14,
-    EfiIeeeWildcard = 15
-} EFI_80211_ACC_NET_TYPE;
+#define EFI_IEEE_PRIVATE ((uint32_t)0)
+#define EFI_IEEE_PRIVATEWITH_GUEST ((uint32_t)1)
+#define EFI_IEEE_CHARGEABLE_PUBLIC ((uint32_t)2)
+#define EFI_IEEE_FREE_PUBLIC ((uint32_t)3)
+#define EFI_IEEE_PERSONAL ((uint32_t)4)
+#define EFI_IEEE_EMERGENCY_SERV_ONLY ((uint32_t)5)
+#define EFI_IEEE_TEST_OR_EXP ((uint32_t)14)
+#define EFI_IEEE_WILDCARD ((uint32_t)15)
 
 struct efi_80211_scan_data {
-    EFI_80211_BSS_TYPE BSSType;
+    uint32_t BSSType;
     struct efi_80211_mac_address BSSId;
     uint8_t SSIdLen;
     uint8_t *SSId;
@@ -311,14 +303,12 @@ struct efi_80211_scan_data {
     uint32_t MaxChannelTime;
     struct efi_80211_element_req *RequestInformation;
     struct efi_80211_element_ssid *SSIDList;
-    EFI_80211_ACC_NET_TYPE AccessNetworkType;
+    uint32_t AccessNetworkType;
     uint8_t *VendorSpecificInfo;
 };
 
-typedef enum {
-    EfiScanSuccess,
-    EfiScanNotSupported
-} EFI_80211_SCAN_RESULT_CODE;
+#define EFI_SCAN_SUCCESS ((uint32_t)0)
+#define EFI_SCAN_NOT_SUPPORTED ((uint32_t)1)
 
 struct efi_80211_country_triplet_subband {
     uint8_t FirstChannelNum;
@@ -364,7 +354,7 @@ struct efi_80211_bss_description {
     struct efi_80211_mac_address BSSId;
     uint8_t *SSId;
     uint8_t SSIdLen;
-    EFI_80211_BSS_TYPE BSSType;
+    uint32_t BSSType;
     uint16_t BeaconPeriod;
     uint64_t Timestamp;
     uint16_t CapabilityInfo;
@@ -394,7 +384,7 @@ struct efi_80211_multiple_bssid {
 
 struct efi_80211_bss_desp_pilot {
     struct efi_80211_mac_address BSSId;
-    EFI_80211_BSS_TYPE BSSType;
+    uint32_t BSSType;
     uint8_t ConCapInfo;
     uint8_t ConCountryStr[2];
     uint8_t OperatingClass;
@@ -417,7 +407,7 @@ struct efi_80211_scan_data_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     struct efi_80211_scan_data *Data;
-    EFI_80211_SCAN_RESULT_CODE ResultCode;
+    uint32_t ResultCode;
     struct efi_80211_scan_result *Result;
 };
 
@@ -448,16 +438,14 @@ struct efi_80211_associate_data {
     uint8_t *VendorSpecificInfo;
 };
 
-typedef enum {
-    EfiAssociateSuccess,
-    EfiAssociateRefusedReasonUnspecified,
-    EfiAssociateRefusedCapsMismatch,
-    EfiAssociateRefusedExtReason,
-    EfiAssociateRefusedAPOutOfMemory,
-    EfiAssociateRefusedBasicRatesMismatch,
-    EfiAssociateRejectedEmergencyServicesNotSupported,
-    EfiAssociateRefusedTemporarily
-} EFI_80211_ASSOCIATE_RESULT_CODE;
+#define EFI_ASSOCIATE_SUCCESS ((uint32_t)0)
+#define EFI_ASSOCIATE_REFUSED_REASON_UNSPECIFIED ((uint32_t)1)
+#define EFI_ASSOCIATE_REFUSED_CAPS_MISMATCH ((uint32_t)2)
+#define EFI_ASSOCIATE_REFUSED_EXT_REASON ((uint32_t)3)
+#define EFI_ASSOCIATE_REFUSED_AP_OUT_OF_MEMORY ((uint32_t)4)
+#define EFI_ASSOCIATE_REFUSED_BASIC_RATES_MISMATCH ((uint32_t)5)
+#define EFI_ASSOCIATE_REJECTED_EMERGENCY_SERVICES_NOT_SUPPORTED ((uint32_t)6)
+#define EFI_ASSOCIATE_REFUSED_TEMPORARILY ((uint32_t)7)
 
 struct efi_80211_element_timeout_val {
     struct efi_80211_element_header Hdr;
@@ -481,7 +469,7 @@ struct efi_80211_associate_data_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     struct efi_80211_associate_data *Data;
-    EFI_80211_ASSOCIATE_RESULT_CODE ResultCode;
+    uint32_t ResultCode;
     struct efi_80211_associate_result *Result;
 };
 
@@ -490,33 +478,29 @@ typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_ASSOCIATE)(
     struct efi_80211_associate_data_token *Data
 );
 
-typedef enum {
-    EfiIeee80211UnspecifiedReason = 1,
-    EfiIeee80211PreviousAuthenticateInvalid = 2,
-    EfiIeee80211DeauthenticatedSinceLeaving = 3,
-    EfiIeee80211DisassociatedDueToInactive = 4,
-    EfiIeee80211DisassociatedSinceApUnable = 5,
-    EfiIeee80211Class2FrameNonauthenticated = 6,
-    EfiIeee80211Class3FrameNonassociated = 7,
-    EfiIeee80211DisassociatedSinceLeaving = 8
-} EFI_80211_REASON_CODE;
+#define EFI_IEEE80211_UNSPECIFIED_REASON ((uint32_t)1)
+#define EFI_IEEE80211_PREVIOUS_AUTHENTICATE_INVALID ((uint32_t)2)
+#define EFI_IEEE80211_DEAUTHENTICATED_SINCE_LEAVING ((uint32_t)3)
+#define EFI_IEEE80211_DISASSOCIATED_DUE_TO_INACTIVE ((uint32_t)4)
+#define EFI_IEEE80211_DISASSOCIATED_SINCE_AP_UNABLE ((uint32_t)5)
+#define EFI_IEEE80211_CLASS2_FRAME_NONAUTHENTICATED ((uint32_t)6)
+#define EFI_IEEE80211_CLASS3_FRAME_NONASSOCIATED ((uint32_t)7)
+#define EFI_IEEE80211_DISASSOCIATED_SINCE_LEAVING ((uint32_t)8)
 
 struct efi_80211_disassociate_data {
     struct efi_80211_mac_address BSSId;
-    EFI_80211_REASON_CODE ReasonCode;
+    uint32_t ReasonCode;
     uint8_t *VendorSpecificInfo;
 };
 
-typedef enum {
-    EfiDisassociateSuccess,
-    EfiDisassociateInvalidParameters
-} EFI_80211_DISASSOCIATE_RESULT_CODE;
+#define EFI_DISASSOCIATE_SUCCESS ((uint32_t)0)
+#define EFI_DISASSOCIATE_INVALID_PARAMETERS ((uint32_t)1)
 
 struct efi_80211_disassociate_data_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     struct efi_80211_disassociate_data *Data;
-    EFI_80211_DISASSOCIATE_RESULT_CODE ResultCode;
+    uint32_t ResultCode;
 };
 
 typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_DISASSOCIATE)(
@@ -524,30 +508,26 @@ typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_DISASSOCIATE)(
     struct efi_80211_disassociate_data_token *Data
 );
 
-typedef enum {
-    EfiOpenSystem,
-    EfiSharedKey,
-    EfiFastBSSTransition,
-    EFI_SAE
-} EFI_80211_AUTHENTICATION_TYPE;
+#define EFI_OPEN_SYSTEM ((uint32_t)0)
+#define EFI_SHARED_KEY ((uint32_t)1)
+#define EFI_FAST_BSS_TRANSITION ((uint32_t)2)
+#define EFI_SAE ((uint32_t)3)
 
 struct efi_80211_authenticate_data {
     struct efi_80211_mac_address BSSId;
-    EFI_80211_AUTHENTICATION_TYPE AuthType;
+    uint32_t AuthType;
     uint32_t FailureTimeout;
     uint8_t *FTContent;
     uint8_t *SAEContent;
     uint8_t *VendorSpecificInfo;
 };
 
-typedef enum {
-    EfiAuthenticateSuccess,
-    EfiAuthenticateRefused,
-    EfiAuthenticateAnticLoggingTokenRequired,
-    EfiAuthenticateFiniteCyclicGroupNotSupported,
-    EfiAuthenticationRejected,
-    EfiAuthenticateInvalidParameter
-} EFI_80211_AUTHENTICATE_RESULT_CODE;
+#define EFI_AUTHENTICATE_SUCCESS ((uint32_t)0)
+#define EFI_AUTHENTICATE_REFUSED ((uint32_t)1)
+#define EFI_AUTHENTICATE_ANTIC_LOGGING_TOKEN_REQUIRED ((uint32_t)2)
+#define EFI_AUTHENTICATE_FINITE_CYCLIC_GROUP_NOT_SUPPORTED ((uint32_t)3)
+#define EFI_AUTHENTICATION_REJECTED ((uint32_t)4)
+#define EFI_AUTHENTICATE_INVALID_PARAMETER ((uint32_t)5)
 
 struct efi_80211_authenticate_result {
     struct efi_80211_mac_address BSSId;
@@ -561,7 +541,7 @@ struct efi_80211_authenticate_data_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     struct efi_80211_authenticate_data *Data;
-    EFI_80211_AUTHENTICATE_RESULT_CODE ResultCode;
+    uint32_t ResultCode;
     struct efi_80211_authenticate_result *Result;
 };
 
@@ -572,7 +552,7 @@ typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_AUTHENTICATE)(
 
 struct efi_80211_deauthenticate_data {
     struct efi_80211_mac_address BSSId;
-    EFI_80211_REASON_CODE ReasonCode;
+    uint32_t ReasonCode;
     uint8_t *VendorSpecificInfo;
 };
 
@@ -628,7 +608,7 @@ struct efi_80211_cipher_suite_selector {
 };
 
 struct efi_80211_network {
-    EFI_80211_BSS_TYPE BSSType;
+    uint32_t BSSType;
     struct efi_80211_ssid SSId;
     struct efi_80211_akm_suite_selector *AKMSuite;
     struct efi_80211_cipher_suite_selector *CipherSuite;
@@ -661,19 +641,17 @@ struct efi_80211_connect_network_data {
     uint32_t FailureTimeout;
 };
 
-typedef enum {
-    EfiConnectSuccess,
-    EfiConnectRefused,
-    EfiConnectFailed,
-    EfiConnectFailureTimeout,
-    EfiConnectFailedReasonUnspecified
-} EFI_80211_CONNECT_NETWORK_RESULT_CODE;
+#define EFI_CONNECT_SUCCESS ((uint32_t)0)
+#define EFI_CONNECT_REFUSED ((uint32_t)1)
+#define EFI_CONNECT_FAILED ((uint32_t)2)
+#define EFI_CONNECT_FAILURE_TIMEOUT ((uint32_t)3)
+#define EFI_CONNECT_FAILED_REASON_UNSPECIFIED ((uint32_t)4)
 
 struct efi_80211_connect_network_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     struct efi_80211_connect_network_data *Data;
-    EFI_80211_CONNECT_NETWORK_RESULT_CODE ResultCode;
+    uint32_t ResultCode;
 };
 
 typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_II_CONNECT_NETWORK)(
@@ -718,45 +696,39 @@ struct efi_supplicant_fragment_data {
     void *FragmentBuffer;
 };
 
-typedef enum {
-    EfiSupplicantEncrypt,
-    EfiSupplicantDecrypt
-} EFI_SUPPLICANT_CRYPT_MODE;
+#define EFI_SUPPLICANT_ENCRYPT ((uint32_t)0)
+#define EFI_SUPPLICANT_DECRYPT ((uint32_t)1)
 
 typedef EFI_STATUS (EFI_API *EFI_SUPPLICANT_PROCESS_PACKET)(
     struct efi_supplicant_protocol *This,
     struct efi_supplicant_fragment_data **FragmentTable,
     uint32_t *FragmentCount,
-    EFI_SUPPLICANT_CRYPT_MODE CryptMode
+    uint32_t CryptMode
 );
 
-typedef enum {
-    EfiSupplicant80211AKMSuite,
-    EfiSupplicant80211GroupDataCipherSuite,
-    EfiSupplicant80211PairwiseCipherSuite,
-    EfiSupplicant80211PskPassword,
-    EfiSupplicant80211TargetSSIDName,
-    EfiSupplicant80211StationMac,
-    EfiSupplicant80211TargetSSIDMac,
-    EfiSupplicant80211PTK,
-    EfiSupplicant80211GTK,
-    EfiSupplicantState,
-    EfiSupplicant80211LinkState,
-    EfiSupplicantKeyRefresh,
-    EfiSupplicant80211SupportedAKMSuites,
-    EfiSupplicant80211SupportedSoftwareCipherSuites,
-    EfiSupplicant80211SupportedHardwareCipherSuites,
-    EfiSupplicant80211IGTK,
-    EfiSupplicant80211PMK,
-    EfiSupplicantDataTypeMaximum
-} EFI_SUPPLICANT_DATA_TYPE;
+#define EFI_SUPPLICANT_80211_AKM_SUITE ((uint32_t)0)
+#define EFI_SUPPLICANT_80211_GROUP_DATA_CIPHER_SUITE ((uint32_t)1)
+#define EFI_SUPPLICANT_80211_PAIRWISE_CIPHER_SUITE ((uint32_t)2)
+#define EFI_SUPPLICANT_80211_PSK_PASSWORD ((uint32_t)3)
+#define EFI_SUPPLICANT_80211_TARGET_SSID_NAME ((uint32_t)4)
+#define EFI_SUPPLICANT_80211_STATION_MAC ((uint32_t)5)
+#define EFI_SUPPLICANT_80211_TARGET_SSID_MAC ((uint32_t)6)
+#define EFI_SUPPLICANT_80211_PTK ((uint32_t)7)
+#define EFI_SUPPLICANT_80211_GTK ((uint32_t)8)
+#define EFI_SUPPLICANT_STATE ((uint32_t)9)
+#define EFI_SUPPLICANT_80211_LINK_STATE ((uint32_t)10)
+#define EFI_SUPPLICANT_KEY_REFRESH ((uint32_t)11)
+#define EFI_SUPPLICANT_80211_SUPPORTED_AKM_SUITES ((uint32_t)12)
+#define EFI_SUPPLICANT_80211_SUPPORTED_SOFTWARE_CIPHER_SUITES ((uint32_t)13)
+#define EFI_SUPPLICANT_80211_SUPPORTED_HARDWARE_CIPHER_SUITES ((uint32_t)14)
+#define EFI_SUPPLICANT_80211_IGTK ((uint32_t)15)
+#define EFI_SUPPLICANT_80211_PMK ((uint32_t)16)
+#define EFI_SUPPLICANT_DATA_TYPE_MAXIMUM ((uint32_t)17)
 
-typedef enum {
-    EfiIeee80211UnauthenticatedUnassociated,
-    EfiIeee80211AuthenticatedUnassociated,
-    EfiIeee80211PendingRSNAuthentication,
-    EfiIeee80211AuthenticatedAssociated
-} EFI_80211_LINK_STATE;
+#define EFI_IEEE80211_UNAUTHENTICATED_UNASSOCIATED ((uint32_t)0)
+#define EFI_IEEE80211_AUTHENTICATED_UNASSOCIATED ((uint32_t)1)
+#define EFI_IEEE80211_PENDING_RSN_AUTHENTICATION ((uint32_t)2)
+#define EFI_IEEE80211_AUTHENTICATED_ASSOCIATED ((uint32_t)3)
 
 struct efi_supplicant_key_refresh {
     uint8_t GTKRefresh;
@@ -764,30 +736,26 @@ struct efi_supplicant_key_refresh {
 
 #define EFI_MAX_KEY_LEN 64
 
-typedef enum {
-    EfiGroup,
-    EfiPairwise,
-    EfiPeerKey,
-    EFI_IGTK
-} EFI_SUPPLICANT_KEY_TYPE;
+#define EFI_GROUP ((uint32_t)0)
+#define EFI_PAIRWISE ((uint32_t)1)
+#define EFI_PEER_KEY ((uint32_t)2)
+#define EFI_IGTK ((uint32_t)3)
 
-typedef enum {
-    EfiReceive,
-    EfiTransmit,
-    EfiBoth
-} EFI_SUPPLICANT_KEY_DIRECTION;
+#define EFI_RECEIVE ((uint32_t)0)
+#define EFI_TRANSMIT ((uint32_t)1)
+#define EFI_BOTH ((uint32_t)2)
 
 struct efi_supplicant_key {
     uint8_t Key[EFI_MAX_KEY_LEN];
     uint8_t KeyLen;
     uint8_t KeyId;
-    EFI_SUPPLICANT_KEY_TYPE KeyType;
+    uint32_t KeyType;
     struct efi_80211_mac_address Addr;
     uint8_t Rsc[8];
     uint8_t RscLen;
     uint8_t IsAuthenticator;
     struct efi_80211_suite_selector CipherSuite;
-    EFI_SUPPLICANT_KEY_DIRECTION Direction;
+    uint32_t Direction;
 };
 
 struct efi_supplicant_gtk_list {
@@ -797,14 +765,14 @@ struct efi_supplicant_gtk_list {
 
 typedef EFI_STATUS (EFI_API *EFI_SUPPLICANT_SET_DATA)(
     struct efi_supplicant_protocol *This,
-    EFI_SUPPLICANT_DATA_TYPE DataType,
+    uint32_t DataType,
     void *Data,
     size_t DataSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SUPPLICANT_GET_DATA)(
     struct efi_supplicant_protocol *This,
-    EFI_SUPPLICANT_DATA_TYPE DataType,
+    uint32_t DataType,
     uint8_t *Data,
     size_t *DataSize
 );

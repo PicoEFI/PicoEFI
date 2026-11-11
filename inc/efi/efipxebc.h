@@ -204,17 +204,15 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DISCOVER)(
     struct efi_pxe_base_code_discover_info *Info
 );
 
-typedef enum {
-    EFI_PXE_BASE_CODE_TFTP_FIRST,
-    EFI_PXE_BASE_CODE_TFTP_GET_FILE_SIZE,
-    EFI_PXE_BASE_CODE_TFTP_READ_FILE,
-    EFI_PXE_BASE_CODE_TFTP_WRITE_FILE,
-    EFI_PXE_BASE_CODE_TFTP_READ_DIRECTORY,
-    EFI_PXE_BASE_CODE_MTFTP_GET_FILE_SIZE,
-    EFI_PXE_BASE_CODE_MTFTP_READ_FILE,
-    EFI_PXE_BASE_CODE_MTFTP_READ_DIRECTORY,
-    EFI_PXE_BASE_CODE_MTFTP_LAST
-} EFI_PXE_BASE_CODE_TFTP_OPCODE;
+#define EFI_PXE_BASE_CODE_TFTP_FIRST ((uint32_t)0)
+#define EFI_PXE_BASE_CODE_TFTP_GET_FILE_SIZE ((uint32_t)1)
+#define EFI_PXE_BASE_CODE_TFTP_READ_FILE ((uint32_t)2)
+#define EFI_PXE_BASE_CODE_TFTP_WRITE_FILE ((uint32_t)3)
+#define EFI_PXE_BASE_CODE_TFTP_READ_DIRECTORY ((uint32_t)4)
+#define EFI_PXE_BASE_CODE_MTFTP_GET_FILE_SIZE ((uint32_t)5)
+#define EFI_PXE_BASE_CODE_MTFTP_READ_FILE ((uint32_t)6)
+#define EFI_PXE_BASE_CODE_MTFTP_READ_DIRECTORY ((uint32_t)7)
+#define EFI_PXE_BASE_CODE_MTFTP_LAST ((uint32_t)8)
 
 struct efi_pxe_base_code_mtftp_info {
     union efi_ip_address MCastIp;
@@ -226,7 +224,7 @@ struct efi_pxe_base_code_mtftp_info {
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_MTFTP)(
     struct efi_pxe_base_code_protocol *This,
-    EFI_PXE_BASE_CODE_TFTP_OPCODE Operation,
+    uint32_t Operation,
     void *BufferPtr,
     bool Overwrite,
     uint64_t *BufferSize,
@@ -330,28 +328,24 @@ struct efi_pxe_base_code_protocol {
 
 struct efi_pxe_base_code_callback_protocol;
 
-typedef enum {
-    EFI_PXE_BASE_CODE_CALLBACK_STATUS_FIRST,
-    EFI_PXE_BASE_CODE_CALLBACK_STATUS_CONTINUE,
-    EFI_PXE_BASE_CODE_CALLBACK_STATUS_ABORT,
-    EFI_PXE_BASE_CODE_CALLBACK_STATUS_LAST
-} EFI_PXE_BASE_CODE_CALLBACK_STATUS;
+#define EFI_PXE_BASE_CODE_CALLBACK_STATUS_FIRST ((uint32_t)0)
+#define EFI_PXE_BASE_CODE_CALLBACK_STATUS_CONTINUE ((uint32_t)1)
+#define EFI_PXE_BASE_CODE_CALLBACK_STATUS_ABORT ((uint32_t)2)
+#define EFI_PXE_BASE_CODE_CALLBACK_STATUS_LAST ((uint32_t)3)
 
-typedef enum {
-    EFI_PXE_BASE_CODE_FUNCTION_FIRST,
-    EFI_PXE_BASE_CODE_FUNCTION_DHCP,
-    EFI_PXE_BASE_CODE_FUNCTION_DISCOVER,
-    EFI_PXE_BASE_CODE_FUNCTION_MTFTP,
-    EFI_PXE_BASE_CODE_FUNCTION_UDP_WRITE,
-    EFI_PXE_BASE_CODE_FUNCTION_UDP_READ,
-    EFI_PXE_BASE_CODE_FUNCTION_ARP,
-    EFI_PXE_BASE_CODE_FUNCTION_IGMP,
-    EFI_PXE_BASE_CODE_PXE_FUNCTION_LAST
-} EFI_PXE_BASE_CODE_FUNCTION;
+#define EFI_PXE_BASE_CODE_FUNCTION_FIRST ((uint32_t)0)
+#define EFI_PXE_BASE_CODE_FUNCTION_DHCP ((uint32_t)1)
+#define EFI_PXE_BASE_CODE_FUNCTION_DISCOVER ((uint32_t)2)
+#define EFI_PXE_BASE_CODE_FUNCTION_MTFTP ((uint32_t)3)
+#define EFI_PXE_BASE_CODE_FUNCTION_UDP_WRITE ((uint32_t)4)
+#define EFI_PXE_BASE_CODE_FUNCTION_UDP_READ ((uint32_t)5)
+#define EFI_PXE_BASE_CODE_FUNCTION_ARP ((uint32_t)6)
+#define EFI_PXE_BASE_CODE_FUNCTION_IGMP ((uint32_t)7)
+#define EFI_PXE_BASE_CODE_PXE_FUNCTION_LAST ((uint32_t)8)
 
-typedef EFI_PXE_BASE_CODE_CALLBACK_STATUS (EFI_API *EFI_PXE_CALLBACK)(
+typedef uint32_t (EFI_API *EFI_PXE_CALLBACK)(
     struct efi_pxe_base_code_callback_protocol *This,
-    EFI_PXE_BASE_CODE_FUNCTION Function,
+    uint32_t Function,
     bool Received,
     uint32_t PacketLen,
     union efi_pxe_base_code_packet *Packet

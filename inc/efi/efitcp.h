@@ -53,23 +53,21 @@ struct efi_tcp4_config_data {
     struct efi_tcp4_option *ControlOption;
 };
 
-typedef enum {
-    EfiTcp4StateClosed = 0,
-    EfiTcp4StateListen = 1,
-    EfiTcp4StateSynSent = 2,
-    EfiTcp4StateSynReceived = 3,
-    EfiTcp4StateEstablished = 4,
-    EfiTcp4StateFinWait1 = 5,
-    EfiTcp4StateFinWait2 = 6,
-    EfiTcp4StateClosing = 7,
-    EfiTcp4StateTimeWait = 8,
-    EfiTcp4StateCloseWait = 9,
-    EfiTcp4StateLastAck = 10
-} EFI_TCP4_CONNECTION_STATE;
+#define EFI_TCP4_STATE_CLOSED ((uint32_t)0)
+#define EFI_TCP4_STATE_LISTEN ((uint32_t)1)
+#define EFI_TCP4_STATE_SYN_SENT ((uint32_t)2)
+#define EFI_TCP4_STATE_SYN_RECEIVED ((uint32_t)3)
+#define EFI_TCP4_STATE_ESTABLISHED ((uint32_t)4)
+#define EFI_TCP4_STATE_FIN_WAIT1 ((uint32_t)5)
+#define EFI_TCP4_STATE_FIN_WAIT2 ((uint32_t)6)
+#define EFI_TCP4_STATE_CLOSING ((uint32_t)7)
+#define EFI_TCP4_STATE_TIME_WAIT ((uint32_t)8)
+#define EFI_TCP4_STATE_CLOSE_WAIT ((uint32_t)9)
+#define EFI_TCP4_STATE_LAST_ACK ((uint32_t)10)
 
 typedef EFI_STATUS (EFI_API *EFI_TCP4_GET_MODE_DATA)(
     struct efi_tcp4_protocol *This,
-    EFI_TCP4_CONNECTION_STATE *Tcp4State,
+    uint32_t *Tcp4State,
     struct efi_tcp4_config_data *Tcp4ConfigData,
     struct efi_ip4_mode_data *Ip4ModeData,
     struct efi_managed_network_config_data *MnpConfigData,
@@ -222,23 +220,21 @@ struct efi_tcp6_config_data {
     struct efi_tcp6_option *ControlOption;
 };
 
-typedef enum {
-    EfiTcp6StateClosed = 0,
-    EfiTcp6StateListen = 1,
-    EfiTcp6StateSynSent = 2,
-    EfiTcp6StateSynReceived = 3,
-    EfiTcp6StateEstablished = 4,
-    EfiTcp6StateFinWait1 = 5,
-    EfiTcp6StateFinWait2 = 6,
-    EfiTcp6StateClosing = 7,
-    EfiTcp6StateTimeWait = 8,
-    EfiTcp6StateCloseWait = 9,
-    EfiTcp6StateLastAck = 10
-} EFI_TCP6_CONNECTION_STATE;
+#define EFI_TCP6_STATE_CLOSED ((uint32_t)0)
+#define EFI_TCP6_STATE_LISTEN ((uint32_t)1)
+#define EFI_TCP6_STATE_SYN_SENT ((uint32_t)2)
+#define EFI_TCP6_STATE_SYN_RECEIVED ((uint32_t)3)
+#define EFI_TCP6_STATE_ESTABLISHED ((uint32_t)4)
+#define EFI_TCP6_STATE_FIN_WAIT1 ((uint32_t)5)
+#define EFI_TCP6_STATE_FIN_WAIT2 ((uint32_t)6)
+#define EFI_TCP6_STATE_CLOSING ((uint32_t)7)
+#define EFI_TCP6_STATE_TIME_WAIT ((uint32_t)8)
+#define EFI_TCP6_STATE_CLOSE_WAIT ((uint32_t)9)
+#define EFI_TCP6_STATE_LAST_ACK ((uint32_t)10)
 
 typedef EFI_STATUS (EFI_API *EFI_TCP6_GET_MODE_DATA)(
     struct efi_tcp6_protocol *This,
-    EFI_TCP6_CONNECTION_STATE *Tcp6State,
+    uint32_t *Tcp6State,
     struct efi_tcp6_config_data *Tcp6ConfigData,
     struct efi_ip6_mode_data *Ip6ModeData,
     struct efi_managed_network_config_data *MnpConfigData,

@@ -13,19 +13,17 @@ extern "C" {
 struct efi_debug_support_protocol;
 
 /* Printed as IMAGE_FILE_MACHINE_* names that nothing defines; these are their values. */
-typedef enum {
-    EfiIsaIa32 = 0x014C,
-    EfiIsaX64 = 0x8664,
-    EfiIsaIpf = 0x0200,
-    EfiIsaEbc = 0x0EBC,
-    EfiIsaArm = 0x1C2,
-    EfiIsaAArch64 = 0xAA64,
-    EfiIsaRISCV32 = 0x5032,
-    EfiIsaRISCV64 = 0x5064,
-    EfiIsaRISCV128 = 0x5128,
-    EfiIsaLoongArch32 = 0x6232,
-    EfiIsaLoongArch64 = 0x6264
-} EFI_INSTRUCTION_SET_ARCHITECTURE;
+#define EFI_ISA_IA32 ((uint32_t)0x014C)
+#define EFI_ISA_X64 ((uint32_t)0x8664)
+#define EFI_ISA_IPF ((uint32_t)0x0200)
+#define EFI_ISA_EBC ((uint32_t)0x0EBC)
+#define EFI_ISA_ARM ((uint32_t)0x1C2)
+#define EFI_ISA_AARCH64 ((uint32_t)0xAA64)
+#define EFI_ISA_RISCV32 ((uint32_t)0x5032)
+#define EFI_ISA_RISCV64 ((uint32_t)0x5064)
+#define EFI_ISA_RISCV128 ((uint32_t)0x5128)
+#define EFI_ISA_LOONGARCH32 ((uint32_t)0x6232)
+#define EFI_ISA_LOONGARCH64 ((uint32_t)0x6264)
 
 typedef EFI_STATUS (EFI_API *EFI_GET_MAXIMUM_PROCESSOR_INDEX)(
     struct efi_debug_support_protocol *This,
@@ -554,7 +552,7 @@ typedef EFI_STATUS (EFI_API *EFI_INVALIDATE_INSTRUCTION_CACHE)(
 );
 
 struct efi_debug_support_protocol {
-    EFI_INSTRUCTION_SET_ARCHITECTURE Isa;
+    uint32_t Isa;
     EFI_GET_MAXIMUM_PROCESSOR_INDEX GetMaximumProcessorIndex;
     EFI_REGISTER_PERIODIC_CALLBACK RegisterPeriodicCallback;
     EFI_REGISTER_EXCEPTION_CALLBACK RegisterExceptionCallback;
