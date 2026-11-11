@@ -194,8 +194,16 @@ typedef efi_status (EFI_API *efi_get_memory_map)(
     uint32_t *descriptor_version
 );
 
-/* Not in the specification: the descriptor after ptr in a get_memory_map() buffer. */
-#define EfiNextMemoryDescriptor(ptr, size) ((struct efi_memory_descriptor *)((uint8_t *)(ptr) + (size)))
+/*
+ * Not in the specification: the descriptor that follows the one at descriptor in a
+ * get_memory_map() buffer, whose descriptors are descriptor_size bytes apart.
+ */
+static inline struct efi_memory_descriptor *efi_next_memory_descriptor(
+    const void *descriptor,
+    size_t descriptor_size
+) {
+    return (struct efi_memory_descriptor *)((const uint8_t *)descriptor + descriptor_size);
+}
 
 typedef efi_status (EFI_API *efi_allocate_pool)(
     uint32_t pool_type,

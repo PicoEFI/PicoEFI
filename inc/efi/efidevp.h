@@ -673,33 +673,55 @@ union efi_dev_path_ptr {
     uint8_t *raw;
 };
 
-#define EfiDevicePathType(a) (((const struct efi_device_path_protocol *)(a))->type)
-#define EfiDevicePathSubType(a) (((const struct efi_device_path_protocol *)(a))->sub_type)
-#define EfiDevicePathNodeLength(a) \
-    ((uint16_t)(((const struct efi_device_path_protocol *)(a))->length[0] | \
-        (((const struct efi_device_path_protocol *)(a))->length[1] << 8)))
-#define EfiNextDevicePathNode(a) \
-    ((struct efi_device_path_protocol *)((uint8_t *)(a) + EfiDevicePathNodeLength(a)))
+static inline uint8_t efi_device_path_type(const void *node) {
+    return ((const struct efi_device_path_protocol *)node)->type;
+}
 
-#define EfiIsDevicePathEndType(a) (EfiDevicePathType(a) == EFI_END_DEVICE_PATH_TYPE)
-#define EfiIsDevicePathEndSubType(a) (EfiDevicePathSubType(a) == EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE)
-#define EfiIsDevicePathEnd(a) (EfiIsDevicePathEndType(a) && EfiIsDevicePathEndSubType(a))
+static inline uint8_t efi_device_path_sub_type(const void *node) {
+    return ((const struct efi_device_path_protocol *)node)->sub_type;
+}
 
-#define EFI_DP_IS_END_TYPE(a) EfiIsDevicePathEndType(a)
-#define EFI_DP_IS_END_SUBTYPE(a) EfiIsDevicePathEndSubType(a)
+static inline uint16_t efi_device_path_node_length(const void *node) {
+    const struct efi_device_path_protocol *path = (const struct efi_device_path_protocol *)node;
 
-#define EfiSetDevicePathNodeLength(a, l) \
-    do { \
-        ((struct efi_device_path_protocol *)(a))->length[0] = (uint8_t)(l); \
-        ((struct efi_device_path_protocol *)(a))->length[1] = (uint8_t)((l) >> 8); \
-    } while (0)
+    return (uint16_t)(path->length[0] | path->length[1] << 8);
+}
 
-#define EfiSetDevicePathEndNode(a) \
-    do { \
-        ((struct efi_device_path_protocol *)(a))->type = EFI_END_DEVICE_PATH_TYPE; \
-        ((struct efi_device_path_protocol *)(a))->sub_type = EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE; \
-        EfiSetDevicePathNodeLength(a, EFI_END_DEVICE_PATH_LENGTH); \
-    } while (0)
+static inline struct efi_device_path_protocol *efi_next_device_path_node(const void *node) {
+    return (struct efi_device_path_protocol *)(
+        (const uint8_t *)node + efi_device_path_node_length(node)
+    );
+}
+
+static inline bool efi_is_device_path_end_type(const void *node) {
+    return efi_device_path_type(node) == EFI_END_DEVICE_PATH_TYPE;
+}
+
+static inline bool efi_is_device_path_end_sub_type(const void *node) {
+    return efi_device_path_sub_type(node) == EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE;
+}
+
+static inline bool efi_is_device_path_end(const void *node) {
+    return efi_is_device_path_end_type(node) && efi_is_device_path_end_sub_type(node);
+}
+
+#define EFI_DP_IS_END_TYPE(a) efi_is_device_path_end_type(a)
+#define EFI_DP_IS_END_SUBTYPE(a) efi_is_device_path_end_sub_type(a)
+
+static inline void efi_set_device_path_node_length(void *node, size_t length) {
+    struct efi_device_path_protocol *path = (struct efi_device_path_protocol *)node;
+
+    path->length[0] = (uint8_t)length;
+    path->length[1] = (uint8_t)(length >> 8);
+}
+
+static inline void efi_set_device_path_end_node(void *node) {
+    struct efi_device_path_protocol *path = (struct efi_device_path_protocol *)node;
+
+    path->type = EFI_END_DEVICE_PATH_TYPE;
+    path->sub_type = EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE;
+    efi_set_device_path_node_length(node, EFI_END_DEVICE_PATH_LENGTH);
+}
 
 #define EFI_DEVICE_PATH_UTILITIES_PROTOCOL_GUID \
     {0x379be4e, 0xd706, 0x437d, {0xb0, 0x37, 0xed, 0xb8, 0x2f, 0xb7, 0x72, 0xa4}}
