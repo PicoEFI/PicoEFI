@@ -70,13 +70,13 @@ extern "C" {
  * Where the image was loaded. As it is linked at address 0, this is also how far everything in it
  * slid: subtracting it from an address in the image gives the one it was linked at.
  */
-extern EFI_CONST EFI_UINT8 EfiLoadSlide[];
+extern const uint8_t EfiLoadSlide[];
 
 /*
  * The size of the image in memory, .bss included: what the firmware allocated at EfiLoadSlide, a
  * whole number of pages.
  */
-extern EFI_CONST EFI_UINT32 EfiImageSize;
+extern const uint32_t EfiImageSize;
 
 #ifdef __cplusplus
 }

@@ -16,13 +16,13 @@ extern "C" {
 typedef struct _EFI_SERIAL_IO_PROTOCOL EFI_SERIAL_IO_PROTOCOL;
 
 typedef struct {
-    EFI_UINT32 ControlMask;
-    EFI_UINT32 Timeout;
-    EFI_UINT64 BaudRate;
-    EFI_UINT32 ReceiveFifoDepth;
-    EFI_UINT32 DataBits;
-    EFI_UINT32 Parity;
-    EFI_UINT32 StopBits;
+    uint32_t ControlMask;
+    uint32_t Timeout;
+    uint64_t BaudRate;
+    uint32_t ReceiveFifoDepth;
+    uint32_t DataBits;
+    uint32_t Parity;
+    uint32_t StopBits;
 } EFI_SERIAL_IO_MODE;
 
 typedef enum {
@@ -45,11 +45,11 @@ typedef EFI_STATUS (EFI_API *EFI_SERIAL_RESET)(EFI_SERIAL_IO_PROTOCOL *This);
 
 typedef EFI_STATUS (EFI_API *EFI_SERIAL_SET_ATTRIBUTES)(
     EFI_SERIAL_IO_PROTOCOL *This,
-    EFI_UINT64 BaudRate,
-    EFI_UINT32 ReceiveFifoDepth,
-    EFI_UINT32 Timeout,
+    uint64_t BaudRate,
+    uint32_t ReceiveFifoDepth,
+    uint32_t Timeout,
     EFI_PARITY_TYPE Parity,
-    EFI_UINT8 DataBits,
+    uint8_t DataBits,
     EFI_STOP_BITS_TYPE StopBits
 );
 
@@ -67,28 +67,28 @@ typedef EFI_STATUS (EFI_API *EFI_SERIAL_SET_ATTRIBUTES)(
 
 typedef EFI_STATUS (EFI_API *EFI_SERIAL_SET_CONTROL_BITS)(
     EFI_SERIAL_IO_PROTOCOL *This,
-    EFI_UINT32 Control
+    uint32_t Control
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SERIAL_GET_CONTROL_BITS)(
     EFI_SERIAL_IO_PROTOCOL *This,
-    EFI_UINT32 *Control
+    uint32_t *Control
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SERIAL_WRITE)(
     EFI_SERIAL_IO_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    size_t *BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SERIAL_READ)(
     EFI_SERIAL_IO_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    size_t *BufferSize,
+    void *Buffer
 );
 
 struct _EFI_SERIAL_IO_PROTOCOL {
-    EFI_UINT32 Revision;
+    uint32_t Revision;
     EFI_SERIAL_RESET Reset;
     EFI_SERIAL_SET_ATTRIBUTES SetAttributes;
     EFI_SERIAL_SET_CONTROL_BITS SetControl;
@@ -97,7 +97,7 @@ struct _EFI_SERIAL_IO_PROTOCOL {
     EFI_SERIAL_READ Read;
     EFI_SERIAL_IO_MODE *Mode;
     /* Present from EFI_SERIAL_IO_PROTOCOL_REVISION1p1 on. */
-    EFI_CONST EFI_GUID *DeviceTypeGuid;
+    const EFI_GUID *DeviceTypeGuid;
 };
 
 #define EFI_SERIAL_TERMINAL_DEVICE_TYPE_GUID \

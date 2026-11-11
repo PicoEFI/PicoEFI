@@ -13,9 +13,9 @@ extern "C" {
     {0x09576e91, 0x6d3f, 0x11d2, {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
 
 typedef struct _EFI_DEVICE_PATH_PROTOCOL {
-    EFI_UINT8 Type;
-    EFI_UINT8 SubType;
-    EFI_UINT8 Length[2];
+    uint8_t Type;
+    uint8_t SubType;
+    uint8_t Length[2];
 } EFI_DEVICE_PATH_PROTOCOL;
 
 #define EFI_HARDWARE_DEVICE_PATH 0x01
@@ -33,22 +33,22 @@ typedef struct _EFI_DEVICE_PATH_PROTOCOL {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 Function;
-    EFI_UINT8 Device;
+    uint8_t Function;
+    uint8_t Device;
 } EFI_PCI_DEVICE_PATH;
 
 #define EFI_HW_PCCARD_DP 0x02
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 FunctionNumber;
+    uint8_t FunctionNumber;
 } EFI_PCCARD_DEVICE_PATH;
 
 #define EFI_HW_MEMMAP_DP 0x03
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 MemoryType;
+    uint32_t MemoryType;
     EFI_PHYSICAL_ADDRESS StartingAddress;
     EFI_PHYSICAL_ADDRESS EndingAddress;
 } EFI_MEMMAP_DEVICE_PATH;
@@ -64,32 +64,32 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 ControllerNumber;
+    uint32_t ControllerNumber;
 } EFI_CONTROLLER_DEVICE_PATH;
 
 #define EFI_HW_BMC_DP 0x06
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 InterfaceType;
-    EFI_UINT8 BaseAddress[8];
+    uint8_t InterfaceType;
+    uint8_t BaseAddress[8];
 } EFI_BMC_DEVICE_PATH;
 
-/* The shift is done in EFI_UINT32 so that product numbers from 0x8000 up do not overflow. */
-#define EFI_PNP_ID(ID) ((EFI_UINT32)(((EFI_UINT32)(ID) << 16) | 0x41D0))
+/* The shift is done in uint32_t so that product numbers from 0x8000 up do not overflow. */
+#define EFI_PNP_ID(ID) ((uint32_t)(((uint32_t)(ID) << 16) | 0x41D0))
 #define EFI_EISA_PNP_ID(ID) EFI_PNP_ID(ID)
 
 #define EFI_PNP_EISA_ID_CONST 0x41d0
-#define EFI_EISA_ID(_Name, _Num) ((EFI_UINT32)(_Name) | ((EFI_UINT32)(_Num) << 16))
+#define EFI_EISA_ID(_Name, _Num) ((uint32_t)(_Name) | ((uint32_t)(_Num) << 16))
 #define EFI_PNP_EISA_ID_MASK 0xffff
-#define EFI_EISA_ID_TO_NUM(_Id) ((EFI_UINT32)(_Id) >> 16)
+#define EFI_EISA_ID_TO_NUM(_Id) ((uint32_t)(_Id) >> 16)
 
 #define EFI_ACPI_DP 0x01
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 HID;
-    EFI_UINT32 UID;
+    uint32_t HID;
+    uint32_t UID;
 } EFI_ACPI_HID_DEVICE_PATH;
 
 #define EFI_ACPI_EXTENDED_DP 0x02
@@ -97,119 +97,119 @@ typedef struct __attribute__((__packed__)) {
 /* HidStr starts _HIDSTR; _UIDSTR and _CIDSTR follow it. */
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 HID;
-    EFI_UINT32 UID;
-    EFI_UINT32 CID;
-    EFI_CHAR8 HidStr[1];
+    uint32_t HID;
+    uint32_t UID;
+    uint32_t CID;
+    char HidStr[1];
 } EFI_ACPI_EXTENDED_HID_DEVICE_PATH;
 
 #define EFI_ACPI_ADR_DP 0x03
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 ADR;
+    uint32_t ADR;
 } EFI_ACPI_ADR_DEVICE_PATH;
 
 #define EFI_ACPI_NVDIMM_DP 0x04
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 NFITDeviceHandle;
+    uint32_t NFITDeviceHandle;
 } EFI_ACPI_NVDIMM_DEVICE_PATH;
 
 #define EFI_MSG_ATAPI_DP 0x01
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 PrimarySecondary;
-    EFI_UINT8 SlaveMaster;
-    EFI_UINT16 Lun;
+    uint8_t PrimarySecondary;
+    uint8_t SlaveMaster;
+    uint16_t Lun;
 } EFI_ATAPI_DEVICE_PATH;
 
 #define EFI_MSG_SCSI_DP 0x02
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT16 Pun;
-    EFI_UINT16 Lun;
+    uint16_t Pun;
+    uint16_t Lun;
 } EFI_SCSI_DEVICE_PATH;
 
 #define EFI_MSG_FIBRECHANNEL_DP 0x03
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 Reserved;
-    EFI_UINT64 WWN;
-    EFI_UINT64 Lun;
+    uint32_t Reserved;
+    uint64_t WWN;
+    uint64_t Lun;
 } EFI_FIBRECHANNEL_DEVICE_PATH;
 
 #define EFI_MSG_FIBRECHANNELEX_DP 0x15
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 Reserved;
-    EFI_UINT8 WWN[8];
-    EFI_UINT8 Lun[8];
+    uint32_t Reserved;
+    uint8_t WWN[8];
+    uint8_t Lun[8];
 } EFI_FIBRECHANNELEX_DEVICE_PATH;
 
 #define EFI_MSG_1394_DP 0x04
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 Reserved;
-    EFI_UINT64 Guid;
+    uint32_t Reserved;
+    uint64_t Guid;
 } EFI_F1394_DEVICE_PATH;
 
 #define EFI_MSG_USB_DP 0x05
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 ParentPortNumber;
-    EFI_UINT8 InterfaceNumber;
+    uint8_t ParentPortNumber;
+    uint8_t InterfaceNumber;
 } EFI_USB_DEVICE_PATH;
 
 #define EFI_MSG_SATA_DP 0x12
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT16 HBAPortNumber;
-    EFI_UINT16 PortMultiplierPortNumber;
-    EFI_UINT16 Lun;
+    uint16_t HBAPortNumber;
+    uint16_t PortMultiplierPortNumber;
+    uint16_t Lun;
 } EFI_SATA_DEVICE_PATH;
 
 #define EFI_MSG_USB_WWID_DP 0x10
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT16 InterfaceNumber;
-    EFI_UINT16 VendorId;
-    EFI_UINT16 ProductId;
-    EFI_CHAR16 SerialNumber[1];
+    uint16_t InterfaceNumber;
+    uint16_t VendorId;
+    uint16_t ProductId;
+    uint16_t SerialNumber[1];
 } EFI_USB_WWID_DEVICE_PATH;
 
 #define EFI_MSG_DEVICE_LOGICAL_UNIT_DP 0x11
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 Lun;
+    uint8_t Lun;
 } EFI_DEVICE_LOGICAL_UNIT_DEVICE_PATH;
 
 #define EFI_MSG_USB_CLASS_DP 0x0F
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT16 VendorId;
-    EFI_UINT16 ProductId;
-    EFI_UINT8 DeviceClass;
-    EFI_UINT8 DeviceSubClass;
-    EFI_UINT8 DeviceProtocol;
+    uint16_t VendorId;
+    uint16_t ProductId;
+    uint8_t DeviceClass;
+    uint8_t DeviceSubClass;
+    uint8_t DeviceProtocol;
 } EFI_USB_CLASS_DEVICE_PATH;
 
 #define EFI_MSG_I2O_DP 0x06
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 Tid;
+    uint32_t Tid;
 } EFI_I2O_DEVICE_PATH;
 
 #define EFI_MSG_MAC_ADDR_DP 0x0B
@@ -217,7 +217,7 @@ typedef struct __attribute__((__packed__)) {
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
     EFI_MAC_ADDRESS MacAddress;
-    EFI_UINT8 IfType;
+    uint8_t IfType;
 } EFI_MAC_ADDR_DEVICE_PATH;
 
 #define EFI_MSG_IPv4_DP 0x0C
@@ -226,10 +226,10 @@ typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
     EFI_IPv4_ADDRESS LocalIpAddress;
     EFI_IPv4_ADDRESS RemoteIpAddress;
-    EFI_UINT16 LocalPort;
-    EFI_UINT16 RemotePort;
-    EFI_UINT16 Protocol;
-    EFI_BOOLEAN StaticIpAddress;
+    uint16_t LocalPort;
+    uint16_t RemotePort;
+    uint16_t Protocol;
+    uint8_t StaticIpAddress;
     EFI_IPv4_ADDRESS GatewayIpAddress;
     EFI_IPv4_ADDRESS SubnetMask;
 } EFI_IPv4_DEVICE_PATH;
@@ -240,11 +240,11 @@ typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
     EFI_IPv6_ADDRESS LocalIpAddress;
     EFI_IPv6_ADDRESS RemoteIpAddress;
-    EFI_UINT16 LocalPort;
-    EFI_UINT16 RemotePort;
-    EFI_UINT16 Protocol;
-    EFI_UINT8 IpAddressOrigin;
-    EFI_UINT8 PrefixLength;
+    uint16_t LocalPort;
+    uint16_t RemotePort;
+    uint16_t Protocol;
+    uint8_t IpAddressOrigin;
+    uint8_t PrefixLength;
     EFI_IPv6_ADDRESS GatewayIpAddress;
 } EFI_IPv6_DEVICE_PATH;
 
@@ -252,18 +252,18 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT16 VlanId;
+    uint16_t VlanId;
 } EFI_VLAN_DEVICE_PATH;
 
 #define EFI_MSG_INFINIBAND_DP 0x09
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 ResourceFlags;
-    EFI_UINT8 PortGid[16];
-    EFI_UINT64 ServiceId;
-    EFI_UINT64 TargetPortId;
-    EFI_UINT64 DeviceId;
+    uint32_t ResourceFlags;
+    uint8_t PortGid[16];
+    uint64_t ServiceId;
+    uint64_t TargetPortId;
+    uint64_t DeviceId;
 } EFI_INFINIBAND_DEVICE_PATH;
 
 #define EFI_INFINIBAND_RESOURCE_FLAG_IOC_SERVICE 0x01
@@ -276,11 +276,11 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 Reserved;
-    EFI_UINT64 BaudRate;
-    EFI_UINT8 DataBits;
-    EFI_UINT8 Parity;
-    EFI_UINT8 StopBits;
+    uint32_t Reserved;
+    uint64_t BaudRate;
+    uint8_t DataBits;
+    uint8_t Parity;
+    uint8_t StopBits;
 } EFI_UART_DEVICE_PATH;
 
 #define EFI_MSG_VENDOR_DP 0x0A
@@ -303,7 +303,7 @@ typedef struct __attribute__((__packed__)) {
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
     EFI_GUID Guid;
-    EFI_UINT32 FlowControlMap;
+    uint32_t FlowControlMap;
 } EFI_UART_FLOW_CONTROL_DEVICE_PATH;
 
 #define EFI_UART_FLOW_CONTROL_HARDWARE 0x00000001
@@ -315,11 +315,11 @@ typedef struct __attribute__((__packed__)) {
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
     EFI_GUID Guid;
-    EFI_UINT32 Reserved;
-    EFI_UINT64 SasAddress;
-    EFI_UINT64 Lun;
-    EFI_UINT16 DeviceTopology;
-    EFI_UINT16 RelativeTargetPort;
+    uint32_t Reserved;
+    uint64_t SasAddress;
+    uint64_t Lun;
+    uint16_t DeviceTopology;
+    uint16_t RelativeTargetPort;
 } EFI_SAS_DEVICE_PATH;
 
 #define EFI_MSG_SASEX_DP 0x16
@@ -327,20 +327,20 @@ typedef struct __attribute__((__packed__)) {
 /* Length 24: the offsets and length the specification prints for this node disagree. */
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 SasAddress[8];
-    EFI_UINT8 Lun[8];
-    EFI_UINT16 DeviceTopology;
-    EFI_UINT16 RelativeTargetPort;
+    uint8_t SasAddress[8];
+    uint8_t Lun[8];
+    uint16_t DeviceTopology;
+    uint16_t RelativeTargetPort;
 } EFI_SASEX_DEVICE_PATH;
 
 #define EFI_MSG_ISCSI_DP 0x13
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT16 NetworkProtocol;
-    EFI_UINT16 LoginOption;
-    EFI_UINT64 Lun;
-    EFI_UINT16 TargetPortalGroupTag;
+    uint16_t NetworkProtocol;
+    uint16_t LoginOption;
+    uint64_t Lun;
+    uint16_t TargetPortalGroupTag;
 } EFI_ISCSI_DEVICE_PATH;
 
 #define EFI_ISCSI_LOGIN_OPTION_NO_HEADER_DIGEST 0x0000
@@ -356,39 +356,39 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 NamespaceId;
-    EFI_UINT64 NamespaceUuid;
+    uint32_t NamespaceId;
+    uint64_t NamespaceUuid;
 } EFI_NVME_NAMESPACE_DEVICE_PATH;
 
 #define EFI_MSG_URI_DP 0x18
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_CHAR8 Uri[1];
+    char Uri[1];
 } EFI_URI_DEVICE_PATH;
 
 #define EFI_MSG_UFS_DP 0x19
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 Pun;
-    EFI_UINT8 Lun;
+    uint8_t Pun;
+    uint8_t Lun;
 } EFI_UFS_DEVICE_PATH;
 
 #define EFI_MSG_SD_DP 0x1A
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 SlotNumber;
+    uint8_t SlotNumber;
 } EFI_SD_DEVICE_PATH;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT8 Address[6];
+    uint8_t Address[6];
 } EFI_BLUETOOTH_ADDRESS;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT8 Address[6];
-    EFI_UINT8 Type;
+    uint8_t Address[6];
+    uint8_t Type;
 } EFI_BLUETOOTH_LE_ADDRESS;
 
 #define EFI_MSG_BLUETOOTH_DP 0x1B
@@ -402,14 +402,14 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 SSId[32];
+    uint8_t SSId[32];
 } EFI_WIFI_DEVICE_PATH;
 
 #define EFI_MSG_EMMC_DP 0x1D
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 SlotNumber;
+    uint8_t SlotNumber;
 } EFI_EMMC_DEVICE_PATH;
 
 #define EFI_MSG_BLUETOOTH_LE_DP 0x1E
@@ -423,7 +423,7 @@ typedef struct __attribute__((__packed__)) {
 
 __extension__ typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 IsIPv6;
+    uint8_t IsIPv6;
     EFI_IP_ADDRESS DnsServerIp[];
 } EFI_DNS_DEVICE_PATH;
 
@@ -438,15 +438,15 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 RESTService;
-    EFI_UINT8 AccessMode;
+    uint8_t RESTService;
+    uint8_t AccessMode;
 } EFI_REST_SERVICE_DEVICE_PATH;
 
 /* Length 22 + n: the specification prints 21 + n but puts the vendor data at offset 22. */
 __extension__ typedef struct __attribute__((__packed__)) {
     EFI_REST_SERVICE_DEVICE_PATH RestServiceDevicePath;
     EFI_GUID RestServiceGuid;
-    EFI_UINT8 VendorDefinedData[];
+    uint8_t VendorDefinedData[];
 } EFI_REST_VENDOR_SERVICE_DEVICE_PATH;
 
 #define EFI_MSG_NVME_OF_NAMESPACE_DP 0x22
@@ -454,21 +454,21 @@ __extension__ typedef struct __attribute__((__packed__)) {
 /* Length 21 + n: the specification prints 20 + n but puts SubsystemNqn at offset 21. */
 __extension__ typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT8 NamespaceIdType;
-    EFI_UINT8 NamespaceId[16];
-    EFI_CHAR8 SubsystemNqn[];
+    uint8_t NamespaceIdType;
+    uint8_t NamespaceId[16];
+    char SubsystemNqn[];
 } EFI_NVME_OF_NAMESPACE_DEVICE_PATH;
 
 #define EFI_MEDIA_HARDDRIVE_DP 0x01
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 PartitionNumber;
-    EFI_UINT64 PartitionStart;
-    EFI_UINT64 PartitionSize;
-    EFI_UINT8 Signature[16];
-    EFI_UINT8 MBRType;
-    EFI_UINT8 SignatureType;
+    uint32_t PartitionNumber;
+    uint64_t PartitionStart;
+    uint64_t PartitionSize;
+    uint8_t Signature[16];
+    uint8_t MBRType;
+    uint8_t SignatureType;
 } EFI_HARDDRIVE_DEVICE_PATH;
 
 #define EFI_MBR_TYPE_PCAT 0x01
@@ -482,9 +482,9 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 BootEntry;
-    EFI_UINT64 PartitionStart;
-    EFI_UINT64 PartitionSize;
+    uint32_t BootEntry;
+    uint64_t PartitionStart;
+    uint64_t PartitionSize;
 } EFI_CDROM_DEVICE_PATH;
 
 #define EFI_MEDIA_VENDOR_DP 0x03
@@ -493,7 +493,7 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_CHAR16 PathName[1];
+    uint16_t PathName[1];
 } EFI_FILEPATH_DEVICE_PATH;
 
 #define EFI_SIZE_OF_FILEPATH_DEVICE_PATH offsetof(EFI_FILEPATH_DEVICE_PATH, PathName)
@@ -523,19 +523,19 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 Reserved;
-    EFI_UINT64 StartingOffset;
-    EFI_UINT64 EndingOffset;
+    uint32_t Reserved;
+    uint64_t StartingOffset;
+    uint64_t EndingOffset;
 } EFI_MEDIA_RELATIVE_OFFSET_RANGE_DEVICE_PATH;
 
 #define EFI_MEDIA_RAM_DISK_DP 0x09
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT32 StartingAddr[2];
-    EFI_UINT32 EndingAddr[2];
+    uint32_t StartingAddr[2];
+    uint32_t EndingAddr[2];
     EFI_GUID TypeGuid;
-    EFI_UINT16 Instance;
+    uint16_t Instance;
 } EFI_MEDIA_RAM_DISK_DEVICE_PATH;
 
 #define EFI_VIRTUAL_DISK_GUID \
@@ -554,9 +554,9 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
     EFI_DEVICE_PATH_PROTOCOL Header;
-    EFI_UINT16 DeviceType;
-    EFI_UINT16 StatusFlag;
-    EFI_CHAR8 String[1];
+    uint16_t DeviceType;
+    uint16_t StatusFlag;
+    char String[1];
 } EFI_BBS_BBS_DEVICE_PATH;
 
 #define EFI_BBS_TYPE_FLOPPY 0x01
@@ -670,16 +670,16 @@ typedef union {
     EFI_MEDIA_RELATIVE_OFFSET_RANGE_DEVICE_PATH *Offset;
     EFI_MEDIA_RAM_DISK_DEVICE_PATH *RamDisk;
     EFI_BBS_BBS_DEVICE_PATH *Bbs;
-    EFI_UINT8 *Raw;
+    uint8_t *Raw;
 } EFI_DEV_PATH_PTR;
 
-#define EfiDevicePathType(a) (((EFI_CONST EFI_DEVICE_PATH_PROTOCOL *)(a))->Type)
-#define EfiDevicePathSubType(a) (((EFI_CONST EFI_DEVICE_PATH_PROTOCOL *)(a))->SubType)
+#define EfiDevicePathType(a) (((const EFI_DEVICE_PATH_PROTOCOL *)(a))->Type)
+#define EfiDevicePathSubType(a) (((const EFI_DEVICE_PATH_PROTOCOL *)(a))->SubType)
 #define EfiDevicePathNodeLength(a) \
-    ((EFI_UINT16)(((EFI_CONST EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[0] | \
-        (((EFI_CONST EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[1] << 8)))
+    ((uint16_t)(((const EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[0] | \
+        (((const EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[1] << 8)))
 #define EfiNextDevicePathNode(a) \
-    ((EFI_DEVICE_PATH_PROTOCOL *)((EFI_UINT8 *)(a) + EfiDevicePathNodeLength(a)))
+    ((EFI_DEVICE_PATH_PROTOCOL *)((uint8_t *)(a) + EfiDevicePathNodeLength(a)))
 
 #define EfiIsDevicePathEndType(a) (EfiDevicePathType(a) == EFI_END_DEVICE_PATH_TYPE)
 #define EfiIsDevicePathEndSubType(a) (EfiDevicePathSubType(a) == EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE)
@@ -690,8 +690,8 @@ typedef union {
 
 #define EfiSetDevicePathNodeLength(a, l) \
     do { \
-        ((EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[0] = (EFI_UINT8)(l); \
-        ((EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[1] = (EFI_UINT8)((l) >> 8); \
+        ((EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[0] = (uint8_t)(l); \
+        ((EFI_DEVICE_PATH_PROTOCOL *)(a))->Length[1] = (uint8_t)((l) >> 8); \
     } while (0)
 
 #define EfiSetDevicePathEndNode(a) \
@@ -704,42 +704,42 @@ typedef union {
 #define EFI_DEVICE_PATH_UTILITIES_PROTOCOL_GUID \
     {0x379be4e, 0xd706, 0x437d, {0xb0, 0x37, 0xed, 0xb8, 0x2f, 0xb7, 0x72, 0xa4}}
 
-typedef EFI_UINTN (EFI_API *EFI_DEVICE_PATH_UTILS_GET_DEVICE_PATH_SIZE)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DevicePath
+typedef size_t (EFI_API *EFI_DEVICE_PATH_UTILS_GET_DEVICE_PATH_SIZE)(
+    const EFI_DEVICE_PATH_PROTOCOL *DevicePath
 );
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_UTILS_DUP_DEVICE_PATH)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DevicePath
+    const EFI_DEVICE_PATH_PROTOCOL *DevicePath
 );
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_UTILS_APPEND_PATH)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *Src1,
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *Src2
+    const EFI_DEVICE_PATH_PROTOCOL *Src1,
+    const EFI_DEVICE_PATH_PROTOCOL *Src2
 );
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_UTILS_APPEND_NODE)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DevicePath,
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DeviceNode
+    const EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    const EFI_DEVICE_PATH_PROTOCOL *DeviceNode
 );
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_UTILS_APPEND_INSTANCE)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DevicePath,
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DevicePathInstance
+    const EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    const EFI_DEVICE_PATH_PROTOCOL *DevicePathInstance
 );
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_UTILS_GET_NEXT_INSTANCE)(
     EFI_DEVICE_PATH_PROTOCOL **DevicePathInstance,
-    EFI_UINTN *DevicePathInstanceSize
+    size_t *DevicePathInstanceSize
 );
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_UTILS_CREATE_NODE)(
-    EFI_UINT8 NodeType,
-    EFI_UINT8 NodeSubType,
-    EFI_UINT16 NodeLength
+    uint8_t NodeType,
+    uint8_t NodeSubType,
+    uint16_t NodeLength
 );
 
-typedef EFI_BOOLEAN (EFI_API *EFI_DEVICE_PATH_UTILS_IS_MULTI_INSTANCE)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DevicePath
+typedef bool (EFI_API *EFI_DEVICE_PATH_UTILS_IS_MULTI_INSTANCE)(
+    const EFI_DEVICE_PATH_PROTOCOL *DevicePath
 );
 
 typedef struct _EFI_DEVICE_PATH_UTILITIES_PROTOCOL {
@@ -756,16 +756,16 @@ typedef struct _EFI_DEVICE_PATH_UTILITIES_PROTOCOL {
 #define EFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID \
     {0x8b843e20, 0x8132, 0x4852, {0x90, 0xcc, 0x55, 0x1a, 0x4e, 0x4a, 0x7f, 0x1c}}
 
-typedef EFI_CHAR16 *(EFI_API *EFI_DEVICE_PATH_TO_TEXT_NODE)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DeviceNode,
-    EFI_BOOLEAN DisplayOnly,
-    EFI_BOOLEAN AllowShortcuts
+typedef uint16_t *(EFI_API *EFI_DEVICE_PATH_TO_TEXT_NODE)(
+    const EFI_DEVICE_PATH_PROTOCOL *DeviceNode,
+    bool DisplayOnly,
+    bool AllowShortcuts
 );
 
-typedef EFI_CHAR16 *(EFI_API *EFI_DEVICE_PATH_TO_TEXT_PATH)(
-    EFI_CONST EFI_DEVICE_PATH_PROTOCOL *DevicePath,
-    EFI_BOOLEAN DisplayOnly,
-    EFI_BOOLEAN AllowShortcuts
+typedef uint16_t *(EFI_API *EFI_DEVICE_PATH_TO_TEXT_PATH)(
+    const EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    bool DisplayOnly,
+    bool AllowShortcuts
 );
 
 typedef struct _EFI_DEVICE_PATH_TO_TEXT_PROTOCOL {
@@ -777,11 +777,11 @@ typedef struct _EFI_DEVICE_PATH_TO_TEXT_PROTOCOL {
     {0x5c99a21, 0xc70f, 0x4ad2, {0x8a, 0x5f, 0x35, 0xdf, 0x33, 0x43, 0xf5, 0x1e}}
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_FROM_TEXT_NODE)(
-    EFI_CONST EFI_CHAR16 *TextDeviceNode
+    const uint16_t *TextDeviceNode
 );
 
 typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_DEVICE_PATH_FROM_TEXT_PATH)(
-    EFI_CONST EFI_CHAR16 *TextDevicePath
+    const uint16_t *TextDevicePath
 );
 
 /* The specification's structure body misspells both member names ("Devic"). */

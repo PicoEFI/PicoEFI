@@ -18,21 +18,21 @@ extern "C" {
 typedef struct _EFI_UDP4_PROTOCOL EFI_UDP4_PROTOCOL;
 
 typedef struct {
-    EFI_BOOLEAN AcceptBroadcast;
-    EFI_BOOLEAN AcceptPromiscuous;
-    EFI_BOOLEAN AcceptAnyPort;
-    EFI_BOOLEAN AllowDuplicatePort;
-    EFI_UINT8 TypeOfService;
-    EFI_UINT8 TimeToLive;
-    EFI_BOOLEAN DoNotFragment;
-    EFI_UINT32 ReceiveTimeout;
-    EFI_UINT32 TransmitTimeout;
-    EFI_BOOLEAN UseDefaultAddress;
+    uint8_t AcceptBroadcast;
+    uint8_t AcceptPromiscuous;
+    uint8_t AcceptAnyPort;
+    uint8_t AllowDuplicatePort;
+    uint8_t TypeOfService;
+    uint8_t TimeToLive;
+    uint8_t DoNotFragment;
+    uint32_t ReceiveTimeout;
+    uint32_t TransmitTimeout;
+    uint8_t UseDefaultAddress;
     EFI_IPv4_ADDRESS StationAddress;
     EFI_IPv4_ADDRESS SubnetMask;
-    EFI_UINT16 StationPort;
+    uint16_t StationPort;
     EFI_IPv4_ADDRESS RemoteAddress;
-    EFI_UINT16 RemotePort;
+    uint16_t RemotePort;
 } EFI_UDP4_CONFIG_DATA;
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_GET_MODE_DATA)(
@@ -50,13 +50,13 @@ typedef EFI_STATUS (EFI_API *EFI_UDP4_CONFIGURE)(
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_GROUPS)(
     EFI_UDP4_PROTOCOL *This,
-    EFI_BOOLEAN JoinFlag,
+    bool JoinFlag,
     EFI_IPv4_ADDRESS *MulticastAddress
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_ROUTES)(
     EFI_UDP4_PROTOCOL *This,
-    EFI_BOOLEAN DeleteRoute,
+    bool DeleteRoute,
     EFI_IPv4_ADDRESS *SubnetAddress,
     EFI_IPv4_ADDRESS *SubnetMask,
     EFI_IPv4_ADDRESS *GatewayAddress
@@ -64,30 +64,30 @@ typedef EFI_STATUS (EFI_API *EFI_UDP4_ROUTES)(
 
 typedef struct {
     EFI_IPv4_ADDRESS SourceAddress;
-    EFI_UINT16 SourcePort;
+    uint16_t SourcePort;
     EFI_IPv4_ADDRESS DestinationAddress;
-    EFI_UINT16 DestinationPort;
+    uint16_t DestinationPort;
 } EFI_UDP4_SESSION_DATA;
 
 typedef struct {
-    EFI_UINT32 FragmentLength;
-    EFI_VOID *FragmentBuffer;
+    uint32_t FragmentLength;
+    void *FragmentBuffer;
 } EFI_UDP4_FRAGMENT_DATA;
 
 typedef struct {
     EFI_TIME TimeStamp;
     EFI_EVENT RecycleSignal;
     EFI_UDP4_SESSION_DATA UdpSession;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_UDP4_FRAGMENT_DATA FragmentTable[1];
 } EFI_UDP4_RECEIVE_DATA;
 
 typedef struct {
     EFI_UDP4_SESSION_DATA *UdpSessionData;
     EFI_IPv4_ADDRESS *GatewayAddress;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_UDP4_FRAGMENT_DATA FragmentTable[1];
 } EFI_UDP4_TRANSMIT_DATA;
 
@@ -137,17 +137,17 @@ struct _EFI_UDP4_PROTOCOL {
 typedef struct _EFI_UDP6_PROTOCOL EFI_UDP6_PROTOCOL;
 
 typedef struct {
-    EFI_BOOLEAN AcceptPromiscuous;
-    EFI_BOOLEAN AcceptAnyPort;
-    EFI_BOOLEAN AllowDuplicatePort;
-    EFI_UINT8 TrafficClass;
-    EFI_UINT8 HopLimit;
-    EFI_UINT32 ReceiveTimeout;
-    EFI_UINT32 TransmitTimeout;
+    uint8_t AcceptPromiscuous;
+    uint8_t AcceptAnyPort;
+    uint8_t AllowDuplicatePort;
+    uint8_t TrafficClass;
+    uint8_t HopLimit;
+    uint32_t ReceiveTimeout;
+    uint32_t TransmitTimeout;
     EFI_IPv6_ADDRESS StationAddress;
-    EFI_UINT16 StationPort;
+    uint16_t StationPort;
     EFI_IPv6_ADDRESS RemoteAddress;
-    EFI_UINT16 RemotePort;
+    uint16_t RemotePort;
 } EFI_UDP6_CONFIG_DATA;
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_GET_MODE_DATA)(
@@ -165,35 +165,35 @@ typedef EFI_STATUS (EFI_API *EFI_UDP6_CONFIGURE)(
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_GROUPS)(
     EFI_UDP6_PROTOCOL *This,
-    EFI_BOOLEAN JoinFlag,
+    bool JoinFlag,
     EFI_IPv6_ADDRESS *MulticastAddress
 );
 
 typedef struct {
     EFI_IPv6_ADDRESS SourceAddress;
-    EFI_UINT16 SourcePort;
+    uint16_t SourcePort;
     EFI_IPv6_ADDRESS DestinationAddress;
-    EFI_UINT16 DestinationPort;
+    uint16_t DestinationPort;
 } EFI_UDP6_SESSION_DATA;
 
 typedef struct {
-    EFI_UINT32 FragmentLength;
-    EFI_VOID *FragmentBuffer;
+    uint32_t FragmentLength;
+    void *FragmentBuffer;
 } EFI_UDP6_FRAGMENT_DATA;
 
 typedef struct {
     EFI_TIME TimeStamp;
     EFI_EVENT RecycleSignal;
     EFI_UDP6_SESSION_DATA UdpSession;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_UDP6_FRAGMENT_DATA FragmentTable[1];
 } EFI_UDP6_RECEIVE_DATA;
 
 typedef struct {
     EFI_UDP6_SESSION_DATA *UdpSessionData;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_UDP6_FRAGMENT_DATA FragmentTable[1];
 } EFI_UDP6_TRANSMIT_DATA;
 

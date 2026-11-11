@@ -13,24 +13,24 @@ extern "C" {
 typedef struct _EFI_SIMPLE_POINTER_PROTOCOL EFI_SIMPLE_POINTER_PROTOCOL;
 
 typedef struct {
-    EFI_UINT64 ResolutionX;
-    EFI_UINT64 ResolutionY;
-    EFI_UINT64 ResolutionZ;
-    EFI_BOOLEAN LeftButton;
-    EFI_BOOLEAN RightButton;
+    uint64_t ResolutionX;
+    uint64_t ResolutionY;
+    uint64_t ResolutionZ;
+    uint8_t LeftButton;
+    uint8_t RightButton;
 } EFI_SIMPLE_POINTER_MODE;
 
 typedef EFI_STATUS (EFI_API *EFI_SIMPLE_POINTER_RESET)(
     EFI_SIMPLE_POINTER_PROTOCOL *This,
-    EFI_BOOLEAN ExtendedVerification
+    bool ExtendedVerification
 );
 
 typedef struct {
-    EFI_INT32 RelativeMovementX;
-    EFI_INT32 RelativeMovementY;
-    EFI_INT32 RelativeMovementZ;
-    EFI_BOOLEAN LeftButton;
-    EFI_BOOLEAN RightButton;
+    int32_t RelativeMovementX;
+    int32_t RelativeMovementY;
+    int32_t RelativeMovementZ;
+    uint8_t LeftButton;
+    uint8_t RightButton;
 } EFI_SIMPLE_POINTER_STATE;
 
 typedef EFI_STATUS (EFI_API *EFI_SIMPLE_POINTER_GET_STATE)(
@@ -52,13 +52,13 @@ struct _EFI_SIMPLE_POINTER_PROTOCOL {
 typedef struct _EFI_ABSOLUTE_POINTER_PROTOCOL EFI_ABSOLUTE_POINTER_PROTOCOL;
 
 typedef struct {
-    EFI_UINT64 AbsoluteMinX;
-    EFI_UINT64 AbsoluteMinY;
-    EFI_UINT64 AbsoluteMinZ;
-    EFI_UINT64 AbsoluteMaxX;
-    EFI_UINT64 AbsoluteMaxY;
-    EFI_UINT64 AbsoluteMaxZ;
-    EFI_UINT32 Attributes;
+    uint64_t AbsoluteMinX;
+    uint64_t AbsoluteMinY;
+    uint64_t AbsoluteMinZ;
+    uint64_t AbsoluteMaxX;
+    uint64_t AbsoluteMaxY;
+    uint64_t AbsoluteMaxZ;
+    uint32_t Attributes;
 } EFI_ABSOLUTE_POINTER_MODE;
 
 #define EFI_ABSP_SupportsAltActive 0x00000001
@@ -66,14 +66,14 @@ typedef struct {
 
 typedef EFI_STATUS (EFI_API *EFI_ABSOLUTE_POINTER_RESET)(
     EFI_ABSOLUTE_POINTER_PROTOCOL *This,
-    EFI_BOOLEAN ExtendedVerification
+    bool ExtendedVerification
 );
 
 typedef struct {
-    EFI_UINT64 CurrentX;
-    EFI_UINT64 CurrentY;
-    EFI_UINT64 CurrentZ;
-    EFI_UINT32 ActiveButtons;
+    uint64_t CurrentX;
+    uint64_t CurrentY;
+    uint64_t CurrentZ;
+    uint32_t ActiveButtons;
 } EFI_ABSOLUTE_POINTER_STATE;
 
 /* EFI_ABS_AltActive (not EFI_ABSP_) is the specification's own, consistent spelling. */

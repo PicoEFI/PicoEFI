@@ -18,37 +18,37 @@ extern "C" {
 typedef struct _EFI_TCP4_PROTOCOL EFI_TCP4_PROTOCOL;
 
 typedef struct {
-    EFI_BOOLEAN UseDefaultAddress;
+    uint8_t UseDefaultAddress;
     EFI_IPv4_ADDRESS StationAddress;
     EFI_IPv4_ADDRESS SubnetMask;
-    EFI_UINT16 StationPort;
+    uint16_t StationPort;
     EFI_IPv4_ADDRESS RemoteAddress;
-    EFI_UINT16 RemotePort;
-    EFI_BOOLEAN ActiveFlag;
+    uint16_t RemotePort;
+    uint8_t ActiveFlag;
 } EFI_TCP4_ACCESS_POINT;
 
 typedef struct {
-    EFI_UINT32 ReceiveBufferSize;
-    EFI_UINT32 SendBufferSize;
-    EFI_UINT32 MaxSynBackLog;
-    EFI_UINT32 ConnectionTimeout;
-    EFI_UINT32 DataRetries;
-    EFI_UINT32 FinTimeout;
-    EFI_UINT32 TimeWaitTimeout;
-    EFI_UINT32 KeepAliveProbes;
-    EFI_UINT32 KeepAliveTime;
-    EFI_UINT32 KeepAliveInterval;
-    EFI_BOOLEAN EnableNagle;
-    EFI_BOOLEAN EnableTimeStamp;
-    EFI_BOOLEAN EnableWindowScaling;
-    EFI_BOOLEAN EnableSelectiveAck;
-    EFI_BOOLEAN EnablePathMtuDiscovery;
+    uint32_t ReceiveBufferSize;
+    uint32_t SendBufferSize;
+    uint32_t MaxSynBackLog;
+    uint32_t ConnectionTimeout;
+    uint32_t DataRetries;
+    uint32_t FinTimeout;
+    uint32_t TimeWaitTimeout;
+    uint32_t KeepAliveProbes;
+    uint32_t KeepAliveTime;
+    uint32_t KeepAliveInterval;
+    uint8_t EnableNagle;
+    uint8_t EnableTimeStamp;
+    uint8_t EnableWindowScaling;
+    uint8_t EnableSelectiveAck;
+    uint8_t EnablePathMtuDiscovery;
 } EFI_TCP4_OPTION;
 
 /* ControlOption may be NULL, as described (and a pointer in TCPv6); printed by value. */
 typedef struct {
-    EFI_UINT8 TypeOfService;
-    EFI_UINT8 TimeToLive;
+    uint8_t TypeOfService;
+    uint8_t TimeToLive;
     EFI_TCP4_ACCESS_POINT AccessPoint;
     EFI_TCP4_OPTION *ControlOption;
 } EFI_TCP4_CONFIG_DATA;
@@ -83,7 +83,7 @@ typedef EFI_STATUS (EFI_API *EFI_TCP4_CONFIGURE)(
 
 typedef EFI_STATUS (EFI_API *EFI_TCP4_ROUTES)(
     EFI_TCP4_PROTOCOL *This,
-    EFI_BOOLEAN DeleteRoute,
+    bool DeleteRoute,
     EFI_IPv4_ADDRESS *SubnetAddress,
     EFI_IPv4_ADDRESS *SubnetMask,
     EFI_IPv4_ADDRESS *GatewayAddress
@@ -114,22 +114,22 @@ typedef EFI_STATUS (EFI_API *EFI_TCP4_ACCEPT)(
 );
 
 typedef struct {
-    EFI_UINT32 FragmentLength;
-    EFI_VOID *FragmentBuffer;
+    uint32_t FragmentLength;
+    void *FragmentBuffer;
 } EFI_TCP4_FRAGMENT_DATA;
 
 typedef struct {
-    EFI_BOOLEAN UrgentFlag;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint8_t UrgentFlag;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_TCP4_FRAGMENT_DATA FragmentTable[1];
 } EFI_TCP4_RECEIVE_DATA;
 
 typedef struct {
-    EFI_BOOLEAN Push;
-    EFI_BOOLEAN Urgent;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint8_t Push;
+    uint8_t Urgent;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_TCP4_FRAGMENT_DATA FragmentTable[1];
 } EFI_TCP4_TRANSMIT_DATA;
 
@@ -153,7 +153,7 @@ typedef EFI_STATUS (EFI_API *EFI_TCP4_RECEIVE)(
 
 typedef struct {
     EFI_TCP4_COMPLETION_TOKEN CompletionToken;
-    EFI_BOOLEAN AbortOnClose;
+    uint8_t AbortOnClose;
 } EFI_TCP4_CLOSE_TOKEN;
 
 typedef EFI_STATUS (EFI_API *EFI_TCP4_CLOSE)(
@@ -191,33 +191,33 @@ typedef struct _EFI_TCP6_PROTOCOL EFI_TCP6_PROTOCOL;
 
 typedef struct {
     EFI_IPv6_ADDRESS StationAddress;
-    EFI_UINT16 StationPort;
+    uint16_t StationPort;
     EFI_IPv6_ADDRESS RemoteAddress;
-    EFI_UINT16 RemotePort;
-    EFI_BOOLEAN ActiveFlag;
+    uint16_t RemotePort;
+    uint8_t ActiveFlag;
 } EFI_TCP6_ACCESS_POINT;
 
 typedef struct {
-    EFI_UINT32 ReceiveBufferSize;
-    EFI_UINT32 SendBufferSize;
-    EFI_UINT32 MaxSynBackLog;
-    EFI_UINT32 ConnectionTimeout;
-    EFI_UINT32 DataRetries;
-    EFI_UINT32 FinTimeout;
-    EFI_UINT32 TimeWaitTimeout;
-    EFI_UINT32 KeepAliveProbes;
-    EFI_UINT32 KeepAliveTime;
-    EFI_UINT32 KeepAliveInterval;
-    EFI_BOOLEAN EnableNagle;
-    EFI_BOOLEAN EnableTimeStamp;
-    EFI_BOOLEAN EnableWindowScaling;
-    EFI_BOOLEAN EnableSelectiveAck;
-    EFI_BOOLEAN EnablePathMtuDiscovery;
+    uint32_t ReceiveBufferSize;
+    uint32_t SendBufferSize;
+    uint32_t MaxSynBackLog;
+    uint32_t ConnectionTimeout;
+    uint32_t DataRetries;
+    uint32_t FinTimeout;
+    uint32_t TimeWaitTimeout;
+    uint32_t KeepAliveProbes;
+    uint32_t KeepAliveTime;
+    uint32_t KeepAliveInterval;
+    uint8_t EnableNagle;
+    uint8_t EnableTimeStamp;
+    uint8_t EnableWindowScaling;
+    uint8_t EnableSelectiveAck;
+    uint8_t EnablePathMtuDiscovery;
 } EFI_TCP6_OPTION;
 
 typedef struct {
-    EFI_UINT8 TrafficClass;
-    EFI_UINT8 HopLimit;
+    uint8_t TrafficClass;
+    uint8_t HopLimit;
     EFI_TCP6_ACCESS_POINT AccessPoint;
     EFI_TCP6_OPTION *ControlOption;
 } EFI_TCP6_CONFIG_DATA;
@@ -275,22 +275,22 @@ typedef EFI_STATUS (EFI_API *EFI_TCP6_ACCEPT)(
 );
 
 typedef struct {
-    EFI_UINT32 FragmentLength;
-    EFI_VOID *FragmentBuffer;
+    uint32_t FragmentLength;
+    void *FragmentBuffer;
 } EFI_TCP6_FRAGMENT_DATA;
 
 typedef struct {
-    EFI_BOOLEAN UrgentFlag;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint8_t UrgentFlag;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_TCP6_FRAGMENT_DATA FragmentTable[1];
 } EFI_TCP6_RECEIVE_DATA;
 
 typedef struct {
-    EFI_BOOLEAN Push;
-    EFI_BOOLEAN Urgent;
-    EFI_UINT32 DataLength;
-    EFI_UINT32 FragmentCount;
+    uint8_t Push;
+    uint8_t Urgent;
+    uint32_t DataLength;
+    uint32_t FragmentCount;
     EFI_TCP6_FRAGMENT_DATA FragmentTable[1];
 } EFI_TCP6_TRANSMIT_DATA;
 
@@ -314,7 +314,7 @@ typedef EFI_STATUS (EFI_API *EFI_TCP6_RECEIVE)(
 
 typedef struct {
     EFI_TCP6_COMPLETION_TOKEN CompletionToken;
-    EFI_BOOLEAN AbortOnClose;
+    uint8_t AbortOnClose;
 } EFI_TCP6_CLOSE_TOKEN;
 
 typedef EFI_STATUS (EFI_API *EFI_TCP6_CLOSE)(

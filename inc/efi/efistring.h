@@ -15,23 +15,23 @@ typedef struct _EFI_REGULAR_EXPRESSION_PROTOCOL EFI_REGULAR_EXPRESSION_PROTOCOL;
 typedef EFI_GUID EFI_REGEX_SYNTAX_TYPE;
 
 typedef struct {
-    EFI_CONST EFI_CHAR16 *CapturePtr;
-    EFI_UINTN Length;
+    const uint16_t *CapturePtr;
+    size_t Length;
 } EFI_REGEX_CAPTURE;
 
 typedef EFI_STATUS (EFI_API *EFI_REGULAR_EXPRESSION_MATCH)(
     EFI_REGULAR_EXPRESSION_PROTOCOL *This,
-    EFI_CHAR16 *String,
-    EFI_CHAR16 *Pattern,
+    uint16_t *String,
+    uint16_t *Pattern,
     EFI_REGEX_SYNTAX_TYPE *SyntaxType,
-    EFI_BOOLEAN *Result,
+    bool *Result,
     EFI_REGEX_CAPTURE **Captures,
-    EFI_UINTN *CapturesCount
+    size_t *CapturesCount
 );
 
 typedef EFI_STATUS (EFI_API *EFI_REGULAR_EXPRESSION_GET_INFO)(
     EFI_REGULAR_EXPRESSION_PROTOCOL *This,
-    EFI_UINTN *RegExSyntaxTypeListSize,
+    size_t *RegExSyntaxTypeListSize,
     EFI_REGEX_SYNTAX_TYPE *RegExSyntaxTypeList
 );
 

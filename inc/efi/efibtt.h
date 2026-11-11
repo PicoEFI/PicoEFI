@@ -18,44 +18,44 @@ extern "C" {
 #define EFI_BTT_INFO_BLOCK_MINOR_VERSION 0
 
 typedef struct _EFI_BTT_INFO_BLOCK {
-    EFI_CHAR8 Sig[EFI_BTT_INFO_BLOCK_SIG_LEN];
+    char Sig[EFI_BTT_INFO_BLOCK_SIG_LEN];
     EFI_GUID Uuid;
     EFI_GUID ParentUuid;
-    EFI_UINT32 Flags;
-    EFI_UINT16 Major;
-    EFI_UINT16 Minor;
-    EFI_UINT32 ExternalLbaSize;
-    EFI_UINT32 ExternalNLba;
-    EFI_UINT32 InternalLbaSize;
-    EFI_UINT32 InternalNLba;
-    EFI_UINT32 NFree;
-    EFI_UINT32 InfoSize;
-    EFI_UINT64 NextOff;
-    EFI_UINT64 DataOff;
-    EFI_UINT64 MapOff;
-    EFI_UINT64 FlogOff;
-    EFI_UINT64 InfoOff;
-    EFI_CHAR8 Unused[EFI_BTT_INFO_UNUSED_LEN];
-    EFI_UINT64 Checksum;
+    uint32_t Flags;
+    uint16_t Major;
+    uint16_t Minor;
+    uint32_t ExternalLbaSize;
+    uint32_t ExternalNLba;
+    uint32_t InternalLbaSize;
+    uint32_t InternalNLba;
+    uint32_t NFree;
+    uint32_t InfoSize;
+    uint64_t NextOff;
+    uint64_t DataOff;
+    uint64_t MapOff;
+    uint64_t FlogOff;
+    uint64_t InfoOff;
+    char Unused[EFI_BTT_INFO_UNUSED_LEN];
+    uint64_t Checksum;
 } EFI_BTT_INFO_BLOCK;
 
 typedef struct _EFI_BTT_MAP_ENTRY {
-    EFI_UINT32 PostMapLba : 30;
-    EFI_UINT32 Error : 1;
-    EFI_UINT32 Zero : 1;
+    uint32_t PostMapLba : 30;
+    uint32_t Error : 1;
+    uint32_t Zero : 1;
 } EFI_BTT_MAP_ENTRY;
 
 #define EFI_BTT_FLOG_ENTRY_ALIGNMENT 64
 
 typedef struct _EFI_BTT_FLOG {
-    EFI_UINT32 Lba0;
-    EFI_UINT32 OldMap0;
-    EFI_UINT32 NewMap0;
-    EFI_UINT32 Seq0;
-    EFI_UINT32 Lba1;
-    EFI_UINT32 OldMap1;
-    EFI_UINT32 NewMap1;
-    EFI_UINT32 Seq1;
+    uint32_t Lba0;
+    uint32_t OldMap0;
+    uint32_t NewMap0;
+    uint32_t Seq0;
+    uint32_t Lba1;
+    uint32_t OldMap1;
+    uint32_t NewMap1;
+    uint32_t Seq1;
 } EFI_BTT_FLOG;
 
 #define EFI_BTT_ABSTRACTION_GUID \

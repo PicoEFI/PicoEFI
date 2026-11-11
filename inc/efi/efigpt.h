@@ -20,9 +20,9 @@ typedef struct __attribute__((__packed__)) {
     EFI_LBA LastUsableLBA;
     EFI_GUID DiskGUID;
     EFI_LBA PartitionEntryLBA;
-    EFI_UINT32 NumberOfPartitionEntries;
-    EFI_UINT32 SizeOfPartitionEntry;
-    EFI_UINT32 PartitionEntryArrayCRC32;
+    uint32_t NumberOfPartitionEntries;
+    uint32_t SizeOfPartitionEntry;
+    uint32_t PartitionEntryArrayCRC32;
 } EFI_PARTITION_TABLE_HEADER;
 
 typedef struct __attribute__((__packed__)) {
@@ -30,8 +30,8 @@ typedef struct __attribute__((__packed__)) {
     EFI_GUID UniquePartitionGUID;
     EFI_LBA StartingLBA;
     EFI_LBA EndingLBA;
-    EFI_UINT64 Attributes;
-    EFI_CHAR16 PartitionName[36];
+    uint64_t Attributes;
+    uint16_t PartitionName[36];
 } EFI_PARTITION_ENTRY;
 
 #define EFI_PART_TYPE_UNUSED_GUID \

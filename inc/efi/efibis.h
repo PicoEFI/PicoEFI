@@ -12,19 +12,19 @@ extern "C" {
 
 typedef struct _EFI_BIS_PROTOCOL EFI_BIS_PROTOCOL;
 
-typedef EFI_VOID *EFI_BIS_APPLICATION_HANDLE;
+typedef void *EFI_BIS_APPLICATION_HANDLE;
 
 typedef struct _EFI_BIS_VERSION {
-    EFI_UINT32 Major;
-    EFI_UINT32 Minor;
+    uint32_t Major;
+    uint32_t Minor;
 } EFI_BIS_VERSION;
 
 #define EFI_BIS_CURRENT_VERSION_MAJOR EFI_BIS_VERSION_1
 #define EFI_BIS_VERSION_1 1
 
 typedef struct _EFI_BIS_DATA {
-    EFI_UINT32 Length;
-    EFI_UINT8 *Data;
+    uint32_t Length;
+    uint8_t *Data;
 } EFI_BIS_DATA;
 
 typedef EFI_STATUS (EFI_API *EFI_BIS_INITIALIZE)(
@@ -48,7 +48,7 @@ typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CERTIFICATE)(
 
 typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CHECKFLAG)(
     EFI_BIS_APPLICATION_HANDLE AppHandle,
-    EFI_BOOLEAN *CheckIsRequired
+    bool *CheckIsRequired
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_UPDATE_TOKEN)(
@@ -56,14 +56,14 @@ typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_UPDATE_TOKEN)
     EFI_BIS_DATA **UpdateToken
 );
 
-typedef EFI_UINT32 EFI_BIS_CERT_ID;
+typedef uint32_t EFI_BIS_CERT_ID;
 
-typedef EFI_UINT16 EFI_BIS_ALG_ID;
+typedef uint16_t EFI_BIS_ALG_ID;
 
 typedef struct _EFI_BIS_SIGNATURE_INFO {
     EFI_BIS_CERT_ID CertificateID;
     EFI_BIS_ALG_ID AlgorithmID;
-    EFI_UINT16 KeyLength;
+    uint16_t KeyLength;
 } EFI_BIS_SIGNATURE_INFO;
 
 #define EFI_BIS_GET_SIGINFO_COUNT(BisDataPtr) \
@@ -97,7 +97,7 @@ typedef EFI_STATUS (EFI_API *EFI_BIS_VERIFY_BOOT_OBJECT)(
     EFI_BIS_APPLICATION_HANDLE AppHandle,
     EFI_BIS_DATA *Credentials,
     EFI_BIS_DATA *DataObject,
-    EFI_BOOLEAN *IsVerified
+    bool *IsVerified
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BIS_VERIFY_OBJECT_WITH_CREDENTIAL)(
@@ -106,7 +106,7 @@ typedef EFI_STATUS (EFI_API *EFI_BIS_VERIFY_OBJECT_WITH_CREDENTIAL)(
     EFI_BIS_DATA *DataObject,
     EFI_BIS_DATA *SectionName,
     EFI_BIS_DATA *AuthorityCertificate,
-    EFI_BOOLEAN *IsVerified
+    bool *IsVerified
 );
 
 struct _EFI_BIS_PROTOCOL {
@@ -140,9 +140,9 @@ typedef enum {
 typedef EFI_STATUS (EFI_API *EFI_HTTP_BOOT_CALLBACK)(
     EFI_HTTP_BOOT_CALLBACK_PROTOCOL *This,
     EFI_HTTP_BOOT_CALLBACK_DATA_TYPE DataType,
-    EFI_BOOLEAN Received,
-    EFI_UINT32 DataLength,
-    EFI_VOID *Data
+    bool Received,
+    uint32_t DataLength,
+    void *Data
 );
 
 struct _EFI_HTTP_BOOT_CALLBACK_PROTOCOL {

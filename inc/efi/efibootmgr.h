@@ -9,8 +9,8 @@ extern "C" {
 
 /* Byte-packed variable data: Description, FilePathList and OptionalData follow. */
 typedef struct __attribute__((__packed__)) _EFI_LOAD_OPTION {
-    EFI_UINT32 Attributes;
-    EFI_UINT16 FilePathListLength;
+    uint32_t Attributes;
+    uint16_t FilePathListLength;
 } EFI_LOAD_OPTION;
 
 #define EFI_LOAD_OPTION_ACTIVE 0x00000001
@@ -28,24 +28,24 @@ typedef struct __attribute__((__packed__)) _EFI_LOAD_OPTION {
 
 typedef union __attribute__((__packed__)) {
     struct __attribute__((__packed__)) {
-        EFI_UINT32 Revision : 8;
-        EFI_UINT32 ShiftPressed : 1;
-        EFI_UINT32 ControlPressed : 1;
-        EFI_UINT32 AltPressed : 1;
-        EFI_UINT32 LogoPressed : 1;
-        EFI_UINT32 MenuPressed : 1;
-        EFI_UINT32 SysReqPressed : 1;
-        EFI_UINT32 Reserved : 16;
-        EFI_UINT32 InputKeyCount : 2;
+        uint32_t Revision : 8;
+        uint32_t ShiftPressed : 1;
+        uint32_t ControlPressed : 1;
+        uint32_t AltPressed : 1;
+        uint32_t LogoPressed : 1;
+        uint32_t MenuPressed : 1;
+        uint32_t SysReqPressed : 1;
+        uint32_t Reserved : 16;
+        uint32_t InputKeyCount : 2;
     } Options;
-    EFI_UINT32 PackedValue;
+    uint32_t PackedValue;
 } EFI_BOOT_KEY_DATA;
 
 /* Variable data: KeyData.Options.InputKeyCount EFI_INPUT_KEYs (Keys) follow at byte offset 10. */
 typedef struct __attribute__((__packed__)) _EFI_KEY_OPTION {
     EFI_BOOT_KEY_DATA KeyData;
-    EFI_UINT32 BootOptionCrc;
-    EFI_UINT16 BootOption;
+    uint32_t BootOptionCrc;
+    uint16_t BootOption;
 } EFI_KEY_OPTION;
 
 #define EFI_BOOT_MANAGER_POLICY_PROTOCOL_GUID \
@@ -58,7 +58,7 @@ typedef struct _EFI_BOOT_MANAGER_POLICY_PROTOCOL EFI_BOOT_MANAGER_POLICY_PROTOCO
 typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_PATH)(
     EFI_BOOT_MANAGER_POLICY_PROTOCOL *This,
     EFI_DEVICE_PATH_PROTOCOL *DevicePath,
-    EFI_BOOLEAN Recursive
+    bool Recursive
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS)(
@@ -79,7 +79,7 @@ typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS)(
     {0x113B2126, 0xFC8A, 0x11E3, {0xBD, 0x6C, 0xB8, 0xE8, 0x56, 0x2C, 0xBA, 0xFA}}
 
 struct _EFI_BOOT_MANAGER_POLICY_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_PATH ConnectDevicePath;
     EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS ConnectDeviceClass;
 };

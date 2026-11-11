@@ -15,19 +15,19 @@ extern "C" {
 #define EFI_LOADED_IMAGE_PROTOCOL_REVISION 0x1000
 
 typedef struct {
-    EFI_UINT32 Revision;
+    uint32_t Revision;
     EFI_HANDLE ParentHandle;
     EFI_SYSTEM_TABLE *SystemTable;
 
     EFI_HANDLE DeviceHandle;
     EFI_DEVICE_PATH_PROTOCOL *FilePath;
-    EFI_VOID *Reserved;
+    void *Reserved;
 
-    EFI_UINT32 LoadOptionsSize;
-    EFI_VOID *LoadOptions;
+    uint32_t LoadOptionsSize;
+    void *LoadOptions;
 
-    EFI_VOID *ImageBase;
-    EFI_UINT64 ImageSize;
+    void *ImageBase;
+    uint64_t ImageSize;
     EFI_MEMORY_TYPE ImageCodeType;
     EFI_MEMORY_TYPE ImageDataType;
     EFI_IMAGE_UNLOAD Unload;
@@ -56,7 +56,7 @@ typedef EFI_STATUS (EFI_API *EFI_DRIVER_BINDING_PROTOCOL_START)(
 typedef EFI_STATUS (EFI_API *EFI_DRIVER_BINDING_PROTOCOL_STOP)(
     EFI_DRIVER_BINDING_PROTOCOL *This,
     EFI_HANDLE ControllerHandle,
-    EFI_UINTN NumberOfChildren,
+    size_t NumberOfChildren,
     EFI_HANDLE *ChildHandleBuffer
 );
 
@@ -64,7 +64,7 @@ struct _EFI_DRIVER_BINDING_PROTOCOL {
     EFI_DRIVER_BINDING_PROTOCOL_SUPPORTED Supported;
     EFI_DRIVER_BINDING_PROTOCOL_START Start;
     EFI_DRIVER_BINDING_PROTOCOL_STOP Stop;
-    EFI_UINT32 Version;
+    uint32_t Version;
     EFI_HANDLE ImageHandle;
     EFI_HANDLE DriverBindingHandle;
 };
@@ -121,22 +121,22 @@ typedef struct _EFI_COMPONENT_NAME2_PROTOCOL EFI_COMPONENT_NAME2_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_COMPONENT_NAME_GET_DRIVER_NAME)(
     EFI_COMPONENT_NAME2_PROTOCOL *This,
-    EFI_CHAR8 *Language,
-    EFI_CHAR16 **DriverName
+    char *Language,
+    uint16_t **DriverName
 );
 
 typedef EFI_STATUS (EFI_API *EFI_COMPONENT_NAME_GET_CONTROLLER_NAME)(
     EFI_COMPONENT_NAME2_PROTOCOL *This,
     EFI_HANDLE ControllerHandle,
     EFI_HANDLE ChildHandle,
-    EFI_CHAR8 *Language,
-    EFI_CHAR16 **ControllerName
+    char *Language,
+    uint16_t **ControllerName
 );
 
 struct _EFI_COMPONENT_NAME2_PROTOCOL {
     EFI_COMPONENT_NAME_GET_DRIVER_NAME GetDriverName;
     EFI_COMPONENT_NAME_GET_CONTROLLER_NAME GetControllerName;
-    EFI_CHAR8 *SupportedLanguages;
+    char *SupportedLanguages;
 };
 
 typedef struct _EFI_SERVICE_BINDING_PROTOCOL EFI_SERVICE_BINDING_PROTOCOL;
@@ -161,7 +161,7 @@ struct _EFI_SERVICE_BINDING_PROTOCOL {
 
 typedef struct _EFI_DRIVER_FAMILY_OVERRIDE_PROTOCOL EFI_DRIVER_FAMILY_OVERRIDE_PROTOCOL;
 
-typedef EFI_UINT32 (EFI_API *EFI_DRIVER_FAMILY_OVERRIDE_GET_VERSION)(
+typedef uint32_t (EFI_API *EFI_DRIVER_FAMILY_OVERRIDE_GET_VERSION)(
     EFI_DRIVER_FAMILY_OVERRIDE_PROTOCOL *This
 );
 
@@ -175,10 +175,10 @@ struct _EFI_DRIVER_FAMILY_OVERRIDE_PROTOCOL {
 typedef struct _EFI_GRAPHICS_OUTPUT_PROTOCOL EFI_GRAPHICS_OUTPUT_PROTOCOL;
 
 typedef struct {
-    EFI_UINT32 RedMask;
-    EFI_UINT32 GreenMask;
-    EFI_UINT32 BlueMask;
-    EFI_UINT32 ReservedMask;
+    uint32_t RedMask;
+    uint32_t GreenMask;
+    uint32_t BlueMask;
+    uint32_t ReservedMask;
 } EFI_PIXEL_BITMASK;
 
 typedef enum {
@@ -190,46 +190,46 @@ typedef enum {
 } EFI_GRAPHICS_PIXEL_FORMAT;
 
 typedef struct {
-    EFI_UINT32 Version;
-    EFI_UINT32 HorizontalResolution;
-    EFI_UINT32 VerticalResolution;
+    uint32_t Version;
+    uint32_t HorizontalResolution;
+    uint32_t VerticalResolution;
     EFI_GRAPHICS_PIXEL_FORMAT PixelFormat;
     EFI_PIXEL_BITMASK PixelInformation;
-    EFI_UINT32 PixelsPerScanLine;
+    uint32_t PixelsPerScanLine;
 } EFI_GRAPHICS_OUTPUT_MODE_INFORMATION;
 
 typedef struct {
-    EFI_UINT32 MaxMode;
-    EFI_UINT32 Mode;
+    uint32_t MaxMode;
+    uint32_t Mode;
     EFI_GRAPHICS_OUTPUT_MODE_INFORMATION *Info;
-    EFI_UINTN SizeOfInfo;
+    size_t SizeOfInfo;
     EFI_PHYSICAL_ADDRESS FrameBufferBase;
-    EFI_UINTN FrameBufferSize;
+    size_t FrameBufferSize;
 } EFI_GRAPHICS_OUTPUT_PROTOCOL_MODE;
 
 typedef EFI_STATUS (EFI_API *EFI_GRAPHICS_OUTPUT_PROTOCOL_QUERY_MODE)(
     EFI_GRAPHICS_OUTPUT_PROTOCOL *This,
-    EFI_UINT32 ModeNumber,
-    EFI_UINTN *SizeOfInfo,
+    uint32_t ModeNumber,
+    size_t *SizeOfInfo,
     EFI_GRAPHICS_OUTPUT_MODE_INFORMATION **Info
 );
 
 typedef EFI_STATUS (EFI_API *EFI_GRAPHICS_OUTPUT_PROTOCOL_SET_MODE)(
     EFI_GRAPHICS_OUTPUT_PROTOCOL *This,
-    EFI_UINT32 ModeNumber
+    uint32_t ModeNumber
 );
 
 typedef struct {
-    EFI_UINT8 Blue;
-    EFI_UINT8 Green;
-    EFI_UINT8 Red;
-    EFI_UINT8 Reserved;
+    uint8_t Blue;
+    uint8_t Green;
+    uint8_t Red;
+    uint8_t Reserved;
 } EFI_GRAPHICS_OUTPUT_BLT_PIXEL;
 
 /* Not in the specification: a pixel together with its 32-bit value. */
 typedef union {
     EFI_GRAPHICS_OUTPUT_BLT_PIXEL Pixel;
-    EFI_UINT32 Raw;
+    uint32_t Raw;
 } EFI_GRAPHICS_OUTPUT_BLT_PIXEL_UNION;
 
 typedef enum {
@@ -244,13 +244,13 @@ typedef EFI_STATUS (EFI_API *EFI_GRAPHICS_OUTPUT_PROTOCOL_BLT)(
     EFI_GRAPHICS_OUTPUT_PROTOCOL *This,
     EFI_GRAPHICS_OUTPUT_BLT_PIXEL *BltBuffer,
     EFI_GRAPHICS_OUTPUT_BLT_OPERATION BltOperation,
-    EFI_UINTN SourceX,
-    EFI_UINTN SourceY,
-    EFI_UINTN DestinationX,
-    EFI_UINTN DestinationY,
-    EFI_UINTN Width,
-    EFI_UINTN Height,
-    EFI_UINTN Delta
+    size_t SourceX,
+    size_t SourceY,
+    size_t DestinationX,
+    size_t DestinationY,
+    size_t Width,
+    size_t Height,
+    size_t Delta
 );
 
 struct _EFI_GRAPHICS_OUTPUT_PROTOCOL {
@@ -264,16 +264,16 @@ struct _EFI_GRAPHICS_OUTPUT_PROTOCOL {
     {0x1c0c34f6, 0xd380, 0x41fa, {0xa0, 0x49, 0x8a, 0xd0, 0x6c, 0x1a, 0x66, 0xaa}}
 
 typedef struct {
-    EFI_UINT32 SizeOfEdid;
-    EFI_UINT8 *Edid;
+    uint32_t SizeOfEdid;
+    uint8_t *Edid;
 } EFI_EDID_DISCOVERED_PROTOCOL;
 
 #define EFI_EDID_ACTIVE_PROTOCOL_GUID \
     {0xbd8c1056, 0x9f36, 0x44ec, {0x92, 0xa8, 0xa6, 0x33, 0x7f, 0x81, 0x79, 0x86}}
 
 typedef struct {
-    EFI_UINT32 SizeOfEdid;
-    EFI_UINT8 *Edid;
+    uint32_t SizeOfEdid;
+    uint8_t *Edid;
 } EFI_EDID_ACTIVE_PROTOCOL;
 
 #define EFI_EDID_OVERRIDE_PROTOCOL_GUID \
@@ -285,9 +285,9 @@ typedef struct _EFI_EDID_OVERRIDE_PROTOCOL EFI_EDID_OVERRIDE_PROTOCOL;
 typedef EFI_STATUS (EFI_API *EFI_EDID_OVERRIDE_PROTOCOL_GET_EDID)(
     EFI_EDID_OVERRIDE_PROTOCOL *This,
     EFI_HANDLE *ChildHandle,
-    EFI_UINT32 *Attributes,
-    EFI_UINTN *EdidSize,
-    EFI_UINT8 **Edid
+    uint32_t *Attributes,
+    size_t *EdidSize,
+    uint8_t **Edid
 );
 
 #define EFI_EDID_OVERRIDE_DONT_OVERRIDE 0x01
@@ -305,9 +305,9 @@ typedef struct _EFI_LOAD_FILE_PROTOCOL EFI_LOAD_FILE_PROTOCOL;
 typedef EFI_STATUS (EFI_API *EFI_LOAD_FILE)(
     EFI_LOAD_FILE_PROTOCOL *This,
     EFI_DEVICE_PATH_PROTOCOL *FilePath,
-    EFI_BOOLEAN BootPolicy,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    bool BootPolicy,
+    size_t *BufferSize,
+    void *Buffer
 );
 
 struct _EFI_LOAD_FILE_PROTOCOL {
@@ -334,7 +334,7 @@ typedef EFI_STATUS (EFI_API *EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_OPEN_VOLUME)(
 );
 
 struct _EFI_SIMPLE_FILE_SYSTEM_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_OPEN_VOLUME OpenVolume;
 };
 
@@ -345,9 +345,9 @@ struct _EFI_SIMPLE_FILE_SYSTEM_PROTOCOL {
 typedef EFI_STATUS (EFI_API *EFI_FILE_OPEN)(
     EFI_FILE_PROTOCOL *This,
     EFI_FILE_PROTOCOL **NewHandle,
-    EFI_CHAR16 *FileName,
-    EFI_UINT64 OpenMode,
-    EFI_UINT64 Attributes
+    uint16_t *FileName,
+    uint64_t OpenMode,
+    uint64_t Attributes
 );
 
 #define EFI_FILE_MODE_READ 0x0000000000000001
@@ -368,29 +368,29 @@ typedef EFI_STATUS (EFI_API *EFI_FILE_DELETE)(EFI_FILE_PROTOCOL *This);
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_READ)(
     EFI_FILE_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    size_t *BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_WRITE)(
     EFI_FILE_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    size_t *BufferSize,
+    void *Buffer
 );
 
 typedef struct {
     EFI_EVENT Event;
     EFI_STATUS Status;
-    EFI_UINTN BufferSize;
-    EFI_VOID *Buffer;
+    size_t BufferSize;
+    void *Buffer;
 } EFI_FILE_IO_TOKEN;
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_OPEN_EX)(
     EFI_FILE_PROTOCOL *This,
     EFI_FILE_PROTOCOL **NewHandle,
-    EFI_CHAR16 *FileName,
-    EFI_UINT64 OpenMode,
-    EFI_UINT64 Attributes,
+    uint16_t *FileName,
+    uint64_t OpenMode,
+    uint64_t Attributes,
     EFI_FILE_IO_TOKEN *Token
 );
 
@@ -411,32 +411,32 @@ typedef EFI_STATUS (EFI_API *EFI_FILE_FLUSH_EX)(
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_SET_POSITION)(
     EFI_FILE_PROTOCOL *This,
-    EFI_UINT64 Position
+    uint64_t Position
 );
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_GET_POSITION)(
     EFI_FILE_PROTOCOL *This,
-    EFI_UINT64 *Position
+    uint64_t *Position
 );
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_GET_INFO)(
     EFI_FILE_PROTOCOL *This,
     EFI_GUID *InformationType,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    size_t *BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_SET_INFO)(
     EFI_FILE_PROTOCOL *This,
     EFI_GUID *InformationType,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_FILE_FLUSH)(EFI_FILE_PROTOCOL *This);
 
 struct _EFI_FILE_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_FILE_OPEN Open;
     EFI_FILE_CLOSE Close;
     EFI_FILE_DELETE Delete;
@@ -459,14 +459,14 @@ struct _EFI_FILE_PROTOCOL {
 
 /* Name arrays have one element, as in firmware ([] in print); SIZE_OF_* is the fixed part. */
 typedef struct {
-    EFI_UINT64 Size;
-    EFI_UINT64 FileSize;
-    EFI_UINT64 PhysicalSize;
+    uint64_t Size;
+    uint64_t FileSize;
+    uint64_t PhysicalSize;
     EFI_TIME CreateTime;
     EFI_TIME LastAccessTime;
     EFI_TIME ModificationTime;
-    EFI_UINT64 Attribute;
-    EFI_CHAR16 FileName[1];
+    uint64_t Attribute;
+    uint16_t FileName[1];
 } EFI_FILE_INFO;
 
 #define EFI_SIZE_OF_EFI_FILE_INFO offsetof(EFI_FILE_INFO, FileName)
@@ -475,12 +475,12 @@ typedef struct {
     {0x09576e93, 0x6d3f, 0x11d2, {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
 
 typedef struct {
-    EFI_UINT64 Size;
-    EFI_BOOLEAN ReadOnly;
-    EFI_UINT64 VolumeSize;
-    EFI_UINT64 FreeSpace;
-    EFI_UINT32 BlockSize;
-    EFI_CHAR16 VolumeLabel[1];
+    uint64_t Size;
+    uint8_t ReadOnly;
+    uint64_t VolumeSize;
+    uint64_t FreeSpace;
+    uint32_t BlockSize;
+    uint16_t VolumeLabel[1];
 } EFI_FILE_SYSTEM_INFO;
 
 #define EFI_SIZE_OF_EFI_FILE_SYSTEM_INFO offsetof(EFI_FILE_SYSTEM_INFO, VolumeLabel)
@@ -489,7 +489,7 @@ typedef struct {
     {0xdb47d7d3, 0xfe81, 0x11d3, {0x9a, 0x35, 0x00, 0x90, 0x27, 0x3f, 0xC1, 0x4d}}
 
 typedef struct {
-    EFI_CHAR16 VolumeLabel[1];
+    uint16_t VolumeLabel[1];
 } EFI_FILE_SYSTEM_VOLUME_LABEL;
 
 #define EFI_SIZE_OF_EFI_FILE_SYSTEM_VOLUME_LABEL offsetof(EFI_FILE_SYSTEM_VOLUME_LABEL, VolumeLabel)
@@ -503,22 +503,22 @@ typedef struct _EFI_DISK_IO_PROTOCOL EFI_DISK_IO_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_DISK_READ)(
     EFI_DISK_IO_PROTOCOL *This,
-    EFI_UINT32 MediaId,
-    EFI_UINT64 Offset,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    uint32_t MediaId,
+    uint64_t Offset,
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DISK_WRITE)(
     EFI_DISK_IO_PROTOCOL *This,
-    EFI_UINT32 MediaId,
-    EFI_UINT64 Offset,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    uint32_t MediaId,
+    uint64_t Offset,
+    size_t BufferSize,
+    void *Buffer
 );
 
 struct _EFI_DISK_IO_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_DISK_READ ReadDisk;
     EFI_DISK_WRITE WriteDisk;
 };
@@ -539,20 +539,20 @@ typedef EFI_STATUS (EFI_API *EFI_DISK_CANCEL_EX)(EFI_DISK_IO2_PROTOCOL *This);
 
 typedef EFI_STATUS (EFI_API *EFI_DISK_READ_EX)(
     EFI_DISK_IO2_PROTOCOL *This,
-    EFI_UINT32 MediaId,
-    EFI_UINT64 Offset,
+    uint32_t MediaId,
+    uint64_t Offset,
     EFI_DISK_IO2_TOKEN *Token,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DISK_WRITE_EX)(
     EFI_DISK_IO2_PROTOCOL *This,
-    EFI_UINT32 MediaId,
-    EFI_UINT64 Offset,
+    uint32_t MediaId,
+    uint64_t Offset,
     EFI_DISK_IO2_TOKEN *Token,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DISK_FLUSH_EX)(
@@ -561,7 +561,7 @@ typedef EFI_STATUS (EFI_API *EFI_DISK_FLUSH_EX)(
 );
 
 struct _EFI_DISK_IO2_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_DISK_CANCEL_EX Cancel;
     EFI_DISK_READ_EX ReadDiskEx;
     EFI_DISK_WRITE_EX WriteDiskEx;
@@ -578,47 +578,47 @@ struct _EFI_DISK_IO2_PROTOCOL {
 typedef struct _EFI_BLOCK_IO_PROTOCOL EFI_BLOCK_IO_PROTOCOL;
 
 typedef struct {
-    EFI_UINT32 MediaId;
-    EFI_BOOLEAN RemovableMedia;
-    EFI_BOOLEAN MediaPresent;
-    EFI_BOOLEAN LogicalPartition;
-    EFI_BOOLEAN ReadOnly;
-    EFI_BOOLEAN WriteCaching;
-    EFI_UINT32 BlockSize;
-    EFI_UINT32 IoAlign;
+    uint32_t MediaId;
+    uint8_t RemovableMedia;
+    uint8_t MediaPresent;
+    uint8_t LogicalPartition;
+    uint8_t ReadOnly;
+    uint8_t WriteCaching;
+    uint32_t BlockSize;
+    uint32_t IoAlign;
     EFI_LBA LastBlock;
     /* Valid from EFI_BLOCK_IO_PROTOCOL_REVISION2 on. */
     EFI_LBA LowestAlignedLba;
-    EFI_UINT32 LogicalBlocksPerPhysicalBlock;
+    uint32_t LogicalBlocksPerPhysicalBlock;
     /* Valid from EFI_BLOCK_IO_PROTOCOL_REVISION3 on. */
-    EFI_UINT32 OptimalTransferLengthGranularity;
+    uint32_t OptimalTransferLengthGranularity;
 } EFI_BLOCK_IO_MEDIA;
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_RESET)(
     EFI_BLOCK_IO_PROTOCOL *This,
-    EFI_BOOLEAN ExtendedVerification
+    bool ExtendedVerification
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_READ)(
     EFI_BLOCK_IO_PROTOCOL *This,
-    EFI_UINT32 MediaId,
+    uint32_t MediaId,
     EFI_LBA LBA,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_WRITE)(
     EFI_BLOCK_IO_PROTOCOL *This,
-    EFI_UINT32 MediaId,
+    uint32_t MediaId,
     EFI_LBA LBA,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_FLUSH)(EFI_BLOCK_IO_PROTOCOL *This);
 
 struct _EFI_BLOCK_IO_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_BLOCK_IO_MEDIA *Media;
     EFI_BLOCK_RESET Reset;
     EFI_BLOCK_READ ReadBlocks;
@@ -638,25 +638,25 @@ typedef struct {
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_RESET_EX)(
     EFI_BLOCK_IO2_PROTOCOL *This,
-    EFI_BOOLEAN ExtendedVerification
+    bool ExtendedVerification
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_READ_EX)(
     EFI_BLOCK_IO2_PROTOCOL *This,
-    EFI_UINT32 MediaId,
+    uint32_t MediaId,
     EFI_LBA LBA,
     EFI_BLOCK_IO2_TOKEN *Token,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_WRITE_EX)(
     EFI_BLOCK_IO2_PROTOCOL *This,
-    EFI_UINT32 MediaId,
+    uint32_t MediaId,
     EFI_LBA LBA,
     EFI_BLOCK_IO2_TOKEN *Token,
-    EFI_UINTN BufferSize,
-    EFI_VOID *Buffer
+    size_t BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLOCK_FLUSH_EX)(
@@ -677,40 +677,40 @@ struct _EFI_BLOCK_IO2_PROTOCOL {
 
 typedef struct _EFI_UNICODE_COLLATION_PROTOCOL EFI_UNICODE_COLLATION_PROTOCOL;
 
-typedef EFI_INTN (EFI_API *EFI_UNICODE_COLLATION_STRICOLL)(
+typedef intptr_t (EFI_API *EFI_UNICODE_COLLATION_STRICOLL)(
     EFI_UNICODE_COLLATION_PROTOCOL *This,
-    EFI_CHAR16 *s1,
-    EFI_CHAR16 *s2
+    uint16_t *s1,
+    uint16_t *s2
 );
 
-typedef EFI_BOOLEAN (EFI_API *EFI_UNICODE_COLLATION_METAIMATCH)(
+typedef bool (EFI_API *EFI_UNICODE_COLLATION_METAIMATCH)(
     EFI_UNICODE_COLLATION_PROTOCOL *This,
-    EFI_CHAR16 *String,
-    EFI_CHAR16 *Pattern
+    uint16_t *String,
+    uint16_t *Pattern
 );
 
-typedef EFI_VOID (EFI_API *EFI_UNICODE_COLLATION_STRLWR)(
+typedef void (EFI_API *EFI_UNICODE_COLLATION_STRLWR)(
     EFI_UNICODE_COLLATION_PROTOCOL *This,
-    EFI_CHAR16 *String
+    uint16_t *String
 );
 
-typedef EFI_VOID (EFI_API *EFI_UNICODE_COLLATION_STRUPR)(
+typedef void (EFI_API *EFI_UNICODE_COLLATION_STRUPR)(
     EFI_UNICODE_COLLATION_PROTOCOL *This,
-    EFI_CHAR16 *String
+    uint16_t *String
 );
 
-typedef EFI_VOID (EFI_API *EFI_UNICODE_COLLATION_FATTOSTR)(
+typedef void (EFI_API *EFI_UNICODE_COLLATION_FATTOSTR)(
     EFI_UNICODE_COLLATION_PROTOCOL *This,
-    EFI_UINTN FatSize,
-    EFI_CHAR8 *Fat,
-    EFI_CHAR16 *String
+    size_t FatSize,
+    char *Fat,
+    uint16_t *String
 );
 
-typedef EFI_BOOLEAN (EFI_API *EFI_UNICODE_COLLATION_STRTOFAT)(
+typedef bool (EFI_API *EFI_UNICODE_COLLATION_STRTOFAT)(
     EFI_UNICODE_COLLATION_PROTOCOL *This,
-    EFI_CHAR16 *String,
-    EFI_UINTN FatSize,
-    EFI_CHAR8 *Fat
+    uint16_t *String,
+    size_t FatSize,
+    char *Fat
 );
 
 struct _EFI_UNICODE_COLLATION_PROTOCOL {
@@ -720,11 +720,11 @@ struct _EFI_UNICODE_COLLATION_PROTOCOL {
     EFI_UNICODE_COLLATION_STRUPR StrUpr;
     EFI_UNICODE_COLLATION_FATTOSTR FatToStr;
     EFI_UNICODE_COLLATION_STRTOFAT StrToFat;
-    EFI_CHAR8 *SupportedLanguages;
+    char *SupportedLanguages;
 };
 
 /* Not in the specification: the byte order mark that starts a UCS-2 text file. */
-#define EFI_UNICODE_BYTE_ORDER_MARK ((EFI_CHAR16)0xFEFF)
+#define EFI_UNICODE_BYTE_ORDER_MARK ((uint16_t)0xFEFF)
 
 #define EFI_EBC_PROTOCOL_GUID \
     {0x13ac6dd1, 0x73d0, 0x11d4, {0xb0, 0x6b, 0x00, 0xaa, 0x00, 0xbd, 0x6d, 0xe7}}
@@ -734,8 +734,8 @@ typedef struct _EFI_EBC_PROTOCOL EFI_EBC_PROTOCOL;
 typedef EFI_STATUS (EFI_API *EFI_EBC_CREATE_THUNK)(
     EFI_EBC_PROTOCOL *This,
     EFI_HANDLE ImageHandle,
-    EFI_VOID *EbcEntryPoint,
-    EFI_VOID **Thunk
+    void *EbcEntryPoint,
+    void **Thunk
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EBC_UNLOAD_IMAGE)(
@@ -745,7 +745,7 @@ typedef EFI_STATUS (EFI_API *EFI_EBC_UNLOAD_IMAGE)(
 
 typedef EFI_STATUS (EFI_API *EFI_EBC_ICACHE_FLUSH)(
     EFI_PHYSICAL_ADDRESS Start,
-    EFI_UINT64 Length
+    uint64_t Length
 );
 
 /* The prototype prints **This and *Flush; the descriptions want one level less. */
@@ -756,7 +756,7 @@ typedef EFI_STATUS (EFI_API *EFI_EBC_REGISTER_ICACHE_FLUSH)(
 
 typedef EFI_STATUS (EFI_API *EFI_EBC_GET_VERSION)(
     EFI_EBC_PROTOCOL *This,
-    EFI_UINT64 *Version
+    uint64_t *Version
 );
 
 struct _EFI_EBC_PROTOCOL {
@@ -774,12 +774,12 @@ struct _EFI_EBC_PROTOCOL {
 
 typedef struct _EFI_HASH_PROTOCOL EFI_HASH_PROTOCOL;
 
-typedef EFI_UINT8 EFI_MD5_HASH[16];
-typedef EFI_UINT8 EFI_SHA1_HASH[20];
-typedef EFI_UINT8 EFI_SHA224_HASH[28];
-typedef EFI_UINT8 EFI_SHA256_HASH[32];
-typedef EFI_UINT8 EFI_SHA384_HASH[48];
-typedef EFI_UINT8 EFI_SHA512_HASH[64];
+typedef uint8_t EFI_MD5_HASH[16];
+typedef uint8_t EFI_SHA1_HASH[20];
+typedef uint8_t EFI_SHA224_HASH[28];
+typedef uint8_t EFI_SHA256_HASH[32];
+typedef uint8_t EFI_SHA384_HASH[48];
+typedef uint8_t EFI_SHA512_HASH[64];
 
 typedef union _EFI_HASH_OUTPUT {
     EFI_MD5_HASH *Md5Hash;
@@ -792,17 +792,17 @@ typedef union _EFI_HASH_OUTPUT {
 
 /* GetHashSize() and Hash() are printed as plain prototypes; named as the protocol types them. */
 typedef EFI_STATUS (EFI_API *EFI_HASH_GET_HASH_SIZE)(
-    EFI_CONST EFI_HASH_PROTOCOL *This,
-    EFI_CONST EFI_GUID *HashAlgorithm,
-    EFI_UINTN *HashSize
+    const EFI_HASH_PROTOCOL *This,
+    const EFI_GUID *HashAlgorithm,
+    size_t *HashSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_HASH_HASH)(
-    EFI_CONST EFI_HASH_PROTOCOL *This,
-    EFI_CONST EFI_GUID *HashAlgorithm,
-    EFI_BOOLEAN Extend,
-    EFI_CONST EFI_UINT8 *Message,
-    EFI_UINT64 MessageSize,
+    const EFI_HASH_PROTOCOL *This,
+    const EFI_GUID *HashAlgorithm,
+    bool Extend,
+    const uint8_t *Message,
+    uint64_t MessageSize,
     EFI_HASH_OUTPUT *Hash
 );
 
@@ -845,15 +845,15 @@ typedef EFI_GUID EFI_RNG_ALGORITHM;
 
 typedef EFI_STATUS (EFI_API *EFI_RNG_GET_INFO)(
     EFI_RNG_PROTOCOL *This,
-    EFI_UINTN *RNGAlgorithmListSize,
+    size_t *RNGAlgorithmListSize,
     EFI_RNG_ALGORITHM *RNGAlgorithmList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_RNG_GET_RNG)(
     EFI_RNG_PROTOCOL *This,
     EFI_RNG_ALGORITHM *RNGAlgorithm,
-    EFI_UINTN RNGValueLength,
-    EFI_UINT8 *RNGValue
+    size_t RNGValueLength,
+    uint8_t *RNGValue
 );
 
 struct _EFI_RNG_PROTOCOL {
@@ -890,22 +890,22 @@ typedef struct _EFI_MEMORY_ATTRIBUTE_PROTOCOL EFI_MEMORY_ATTRIBUTE_PROTOCOL;
 typedef EFI_STATUS (EFI_API *EFI_GET_MEMORY_ATTRIBUTES)(
     EFI_MEMORY_ATTRIBUTE_PROTOCOL *This,
     EFI_PHYSICAL_ADDRESS BaseAddress,
-    EFI_UINT64 Length,
-    EFI_UINT64 *Attributes
+    uint64_t Length,
+    uint64_t *Attributes
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SET_MEMORY_ATTRIBUTES)(
     EFI_MEMORY_ATTRIBUTE_PROTOCOL *This,
     EFI_PHYSICAL_ADDRESS BaseAddress,
-    EFI_UINT64 Length,
-    EFI_UINT64 Attributes
+    uint64_t Length,
+    uint64_t Attributes
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CLEAR_MEMORY_ATTRIBUTES)(
     EFI_MEMORY_ATTRIBUTE_PROTOCOL *This,
     EFI_PHYSICAL_ADDRESS BaseAddress,
-    EFI_UINT64 Length,
-    EFI_UINT64 Attributes
+    uint64_t Length,
+    uint64_t Attributes
 );
 
 struct _EFI_MEMORY_ATTRIBUTE_PROTOCOL {

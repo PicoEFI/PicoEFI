@@ -14,20 +14,20 @@ typedef struct _EFI_DECOMPRESS_PROTOCOL EFI_DECOMPRESS_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_GET_INFO)(
     EFI_DECOMPRESS_PROTOCOL *This,
-    EFI_VOID *Source,
-    EFI_UINT32 SourceSize,
-    EFI_UINT32 *DestinationSize,
-    EFI_UINT32 *ScratchSize
+    void *Source,
+    uint32_t SourceSize,
+    uint32_t *DestinationSize,
+    uint32_t *ScratchSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_DECOMPRESS)(
     EFI_DECOMPRESS_PROTOCOL *This,
-    EFI_VOID *Source,
-    EFI_UINT32 SourceSize,
-    EFI_VOID *Destination,
-    EFI_UINT32 DestinationSize,
-    EFI_VOID *Scratch,
-    EFI_UINT32 ScratchSize
+    void *Source,
+    uint32_t SourceSize,
+    void *Destination,
+    uint32_t DestinationSize,
+    void *Scratch,
+    uint32_t ScratchSize
 );
 
 struct _EFI_DECOMPRESS_PROTOCOL {

@@ -14,14 +14,14 @@ typedef struct _EFI_ACPI_TABLE_PROTOCOL EFI_ACPI_TABLE_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_ACPI_TABLE_INSTALL_ACPI_TABLE)(
     EFI_ACPI_TABLE_PROTOCOL *This,
-    EFI_VOID *AcpiTableBuffer,
-    EFI_UINTN AcpiTableBufferSize,
-    EFI_UINTN *TableKey
+    void *AcpiTableBuffer,
+    size_t AcpiTableBufferSize,
+    uintptr_t *TableKey
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ACPI_TABLE_UNINSTALL_ACPI_TABLE)(
     EFI_ACPI_TABLE_PROTOCOL *This,
-    EFI_UINTN TableKey
+    uintptr_t TableKey
 );
 
 struct _EFI_ACPI_TABLE_PROTOCOL {
@@ -31,29 +31,29 @@ struct _EFI_ACPI_TABLE_PROTOCOL {
 
 /* The specification gives these only as a table, without names. Byte-packed: 36 and 54 bytes. */
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT32 Signature;
-    EFI_UINT32 Length;
-    EFI_UINT8 Revision;
-    EFI_UINT8 Checksum;
-    EFI_UINT8 OemId[6];
-    EFI_UINT64 OemTableId;
-    EFI_UINT32 OemRevision;
-    EFI_UINT32 CreatorId;
-    EFI_UINT32 CreatorRevision;
+    uint32_t Signature;
+    uint32_t Length;
+    uint8_t Revision;
+    uint8_t Checksum;
+    uint8_t OemId[6];
+    uint64_t OemTableId;
+    uint32_t OemRevision;
+    uint32_t CreatorId;
+    uint32_t CreatorRevision;
 } EFI_ACPI_DESCRIPTION_HEADER;
 
 /* The table's contents follow at DataOffset. */
 typedef struct __attribute__((__packed__)) {
     EFI_ACPI_DESCRIPTION_HEADER Header;
     EFI_GUID Identifier;
-    EFI_UINT16 DataOffset;
+    uint16_t DataOffset;
 } EFI_ACPI_DATA_TABLE;
 
 /* MessageLength bytes of Data follow the header; the printed ANYSIZE_ARRAY bound becomes 1. */
 typedef struct {
     EFI_GUID HeaderGuid;
-    EFI_UINTN MessageLength;
-    EFI_UINT8 Data[1];
+    size_t MessageLength;
+    uint8_t Data[1];
 } EFI_SMM_COMMUNICATE_HEADER;
 
 #ifdef __cplusplus

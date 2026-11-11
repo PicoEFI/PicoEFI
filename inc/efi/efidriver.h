@@ -26,15 +26,15 @@ typedef EFI_STATUS (EFI_API *EFI_DRIVER_DIAGNOSTICS2_RUN_DIAGNOSTICS)(
     EFI_HANDLE ControllerHandle,
     EFI_HANDLE ChildHandle,
     EFI_DRIVER_DIAGNOSTIC_TYPE DiagnosticType,
-    EFI_CHAR8 *Language,
+    char *Language,
     EFI_GUID **ErrorType,
-    EFI_UINTN *BufferSize,
-    EFI_CHAR16 **Buffer
+    size_t *BufferSize,
+    uint16_t **Buffer
 );
 
 struct _EFI_DRIVER_DIAGNOSTICS2_PROTOCOL {
     EFI_DRIVER_DIAGNOSTICS2_RUN_DIAGNOSTICS RunDiagnostics;
-    EFI_CHAR8 *SupportedLanguages;
+    char *SupportedLanguages;
 };
 
 #define EFI_PLATFORM_TO_DRIVER_CONFIGURATION_PROTOCOL_GUID \
@@ -47,10 +47,10 @@ typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_QUERY)(
     EFI_PLATFORM_TO_DRIVER_CONFIGURATION_PROTOCOL *This,
     EFI_HANDLE ControllerHandle,
     EFI_HANDLE ChildHandle,
-    EFI_UINTN *Instance,
+    size_t *Instance,
     EFI_GUID **ParameterTypeGuid,
-    EFI_VOID **ParameterBlock,
-    EFI_UINTN *ParameterBlockSize
+    void **ParameterBlock,
+    size_t *ParameterBlockSize
 );
 
 typedef enum {
@@ -67,10 +67,10 @@ typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_RESPONSE)(
     EFI_PLATFORM_TO_DRIVER_CONFIGURATION_PROTOCOL *This,
     EFI_HANDLE ControllerHandle,
     EFI_HANDLE ChildHandle,
-    EFI_UINTN *Instance,
+    size_t *Instance,
     EFI_GUID *ParameterTypeGuid,
-    EFI_VOID *ParameterBlock,
-    EFI_UINTN ParameterBlockSize,
+    void *ParameterBlock,
+    size_t ParameterBlockSize,
     EFI_PLATFORM_CONFIGURATION_ACTION ConfigurationAction
 );
 
@@ -83,21 +83,21 @@ struct _EFI_PLATFORM_TO_DRIVER_CONFIGURATION_PROTOCOL {
     {0x345ecc0e, 0xcb6, 0x4b75, {0xbb, 0x57, 0x1b, 0x12, 0x9c, 0x47, 0x33, 0x3e}}
 
 typedef struct {
-    EFI_CHAR8 *CLPCommand;
-    EFI_UINT32 CLPCommandLength;
-    EFI_CHAR8 *CLPReturnString;
-    EFI_UINT32 CLPReturnStringLength;
-    EFI_UINT8 CLPCmdStatus;
-    EFI_UINT8 CLPErrorValue;
-    EFI_UINT16 CLPMsgCode;
+    char *CLPCommand;
+    uint32_t CLPCommandLength;
+    char *CLPReturnString;
+    uint32_t CLPReturnStringLength;
+    uint8_t CLPCmdStatus;
+    uint8_t CLPErrorValue;
+    uint16_t CLPMsgCode;
 } EFI_CONFIGURE_CLP_PARAMETER_BLK;
 
 #define EFI_DRIVER_SUPPORTED_EFI_VERSION_PROTOCOL_GUID \
     {0x5c198761, 0x16a8, 0x4e69, {0x97, 0x2c, 0x89, 0xd6, 0x79, 0x54, 0xf8, 0x1d}}
 
 typedef struct _EFI_DRIVER_SUPPORTED_EFI_VERSION_PROTOCOL {
-    EFI_UINT32 Length;
-    EFI_UINT32 FirmwareVersion;
+    uint32_t Length;
+    uint32_t FirmwareVersion;
 } EFI_DRIVER_SUPPORTED_EFI_VERSION_PROTOCOL;
 
 #define EFI_DRIVER_HEALTH_PROTOCOL_GUID \
@@ -117,7 +117,7 @@ typedef enum {
 typedef struct {
     EFI_HII_HANDLE HiiHandle;
     EFI_STRING_ID StringId;
-    EFI_UINT64 MessageCode;
+    uint64_t MessageCode;
 } EFI_DRIVER_HEALTH_HII_MESSAGE;
 
 typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_GET_HEALTH_STATUS)(
@@ -130,8 +130,8 @@ typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_GET_HEALTH_STATUS)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_REPAIR_NOTIFY)(
-    EFI_UINTN Value,
-    EFI_UINTN Limit
+    uintptr_t Value,
+    uintptr_t Limit
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_REPAIR)(
@@ -154,21 +154,21 @@ typedef struct _EFI_ADAPTER_INFORMATION_PROTOCOL EFI_ADAPTER_INFORMATION_PROTOCO
 typedef EFI_STATUS (EFI_API *EFI_ADAPTER_INFO_GET_INFO)(
     EFI_ADAPTER_INFORMATION_PROTOCOL *This,
     EFI_GUID *InformationType,
-    EFI_VOID **InformationBlock,
-    EFI_UINTN *InformationBlockSize
+    void **InformationBlock,
+    size_t *InformationBlockSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ADAPTER_INFO_SET_INFO)(
     EFI_ADAPTER_INFORMATION_PROTOCOL *This,
     EFI_GUID *InformationType,
-    EFI_VOID *InformationBlock,
-    EFI_UINTN InformationBlockSize
+    void *InformationBlock,
+    size_t InformationBlockSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ADAPTER_INFO_GET_SUPPORTED_TYPES)(
     EFI_ADAPTER_INFORMATION_PROTOCOL *This,
     EFI_GUID **InfoTypesBuffer,
-    EFI_UINTN *InfoTypesBufferCount
+    size_t *InfoTypesBufferCount
 );
 
 struct _EFI_ADAPTER_INFORMATION_PROTOCOL {
@@ -189,14 +189,14 @@ typedef struct {
 
 /* The first member is misprinted iSsciIpv4BootCapablity in the structure only. */
 typedef struct {
-    EFI_BOOLEAN iScsiIpv4BootCapablity;
-    EFI_BOOLEAN iScsiIpv6BootCapablity;
-    EFI_BOOLEAN FCoeBootCapablity;
-    EFI_BOOLEAN OffloadCapability;
-    EFI_BOOLEAN iScsiMpioCapability;
-    EFI_BOOLEAN iScsiIpv4Boot;
-    EFI_BOOLEAN iScsiIpv6Boot;
-    EFI_BOOLEAN FCoeBoot;
+    uint8_t iScsiIpv4BootCapablity;
+    uint8_t iScsiIpv6BootCapablity;
+    uint8_t FCoeBootCapablity;
+    uint8_t OffloadCapability;
+    uint8_t iScsiMpioCapability;
+    uint8_t iScsiIpv4Boot;
+    uint8_t iScsiIpv6Boot;
+    uint8_t FCoeBoot;
 } EFI_ADAPTER_INFO_NETWORK_BOOT;
 
 #define EFI_ADAPTER_INFO_SAN_MAC_ADDRESS_GUID \
@@ -210,22 +210,22 @@ typedef struct {
     {0x4bd56be3, 0x4975, 0x4d8a, {0xa0, 0xad, 0xc4, 0x91, 0x20, 0x4b, 0x5d, 0x4d}}
 
 typedef struct {
-    EFI_BOOLEAN Ipv6Support;
+    uint8_t Ipv6Support;
 } EFI_ADAPTER_INFO_UNDI_IPV6_SUPPORT;
 
 #define EFI_ADAPTER_INFO_MEDIA_TYPE_GUID \
     {0x8484472f, 0x71ec, 0x411a, {0xb3, 0x9c, 0x62, 0xcd, 0x94, 0xd9, 0x91, 0x6e}}
 
 typedef struct {
-    EFI_UINT8 MediaType;
+    uint8_t MediaType;
 } EFI_ADAPTER_INFO_MEDIA_TYPE;
 
 #define EFI_ADAPTER_INFO_CDAT_TYPE_GUID \
     {0x77af24d1, 0xb6f0, 0x42b9, {0x83, 0xf5, 0x8f, 0xe6, 0xe8, 0x3e, 0xb6, 0xf0}}
 
 __extension__ typedef struct {
-    EFI_UINTN CdatSize;
-    EFI_UINT8 Cdat[];
+    size_t CdatSize;
+    uint8_t Cdat[];
 } EFI_ADAPTER_INFO_CDAT_TYPE_TYPE;
 
 #ifdef __cplusplus

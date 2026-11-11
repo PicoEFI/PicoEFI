@@ -29,21 +29,21 @@ typedef enum {
 
 typedef EFI_STATUS (EFI_API *EFI_GET_MAXIMUM_PROCESSOR_INDEX)(
     EFI_DEBUG_SUPPORT_PROTOCOL *This,
-    EFI_UINTN *MaxProcessorIndex
+    size_t *MaxProcessorIndex
 );
 
 typedef struct {
-    EFI_UINT64 R0, R1, R2, R3, R4, R5, R6, R7;
-    EFI_UINT64 Flags;
-    EFI_UINT64 ControlFlags;
-    EFI_UINT64 Ip;
+    uint64_t R0, R1, R2, R3, R4, R5, R6, R7;
+    uint64_t Flags;
+    uint64_t ControlFlags;
+    uint64_t Ip;
 } EFI_SYSTEM_CONTEXT_EBC;
 
 typedef struct {
-    EFI_UINT32 Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
-    EFI_UINT32 S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
-    EFI_UINT32 S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
-    EFI_UINT32 T3, T4, T5, T6;
+    uint32_t Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
+    uint32_t S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
+    uint32_t S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
+    uint32_t T3, T4, T5, T6;
 
     EFI_UINT128 Ft0, Ft1, Ft2, Ft3, Ft4, Ft5, Ft6, Ft7;
     EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
@@ -52,10 +52,10 @@ typedef struct {
 } EFI_SYSTEM_CONTEXT_RISCV32;
 
 typedef struct {
-    EFI_UINT64 Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
-    EFI_UINT64 S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
-    EFI_UINT64 S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
-    EFI_UINT64 T3, T4, T5, T6;
+    uint64_t Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
+    uint64_t S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
+    uint64_t S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
+    uint64_t T3, T4, T5, T6;
 
     EFI_UINT128 Ft0, Ft1, Ft2, Ft3, Ft4, Ft5, Ft6, Ft7;
     EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
@@ -76,269 +76,269 @@ typedef struct {
 } EFI_SYSTEM_CONTEXT_RISCV128;
 
 typedef struct {
-    EFI_UINT16 Fcw;
-    EFI_UINT16 Fsw;
-    EFI_UINT16 Ftw;
-    EFI_UINT16 Opcode;
-    EFI_UINT32 Eip;
-    EFI_UINT16 Cs;
-    EFI_UINT16 Reserved1;
-    EFI_UINT32 DataOffset;
-    EFI_UINT16 Ds;
-    EFI_UINT8 Reserved2[10];
-    EFI_UINT8 St0Mm0[10], Reserved3[6];
-    EFI_UINT8 St1Mm1[10], Reserved4[6];
-    EFI_UINT8 St2Mm2[10], Reserved5[6];
-    EFI_UINT8 St3Mm3[10], Reserved6[6];
-    EFI_UINT8 St4Mm4[10], Reserved7[6];
-    EFI_UINT8 St5Mm5[10], Reserved8[6];
-    EFI_UINT8 St6Mm6[10], Reserved9[6];
-    EFI_UINT8 St7Mm7[10], Reserved10[6];
-    EFI_UINT8 Xmm0[16];
-    EFI_UINT8 Xmm1[16];
-    EFI_UINT8 Xmm2[16];
-    EFI_UINT8 Xmm3[16];
-    EFI_UINT8 Xmm4[16];
-    EFI_UINT8 Xmm5[16];
-    EFI_UINT8 Xmm6[16];
-    EFI_UINT8 Xmm7[16];
-    EFI_UINT8 Reserved11[14 * 16];
+    uint16_t Fcw;
+    uint16_t Fsw;
+    uint16_t Ftw;
+    uint16_t Opcode;
+    uint32_t Eip;
+    uint16_t Cs;
+    uint16_t Reserved1;
+    uint32_t DataOffset;
+    uint16_t Ds;
+    uint8_t Reserved2[10];
+    uint8_t St0Mm0[10], Reserved3[6];
+    uint8_t St1Mm1[10], Reserved4[6];
+    uint8_t St2Mm2[10], Reserved5[6];
+    uint8_t St3Mm3[10], Reserved6[6];
+    uint8_t St4Mm4[10], Reserved7[6];
+    uint8_t St5Mm5[10], Reserved8[6];
+    uint8_t St6Mm6[10], Reserved9[6];
+    uint8_t St7Mm7[10], Reserved10[6];
+    uint8_t Xmm0[16];
+    uint8_t Xmm1[16];
+    uint8_t Xmm2[16];
+    uint8_t Xmm3[16];
+    uint8_t Xmm4[16];
+    uint8_t Xmm5[16];
+    uint8_t Xmm6[16];
+    uint8_t Xmm7[16];
+    uint8_t Reserved11[14 * 16];
 } EFI_FX_SAVE_STATE_IA32;
 
 typedef struct {
-    EFI_UINT32 ExceptionData;
+    uint32_t ExceptionData;
     EFI_FX_SAVE_STATE_IA32 FxSaveState;
-    EFI_UINT32 Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
-    EFI_UINT32 Cr0, Cr1, Cr2, Cr3, Cr4;
-    EFI_UINT32 Eflags;
-    EFI_UINT32 Ldtr, Tr;
-    EFI_UINT32 Gdtr[2], Idtr[2];
-    EFI_UINT32 Eip;
-    EFI_UINT32 Gs, Fs, Es, Ds, Cs, Ss;
-    EFI_UINT32 Edi, Esi, Ebp, Esp, Ebx, Edx, Ecx, Eax;
+    uint32_t Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
+    uint32_t Cr0, Cr1, Cr2, Cr3, Cr4;
+    uint32_t Eflags;
+    uint32_t Ldtr, Tr;
+    uint32_t Gdtr[2], Idtr[2];
+    uint32_t Eip;
+    uint32_t Gs, Fs, Es, Ds, Cs, Ss;
+    uint32_t Edi, Esi, Ebp, Esp, Ebx, Edx, Ecx, Eax;
 } EFI_SYSTEM_CONTEXT_IA32;
 
 typedef struct {
-    EFI_UINT16 Fcw;
-    EFI_UINT16 Fsw;
-    EFI_UINT16 Ftw;
-    EFI_UINT16 Opcode;
-    EFI_UINT64 Rip;
-    EFI_UINT64 DataOffset;
-    EFI_UINT8 Reserved1[8];
-    EFI_UINT8 St0Mm0[10], Reserved2[6];
-    EFI_UINT8 St1Mm1[10], Reserved3[6];
-    EFI_UINT8 St2Mm2[10], Reserved4[6];
-    EFI_UINT8 St3Mm3[10], Reserved5[6];
-    EFI_UINT8 St4Mm4[10], Reserved6[6];
-    EFI_UINT8 St5Mm5[10], Reserved7[6];
-    EFI_UINT8 St6Mm6[10], Reserved8[6];
-    EFI_UINT8 St7Mm7[10], Reserved9[6];
-    EFI_UINT8 Xmm0[16];
-    EFI_UINT8 Xmm1[16];
-    EFI_UINT8 Xmm2[16];
-    EFI_UINT8 Xmm3[16];
-    EFI_UINT8 Xmm4[16];
-    EFI_UINT8 Xmm5[16];
-    EFI_UINT8 Xmm6[16];
-    EFI_UINT8 Xmm7[16];
-    EFI_UINT8 Reserved11[14 * 16];
+    uint16_t Fcw;
+    uint16_t Fsw;
+    uint16_t Ftw;
+    uint16_t Opcode;
+    uint64_t Rip;
+    uint64_t DataOffset;
+    uint8_t Reserved1[8];
+    uint8_t St0Mm0[10], Reserved2[6];
+    uint8_t St1Mm1[10], Reserved3[6];
+    uint8_t St2Mm2[10], Reserved4[6];
+    uint8_t St3Mm3[10], Reserved5[6];
+    uint8_t St4Mm4[10], Reserved6[6];
+    uint8_t St5Mm5[10], Reserved7[6];
+    uint8_t St6Mm6[10], Reserved8[6];
+    uint8_t St7Mm7[10], Reserved9[6];
+    uint8_t Xmm0[16];
+    uint8_t Xmm1[16];
+    uint8_t Xmm2[16];
+    uint8_t Xmm3[16];
+    uint8_t Xmm4[16];
+    uint8_t Xmm5[16];
+    uint8_t Xmm6[16];
+    uint8_t Xmm7[16];
+    uint8_t Reserved11[14 * 16];
 } EFI_FX_SAVE_STATE_X64;
 
 typedef struct {
-    EFI_UINT64 ExceptionData;
+    uint64_t ExceptionData;
     EFI_FX_SAVE_STATE_X64 FxSaveState;
-    EFI_UINT64 Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
-    EFI_UINT64 Cr0, Cr1, Cr2, Cr3, Cr4, Cr8;
-    EFI_UINT64 Rflags;
-    EFI_UINT64 Ldtr, Tr;
-    EFI_UINT64 Gdtr[2], Idtr[2];
-    EFI_UINT64 Rip;
-    EFI_UINT64 Gs, Fs, Es, Ds, Cs, Ss;
-    EFI_UINT64 Rdi, Rsi, Rbp, Rsp, Rbx, Rdx, Rcx, Rax;
-    EFI_UINT64 R8, R9, R10, R11, R12, R13, R14, R15;
+    uint64_t Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
+    uint64_t Cr0, Cr1, Cr2, Cr3, Cr4, Cr8;
+    uint64_t Rflags;
+    uint64_t Ldtr, Tr;
+    uint64_t Gdtr[2], Idtr[2];
+    uint64_t Rip;
+    uint64_t Gs, Fs, Es, Ds, Cs, Ss;
+    uint64_t Rdi, Rsi, Rbp, Rsp, Rbx, Rdx, Rcx, Rax;
+    uint64_t R8, R9, R10, R11, R12, R13, R14, R15;
 } EFI_SYSTEM_CONTEXT_X64;
 
 typedef struct {
-    EFI_UINT64 Reserved;
+    uint64_t Reserved;
 
-    EFI_UINT64 R1, R2, R3, R4, R5, R6, R7, R8, R9, R10,
+    uint64_t R1, R2, R3, R4, R5, R6, R7, R8, R9, R10,
         R11, R12, R13, R14, R15, R16, R17, R18, R19, R20,
         R21, R22, R23, R24, R25, R26, R27, R28, R29, R30,
         R31;
 
-    EFI_UINT64 F2[2], F3[2], F4[2], F5[2], F6[2],
+    uint64_t F2[2], F3[2], F4[2], F5[2], F6[2],
         F7[2], F8[2], F9[2], F10[2], F11[2],
         F12[2], F13[2], F14[2], F15[2], F16[2],
         F17[2], F18[2], F19[2], F20[2], F21[2],
         F22[2], F23[2], F24[2], F25[2], F26[2],
         F27[2], F28[2], F29[2], F30[2], F31[2];
 
-    EFI_UINT64 Pr;
+    uint64_t Pr;
 
-    EFI_UINT64 B0, B1, B2, B3, B4, B5, B6, B7;
+    uint64_t B0, B1, B2, B3, B4, B5, B6, B7;
 
-    EFI_UINT64 ArRsc, ArBsp, ArBspstore, ArRnat;
-    EFI_UINT64 ArFcr;
-    EFI_UINT64 ArEflag, ArCsd, ArSsd, ArCflg;
-    EFI_UINT64 ArFsr, ArFir, ArFdr;
-    EFI_UINT64 ArCcv;
-    EFI_UINT64 ArUnat;
-    EFI_UINT64 ArFpsr;
-    EFI_UINT64 ArPfs, ArLc, ArEc;
+    uint64_t ArRsc, ArBsp, ArBspstore, ArRnat;
+    uint64_t ArFcr;
+    uint64_t ArEflag, ArCsd, ArSsd, ArCflg;
+    uint64_t ArFsr, ArFir, ArFdr;
+    uint64_t ArCcv;
+    uint64_t ArUnat;
+    uint64_t ArFpsr;
+    uint64_t ArPfs, ArLc, ArEc;
 
-    EFI_UINT64 CrDcr, CrItm, CrIva, CrPta, CrIpsr, CrIsr;
-    EFI_UINT64 CrIip, CrIfa, CrItir, CrIipa, CrIfs, CrIim;
-    EFI_UINT64 CrIha;
+    uint64_t CrDcr, CrItm, CrIva, CrPta, CrIpsr, CrIsr;
+    uint64_t CrIip, CrIfa, CrItir, CrIipa, CrIfs, CrIim;
+    uint64_t CrIha;
 
-    EFI_UINT64 Dbr0, Dbr1, Dbr2, Dbr3, Dbr4, Dbr5, Dbr6, Dbr7;
-    EFI_UINT64 Ibr0, Ibr1, Ibr2, Ibr3, Ibr4, Ibr5, Ibr6, Ibr7;
+    uint64_t Dbr0, Dbr1, Dbr2, Dbr3, Dbr4, Dbr5, Dbr6, Dbr7;
+    uint64_t Ibr0, Ibr1, Ibr2, Ibr3, Ibr4, Ibr5, Ibr6, Ibr7;
 
-    EFI_UINT64 IntNat;
+    uint64_t IntNat;
 } EFI_SYSTEM_CONTEXT_IPF;
 
 /* IFAR, the instruction fault address paired with IFSR, is missing from the print. */
 typedef struct {
-    EFI_UINT32 R0;
-    EFI_UINT32 R1;
-    EFI_UINT32 R2;
-    EFI_UINT32 R3;
-    EFI_UINT32 R4;
-    EFI_UINT32 R5;
-    EFI_UINT32 R6;
-    EFI_UINT32 R7;
-    EFI_UINT32 R8;
-    EFI_UINT32 R9;
-    EFI_UINT32 R10;
-    EFI_UINT32 R11;
-    EFI_UINT32 R12;
-    EFI_UINT32 SP;
-    EFI_UINT32 LR;
-    EFI_UINT32 PC;
-    EFI_UINT32 CPSR;
-    EFI_UINT32 DFSR;
-    EFI_UINT32 DFAR;
-    EFI_UINT32 IFSR;
-    EFI_UINT32 IFAR;
+    uint32_t R0;
+    uint32_t R1;
+    uint32_t R2;
+    uint32_t R3;
+    uint32_t R4;
+    uint32_t R5;
+    uint32_t R6;
+    uint32_t R7;
+    uint32_t R8;
+    uint32_t R9;
+    uint32_t R10;
+    uint32_t R11;
+    uint32_t R12;
+    uint32_t SP;
+    uint32_t LR;
+    uint32_t PC;
+    uint32_t CPSR;
+    uint32_t DFSR;
+    uint32_t DFAR;
+    uint32_t IFSR;
+    uint32_t IFAR;
 } EFI_SYSTEM_CONTEXT_ARM;
 
 typedef struct {
-    EFI_UINT64 X0;
-    EFI_UINT64 X1;
-    EFI_UINT64 X2;
-    EFI_UINT64 X3;
-    EFI_UINT64 X4;
-    EFI_UINT64 X5;
-    EFI_UINT64 X6;
-    EFI_UINT64 X7;
-    EFI_UINT64 X8;
-    EFI_UINT64 X9;
-    EFI_UINT64 X10;
-    EFI_UINT64 X11;
-    EFI_UINT64 X12;
-    EFI_UINT64 X13;
-    EFI_UINT64 X14;
-    EFI_UINT64 X15;
-    EFI_UINT64 X16;
-    EFI_UINT64 X17;
-    EFI_UINT64 X18;
-    EFI_UINT64 X19;
-    EFI_UINT64 X20;
-    EFI_UINT64 X21;
-    EFI_UINT64 X22;
-    EFI_UINT64 X23;
-    EFI_UINT64 X24;
-    EFI_UINT64 X25;
-    EFI_UINT64 X26;
-    EFI_UINT64 X27;
-    EFI_UINT64 X28;
-    EFI_UINT64 FP;
-    EFI_UINT64 LR;
-    EFI_UINT64 SP;
+    uint64_t X0;
+    uint64_t X1;
+    uint64_t X2;
+    uint64_t X3;
+    uint64_t X4;
+    uint64_t X5;
+    uint64_t X6;
+    uint64_t X7;
+    uint64_t X8;
+    uint64_t X9;
+    uint64_t X10;
+    uint64_t X11;
+    uint64_t X12;
+    uint64_t X13;
+    uint64_t X14;
+    uint64_t X15;
+    uint64_t X16;
+    uint64_t X17;
+    uint64_t X18;
+    uint64_t X19;
+    uint64_t X20;
+    uint64_t X21;
+    uint64_t X22;
+    uint64_t X23;
+    uint64_t X24;
+    uint64_t X25;
+    uint64_t X26;
+    uint64_t X27;
+    uint64_t X28;
+    uint64_t FP;
+    uint64_t LR;
+    uint64_t SP;
 
-    EFI_UINT64 V0[2];
-    EFI_UINT64 V1[2];
-    EFI_UINT64 V2[2];
-    EFI_UINT64 V3[2];
-    EFI_UINT64 V4[2];
-    EFI_UINT64 V5[2];
-    EFI_UINT64 V6[2];
-    EFI_UINT64 V7[2];
-    EFI_UINT64 V8[2];
-    EFI_UINT64 V9[2];
-    EFI_UINT64 V10[2];
-    EFI_UINT64 V11[2];
-    EFI_UINT64 V12[2];
-    EFI_UINT64 V13[2];
-    EFI_UINT64 V14[2];
-    EFI_UINT64 V15[2];
-    EFI_UINT64 V16[2];
-    EFI_UINT64 V17[2];
-    EFI_UINT64 V18[2];
-    EFI_UINT64 V19[2];
-    EFI_UINT64 V20[2];
-    EFI_UINT64 V21[2];
-    EFI_UINT64 V22[2];
-    EFI_UINT64 V23[2];
-    EFI_UINT64 V24[2];
-    EFI_UINT64 V25[2];
-    EFI_UINT64 V26[2];
-    EFI_UINT64 V27[2];
-    EFI_UINT64 V28[2];
-    EFI_UINT64 V29[2];
-    EFI_UINT64 V30[2];
-    EFI_UINT64 V31[2];
+    uint64_t V0[2];
+    uint64_t V1[2];
+    uint64_t V2[2];
+    uint64_t V3[2];
+    uint64_t V4[2];
+    uint64_t V5[2];
+    uint64_t V6[2];
+    uint64_t V7[2];
+    uint64_t V8[2];
+    uint64_t V9[2];
+    uint64_t V10[2];
+    uint64_t V11[2];
+    uint64_t V12[2];
+    uint64_t V13[2];
+    uint64_t V14[2];
+    uint64_t V15[2];
+    uint64_t V16[2];
+    uint64_t V17[2];
+    uint64_t V18[2];
+    uint64_t V19[2];
+    uint64_t V20[2];
+    uint64_t V21[2];
+    uint64_t V22[2];
+    uint64_t V23[2];
+    uint64_t V24[2];
+    uint64_t V25[2];
+    uint64_t V26[2];
+    uint64_t V27[2];
+    uint64_t V28[2];
+    uint64_t V29[2];
+    uint64_t V30[2];
+    uint64_t V31[2];
 
-    EFI_UINT64 ELR;
-    EFI_UINT64 SPSR;
-    EFI_UINT64 FPSR;
-    EFI_UINT64 ESR;
-    EFI_UINT64 FAR;
+    uint64_t ELR;
+    uint64_t SPSR;
+    uint64_t FPSR;
+    uint64_t ESR;
+    uint64_t FAR;
 } EFI_SYSTEM_CONTEXT_AARCH64;
 
 typedef struct {
-    EFI_UINT64 R0;
-    EFI_UINT64 R1;
-    EFI_UINT64 R2;
-    EFI_UINT64 R3;
-    EFI_UINT64 R4;
-    EFI_UINT64 R5;
-    EFI_UINT64 R6;
-    EFI_UINT64 R7;
-    EFI_UINT64 R8;
-    EFI_UINT64 R9;
-    EFI_UINT64 R10;
-    EFI_UINT64 R11;
-    EFI_UINT64 R12;
-    EFI_UINT64 R13;
-    EFI_UINT64 R14;
-    EFI_UINT64 R15;
-    EFI_UINT64 R16;
-    EFI_UINT64 R17;
-    EFI_UINT64 R18;
-    EFI_UINT64 R19;
-    EFI_UINT64 R20;
-    EFI_UINT64 R21;
-    EFI_UINT64 R22;
-    EFI_UINT64 R23;
-    EFI_UINT64 R24;
-    EFI_UINT64 R25;
-    EFI_UINT64 R26;
-    EFI_UINT64 R27;
-    EFI_UINT64 R28;
-    EFI_UINT64 R29;
-    EFI_UINT64 R30;
-    EFI_UINT64 R31;
+    uint64_t R0;
+    uint64_t R1;
+    uint64_t R2;
+    uint64_t R3;
+    uint64_t R4;
+    uint64_t R5;
+    uint64_t R6;
+    uint64_t R7;
+    uint64_t R8;
+    uint64_t R9;
+    uint64_t R10;
+    uint64_t R11;
+    uint64_t R12;
+    uint64_t R13;
+    uint64_t R14;
+    uint64_t R15;
+    uint64_t R16;
+    uint64_t R17;
+    uint64_t R18;
+    uint64_t R19;
+    uint64_t R20;
+    uint64_t R21;
+    uint64_t R22;
+    uint64_t R23;
+    uint64_t R24;
+    uint64_t R25;
+    uint64_t R26;
+    uint64_t R27;
+    uint64_t R28;
+    uint64_t R29;
+    uint64_t R30;
+    uint64_t R31;
 
-    EFI_UINT64 CRMD;
-    EFI_UINT64 PRMD;
-    EFI_UINT64 EUEN;
-    EFI_UINT64 MISC;
-    EFI_UINT64 ECFG;
-    EFI_UINT64 ESTAT;
-    EFI_UINT64 ERA;
-    EFI_UINT64 BADV;
-    EFI_UINT64 BADI;
+    uint64_t CRMD;
+    uint64_t PRMD;
+    uint64_t EUEN;
+    uint64_t MISC;
+    uint64_t ECFG;
+    uint64_t ESTAT;
+    uint64_t ERA;
+    uint64_t BADV;
+    uint64_t BADI;
 } EFI_SYSTEM_CONTEXT_LOONGARCH64;
 
 /* SystemContextRiscV128 and SystemContextLoongArch64 are misprinted Riscv128 and LongArch64. */
@@ -355,17 +355,17 @@ typedef union {
     EFI_SYSTEM_CONTEXT_LOONGARCH64 *SystemContextLoongArch64;
 } EFI_SYSTEM_CONTEXT;
 
-typedef EFI_VOID (EFI_API *EFI_PERIODIC_CALLBACK)(EFI_SYSTEM_CONTEXT SystemContext);
+typedef void (EFI_API *EFI_PERIODIC_CALLBACK)(EFI_SYSTEM_CONTEXT SystemContext);
 
 typedef EFI_STATUS (EFI_API *EFI_REGISTER_PERIODIC_CALLBACK)(
     EFI_DEBUG_SUPPORT_PROTOCOL *This,
-    EFI_UINTN ProcessorIndex,
+    size_t ProcessorIndex,
     EFI_PERIODIC_CALLBACK PeriodicCallback
 );
 
-typedef EFI_INTN EFI_EXCEPTION_TYPE;
+typedef intptr_t EFI_EXCEPTION_TYPE;
 
-typedef EFI_VOID (EFI_API *EFI_EXCEPTION_CALLBACK)(
+typedef void (EFI_API *EFI_EXCEPTION_CALLBACK)(
     EFI_EXCEPTION_TYPE ExceptionType,
     EFI_SYSTEM_CONTEXT SystemContext
 );
@@ -541,16 +541,16 @@ typedef EFI_VOID (EFI_API *EFI_EXCEPTION_CALLBACK)(
 /* Printed as REGISTER_EXCEPTION_CALLBACK; the protocol structure uses this name. */
 typedef EFI_STATUS (EFI_API *EFI_REGISTER_EXCEPTION_CALLBACK)(
     EFI_DEBUG_SUPPORT_PROTOCOL *This,
-    EFI_UINTN ProcessorIndex,
+    size_t ProcessorIndex,
     EFI_EXCEPTION_CALLBACK ExceptionCallback,
     EFI_EXCEPTION_TYPE ExceptionType
 );
 
 typedef EFI_STATUS (EFI_API *EFI_INVALIDATE_INSTRUCTION_CACHE)(
     EFI_DEBUG_SUPPORT_PROTOCOL *This,
-    EFI_UINTN ProcessorIndex,
-    EFI_VOID *Start,
-    EFI_UINT64 Length
+    size_t ProcessorIndex,
+    void *Start,
+    uint64_t Length
 );
 
 struct _EFI_DEBUG_SUPPORT_PROTOCOL {
@@ -570,16 +570,16 @@ typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_RESET)(EFI_DEBUGPORT_PROTOCOL *This);
 
 typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_WRITE)(
     EFI_DEBUGPORT_PROTOCOL *This,
-    EFI_UINT32 Timeout,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    uint32_t Timeout,
+    size_t *BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_READ)(
     EFI_DEBUGPORT_PROTOCOL *This,
-    EFI_UINT32 Timeout,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    uint32_t Timeout,
+    size_t *BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_POLL)(EFI_DEBUGPORT_PROTOCOL *This);
@@ -597,9 +597,9 @@ struct _EFI_DEBUGPORT_PROTOCOL {
 #define EFI_DEBUGPORT_VARIABLE_GUID EFI_DEBUGPORT_PROTOCOL_GUID
 
 typedef struct _EFI_SYSTEM_TABLE_POINTER {
-    EFI_UINT64 Signature;
+    uint64_t Signature;
     EFI_PHYSICAL_ADDRESS EfiSystemTableBase;
-    EFI_UINT32 Crc32;
+    uint32_t Crc32;
 } EFI_SYSTEM_TABLE_POINTER;
 
 #define EFI_DEBUG_IMAGE_INFO_TABLE_GUID \
@@ -611,22 +611,22 @@ typedef struct _EFI_SYSTEM_TABLE_POINTER {
 #define EFI_DEBUG_IMAGE_INFO_TYPE_NORMAL 0x01
 
 typedef struct {
-    EFI_UINT32 ImageInfoType;
+    uint32_t ImageInfoType;
     EFI_LOADED_IMAGE_PROTOCOL *LoadedImageProtocolInstance;
     EFI_HANDLE ImageHandle;
 } EFI_DEBUG_IMAGE_INFO_NORMAL;
 
 typedef union {
-    EFI_UINT32 *ImageInfoType;
+    uint32_t *ImageInfoType;
     EFI_DEBUG_IMAGE_INFO_NORMAL *NormalImage;
 } EFI_DEBUG_IMAGE_INFO;
 
 /* Not in the specification: how many EFI_DEBUG_IMAGE_INFO entries, pointer-sized, fill a page. */
-#define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE (EFI_PAGE_SIZE / sizeof(EFI_UINTN))
+#define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE (EFI_PAGE_SIZE / sizeof(uintptr_t))
 
 typedef struct {
-    volatile EFI_UINT32 UpdateStatus;
-    EFI_UINT32 TableSize;
+    volatile uint32_t UpdateStatus;
+    uint32_t TableSize;
     EFI_DEBUG_IMAGE_INFO *EfiDebugImageInfoTable;
 } EFI_DEBUG_IMAGE_INFO_TABLE_HEADER;
 

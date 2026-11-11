@@ -17,68 +17,68 @@ typedef struct _EFI_PXE_BASE_CODE_PROTOCOL EFI_PXE_BASE_CODE_PROTOCOL;
 #define EFI_PXE_BASE_CODE_MAX_ARP_ENTRIES 8
 #define EFI_PXE_BASE_CODE_MAX_ROUTE_ENTRIES 8
 
-typedef EFI_UINT16 EFI_PXE_BASE_CODE_UDP_PORT;
+typedef uint16_t EFI_PXE_BASE_CODE_UDP_PORT;
 
 /* Not packed: firmware lays these out naturally, though the specification says byte-packed. */
 typedef struct {
-    EFI_UINT8 BootpOpcode;
-    EFI_UINT8 BootpHwType;
-    EFI_UINT8 BootpHwAddrLen;
-    EFI_UINT8 BootpGateHops;
-    EFI_UINT32 BootpIdent;
-    EFI_UINT16 BootpSeconds;
-    EFI_UINT16 BootpFlags;
-    EFI_UINT8 BootpCiAddr[4];
-    EFI_UINT8 BootpYiAddr[4];
-    EFI_UINT8 BootpSiAddr[4];
-    EFI_UINT8 BootpGiAddr[4];
-    EFI_UINT8 BootpHwAddr[16];
-    EFI_UINT8 BootpSrvName[64];
-    EFI_UINT8 BootpBootFile[128];
-    EFI_UINT32 DhcpMagik;
-    EFI_UINT8 DhcpOptions[56];
+    uint8_t BootpOpcode;
+    uint8_t BootpHwType;
+    uint8_t BootpHwAddrLen;
+    uint8_t BootpGateHops;
+    uint32_t BootpIdent;
+    uint16_t BootpSeconds;
+    uint16_t BootpFlags;
+    uint8_t BootpCiAddr[4];
+    uint8_t BootpYiAddr[4];
+    uint8_t BootpSiAddr[4];
+    uint8_t BootpGiAddr[4];
+    uint8_t BootpHwAddr[16];
+    uint8_t BootpSrvName[64];
+    uint8_t BootpBootFile[128];
+    uint32_t DhcpMagik;
+    uint8_t DhcpOptions[56];
 } EFI_PXE_BASE_CODE_DHCPV4_PACKET;
 
 typedef struct {
-    EFI_UINT32 MessageType : 8;
-    EFI_UINT32 TransactionId : 24;
-    EFI_UINT8 DhcpOptions[1024];
+    uint32_t MessageType : 8;
+    uint32_t TransactionId : 24;
+    uint8_t DhcpOptions[1024];
 } EFI_PXE_BASE_CODE_DHCPV6_PACKET;
 
 typedef union {
-    EFI_UINT8 Raw[1472];
+    uint8_t Raw[1472];
     EFI_PXE_BASE_CODE_DHCPV4_PACKET Dhcpv4;
     EFI_PXE_BASE_CODE_DHCPV6_PACKET Dhcpv6;
 } EFI_PXE_BASE_CODE_PACKET;
 
 /* Data ends at offset 502; natural alignment makes the size 504. */
 typedef struct {
-    EFI_UINT8 Type;
-    EFI_UINT8 Code;
-    EFI_UINT16 Checksum;
+    uint8_t Type;
+    uint8_t Code;
+    uint16_t Checksum;
     union {
-        EFI_UINT32 reserved;
-        EFI_UINT32 Mtu;
-        EFI_UINT32 Pointer;
+        uint32_t reserved;
+        uint32_t Mtu;
+        uint32_t Pointer;
         struct {
-            EFI_UINT16 Identifier;
-            EFI_UINT16 Sequence;
+            uint16_t Identifier;
+            uint16_t Sequence;
         } Echo;
     } u;
-    EFI_UINT8 Data[494];
+    uint8_t Data[494];
 } EFI_PXE_BASE_CODE_ICMP_ERROR;
 
 typedef struct {
-    EFI_UINT8 ErrorCode;
-    EFI_CHAR8 ErrorString[127];
+    uint8_t ErrorCode;
+    char ErrorString[127];
 } EFI_PXE_BASE_CODE_TFTP_ERROR;
 
 #define EFI_PXE_BASE_CODE_MAX_IPCNT 8
 
 typedef struct {
-    EFI_UINT8 Filters;
-    EFI_UINT8 IpCnt;
-    EFI_UINT16 reserved;
+    uint8_t Filters;
+    uint8_t IpCnt;
+    uint16_t reserved;
     EFI_IP_ADDRESS IpList[EFI_PXE_BASE_CODE_MAX_IPCNT];
 } EFI_PXE_BASE_CODE_IP_FILTER;
 
@@ -99,25 +99,25 @@ typedef struct {
 } EFI_PXE_BASE_CODE_ROUTE_ENTRY;
 
 typedef struct {
-    EFI_BOOLEAN Started;
-    EFI_BOOLEAN Ipv6Available;
-    EFI_BOOLEAN Ipv6Supported;
-    EFI_BOOLEAN UsingIpv6;
-    EFI_BOOLEAN BisSupported;
-    EFI_BOOLEAN BisDetected;
-    EFI_BOOLEAN AutoArp;
-    EFI_BOOLEAN SendGUID;
-    EFI_BOOLEAN DhcpDiscoverValid;
-    EFI_BOOLEAN DhcpAckReceived;
-    EFI_BOOLEAN ProxyOfferReceived;
-    EFI_BOOLEAN PxeDiscoverValid;
-    EFI_BOOLEAN PxeReplyReceived;
-    EFI_BOOLEAN PxeBisReplyReceived;
-    EFI_BOOLEAN IcmpErrorReceived;
-    EFI_BOOLEAN TftpErrorReceived;
-    EFI_BOOLEAN MakeCallbacks;
-    EFI_UINT8 TTL;
-    EFI_UINT8 ToS;
+    uint8_t Started;
+    uint8_t Ipv6Available;
+    uint8_t Ipv6Supported;
+    uint8_t UsingIpv6;
+    uint8_t BisSupported;
+    uint8_t BisDetected;
+    uint8_t AutoArp;
+    uint8_t SendGUID;
+    uint8_t DhcpDiscoverValid;
+    uint8_t DhcpAckReceived;
+    uint8_t ProxyOfferReceived;
+    uint8_t PxeDiscoverValid;
+    uint8_t PxeReplyReceived;
+    uint8_t PxeBisReplyReceived;
+    uint8_t IcmpErrorReceived;
+    uint8_t TftpErrorReceived;
+    uint8_t MakeCallbacks;
+    uint8_t TTL;
+    uint8_t ToS;
     EFI_IP_ADDRESS StationIp;
     EFI_IP_ADDRESS SubnetMask;
     EFI_PXE_BASE_CODE_PACKET DhcpDiscover;
@@ -127,9 +127,9 @@ typedef struct {
     EFI_PXE_BASE_CODE_PACKET PxeReply;
     EFI_PXE_BASE_CODE_PACKET PxeBisReply;
     EFI_PXE_BASE_CODE_IP_FILTER IpFilter;
-    EFI_UINT32 ArpCacheEntries;
+    uint32_t ArpCacheEntries;
     EFI_PXE_BASE_CODE_ARP_ENTRY ArpCache[EFI_PXE_BASE_CODE_MAX_ARP_ENTRIES];
-    EFI_UINT32 RouteTableEntries;
+    uint32_t RouteTableEntries;
     EFI_PXE_BASE_CODE_ROUTE_ENTRY RouteTable[EFI_PXE_BASE_CODE_MAX_ROUTE_ENTRIES];
     EFI_PXE_BASE_CODE_ICMP_ERROR IcmpError;
     EFI_PXE_BASE_CODE_TFTP_ERROR TftpError;
@@ -146,14 +146,14 @@ typedef struct {
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_START)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
-    EFI_BOOLEAN UseIpv6
+    bool UseIpv6
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_STOP)(EFI_PXE_BASE_CODE_PROTOCOL *This);
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DHCP)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
-    EFI_BOOLEAN SortOffers
+    bool SortOffers
 );
 
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_BOOTSTRAP 0
@@ -179,28 +179,28 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DHCP)(
 #define EFI_PXE_BASE_CODE_BOOT_LAYER_INITIAL 0x0000
 
 typedef struct {
-    EFI_UINT16 Type;
-    EFI_BOOLEAN AcceptAnyResponse;
-    EFI_UINT8 reserved;
+    uint16_t Type;
+    uint8_t AcceptAnyResponse;
+    uint8_t reserved;
     EFI_IP_ADDRESS IpAddr;
 } EFI_PXE_BASE_CODE_SRVLIST;
 
 /* SrvList holds IpCnt entries (printed SrvList[IpCnt]). */
 typedef struct {
-    EFI_BOOLEAN UseMCast;
-    EFI_BOOLEAN UseBCast;
-    EFI_BOOLEAN UseUCast;
-    EFI_BOOLEAN MustUseList;
+    uint8_t UseMCast;
+    uint8_t UseBCast;
+    uint8_t UseUCast;
+    uint8_t MustUseList;
     EFI_IP_ADDRESS ServerMCastIp;
-    EFI_UINT16 IpCnt;
+    uint16_t IpCnt;
     EFI_PXE_BASE_CODE_SRVLIST SrvList[1];
 } EFI_PXE_BASE_CODE_DISCOVER_INFO;
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DISCOVER)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
-    EFI_UINT16 Type,
-    EFI_UINT16 *Layer,
-    EFI_BOOLEAN UseBis,
+    uint16_t Type,
+    uint16_t *Layer,
+    bool UseBis,
     EFI_PXE_BASE_CODE_DISCOVER_INFO *Info
 );
 
@@ -220,48 +220,48 @@ typedef struct {
     EFI_IP_ADDRESS MCastIp;
     EFI_PXE_BASE_CODE_UDP_PORT CPort;
     EFI_PXE_BASE_CODE_UDP_PORT SPort;
-    EFI_UINT16 ListenTimeout;
-    EFI_UINT16 TransmitTimeout;
+    uint16_t ListenTimeout;
+    uint16_t TransmitTimeout;
 } EFI_PXE_BASE_CODE_MTFTP_INFO;
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_MTFTP)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
     EFI_PXE_BASE_CODE_TFTP_OPCODE Operation,
-    EFI_VOID *BufferPtr,
-    EFI_BOOLEAN Overwrite,
-    EFI_UINT64 *BufferSize,
-    EFI_UINTN *BlockSize,
+    void *BufferPtr,
+    bool Overwrite,
+    uint64_t *BufferSize,
+    size_t *BlockSize,
     EFI_IP_ADDRESS *ServerIp,
-    EFI_CHAR8 *Filename,
+    char *Filename,
     EFI_PXE_BASE_CODE_MTFTP_INFO *Info,
-    EFI_BOOLEAN DontUseBuffer
+    bool DontUseBuffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_UDP_WRITE)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
-    EFI_UINT16 OpFlags,
+    uint16_t OpFlags,
     EFI_IP_ADDRESS *DestIp,
     EFI_PXE_BASE_CODE_UDP_PORT *DestPort,
     EFI_IP_ADDRESS *GatewayIp,
     EFI_IP_ADDRESS *SrcIp,
     EFI_PXE_BASE_CODE_UDP_PORT *SrcPort,
-    EFI_UINTN *HeaderSize,
-    EFI_VOID *HeaderPtr,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *BufferPtr
+    size_t *HeaderSize,
+    void *HeaderPtr,
+    size_t *BufferSize,
+    void *BufferPtr
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_UDP_READ)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
-    EFI_UINT16 OpFlags,
+    uint16_t OpFlags,
     EFI_IP_ADDRESS *DestIp,
     EFI_PXE_BASE_CODE_UDP_PORT *DestPort,
     EFI_IP_ADDRESS *SrcIp,
     EFI_PXE_BASE_CODE_UDP_PORT *SrcPort,
-    EFI_UINTN *HeaderSize,
-    EFI_VOID *HeaderPtr,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *BufferPtr
+    size_t *HeaderSize,
+    void *HeaderPtr,
+    size_t *BufferSize,
+    void *BufferPtr
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_IP_FILTER)(
@@ -277,11 +277,11 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_ARP)(
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_PARAMETERS)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
-    EFI_BOOLEAN *NewAutoArp,
-    EFI_BOOLEAN *NewSendGUID,
-    EFI_UINT8 *NewTTL,
-    EFI_UINT8 *NewToS,
-    EFI_BOOLEAN *NewMakeCallback
+    bool *NewAutoArp,
+    bool *NewSendGUID,
+    uint8_t *NewTTL,
+    uint8_t *NewToS,
+    bool *NewMakeCallback
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_STATION_IP)(
@@ -292,12 +292,12 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_STATION_IP)(
 
 typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_PACKETS)(
     EFI_PXE_BASE_CODE_PROTOCOL *This,
-    EFI_BOOLEAN *NewDhcpDiscoverValid,
-    EFI_BOOLEAN *NewDhcpAckReceived,
-    EFI_BOOLEAN *NewProxyOfferReceived,
-    EFI_BOOLEAN *NewPxeDiscoverValid,
-    EFI_BOOLEAN *NewPxeReplyReceived,
-    EFI_BOOLEAN *NewPxeBisReplyReceived,
+    bool *NewDhcpDiscoverValid,
+    bool *NewDhcpAckReceived,
+    bool *NewProxyOfferReceived,
+    bool *NewPxeDiscoverValid,
+    bool *NewPxeReplyReceived,
+    bool *NewPxeBisReplyReceived,
     EFI_PXE_BASE_CODE_PACKET *NewDhcpDiscover,
     EFI_PXE_BASE_CODE_PACKET *NewDhcpAck,
     EFI_PXE_BASE_CODE_PACKET *NewProxyOffer,
@@ -307,7 +307,7 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_PACKETS)(
 );
 
 struct _EFI_PXE_BASE_CODE_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_PXE_BASE_CODE_START Start;
     EFI_PXE_BASE_CODE_STOP Stop;
     EFI_PXE_BASE_CODE_DHCP Dhcp;
@@ -352,13 +352,13 @@ typedef enum {
 typedef EFI_PXE_BASE_CODE_CALLBACK_STATUS (EFI_API *EFI_PXE_CALLBACK)(
     EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL *This,
     EFI_PXE_BASE_CODE_FUNCTION Function,
-    EFI_BOOLEAN Received,
-    EFI_UINT32 PacketLen,
+    bool Received,
+    uint32_t PacketLen,
     EFI_PXE_BASE_CODE_PACKET *Packet
 );
 
 struct _EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_PXE_CALLBACK Callback;
 };
 

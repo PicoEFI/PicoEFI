@@ -13,18 +13,18 @@ extern "C" {
 typedef struct _EFI_CC_MEASUREMENT_PROTOCOL EFI_CC_MEASUREMENT_PROTOCOL;
 
 typedef struct {
-    EFI_UINT8 Major;
-    EFI_UINT8 Minor;
+    uint8_t Major;
+    uint8_t Minor;
 } EFI_CC_VERSION;
 
-typedef EFI_UINT32 EFI_CC_EVENT_LOG_BITMAP;
-typedef EFI_UINT32 EFI_CC_EVENT_ALGORITHM_BITMAP;
+typedef uint32_t EFI_CC_EVENT_LOG_BITMAP;
+typedef uint32_t EFI_CC_EVENT_ALGORITHM_BITMAP;
 
 #define EFI_CC_BOOT_HASH_ALG_SHA384 0x00000004
 
 typedef struct {
-    EFI_UINT8 Type;
-    EFI_UINT8 SubType;
+    uint8_t Type;
+    uint8_t SubType;
 } EFI_CC_TYPE;
 
 #define EFI_CC_TYPE_NONE 0
@@ -34,7 +34,7 @@ typedef struct {
 #define EFI_CC_TYPE_RISCV_APTEE 3
 
 typedef struct {
-    EFI_UINT8 Size;
+    uint8_t Size;
     EFI_CC_VERSION StructureVersion;
     EFI_CC_VERSION ProtocolVersion;
     EFI_CC_EVENT_ALGORITHM_BITMAP HashAlgorithmBitmap;
@@ -47,7 +47,7 @@ typedef EFI_STATUS (EFI_API *EFI_CC_GET_CAPABILITY)(
     EFI_CC_BOOT_SERVICE_CAPABILITY *ProtocolCapability
 );
 
-typedef EFI_UINT32 EFI_CC_EVENT_LOG_FORMAT;
+typedef uint32_t EFI_CC_EVENT_LOG_FORMAT;
 
 #define EFI_CC_EVENT_LOG_FORMAT_TCG_2 0x00000002
 
@@ -56,41 +56,41 @@ typedef EFI_STATUS (EFI_API *EFI_CC_GET_EVENT_LOG)(
     EFI_CC_EVENT_LOG_FORMAT EventLogFormat,
     EFI_PHYSICAL_ADDRESS *EventLogLocation,
     EFI_PHYSICAL_ADDRESS *EventLogLastEntry,
-    EFI_BOOLEAN *EventLogTruncated
+    bool *EventLogTruncated
 );
 
 #define EFI_CC_FLAG_EXTEND_ONLY 0x0000000000000001
 #define EFI_CC_FLAG_PE_COFF_IMAGE 0x0000000000000010
 
-typedef EFI_UINT32 EFI_CC_MR_INDEX;
+typedef uint32_t EFI_CC_MR_INDEX;
 
 /* Not named by the specification: the value HeaderVersion must hold. */
 #define EFI_CC_EVENT_HEADER_VERSION 1
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT32 HeaderSize;
-    EFI_UINT16 HeaderVersion;
+    uint32_t HeaderSize;
+    uint16_t HeaderVersion;
     EFI_CC_MR_INDEX MrIndex;
-    EFI_UINT32 EventType;
+    uint32_t EventType;
 } EFI_CC_EVENT_HEADER;
 
 /* Event is variable-length: Size covers the whole record. */
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT32 Size;
+    uint32_t Size;
     EFI_CC_EVENT_HEADER Header;
-    EFI_UINT8 Event[1];
+    uint8_t Event[1];
 } EFI_CC_EVENT;
 
 /* Printed as a second EFI_CC_GET_EVENT_LOG; named as the protocol structure types it. */
 typedef EFI_STATUS (EFI_API *EFI_CC_HASH_LOG_EXTEND_EVENT)(
     EFI_CC_MEASUREMENT_PROTOCOL *This,
-    EFI_UINT64 Flags,
+    uint64_t Flags,
     EFI_PHYSICAL_ADDRESS DataToHash,
-    EFI_UINT64 DataToHashLen,
+    uint64_t DataToHashLen,
     EFI_CC_EVENT *EfiCcEvent
 );
 
-typedef EFI_UINT32 EFI_TCG_PCRINDEX;
+typedef uint32_t EFI_TCG_PCRINDEX;
 
 typedef EFI_STATUS (EFI_API *EFI_CC_MAP_PCR_TO_MR_INDEX)(
     EFI_CC_MEASUREMENT_PROTOCOL *This,
@@ -110,8 +110,8 @@ struct _EFI_CC_MEASUREMENT_PROTOCOL {
 
 /* NumberOfEvents serialised CC_EVENT records follow; they have no C layout (TCG digest lists). */
 typedef struct {
-    EFI_UINT64 Version;
-    EFI_UINT64 NumberOfEvents;
+    uint64_t Version;
+    uint64_t NumberOfEvents;
 } EFI_CC_FINAL_EVENTS_TABLE;
 
 #ifdef __cplusplus

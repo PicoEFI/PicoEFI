@@ -17,23 +17,23 @@ typedef struct _EFI_MTFTP4_PROTOCOL EFI_MTFTP4_PROTOCOL;
 typedef struct _EFI_MTFTP4_TOKEN EFI_MTFTP4_TOKEN;
 
 typedef struct {
-    EFI_BOOLEAN UseDefaultSetting;
+    uint8_t UseDefaultSetting;
     EFI_IPv4_ADDRESS StationIp;
     EFI_IPv4_ADDRESS SubnetMask;
-    EFI_UINT16 LocalPort;
+    uint16_t LocalPort;
     EFI_IPv4_ADDRESS GatewayIp;
     EFI_IPv4_ADDRESS ServerIp;
-    EFI_UINT16 InitialServerPort;
-    EFI_UINT16 TryCount;
-    EFI_UINT16 TimeoutValue;
+    uint16_t InitialServerPort;
+    uint16_t TryCount;
+    uint16_t TimeoutValue;
 } EFI_MTFTP4_CONFIG_DATA;
 
 typedef struct {
     EFI_MTFTP4_CONFIG_DATA ConfigData;
-    EFI_UINT8 SupportedOptionCount;
-    EFI_UINT8 **SupportedOptions;
-    EFI_UINT8 UnsupportedOptionCount;
-    EFI_UINT8 **UnsupportedOptions;
+    uint8_t SupportedOptionCount;
+    uint8_t **SupportedOptions;
+    uint8_t UnsupportedOptionCount;
+    uint8_t **UnsupportedOptions;
 } EFI_MTFTP4_MODE_DATA;
 
 typedef EFI_STATUS (EFI_API *EFI_MTFTP4_GET_MODE_DATA)(
@@ -49,56 +49,56 @@ typedef EFI_STATUS (EFI_API *EFI_MTFTP4_CONFIGURE)(
 typedef struct {
     EFI_IPv4_ADDRESS GatewayIp;
     EFI_IPv4_ADDRESS ServerIp;
-    EFI_UINT16 ServerPort;
-    EFI_UINT16 TryCount;
-    EFI_UINT16 TimeoutValue;
+    uint16_t ServerPort;
+    uint16_t TryCount;
+    uint16_t TimeoutValue;
 } EFI_MTFTP4_OVERRIDE_DATA;
 
 typedef struct {
-    EFI_UINT8 *OptionStr;
-    EFI_UINT8 *ValueStr;
+    uint8_t *OptionStr;
+    uint8_t *ValueStr;
 } EFI_MTFTP4_OPTION;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT8 Filename[1];
+    uint16_t OpCode;
+    uint8_t Filename[1];
 } EFI_MTFTP4_REQ_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT8 Data[1];
+    uint16_t OpCode;
+    uint8_t Data[1];
 } EFI_MTFTP4_OACK_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT16 Block;
-    EFI_UINT8 Data[1];
+    uint16_t OpCode;
+    uint16_t Block;
+    uint8_t Data[1];
 } EFI_MTFTP4_DATA_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT16 Block[1];
+    uint16_t OpCode;
+    uint16_t Block[1];
 } EFI_MTFTP4_ACK_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT64 Block;
-    EFI_UINT8 Data[1];
+    uint16_t OpCode;
+    uint64_t Block;
+    uint8_t Data[1];
 } EFI_MTFTP4_DATA8_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT64 Block[1];
+    uint16_t OpCode;
+    uint64_t Block[1];
 } EFI_MTFTP4_ACK8_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT16 ErrorCode;
-    EFI_UINT8 ErrorMessage[1];
+    uint16_t OpCode;
+    uint16_t ErrorCode;
+    uint8_t ErrorMessage[1];
 } EFI_MTFTP4_ERROR_HEADER;
 
 typedef union __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
+    uint16_t OpCode;
     EFI_MTFTP4_REQ_HEADER Rrq, Wrq;
     EFI_MTFTP4_OACK_HEADER Oack;
     EFI_MTFTP4_DATA_HEADER Data;
@@ -131,26 +131,26 @@ typedef union __attribute__((__packed__)) {
 typedef EFI_STATUS (EFI_API *EFI_MTFTP4_GET_INFO)(
     EFI_MTFTP4_PROTOCOL *This,
     EFI_MTFTP4_OVERRIDE_DATA *OverrideData,
-    EFI_UINT8 *Filename,
-    EFI_UINT8 *ModeStr,
-    EFI_UINT8 OptionCount,
+    uint8_t *Filename,
+    uint8_t *ModeStr,
+    uint8_t OptionCount,
     EFI_MTFTP4_OPTION *OptionList,
-    EFI_UINT32 *PacketLength,
+    uint32_t *PacketLength,
     EFI_MTFTP4_PACKET **Packet
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MTFTP4_PARSE_OPTIONS)(
     EFI_MTFTP4_PROTOCOL *This,
-    EFI_UINT32 PacketLen,
+    uint32_t PacketLen,
     EFI_MTFTP4_PACKET *Packet,
-    EFI_UINT32 *OptionCount,
+    uint32_t *OptionCount,
     EFI_MTFTP4_OPTION **OptionList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MTFTP4_CHECK_PACKET)(
     EFI_MTFTP4_PROTOCOL *This,
     EFI_MTFTP4_TOKEN *Token,
-    EFI_UINT16 PacketLen,
+    uint16_t PacketLen,
     EFI_MTFTP4_PACKET *Packet
 );
 
@@ -162,21 +162,21 @@ typedef EFI_STATUS (EFI_API *EFI_MTFTP4_TIMEOUT_CALLBACK)(
 typedef EFI_STATUS (EFI_API *EFI_MTFTP4_PACKET_NEEDED)(
     EFI_MTFTP4_PROTOCOL *This,
     EFI_MTFTP4_TOKEN *Token,
-    EFI_UINT16 *Length,
-    EFI_VOID **Buffer
+    uint16_t *Length,
+    void **Buffer
 );
 
 struct _EFI_MTFTP4_TOKEN {
     EFI_STATUS Status;
     EFI_EVENT Event;
     EFI_MTFTP4_OVERRIDE_DATA *OverrideData;
-    EFI_UINT8 *Filename;
-    EFI_UINT8 *ModeStr;
-    EFI_UINT32 OptionCount;
+    uint8_t *Filename;
+    uint8_t *ModeStr;
+    uint32_t OptionCount;
     EFI_MTFTP4_OPTION *OptionList;
-    EFI_UINT64 BufferSize;
-    EFI_VOID *Buffer;
-    EFI_VOID *Context;
+    uint64_t BufferSize;
+    void *Buffer;
+    void *Context;
     EFI_MTFTP4_CHECK_PACKET CheckPacket;
     EFI_MTFTP4_TIMEOUT_CALLBACK TimeoutCallback;
     EFI_MTFTP4_PACKET_NEEDED PacketNeeded;
@@ -221,17 +221,17 @@ typedef struct _EFI_MTFTP6_TOKEN EFI_MTFTP6_TOKEN;
 
 typedef struct {
     EFI_IPv6_ADDRESS StationIp;
-    EFI_UINT16 LocalPort;
+    uint16_t LocalPort;
     EFI_IPv6_ADDRESS ServerIp;
-    EFI_UINT16 InitialServerPort;
-    EFI_UINT16 TryCount;
-    EFI_UINT16 TimeoutValue;
+    uint16_t InitialServerPort;
+    uint16_t TryCount;
+    uint16_t TimeoutValue;
 } EFI_MTFTP6_CONFIG_DATA;
 
 typedef struct {
     EFI_MTFTP6_CONFIG_DATA ConfigData;
-    EFI_UINT8 SupportedOptionCount;
-    EFI_UINT8 **SupportedOptions;
+    uint8_t SupportedOptionCount;
+    uint8_t **SupportedOptions;
 } EFI_MTFTP6_MODE_DATA;
 
 typedef EFI_STATUS (EFI_API *EFI_MTFTP6_GET_MODE_DATA)(
@@ -246,56 +246,56 @@ typedef EFI_STATUS (EFI_API *EFI_MTFTP6_CONFIGURE)(
 
 typedef struct {
     EFI_IPv6_ADDRESS ServerIp;
-    EFI_UINT16 ServerPort;
-    EFI_UINT16 TryCount;
-    EFI_UINT16 TimeoutValue;
+    uint16_t ServerPort;
+    uint16_t TryCount;
+    uint16_t TimeoutValue;
 } EFI_MTFTP6_OVERRIDE_DATA;
 
 typedef struct {
-    EFI_UINT8 *OptionStr;
-    EFI_UINT8 *ValueStr;
+    uint8_t *OptionStr;
+    uint8_t *ValueStr;
 } EFI_MTFTP6_OPTION;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT8 Filename[1];
+    uint16_t OpCode;
+    uint8_t Filename[1];
 } EFI_MTFTP6_REQ_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT8 Data[1];
+    uint16_t OpCode;
+    uint8_t Data[1];
 } EFI_MTFTP6_OACK_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT16 Block;
-    EFI_UINT8 Data[1];
+    uint16_t OpCode;
+    uint16_t Block;
+    uint8_t Data[1];
 } EFI_MTFTP6_DATA_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT16 Block[1];
+    uint16_t OpCode;
+    uint16_t Block[1];
 } EFI_MTFTP6_ACK_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT64 Block;
-    EFI_UINT8 Data[1];
+    uint16_t OpCode;
+    uint64_t Block;
+    uint8_t Data[1];
 } EFI_MTFTP6_DATA8_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT64 Block[1];
+    uint16_t OpCode;
+    uint64_t Block[1];
 } EFI_MTFTP6_ACK8_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
-    EFI_UINT16 ErrorCode;
-    EFI_UINT8 ErrorMessage[1];
+    uint16_t OpCode;
+    uint16_t ErrorCode;
+    uint8_t ErrorMessage[1];
 } EFI_MTFTP6_ERROR_HEADER;
 
 typedef union __attribute__((__packed__)) {
-    EFI_UINT16 OpCode;
+    uint16_t OpCode;
     EFI_MTFTP6_REQ_HEADER Rrq;
     EFI_MTFTP6_REQ_HEADER Wrq;
     EFI_MTFTP6_OACK_HEADER Oack;
@@ -331,26 +331,26 @@ typedef union __attribute__((__packed__)) {
 typedef EFI_STATUS (EFI_API *EFI_MTFTP6_GET_INFO)(
     EFI_MTFTP6_PROTOCOL *This,
     EFI_MTFTP6_OVERRIDE_DATA *OverrideData,
-    EFI_UINT8 *Filename,
-    EFI_UINT8 *ModeStr,
-    EFI_UINT8 OptionCount,
+    uint8_t *Filename,
+    uint8_t *ModeStr,
+    uint8_t OptionCount,
     EFI_MTFTP6_OPTION *OptionList,
-    EFI_UINT32 *PacketLength,
+    uint32_t *PacketLength,
     EFI_MTFTP6_PACKET **Packet
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MTFTP6_PARSE_OPTIONS)(
     EFI_MTFTP6_PROTOCOL *This,
-    EFI_UINT32 PacketLen,
+    uint32_t PacketLen,
     EFI_MTFTP6_PACKET *Packet,
-    EFI_UINT32 *OptionCount,
+    uint32_t *OptionCount,
     EFI_MTFTP6_OPTION **OptionList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MTFTP6_CHECK_PACKET)(
     EFI_MTFTP6_PROTOCOL *This,
     EFI_MTFTP6_TOKEN *Token,
-    EFI_UINT16 PacketLen,
+    uint16_t PacketLen,
     EFI_MTFTP6_PACKET *Packet
 );
 
@@ -363,8 +363,8 @@ typedef EFI_STATUS (EFI_API *EFI_MTFTP6_TIMEOUT_CALLBACK)(
 typedef EFI_STATUS (EFI_API *EFI_MTFTP6_PACKET_NEEDED)(
     EFI_MTFTP6_PROTOCOL *This,
     EFI_MTFTP6_TOKEN *Token,
-    EFI_UINT16 *Length,
-    EFI_VOID **Buffer
+    uint16_t *Length,
+    void **Buffer
 );
 
 /* OverrideData and OptionList are pointers, as described and as in MTFTPv4; printed by value. */
@@ -372,13 +372,13 @@ struct _EFI_MTFTP6_TOKEN {
     EFI_STATUS Status;
     EFI_EVENT Event;
     EFI_MTFTP6_OVERRIDE_DATA *OverrideData;
-    EFI_UINT8 *Filename;
-    EFI_UINT8 *ModeStr;
-    EFI_UINT32 OptionCount;
+    uint8_t *Filename;
+    uint8_t *ModeStr;
+    uint32_t OptionCount;
     EFI_MTFTP6_OPTION *OptionList;
-    EFI_UINT64 BufferSize;
-    EFI_VOID *Buffer;
-    EFI_VOID *Context;
+    uint64_t BufferSize;
+    void *Buffer;
+    void *Context;
     EFI_MTFTP6_CHECK_PACKET CheckPacket;
     EFI_MTFTP6_TIMEOUT_CALLBACK TimeoutCallback;
     EFI_MTFTP6_PACKET_NEEDED PacketNeeded;

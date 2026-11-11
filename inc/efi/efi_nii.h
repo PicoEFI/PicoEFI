@@ -13,16 +13,16 @@ extern "C" {
 #define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_REVISION 0x00020000
 
 typedef struct {
-    EFI_UINT64 Revision;
-    EFI_UINT64 Id;
-    EFI_UINT64 ImageAddr;
-    EFI_UINT32 ImageSize;
-    EFI_CHAR8 StringId[4];
-    EFI_UINT8 Type;
-    EFI_UINT8 MajorVer;
-    EFI_UINT8 MinorVer;
-    EFI_BOOLEAN Ipv6Supported;
-    EFI_UINT16 IfNum;
+    uint64_t Revision;
+    uint64_t Id;
+    uint64_t ImageAddr;
+    uint32_t ImageSize;
+    char StringId[4];
+    uint8_t Type;
+    uint8_t MajorVer;
+    uint8_t MinorVer;
+    uint8_t Ipv6Supported;
+    uint16_t IfNum;
 } EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL;
 
 typedef enum {

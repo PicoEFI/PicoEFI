@@ -17,21 +17,21 @@ typedef struct _EFI_REDFISH_DISCOVER_PROTOCOL EFI_REDFISH_DISCOVER_PROTOCOL;
 
 typedef struct {
     EFI_MAC_ADDRESS MacAddress;
-    EFI_BOOLEAN IsIpv6;
+    uint8_t IsIpv6;
     EFI_IP_ADDRESS SubnetId;
-    EFI_UINT8 SubnetPrefixLength;
-    EFI_UINT16 VlanId;
+    uint8_t SubnetPrefixLength;
+    uint16_t VlanId;
 } EFI_REDFISH_DISCOVER_NETWORK_INTERFACE;
 
 typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_NETWORK_LIST)(
     EFI_REDFISH_DISCOVER_PROTOCOL *This,
     EFI_HANDLE ImageHandle,
-    EFI_UINTN *NumberOfNetworkInterfaces,
+    size_t *NumberOfNetworkInterfaces,
     EFI_REDFISH_DISCOVER_NETWORK_INTERFACE **NetworkInterfaces
 );
 
 /* The specification uses this type and lists its 32-bit flags but prints no definition for it. */
-typedef EFI_UINT32 EFI_REDFISH_DISCOVER_FLAG;
+typedef uint32_t EFI_REDFISH_DISCOVER_FLAG;
 
 #define EFI_REDFISH_DISCOVER_HOST_INTERFACE 0x00000001
 #define EFI_REDFISH_DISCOVER_SSDP 0x00000002
@@ -43,16 +43,16 @@ typedef EFI_UINT32 EFI_REDFISH_DISCOVER_FLAG;
 
 typedef struct {
     EFI_HANDLE RedfishRestExHandle;
-    EFI_BOOLEAN IsIPv6;
+    uint8_t IsIPv6;
     EFI_IP_ADDRESS RedfishHostIpAddress;
-    EFI_UINT16 RedfishVersion;
-    EFI_CHAR16 *Location;
-    EFI_CHAR16 *Uuid;
-    EFI_CHAR16 *Os;
-    EFI_CHAR16 *OsVersion;
-    EFI_CHAR16 *Product;
-    EFI_CHAR16 *ProductVersion;
-    EFI_BOOLEAN UseHttps;
+    uint16_t RedfishVersion;
+    uint16_t *Location;
+    uint16_t *Uuid;
+    uint16_t *Os;
+    uint16_t *OsVersion;
+    uint16_t *Product;
+    uint16_t *ProductVersion;
+    uint8_t UseHttps;
 } EFI_REDFISH_DISCOVERED_INFORMATION;
 
 typedef struct {
@@ -61,7 +61,7 @@ typedef struct {
 } EFI_REDFISH_DISCOVERED_INSTANCE;
 
 typedef struct {
-    EFI_UINTN NumberOfServiceFound;
+    size_t NumberOfServiceFound;
     EFI_REDFISH_DISCOVERED_INSTANCE *RedfishInstances;
 } EFI_REDFISH_DISCOVERED_LIST;
 
@@ -69,10 +69,10 @@ typedef struct {
 #define EFI_REDFISH_DISCOVER_TOKEN_SIGNATURE EFI_SIGNATURE_32('R', 'F', 'T', 'S')
 
 typedef struct {
-    EFI_UINT32 Signature;
+    uint32_t Signature;
     EFI_REDFISH_DISCOVERED_LIST DiscoveredList;
     EFI_EVENT Event;
-    EFI_UINTN Timeout;
+    uintptr_t Timeout;
 } EFI_REDFISH_DISCOVERED_TOKEN;
 
 typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_ACQUIRE_SERVICE)(

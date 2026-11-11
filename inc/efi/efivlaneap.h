@@ -16,25 +16,25 @@ typedef struct _EFI_VLAN_CONFIG_PROTOCOL EFI_VLAN_CONFIG_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_VLAN_CONFIG_SET)(
     EFI_VLAN_CONFIG_PROTOCOL *This,
-    EFI_UINT16 VlanId,
-    EFI_UINT8 Priority
+    uint16_t VlanId,
+    uint8_t Priority
 );
 
 typedef struct {
-    EFI_UINT16 VlanId;
-    EFI_UINT8 Priority;
+    uint16_t VlanId;
+    uint8_t Priority;
 } EFI_VLAN_FIND_DATA;
 
 typedef EFI_STATUS (EFI_API *EFI_VLAN_CONFIG_FIND)(
     EFI_VLAN_CONFIG_PROTOCOL *This,
-    EFI_UINT16 *VlanId,
-    EFI_UINT16 *NumberOfVlan,
+    uint16_t *VlanId,
+    uint16_t *NumberOfVlan,
     EFI_VLAN_FIND_DATA **Entries
 );
 
 typedef EFI_STATUS (EFI_API *EFI_VLAN_CONFIG_REMOVE)(
     EFI_VLAN_CONFIG_PROTOCOL *This,
-    EFI_UINT16 VlanId
+    uint16_t VlanId
 );
 
 struct _EFI_VLAN_CONFIG_PROTOCOL {
@@ -48,26 +48,26 @@ struct _EFI_VLAN_CONFIG_PROTOCOL {
 
 typedef struct _EFI_EAP_PROTOCOL EFI_EAP_PROTOCOL;
 
-typedef EFI_VOID *EFI_PORT_HANDLE;
+typedef void *EFI_PORT_HANDLE;
 
 #define EFI_EAP_TYPE_TLS 13
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_SET_DESIRED_AUTHENTICATION_METHOD)(
     struct _EFI_EAP_PROTOCOL *This,
-    EFI_UINT8 EapAuthType
+    uint8_t EapAuthType
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_BUILD_RESPONSE_PACKET)(
     EFI_PORT_HANDLE PortNumber,
-    EFI_UINT8 *RequestBuffer,
-    EFI_UINTN RequestSize,
-    EFI_UINT8 *Buffer,
-    EFI_UINTN *BufferSize
+    uint8_t *RequestBuffer,
+    size_t RequestSize,
+    uint8_t *Buffer,
+    size_t *BufferSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_REGISTER_AUTHENTICATION_METHOD)(
     struct _EFI_EAP_PROTOCOL *This,
-    EFI_UINT8 EapAuthType,
+    uint8_t EapAuthType,
     EFI_EAP_BUILD_RESPONSE_PACKET Handler
 );
 
@@ -86,19 +86,19 @@ typedef struct _EFI_EAP_MANAGEMENT_PROTOCOL EFI_EAP_MANAGEMENT_PROTOCOL;
 
 typedef struct _EFI_EAPOL_PORT_INFO {
     EFI_PORT_HANDLE PortNumber;
-    EFI_UINT8 ProtocolVersion;
-    EFI_UINT8 PaeCapabilities;
+    uint8_t ProtocolVersion;
+    uint8_t PaeCapabilities;
 } EFI_EAPOL_PORT_INFO;
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_GET_SYSTEM_CONFIGURATION)(
     struct _EFI_EAP_MANAGEMENT_PROTOCOL *This,
-    EFI_BOOLEAN *SystemAuthControl,
+    bool *SystemAuthControl,
     EFI_EAPOL_PORT_INFO *PortInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_SET_SYSTEM_CONFIGURATION)(
     struct _EFI_EAP_MANAGEMENT_PROTOCOL *This,
-    EFI_BOOLEAN SystemAuthControl
+    bool SystemAuthControl
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_INITIALIZE_PORT)(
@@ -126,11 +126,11 @@ typedef enum _EFI_EAPOL_SUPPLICANT_PAE_STATE {
 #define EFI_MAX_START_FIELD_VALID 0x08
 
 typedef struct _EFI_EAPOL_SUPPLICANT_PAE_CONFIGURATION {
-    EFI_UINT8 ValidFieldMask;
-    EFI_UINTN AuthPeriod;
-    EFI_UINTN HeldPeriod;
-    EFI_UINTN StartPeriod;
-    EFI_UINTN MaxStart;
+    uint8_t ValidFieldMask;
+    uintptr_t AuthPeriod;
+    uintptr_t HeldPeriod;
+    uintptr_t StartPeriod;
+    size_t MaxStart;
 } EFI_EAPOL_SUPPLICANT_PAE_CONFIGURATION;
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_GET_SUPPLICANT_STATUS)(
@@ -145,18 +145,18 @@ typedef EFI_STATUS (EFI_API *EFI_EAP_SET_SUPPLICANT_CONFIGURATION)(
 );
 
 typedef struct _EFI_EAPOL_SUPPLICANT_PAE_STATISTICS {
-    EFI_UINTN EapolFramesReceived;
-    EFI_UINTN EapolFramesTransmitted;
-    EFI_UINTN EapolStartFramesTransmitted;
-    EFI_UINTN EapolLogoffFramesTransmitted;
-    EFI_UINTN EapRespIdFramesTransmitted;
-    EFI_UINTN EapResponseFramesTransmitted;
-    EFI_UINTN EapReqIdFramesReceived;
-    EFI_UINTN EapRequestFramesReceived;
-    EFI_UINTN InvalidEapolFramesReceived;
-    EFI_UINTN EapLengthErrorFramesReceived;
-    EFI_UINTN LastEapolFrameVersion;
-    EFI_UINTN LastEapolFrameSource;
+    size_t EapolFramesReceived;
+    size_t EapolFramesTransmitted;
+    size_t EapolStartFramesTransmitted;
+    size_t EapolLogoffFramesTransmitted;
+    size_t EapRespIdFramesTransmitted;
+    size_t EapResponseFramesTransmitted;
+    size_t EapReqIdFramesReceived;
+    size_t EapRequestFramesReceived;
+    size_t InvalidEapolFramesReceived;
+    size_t EapLengthErrorFramesReceived;
+    uintptr_t LastEapolFrameVersion;
+    uintptr_t LastEapolFrameSource;
 } EFI_EAPOL_SUPPLICANT_PAE_STATISTICS;
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_GET_SUPPLICANT_STATISTICS)(
@@ -182,10 +182,10 @@ typedef struct _EFI_EAP_MANAGEMENT2_PROTOCOL EFI_EAP_MANAGEMENT2_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_GET_KEY)(
     EFI_EAP_MANAGEMENT2_PROTOCOL *This,
-    EFI_UINT8 *Msk,
-    EFI_UINTN *MskSize,
-    EFI_UINT8 *Emsk,
-    EFI_UINT8 *EmskSize
+    uint8_t *Msk,
+    size_t *MskSize,
+    uint8_t *Emsk,
+    uint8_t *EmskSize
 );
 
 /* The specification prints the members before GetKey as "Same as EFI_EAP_MANAGEMENT_PROTOCOL". */
@@ -220,7 +220,7 @@ typedef enum {
     EfiEapConfigEap2ndAuthMethod
 } EFI_EAP_CONFIG_DATA_TYPE;
 
-typedef EFI_UINT8 EFI_EAP_TYPE;
+typedef uint8_t EFI_EAP_TYPE;
 
 #define EFI_EAP_TYPE_ATTRIBUTE 0
 #define EFI_EAP_TYPE_IDENTITY 1
@@ -240,16 +240,16 @@ typedef EFI_STATUS (EFI_API *EFI_EAP_CONFIGURATION_SET_DATA)(
     EFI_EAP_CONFIGURATION_PROTOCOL *This,
     EFI_EAP_TYPE EapType,
     EFI_EAP_CONFIG_DATA_TYPE DataType,
-    EFI_VOID *Data,
-    EFI_UINTN DataSize
+    void *Data,
+    size_t DataSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EAP_CONFIGURATION_GET_DATA)(
     EFI_EAP_CONFIGURATION_PROTOCOL *This,
     EFI_EAP_TYPE EapType,
     EFI_EAP_CONFIG_DATA_TYPE DataType,
-    EFI_VOID *Data,
-    EFI_UINTN *DataSize
+    void *Data,
+    size_t *DataSize
 );
 
 struct _EFI_EAP_CONFIGURATION_PROTOCOL {
@@ -270,22 +270,22 @@ typedef enum {
 } EFI_80211_BSS_TYPE;
 
 typedef struct {
-    EFI_UINT8 Addr[6];
+    uint8_t Addr[6];
 } EFI_80211_MAC_ADDRESS;
 
 typedef struct {
-    EFI_UINT8 ElementID;
-    EFI_UINT8 Length;
+    uint8_t ElementID;
+    uint8_t Length;
 } EFI_80211_ELEMENT_HEADER;
 
 typedef struct {
     EFI_80211_ELEMENT_HEADER Hdr;
-    EFI_UINT8 RequestIDs[1];
+    uint8_t RequestIDs[1];
 } EFI_80211_ELEMENT_REQ;
 
 typedef struct {
     EFI_80211_ELEMENT_HEADER Hdr;
-    EFI_UINT8 SSId[32];
+    uint8_t SSId[32];
 } EFI_80211_ELEMENT_SSID;
 
 typedef enum {
@@ -302,17 +302,17 @@ typedef enum {
 typedef struct {
     EFI_80211_BSS_TYPE BSSType;
     EFI_80211_MAC_ADDRESS BSSId;
-    EFI_UINT8 SSIdLen;
-    EFI_UINT8 *SSId;
-    EFI_BOOLEAN PassiveMode;
-    EFI_UINT32 ProbeDelay;
-    EFI_UINT32 *ChannelList;
-    EFI_UINT32 MinChannelTime;
-    EFI_UINT32 MaxChannelTime;
+    uint8_t SSIdLen;
+    uint8_t *SSId;
+    uint8_t PassiveMode;
+    uint32_t ProbeDelay;
+    uint32_t *ChannelList;
+    uint32_t MinChannelTime;
+    uint32_t MaxChannelTime;
     EFI_80211_ELEMENT_REQ *RequestInformation;
     EFI_80211_ELEMENT_SSID *SSIDList;
     EFI_80211_ACC_NET_TYPE AccessNetworkType;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_SCAN_DATA;
 
 typedef enum {
@@ -321,15 +321,15 @@ typedef enum {
 } EFI_80211_SCAN_RESULT_CODE;
 
 typedef struct {
-    EFI_UINT8 FirstChannelNum;
-    EFI_UINT8 NumOfChannels;
-    EFI_UINT8 MaxTxPowerLevel;
+    uint8_t FirstChannelNum;
+    uint8_t NumOfChannels;
+    uint8_t MaxTxPowerLevel;
 } EFI_80211_COUNTRY_TRIPLET_SUBBAND;
 
 typedef struct {
-    EFI_UINT8 OperatingExtId;
-    EFI_UINT8 OperatingClass;
-    EFI_UINT8 CoverageClass;
+    uint8_t OperatingExtId;
+    uint8_t OperatingClass;
+    uint8_t CoverageClass;
 } EFI_80211_COUNTRY_TRIPLET_OPERATE;
 
 typedef union {
@@ -339,14 +339,14 @@ typedef union {
 
 typedef struct {
     EFI_80211_ELEMENT_HEADER Hdr;
-    EFI_UINT8 CountryStr[3];
+    uint8_t CountryStr[3];
     EFI_80211_COUNTRY_TRIPLET CountryTriplet[1];
 } EFI_80211_ELEMENT_COUNTRY;
 
 /* The rest of the RSN element (suite lists, capabilities, PMKIDs) follows; it varies in length. */
 typedef struct {
-    EFI_UINT16 Version;
-    EFI_UINT32 GroupDataCipherSuite;
+    uint16_t Version;
+    uint32_t GroupDataCipherSuite;
 } EFI_80211_ELEMENT_DATA_RSN;
 
 typedef struct {
@@ -356,61 +356,61 @@ typedef struct {
 
 typedef struct {
     EFI_80211_ELEMENT_HEADER Hdr;
-    EFI_UINT8 Capabilities[1];
+    uint8_t Capabilities[1];
 } EFI_80211_ELEMENT_EXT_CAP;
 
 /* BSSId is a value, as in every other structure here; printed with a stray asterisk. */
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
-    EFI_UINT8 *SSId;
-    EFI_UINT8 SSIdLen;
+    uint8_t *SSId;
+    uint8_t SSIdLen;
     EFI_80211_BSS_TYPE BSSType;
-    EFI_UINT16 BeaconPeriod;
-    EFI_UINT64 Timestamp;
-    EFI_UINT16 CapabilityInfo;
-    EFI_UINT8 *BSSBasicRateSet;
-    EFI_UINT8 *OperationalRateSet;
+    uint16_t BeaconPeriod;
+    uint64_t Timestamp;
+    uint16_t CapabilityInfo;
+    uint8_t *BSSBasicRateSet;
+    uint8_t *OperationalRateSet;
     EFI_80211_ELEMENT_COUNTRY *Country;
     EFI_80211_ELEMENT_RSN RSN;
-    EFI_UINT8 RSSI;
-    EFI_UINT8 RCPIMeasurement;
-    EFI_UINT8 RSNIMeasurement;
-    EFI_UINT8 *RequestedElements;
-    EFI_UINT8 *BSSMembershipSelectorSet;
+    uint8_t RSSI;
+    uint8_t RCPIMeasurement;
+    uint8_t RSNIMeasurement;
+    uint8_t *RequestedElements;
+    uint8_t *BSSMembershipSelectorSet;
     EFI_80211_ELEMENT_EXT_CAP *ExtCapElement;
 } EFI_80211_BSS_DESCRIPTION;
 
 typedef struct {
-    EFI_UINT8 SubElementID;
-    EFI_UINT8 Length;
-    EFI_UINT8 Data[1];
+    uint8_t SubElementID;
+    uint8_t Length;
+    uint8_t Data[1];
 } EFI_80211_SUBELEMENT_INFO;
 
 typedef struct {
     EFI_80211_ELEMENT_HEADER Hdr;
-    EFI_UINT8 Indicator;
+    uint8_t Indicator;
     EFI_80211_SUBELEMENT_INFO SubElement[1];
 } EFI_80211_MULTIPLE_BSSID;
 
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
     EFI_80211_BSS_TYPE BSSType;
-    EFI_UINT8 ConCapInfo;
-    EFI_UINT8 ConCountryStr[2];
-    EFI_UINT8 OperatingClass;
-    EFI_UINT8 Channel;
-    EFI_UINT8 Interval;
+    uint8_t ConCapInfo;
+    uint8_t ConCountryStr[2];
+    uint8_t OperatingClass;
+    uint8_t Channel;
+    uint8_t Interval;
     EFI_80211_MULTIPLE_BSSID *MultipleBSSID;
-    EFI_UINT8 RCPIMeasurement;
-    EFI_UINT8 RSNIMeasurement;
+    uint8_t RCPIMeasurement;
+    uint8_t RSNIMeasurement;
 } EFI_80211_BSS_DESP_PILOT;
 
 typedef struct {
-    EFI_UINTN NumOfBSSDesp;
+    size_t NumOfBSSDesp;
     EFI_80211_BSS_DESCRIPTION **BSSDespSet;
-    EFI_UINTN NumOfBSSDespFromPilot;
+    size_t NumOfBSSDespFromPilot;
     EFI_80211_BSS_DESP_PILOT **BSSDespFromPilotSet;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_SCAN_RESULT;
 
 typedef struct {
@@ -427,8 +427,8 @@ typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_SCAN)(
 );
 
 typedef struct {
-    EFI_UINT8 FirstChannelNumber;
-    EFI_UINT8 NumberOfChannels;
+    uint8_t FirstChannelNumber;
+    uint8_t NumberOfChannels;
 } EFI_80211_ELEMENT_SUPP_CHANNEL_TUPLE;
 
 typedef struct {
@@ -439,13 +439,13 @@ typedef struct {
 /* ExtCapElement is a pointer: the description allows NULL (printed by value). */
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
-    EFI_UINT16 CapabilityInfo;
-    EFI_UINT32 FailureTimeout;
-    EFI_UINT32 ListenInterval;
+    uint16_t CapabilityInfo;
+    uint32_t FailureTimeout;
+    uint32_t ListenInterval;
     EFI_80211_ELEMENT_SUPP_CHANNEL *Channels;
     EFI_80211_ELEMENT_RSN RSN;
     EFI_80211_ELEMENT_EXT_CAP *ExtCapElement;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_ASSOCIATE_DATA;
 
 typedef enum {
@@ -461,19 +461,19 @@ typedef enum {
 
 typedef struct {
     EFI_80211_ELEMENT_HEADER Hdr;
-    EFI_UINT8 Type;
-    EFI_UINT32 Value;
+    uint8_t Type;
+    uint32_t Value;
 } EFI_80211_ELEMENT_TIMEOUT_VAL;
 
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
-    EFI_UINT16 CapabilityInfo;
-    EFI_UINT16 AssociationID;
-    EFI_UINT8 RCPIValue;
-    EFI_UINT8 RSNIValue;
+    uint16_t CapabilityInfo;
+    uint16_t AssociationID;
+    uint8_t RCPIValue;
+    uint8_t RSNIValue;
     EFI_80211_ELEMENT_EXT_CAP *ExtCapElement;
     EFI_80211_ELEMENT_TIMEOUT_VAL TimeoutInterval;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_ASSOCIATE_RESULT;
 
 /* Data and Result are pointers, as described (printed by value). */
@@ -504,7 +504,7 @@ typedef enum {
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
     EFI_80211_REASON_CODE ReasonCode;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_DISASSOCIATE_DATA;
 
 typedef enum {
@@ -534,10 +534,10 @@ typedef enum {
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
     EFI_80211_AUTHENTICATION_TYPE AuthType;
-    EFI_UINT32 FailureTimeout;
-    EFI_UINT8 *FTContent;
-    EFI_UINT8 *SAEContent;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint32_t FailureTimeout;
+    uint8_t *FTContent;
+    uint8_t *SAEContent;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_AUTHENTICATE_DATA;
 
 typedef enum {
@@ -551,9 +551,9 @@ typedef enum {
 
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
-    EFI_UINT8 *FTContent;
-    EFI_UINT8 *SAEContent;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint8_t *FTContent;
+    uint8_t *SAEContent;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_AUTHENTICATE_RESULT;
 
 /* Result is a pointer to a buffer the caller frees, as described (printed by value). */
@@ -573,7 +573,7 @@ typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_AUTHENTICATE)(
 typedef struct {
     EFI_80211_MAC_ADDRESS BSSId;
     EFI_80211_REASON_CODE ReasonCode;
-    EFI_UINT8 *VendorSpecificInfo;
+    uint8_t *VendorSpecificInfo;
 } EFI_80211_DEAUTHENTICATE_DATA;
 
 typedef struct {
@@ -603,27 +603,27 @@ typedef struct _EFI_WIRELESS_MAC_CONNECTION_II_PROTOCOL EFI_WIRELESS_MAC_CONNECT
 #define EFI_MAX_SSID_LEN 32
 
 typedef struct {
-    EFI_UINT8 SSIdLen;
-    EFI_UINT8 SSId[EFI_MAX_SSID_LEN];
+    uint8_t SSIdLen;
+    uint8_t SSId[EFI_MAX_SSID_LEN];
 } EFI_80211_SSID;
 
 typedef struct {
-    EFI_UINT32 NumOfSSID;
+    uint32_t NumOfSSID;
     EFI_80211_SSID SSIDList[1];
 } EFI_80211_GET_NETWORKS_DATA;
 
 typedef struct {
-    EFI_UINT8 Oui[3];
-    EFI_UINT8 SuiteType;
+    uint8_t Oui[3];
+    uint8_t SuiteType;
 } EFI_80211_SUITE_SELECTOR;
 
 typedef struct {
-    EFI_UINT16 AKMSuiteCount;
+    uint16_t AKMSuiteCount;
     EFI_80211_SUITE_SELECTOR AKMSuiteList[1];
 } EFI_80211_AKM_SUITE_SELECTOR;
 
 typedef struct {
-    EFI_UINT16 CipherSuiteCount;
+    uint16_t CipherSuiteCount;
     EFI_80211_SUITE_SELECTOR CipherSuiteList[1];
 } EFI_80211_CIPHER_SUITE_SELECTOR;
 
@@ -636,11 +636,11 @@ typedef struct {
 
 typedef struct {
     EFI_80211_NETWORK Network;
-    EFI_UINT8 NetworkQuality;
+    uint8_t NetworkQuality;
 } EFI_80211_NETWORK_DESCRIPTION;
 
 typedef struct {
-    EFI_UINT8 NumOfNetworkDesc;
+    uint8_t NumOfNetworkDesc;
     EFI_80211_NETWORK_DESCRIPTION NetworkDesc[1];
 } EFI_80211_GET_NETWORKS_RESULT;
 
@@ -658,7 +658,7 @@ typedef EFI_STATUS (EFI_API *EFI_WIRELESS_MAC_CONNECTION_II_GET_NETWORKS)(
 
 typedef struct {
     EFI_80211_NETWORK *Network;
-    EFI_UINT32 FailureTimeout;
+    uint32_t FailureTimeout;
 } EFI_80211_CONNECT_NETWORK_DATA;
 
 typedef enum {
@@ -707,15 +707,15 @@ typedef struct _EFI_SUPPLICANT_PROTOCOL EFI_SUPPLICANT_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_SUPPLICANT_BUILD_RESPONSE_PACKET)(
     EFI_SUPPLICANT_PROTOCOL *This,
-    EFI_UINT8 *RequestBuffer,
-    EFI_UINTN RequestBufferSize,
-    EFI_UINT8 *Buffer,
-    EFI_UINTN *BufferSize
+    uint8_t *RequestBuffer,
+    size_t RequestBufferSize,
+    uint8_t *Buffer,
+    size_t *BufferSize
 );
 
 typedef struct {
-    EFI_UINT32 FragmentLength;
-    EFI_VOID *FragmentBuffer;
+    uint32_t FragmentLength;
+    void *FragmentBuffer;
 } EFI_SUPPLICANT_FRAGMENT_DATA;
 
 typedef enum {
@@ -726,7 +726,7 @@ typedef enum {
 typedef EFI_STATUS (EFI_API *EFI_SUPPLICANT_PROCESS_PACKET)(
     EFI_SUPPLICANT_PROTOCOL *This,
     EFI_SUPPLICANT_FRAGMENT_DATA **FragmentTable,
-    EFI_UINT32 *FragmentCount,
+    uint32_t *FragmentCount,
     EFI_SUPPLICANT_CRYPT_MODE CryptMode
 );
 
@@ -759,7 +759,7 @@ typedef enum {
 } EFI_80211_LINK_STATE;
 
 typedef struct {
-    EFI_BOOLEAN GTKRefresh;
+    uint8_t GTKRefresh;
 } EFI_SUPPLICANT_KEY_REFRESH;
 
 #define EFI_MAX_KEY_LEN 64
@@ -778,35 +778,35 @@ typedef enum {
 } EFI_SUPPLICANT_KEY_DIRECTION;
 
 typedef struct {
-    EFI_UINT8 Key[EFI_MAX_KEY_LEN];
-    EFI_UINT8 KeyLen;
-    EFI_UINT8 KeyId;
+    uint8_t Key[EFI_MAX_KEY_LEN];
+    uint8_t KeyLen;
+    uint8_t KeyId;
     EFI_SUPPLICANT_KEY_TYPE KeyType;
     EFI_80211_MAC_ADDRESS Addr;
-    EFI_UINT8 Rsc[8];
-    EFI_UINT8 RscLen;
-    EFI_BOOLEAN IsAuthenticator;
+    uint8_t Rsc[8];
+    uint8_t RscLen;
+    uint8_t IsAuthenticator;
     EFI_80211_SUITE_SELECTOR CipherSuite;
     EFI_SUPPLICANT_KEY_DIRECTION Direction;
 } EFI_SUPPLICANT_KEY;
 
 typedef struct {
-    EFI_UINT8 GTKCount;
+    uint8_t GTKCount;
     EFI_SUPPLICANT_KEY GTKList[1];
 } EFI_SUPPLICANT_GTK_LIST;
 
 typedef EFI_STATUS (EFI_API *EFI_SUPPLICANT_SET_DATA)(
     EFI_SUPPLICANT_PROTOCOL *This,
     EFI_SUPPLICANT_DATA_TYPE DataType,
-    EFI_VOID *Data,
-    EFI_UINTN DataSize
+    void *Data,
+    size_t DataSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SUPPLICANT_GET_DATA)(
     EFI_SUPPLICANT_PROTOCOL *This,
     EFI_SUPPLICANT_DATA_TYPE DataType,
-    EFI_UINT8 *Data,
-    EFI_UINTN *DataSize
+    uint8_t *Data,
+    size_t *DataSize
 );
 
 struct _EFI_SUPPLICANT_PROTOCOL {

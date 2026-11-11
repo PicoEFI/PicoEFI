@@ -1,102 +1,107 @@
 #ifndef EFI_EFIDEF_H_
 #define EFI_EFIDEF_H_
 
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#if !defined(__x86_64__) && !defined(__amd64__) && !defined(__i386__) && \
+    !defined(__aarch64__) && !defined(__arm__) && !defined(__riscv) && !defined(__loongarch__)
+#error "PicoEFI does not support the target architecture."
+#endif
+
+/* UEFI enumerations are 32-bit; bare-metal Arm toolchains default to short ones. */
+#if defined(__ARM_SIZEOF_MINIMAL_ENUM) && __ARM_SIZEOF_MINIMAL_ENUM != 4
+#error "UEFI enumerations are 32-bit: compile with -fno-short-enums."
+#endif
+
+#ifndef EFI_API
 #if defined(__x86_64__) || defined(__amd64__)
-#include "x86_64/efibind.h"
+#define EFI_API __attribute__((__ms_abi__))
 #elif defined(__i386__)
-#include "ia32/efibind.h"
-#elif defined(__aarch64__)
-#include "aarch64/efibind.h"
+/*
+ * Plain cdecl, whatever -mrtd or -mregparm the rest of the program uses. regparm(0) comes first:
+ * Clang 9 crashes on the other order when a macro supplies it.
+ */
+#define EFI_API __attribute__((__regparm__(0), __cdecl__))
 #elif defined(__arm__)
-#include "arm/efibind.h"
-#elif defined(__riscv) && __riscv_xlen == 64
-#include "riscv64/efibind.h"
-#elif defined(__riscv) && __riscv_xlen == 32
-#include "riscv32/efibind.h"
-#elif defined(__loongarch64) || (defined(__loongarch__) && __loongarch_grlen == 64)
-#include "loongarch64/efibind.h"
-#elif defined(__loongarch__) && __loongarch_grlen == 32
-#include "loongarch32/efibind.h"
+/* Base standard: floating-point values go in core registers, whatever the program's float ABI. */
+#define EFI_API __attribute__((__pcs__("aapcs")))
 #else
-#error "efidef.h: unsupported target architecture"
+/* The platform's standard calling convention is the UEFI one. */
+#define EFI_API
+#endif
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifdef __cplusplus
-typedef bool EFI_BOOLEAN;
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-typedef _Bool EFI_BOOLEAN;
+#if defined(__SIZEOF_INT128__)
+__extension__ typedef __int128 EFI_INT128;
+__extension__ typedef unsigned __int128 EFI_UINT128;
 #else
-typedef unsigned char EFI_BOOLEAN;
+/* No 128-bit integer type on 32-bit targets. */
+typedef struct __attribute__((__aligned__(16))) {
+    uint64_t Lo;
+    uint64_t Hi;
+} EFI_INT128;
+
+typedef struct __attribute__((__aligned__(16))) {
+    uint64_t Lo;
+    uint64_t Hi;
+} EFI_UINT128;
 #endif
 
-#ifndef EFI_TRUE
-#if defined(__cplusplus) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
-#define EFI_TRUE true
-#else
-#define EFI_TRUE ((EFI_BOOLEAN)1)
-#endif
-#endif
+typedef uintptr_t EFI_STATUS;
 
-#ifndef EFI_FALSE
-#if defined(__cplusplus) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
-#define EFI_FALSE false
-#else
-#define EFI_FALSE ((EFI_BOOLEAN)0)
-#endif
-#endif
+#define EFI_ERROR_MASK (~((uintptr_t)-1 >> 1))
+#define EFI_ERR(a) ((EFI_STATUS)(EFI_ERROR_MASK | (a)))
+#define EFI_ERR_OEM(a) ((EFI_STATUS)(~((uintptr_t)-1 >> 2) | (a)))
 
-#ifndef EFI_CONST
-#define EFI_CONST const
-#endif
-
-typedef EFI_UINTN EFI_STATUS;
-typedef EFI_VOID *EFI_HANDLE;
-typedef EFI_VOID *EFI_EVENT;
-typedef EFI_UINT64 EFI_LBA;
-typedef EFI_UINTN EFI_TPL;
+typedef void *EFI_HANDLE;
+typedef void *EFI_EVENT;
+typedef uint64_t EFI_LBA;
+typedef uintptr_t EFI_TPL;
 
 typedef struct {
-    EFI_UINT8 Addr[32];
+    uint8_t Addr[32];
 } EFI_MAC_ADDRESS;
 
 typedef struct {
-    EFI_UINT8 Addr[4];
+    uint8_t Addr[4];
 } EFI_IPv4_ADDRESS;
 
 typedef struct {
-    EFI_UINT8 Addr[16];
+    uint8_t Addr[16];
 } EFI_IPv6_ADDRESS;
 
 typedef union {
-    EFI_UINT32 Addr[4];
+    uint32_t Addr[4];
     EFI_IPv4_ADDRESS v4;
     EFI_IPv6_ADDRESS v6;
 } EFI_IP_ADDRESS;
 
 /* Natural 4-byte alignment: the specification's 64-bit boundary is about buffers, not the type. */
 typedef struct {
-    EFI_UINT32 Data1;
-    EFI_UINT16 Data2;
-    EFI_UINT16 Data3;
-    EFI_UINT8 Data4[8];
+    uint32_t Data1;
+    uint16_t Data2;
+    uint16_t Data3;
+    uint8_t Data4[8];
 } EFI_GUID;
 
 typedef struct {
-    EFI_UINT16 Year;
-    EFI_UINT8 Month;
-    EFI_UINT8 Day;
-    EFI_UINT8 Hour;
-    EFI_UINT8 Minute;
-    EFI_UINT8 Second;
-    EFI_UINT8 Pad1;
-    EFI_UINT32 Nanosecond;
-    EFI_INT16 TimeZone;
-    EFI_UINT8 Daylight;
-    EFI_UINT8 Pad2;
+    uint16_t Year;
+    uint8_t Month;
+    uint8_t Day;
+    uint8_t Hour;
+    uint8_t Minute;
+    uint8_t Second;
+    uint8_t Pad1;
+    uint32_t Nanosecond;
+    int16_t TimeZone;
+    uint8_t Daylight;
+    uint8_t Pad2;
 } EFI_TIME;
 
 #define EFI_TIME_ADJUST_DAYLIGHT 0x01
@@ -104,8 +109,8 @@ typedef struct {
 
 #define EFI_UNSPECIFIED_TIMEZONE 0x07FF
 
-typedef EFI_UINT64 EFI_PHYSICAL_ADDRESS;
-typedef EFI_UINT64 EFI_VIRTUAL_ADDRESS;
+typedef uint64_t EFI_PHYSICAL_ADDRESS;
+typedef uint64_t EFI_VIRTUAL_ADDRESS;
 
 typedef enum {
     EfiAllocateAnyPages,
@@ -155,12 +160,20 @@ typedef enum {
 #define EFI_MEMORY_DESCRIPTOR_VERSION 1
 
 typedef struct {
-    EFI_UINT32 Type;
+    uint32_t Type;
     EFI_PHYSICAL_ADDRESS PhysicalStart;
     EFI_VIRTUAL_ADDRESS VirtualStart;
-    EFI_UINT64 NumberOfPages;
-    EFI_UINT64 Attribute;
+    uint64_t NumberOfPages;
+    uint64_t Attribute;
 } EFI_MEMORY_DESCRIPTOR;
+
+/* UEFI aligns 64-bit fields to 8 bytes, which the IA-32 ABI does only with -malign-double. */
+#if (defined(__cplusplus) && __cplusplus >= 201103L) || \
+    (!defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
+static_assert(sizeof(EFI_MEMORY_DESCRIPTOR) == 40, "Build with -malign-double on IA-32.");
+#elif !defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+_Static_assert(sizeof(EFI_MEMORY_DESCRIPTOR) == 40, "Build with -malign-double on IA-32.");
+#endif
 
 #define EFI_OS_INDICATIONS_BOOT_TO_FW_UI 0x0000000000000001
 #define EFI_OS_INDICATIONS_TIMESTAMP_REVOCATION 0x0000000000000002
@@ -172,16 +185,16 @@ typedef struct {
 #define EFI_OS_INDICATIONS_JSON_CONFIG_DATA_REFRESH 0x0000000000000080
 
 typedef struct {
-    EFI_UINT32 ReceivedQueueTimeoutValue;
-    EFI_UINT32 TransmitQueueTimeoutValue;
-    EFI_UINT16 ProtocolTypeFilter;
-    EFI_BOOLEAN EnableUnicastReceive;
-    EFI_BOOLEAN EnableMulticastReceive;
-    EFI_BOOLEAN EnableBroadcastReceive;
-    EFI_BOOLEAN EnablePromiscuousReceive;
-    EFI_BOOLEAN FlushQueuesOnReset;
-    EFI_BOOLEAN EnableReceiveTimestamps;
-    EFI_BOOLEAN DisableBackgroundPolling;
+    uint32_t ReceivedQueueTimeoutValue;
+    uint32_t TransmitQueueTimeoutValue;
+    uint16_t ProtocolTypeFilter;
+    uint8_t EnableUnicastReceive;
+    uint8_t EnableMulticastReceive;
+    uint8_t EnableBroadcastReceive;
+    uint8_t EnablePromiscuousReceive;
+    uint8_t FlushQueuesOnReset;
+    uint8_t EnableReceiveTimestamps;
+    uint8_t DisableBackgroundPolling;
 } EFI_MANAGED_NETWORK_CONFIG_DATA;
 
 #define EFI_PAGE_SIZE 4096
@@ -191,11 +204,11 @@ typedef struct {
 /* Rounds up without computing a + EFI_PAGE_MASK, which could overflow. */
 #define EFI_SIZE_TO_PAGES(a) (((a) >> EFI_PAGE_SHIFT) + (((a) & EFI_PAGE_MASK) ? 1 : 0))
 
-#define EFI_SIGNATURE_16(A, B) ((EFI_UINT16)((EFI_UINT8)(A) | ((EFI_UINT8)(B) << 8)))
+#define EFI_SIGNATURE_16(A, B) ((uint16_t)((uint8_t)(A) | ((uint8_t)(B) << 8)))
 #define EFI_SIGNATURE_32(A, B, C, D) \
-    ((EFI_UINT32)(EFI_SIGNATURE_16(A, B) | ((EFI_UINT32)EFI_SIGNATURE_16(C, D) << 16)))
+    ((uint32_t)(EFI_SIGNATURE_16(A, B) | ((uint32_t)EFI_SIGNATURE_16(C, D) << 16)))
 #define EFI_SIGNATURE_64(A, B, C, D, E, F, G, H) \
-    ((EFI_UINT64)(EFI_SIGNATURE_32(A, B, C, D) | ((EFI_UINT64)EFI_SIGNATURE_32(E, F, G, H) << 32)))
+    ((uint64_t)(EFI_SIGNATURE_32(A, B, C, D) | ((uint64_t)EFI_SIGNATURE_32(E, F, G, H) << 32)))
 
 #ifdef __cplusplus
 }

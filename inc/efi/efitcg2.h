@@ -16,27 +16,27 @@ typedef struct _EFI_TCG2_PROTOCOL EFI_TCG2_PROTOCOL;
 #define EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2 0x00000001
 #define EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 0x00000002
 
-typedef EFI_UINT32 EFI_TCG2_EVENT_LOG_BITMAP;
-typedef EFI_UINT32 EFI_TCG2_EVENT_LOG_FORMAT;
-typedef EFI_UINT32 EFI_TCG2_EVENT_ALGORITHM_BITMAP;
+typedef uint32_t EFI_TCG2_EVENT_LOG_BITMAP;
+typedef uint32_t EFI_TCG2_EVENT_LOG_FORMAT;
+typedef uint32_t EFI_TCG2_EVENT_ALGORITHM_BITMAP;
 
 typedef struct _EFI_TCG2_VERSION {
-    EFI_UINT8 Major;
-    EFI_UINT8 Minor;
+    uint8_t Major;
+    uint8_t Minor;
 } EFI_TCG2_VERSION;
 
 /* Explicitly not packed, unlike the document's other structures: 36 bytes. */
 typedef struct _EFI_TCG2_BOOT_SERVICE_CAPABILITY {
-    EFI_UINT8 Size;
+    uint8_t Size;
     EFI_TCG2_VERSION StructureVersion;
     EFI_TCG2_VERSION ProtocolVersion;
     EFI_TCG2_EVENT_ALGORITHM_BITMAP HashAlgorithmBitmap;
     EFI_TCG2_EVENT_LOG_BITMAP SupportedEventLogs;
-    EFI_BOOLEAN TPMPresentFlag;
-    EFI_UINT16 MaxCommandSize;
-    EFI_UINT16 MaxResponseSize;
-    EFI_UINT32 ManufacturerID;
-    EFI_UINT32 NumberOfPcrBanks;
+    uint8_t TPMPresentFlag;
+    uint16_t MaxCommandSize;
+    uint16_t MaxResponseSize;
+    uint32_t ManufacturerID;
+    uint32_t NumberOfPcrBanks;
     EFI_TCG2_EVENT_ALGORITHM_BITMAP ActivePcrBanks;
 } EFI_TCG2_BOOT_SERVICE_CAPABILITY;
 
@@ -56,23 +56,23 @@ typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_EVENT_LOG)(
     EFI_TCG2_EVENT_LOG_FORMAT EventLogFormat,
     EFI_PHYSICAL_ADDRESS *EventLogLocation,
     EFI_PHYSICAL_ADDRESS *EventLogLastEntry,
-    EFI_BOOLEAN *EventLogTruncated
+    bool *EventLogTruncated
 );
 
-typedef EFI_UINT32 EFI_TCG_EVENTTYPE;
+typedef uint32_t EFI_TCG_EVENTTYPE;
 
 typedef struct __attribute__((__packed__)) _EFI_TCG2_EVENT_HEADER {
-    EFI_UINT32 HeaderSize;
-    EFI_UINT16 HeaderVersion;
+    uint32_t HeaderSize;
+    uint16_t HeaderVersion;
     EFI_TCG_PCRINDEX PCRIndex;
     EFI_TCG_EVENTTYPE EventType;
 } EFI_TCG2_EVENT_HEADER;
 
 /* Event is printed as []; it is variable-length, and Size covers the whole record. */
 typedef struct __attribute__((__packed__)) _EFI_TCG2_EVENT {
-    EFI_UINT32 Size;
+    uint32_t Size;
     EFI_TCG2_EVENT_HEADER Header;
-    EFI_UINT8 Event[1];
+    uint8_t Event[1];
 } EFI_TCG2_EVENT;
 
 #define EFI_TCG2_EXTEND_ONLY 0x0000000000000001
@@ -80,34 +80,34 @@ typedef struct __attribute__((__packed__)) _EFI_TCG2_EVENT {
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_HASH_LOG_EXTEND_EVENT)(
     EFI_TCG2_PROTOCOL *This,
-    EFI_UINT64 Flags,
+    uint64_t Flags,
     EFI_PHYSICAL_ADDRESS DataToHash,
-    EFI_UINT64 DataToHashLen,
+    uint64_t DataToHashLen,
     EFI_TCG2_EVENT *EfiTcgEvent
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_SUBMIT_COMMAND)(
     EFI_TCG2_PROTOCOL *This,
-    EFI_UINT32 InputParameterBlockSize,
-    EFI_UINT8 *InputParameterBlock,
-    EFI_UINT32 OutputParameterBlockSize,
-    EFI_UINT8 *OutputParameterBlock
+    uint32_t InputParameterBlockSize,
+    uint8_t *InputParameterBlock,
+    uint32_t OutputParameterBlockSize,
+    uint8_t *OutputParameterBlock
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_ACTIVE_PCR_BANKS)(
     EFI_TCG2_PROTOCOL *This,
-    EFI_UINT32 *ActivePcrBanks
+    uint32_t *ActivePcrBanks
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_SET_ACTIVE_PCR_BANKS)(
     EFI_TCG2_PROTOCOL *This,
-    EFI_UINT32 ActivePcrBanks
+    uint32_t ActivePcrBanks
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_RESULT_OF_SET_ACTIVE_PCR_BANKS)(
     EFI_TCG2_PROTOCOL *This,
-    EFI_UINT32 *OperationPresent,
-    EFI_UINT32 *Response
+    uint32_t *OperationPresent,
+    uint32_t *Response
 );
 
 struct _EFI_TCG2_PROTOCOL {
@@ -125,9 +125,9 @@ struct _EFI_TCG2_PROTOCOL {
 
 /* Natural alignment; Event starts NumberOfEvents serialised TCG_PCR_EVENT2 records. */
 typedef struct _EFI_TCG2_FINAL_EVENTS_TABLE {
-    EFI_UINT64 Version;
-    EFI_UINT64 NumberOfEvents;
-    EFI_UINT8 Event[1];
+    uint64_t Version;
+    uint64_t NumberOfEvents;
+    uint8_t Event[1];
 } EFI_TCG2_FINAL_EVENTS_TABLE;
 
 #define EFI_TCG2_FINAL_EVENTS_TABLE_VERSION 1

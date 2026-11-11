@@ -39,10 +39,10 @@ typedef struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL EFI_SIMPLE_TEXT_INPUT_EX_PROTO
 
 typedef EFI_STATUS (EFI_API *EFI_INPUT_RESET_EX)(
     EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
-    EFI_BOOLEAN ExtendedVerification
+    bool ExtendedVerification
 );
 
-typedef EFI_UINT8 EFI_KEY_TOGGLE_STATE;
+typedef uint8_t EFI_KEY_TOGGLE_STATE;
 
 #define EFI_TOGGLE_STATE_VALID 0x80
 #define EFI_KEY_STATE_EXPOSED 0x40
@@ -51,7 +51,7 @@ typedef EFI_UINT8 EFI_KEY_TOGGLE_STATE;
 #define EFI_CAPS_LOCK_ACTIVE 0x04
 
 typedef struct EFI_KEY_STATE {
-    EFI_UINT32 KeyShiftState;
+    uint32_t KeyShiftState;
     EFI_KEY_TOGGLE_STATE KeyToggleState;
 } EFI_KEY_STATE;
 
@@ -88,12 +88,12 @@ typedef EFI_STATUS (EFI_API *EFI_REGISTER_KEYSTROKE_NOTIFY)(
     EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
     EFI_KEY_DATA *KeyData,
     EFI_KEY_NOTIFY_FUNCTION KeyNotificationFunction,
-    EFI_VOID **NotifyHandle
+    void **NotifyHandle
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UNREGISTER_KEYSTROKE_NOTIFY)(
     EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL *This,
-    EFI_VOID *NotificationHandle
+    void *NotificationHandle
 );
 
 struct _EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL {

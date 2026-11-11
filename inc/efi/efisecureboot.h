@@ -16,14 +16,14 @@ typedef struct _EFI_AUTHENTICATION_INFO_PROTOCOL EFI_AUTHENTICATION_INFO_PROTOCO
 typedef EFI_STATUS (EFI_API *EFI_AUTHENTICATION_INFO_PROTOCOL_GET)(
     EFI_AUTHENTICATION_INFO_PROTOCOL *This,
     EFI_HANDLE ControllerHandle,
-    EFI_VOID **Buffer
+    void **Buffer
 );
 
 /* Printed with one more level of indirection on each parameter than its description gives. */
 typedef EFI_STATUS (EFI_API *EFI_AUTHENTICATION_INFO_PROTOCOL_SET)(
     EFI_AUTHENTICATION_INFO_PROTOCOL *This,
     EFI_HANDLE ControllerHandle,
-    EFI_VOID *Buffer
+    void *Buffer
 );
 
 struct _EFI_AUTHENTICATION_INFO_PROTOCOL {
@@ -34,41 +34,41 @@ struct _EFI_AUTHENTICATION_INFO_PROTOCOL {
 /* Only unnamed tables in the specification; packed: nodes may start at any byte. */
 typedef struct __attribute__((__packed__)) {
     EFI_GUID Guid;
-    EFI_UINT16 Length;
+    uint16_t Length;
 } EFI_AUTH_NODE_HEADER;
 
 #define EFI_AUTHENTICATION_CHAP_RADIUS_GUID \
     {0xd6062b50, 0x15ca, 0x11da, {0x92, 0x19, 0x00, 0x10, 0x83, 0xff, 0xca, 0x4d}}
 
-/* CHAP secret/name and reverse CHAP name/secret follow, each after an EFI_UINT16 length. */
+/* CHAP secret/name and reverse CHAP name/secret follow, each after a uint16_t length. */
 __extension__ typedef struct __attribute__((__packed__)) {
     EFI_AUTH_NODE_HEADER Header;
-    EFI_UINT8 RadiusIpAddr[16];
-    EFI_UINT16 Reserved;
-    EFI_UINT8 NasIpAddr[16];
-    EFI_UINT16 NasSecretLength;
-    EFI_UINT8 NasSecret[];
+    uint8_t RadiusIpAddr[16];
+    uint16_t Reserved;
+    uint8_t NasIpAddr[16];
+    uint16_t NasSecretLength;
+    uint8_t NasSecret[];
 } EFI_CHAP_RADIUS_AUTH_NODE;
 
 #define EFI_AUTHENTICATION_CHAP_LOCAL_GUID \
     {0xc280c73e, 0x15ca, 0x11da, {0xb0, 0xca, 0x00, 0x10, 0x83, 0xff, 0xca, 0x4d}}
 
 /*
- * User name, CHAP secret/name, and reverse CHAP name/secret follow, each after an EFI_UINT16
+ * User name, CHAP secret/name, and reverse CHAP name/secret follow, each after a uint16_t
  * length.
  */
 __extension__ typedef struct __attribute__((__packed__)) {
     EFI_AUTH_NODE_HEADER Header;
-    EFI_UINT16 Reserved;
-    EFI_UINT16 UserSecretLength;
-    EFI_UINT8 UserSecret[];
+    uint16_t Reserved;
+    uint16_t UserSecretLength;
+    uint8_t UserSecret[];
 } EFI_CHAP_LOCAL_AUTH_NODE;
 
 /* The certificate (bCertificate) follows; dwLength includes this header. */
 typedef struct _EFI_WIN_CERTIFICATE {
-    EFI_UINT32 dwLength;
-    EFI_UINT16 wRevision;
-    EFI_UINT16 wCertificateType;
+    uint32_t dwLength;
+    uint16_t wRevision;
+    uint16_t wCertificateType;
 } EFI_WIN_CERTIFICATE;
 
 #define EFI_WIN_CERT_TYPE_PKCS_SIGNED_DATA 0x0002
@@ -85,7 +85,7 @@ typedef struct _EFI_WIN_CERTIFICATE_EFI_PKCS1_15 {
 typedef struct _EFI_WIN_CERTIFICATE_UEFI_GUID {
     EFI_WIN_CERTIFICATE Hdr;
     EFI_GUID CertType;
-    EFI_UINT8 CertData[1];
+    uint8_t CertData[1];
 } EFI_WIN_CERTIFICATE_UEFI_GUID;
 
 #define EFI_CERT_TYPE_RSA2048_SHA256_GUID \
@@ -96,21 +96,21 @@ typedef struct _EFI_WIN_CERTIFICATE_UEFI_GUID {
 
 typedef struct _EFI_CERT_BLOCK_RSA_2048_SHA256 {
     EFI_GUID HashType;
-    EFI_UINT8 PublicKey[256];
-    EFI_UINT8 Signature[256];
+    uint8_t PublicKey[256];
+    uint8_t Signature[256];
 } EFI_CERT_BLOCK_RSA_2048_SHA256;
 
 __extension__ typedef struct __attribute__((__packed__)) _EFI_SIGNATURE_DATA {
     EFI_GUID SignatureOwner;
-    EFI_UINT8 SignatureData[];
+    uint8_t SignatureData[];
 } EFI_SIGNATURE_DATA;
 
 /* SignatureHeaderSize header bytes follow, then signatures of SignatureSize bytes each. */
 typedef struct __attribute__((__packed__)) _EFI_SIGNATURE_LIST {
     EFI_GUID SignatureType;
-    EFI_UINT32 SignatureListSize;
-    EFI_UINT32 SignatureHeaderSize;
-    EFI_UINT32 SignatureSize;
+    uint32_t SignatureListSize;
+    uint32_t SignatureHeaderSize;
+    uint32_t SignatureSize;
 } EFI_SIGNATURE_LIST;
 
 #define EFI_CERT_SHA256_GUID \
@@ -170,7 +170,7 @@ typedef struct __attribute__((__packed__)) _EFI_CERT_X509_SHA512 {
 #define EFI_CERT_X509_SM3_GUID \
     {0x60d807e5, 0x10b4, 0x49a9, {0x93, 0x31, 0xe4, 0x4, 0x37, 0x88, 0x8d, 0x37}}
 
-typedef EFI_UINT8 EFI_SM3_HASH[32];
+typedef uint8_t EFI_SM3_HASH[32];
 
 typedef struct __attribute__((__packed__)) _EFI_CERT_X509_SM3 {
     EFI_SM3_HASH ToBeSignedHash;
@@ -180,7 +180,7 @@ typedef struct __attribute__((__packed__)) _EFI_CERT_X509_SM3 {
 #define EFI_CERT_EXTERNAL_MANAGEMENT_GUID \
     {0x452e8ced, 0xdfff, 0x4b8c, {0xae, 0x01, 0x51, 0x18, 0x86, 0x2e, 0x68, 0x2c}}
 
-typedef EFI_UINT32 EFI_IMAGE_EXECUTION_ACTION;
+typedef uint32_t EFI_IMAGE_EXECUTION_ACTION;
 
 #define EFI_IMAGE_EXECUTION_AUTHENTICATION 0x00000007
 #define EFI_IMAGE_EXECUTION_AUTH_UNTESTED 0x00000000
@@ -195,12 +195,12 @@ typedef EFI_UINT32 EFI_IMAGE_EXECUTION_ACTION;
 /* Name, DevicePath and Signature follow; InfoSize counts them too. */
 typedef struct {
     EFI_IMAGE_EXECUTION_ACTION Action;
-    EFI_UINT32 InfoSize;
+    uint32_t InfoSize;
 } EFI_IMAGE_EXECUTION_INFO;
 
 /* Entries vary in size (InfoSize), so only the first can be reached by indexing. */
 __extension__ typedef struct {
-    EFI_UINTN NumberOfImages;
+    size_t NumberOfImages;
     EFI_IMAGE_EXECUTION_INFO InformationInfo[];
 } EFI_IMAGE_EXECUTION_INFO_TABLE;
 
@@ -219,7 +219,7 @@ __extension__ typedef struct {
 
 /* Cited but no longer printed by 2.11; laid out like EFI_FIRMWARE_IMAGE_AUTHENTICATION. */
 typedef struct {
-    EFI_UINT64 MonotonicCount;
+    uint64_t MonotonicCount;
     EFI_WIN_CERTIFICATE_UEFI_GUID AuthInfo;
 } EFI_VARIABLE_AUTHENTICATION;
 
@@ -232,10 +232,10 @@ typedef struct {
 #define EFI_VARIABLE_AUTHENTICATION_3_NONCE_TYPE 2
 
 typedef struct {
-    EFI_UINT8 Version;
-    EFI_UINT8 Type;
-    EFI_UINT32 MetadataSize;
-    EFI_UINT32 Flags;
+    uint8_t Version;
+    uint8_t Type;
+    uint32_t MetadataSize;
+    uint32_t Flags;
 } EFI_VARIABLE_AUTHENTICATION_3;
 
 #define EFI_VARIABLE_ENHANCED_AUTH_FLAG_UPDATE_CERT 0x00000001
@@ -244,13 +244,13 @@ typedef struct {
 
 /* IdSize bytes of Id follow. */
 typedef struct {
-    EFI_UINT8 Type;
-    EFI_UINT32 IdSize;
+    uint8_t Type;
+    uint32_t IdSize;
 } EFI_VARIABLE_AUTHENTICATION_3_CERT_ID;
 
 /* NonceSize bytes of Nonce follow, then an EFI_WIN_CERTIFICATE_UEFI_GUID. */
 typedef struct {
-    EFI_UINT32 NonceSize;
+    uint32_t NonceSize;
 } EFI_VARIABLE_AUTHENTICATION_3_NONCE;
 
 #ifdef __cplusplus

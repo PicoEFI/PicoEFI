@@ -33,19 +33,19 @@ typedef enum {
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
-    EFI_UINT64 Address,
-    EFI_UINT64 Mask,
-    EFI_UINT64 Value,
-    EFI_UINT64 Delay,
-    EFI_UINT64 *Result
+    uint64_t Address,
+    uint64_t Mask,
+    uint64_t Value,
+    uint64_t Delay,
+    uint64_t *Result
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
-    EFI_UINT64 Address,
-    EFI_UINTN Count,
-    EFI_VOID *Buffer
+    uint64_t Address,
+    size_t Count,
+    void *Buffer
 );
 
 typedef struct {
@@ -78,50 +78,50 @@ typedef enum {
     EfiPciOperationMaximum
 } EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_OPERATION;
 
-/* Layout of the EFI_UINT64 Address that Pci.Read() and Pci.Write() take. */
+/* Layout of the uint64_t Address that Pci.Read() and Pci.Write() take. */
 typedef struct {
-    EFI_UINT8 Register;
-    EFI_UINT8 Function;
-    EFI_UINT8 Device;
-    EFI_UINT8 Bus;
-    EFI_UINT32 ExtendedRegister;
+    uint8_t Register;
+    uint8_t Function;
+    uint8_t Device;
+    uint8_t Bus;
+    uint32_t ExtendedRegister;
 } EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS;
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
-    EFI_UINT64 DestAddress,
-    EFI_UINT64 SrcAddress,
-    EFI_UINTN Count
+    uint64_t DestAddress,
+    uint64_t SrcAddress,
+    size_t Count
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_MAP)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_OPERATION Operation,
-    EFI_VOID *HostAddress,
-    EFI_UINTN *NumberOfBytes,
+    void *HostAddress,
+    size_t *NumberOfBytes,
     EFI_PHYSICAL_ADDRESS *DeviceAddress,
-    EFI_VOID **Mapping
+    void **Mapping
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_UNMAP)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
-    EFI_VOID *Mapping
+    void *Mapping
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ALLOCATE_BUFFER)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
     EFI_ALLOCATE_TYPE Type,
     EFI_MEMORY_TYPE MemoryType,
-    EFI_UINTN Pages,
-    EFI_VOID **HostAddress,
-    EFI_UINT64 Attributes
+    size_t Pages,
+    void **HostAddress,
+    uint64_t Attributes
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FREE_BUFFER)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
-    EFI_UINTN Pages,
-    EFI_VOID *HostAddress
+    size_t Pages,
+    void *HostAddress
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FLUSH)(
@@ -130,20 +130,20 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FLUSH)(
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GET_ATTRIBUTES)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
-    EFI_UINT64 *Supports,
-    EFI_UINT64 *Attributes
+    uint64_t *Supports,
+    uint64_t *Attributes
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_SET_ATTRIBUTES)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
-    EFI_UINT64 Attributes,
-    EFI_UINT64 *ResourceBase,
-    EFI_UINT64 *ResourceLength
+    uint64_t Attributes,
+    uint64_t *ResourceBase,
+    uint64_t *ResourceLength
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION)(
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
-    EFI_VOID **Resources
+    void **Resources
 );
 
 #define EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR_TAG 0x8A
@@ -159,21 +159,21 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION)(
 #define EFI_ACPI_MEMORY_RESOURCE_SPECIFIC_FLAG_CACHEABLE_PREFETCHABLE 0x06
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT8 Desc;
-    EFI_UINT16 Len;
-    EFI_UINT8 ResType;
-    EFI_UINT8 GenFlag;
-    EFI_UINT8 SpecificFlag;
-    EFI_UINT64 AddrSpaceGranularity;
-    EFI_UINT64 AddrRangeMin;
-    EFI_UINT64 AddrRangeMax;
-    EFI_UINT64 AddrTranslationOffset;
-    EFI_UINT64 AddrLen;
+    uint8_t Desc;
+    uint16_t Len;
+    uint8_t ResType;
+    uint8_t GenFlag;
+    uint8_t SpecificFlag;
+    uint64_t AddrSpaceGranularity;
+    uint64_t AddrRangeMin;
+    uint64_t AddrRangeMax;
+    uint64_t AddrTranslationOffset;
+    uint64_t AddrLen;
 } EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT8 Desc;
-    EFI_UINT8 Checksum;
+    uint8_t Desc;
+    uint8_t Checksum;
 } EFI_ACPI_END_TAG_DESCRIPTOR;
 
 struct _EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL {
@@ -192,7 +192,7 @@ struct _EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL {
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GET_ATTRIBUTES GetAttributes;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_SET_ATTRIBUTES SetAttributes;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION Configuration;
-    EFI_UINT32 SegmentNumber;
+    uint32_t SegmentNumber;
 };
 
 #define EFI_PCI_IO_PROTOCOL_GUID \
@@ -221,21 +221,21 @@ typedef enum {
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_POLL_IO_MEM)(
     EFI_PCI_IO_PROTOCOL *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
-    EFI_UINT8 BarIndex,
-    EFI_UINT64 Offset,
-    EFI_UINT64 Mask,
-    EFI_UINT64 Value,
-    EFI_UINT64 Delay,
-    EFI_UINT64 *Result
+    uint8_t BarIndex,
+    uint64_t Offset,
+    uint64_t Mask,
+    uint64_t Value,
+    uint64_t Delay,
+    uint64_t *Result
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_IO_MEM)(
     EFI_PCI_IO_PROTOCOL *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
-    EFI_UINT8 BarIndex,
-    EFI_UINT64 Offset,
-    EFI_UINTN Count,
-    EFI_VOID *Buffer
+    uint8_t BarIndex,
+    uint64_t Offset,
+    size_t Count,
+    void *Buffer
 );
 
 typedef struct {
@@ -246,9 +246,9 @@ typedef struct {
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_CONFIG)(
     EFI_PCI_IO_PROTOCOL *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
-    EFI_UINT32 Offset,
-    EFI_UINTN Count,
-    EFI_VOID *Buffer
+    uint32_t Offset,
+    size_t Count,
+    void *Buffer
 );
 
 typedef struct {
@@ -286,50 +286,50 @@ typedef enum {
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_COPY_MEM)(
     EFI_PCI_IO_PROTOCOL *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
-    EFI_UINT8 DestBarIndex,
-    EFI_UINT64 DestOffset,
-    EFI_UINT8 SrcBarIndex,
-    EFI_UINT64 SrcOffset,
-    EFI_UINTN Count
+    uint8_t DestBarIndex,
+    uint64_t DestOffset,
+    uint8_t SrcBarIndex,
+    uint64_t SrcOffset,
+    size_t Count
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_MAP)(
     EFI_PCI_IO_PROTOCOL *This,
     EFI_PCI_IO_PROTOCOL_OPERATION Operation,
-    EFI_VOID *HostAddress,
-    EFI_UINTN *NumberOfBytes,
+    void *HostAddress,
+    size_t *NumberOfBytes,
     EFI_PHYSICAL_ADDRESS *DeviceAddress,
-    EFI_VOID **Mapping
+    void **Mapping
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_UNMAP)(
     EFI_PCI_IO_PROTOCOL *This,
-    EFI_VOID *Mapping
+    void *Mapping
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ALLOCATE_BUFFER)(
     EFI_PCI_IO_PROTOCOL *This,
     EFI_ALLOCATE_TYPE Type,
     EFI_MEMORY_TYPE MemoryType,
-    EFI_UINTN Pages,
-    EFI_VOID **HostAddress,
-    EFI_UINT64 Attributes
+    size_t Pages,
+    void **HostAddress,
+    uint64_t Attributes
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_FREE_BUFFER)(
     EFI_PCI_IO_PROTOCOL *This,
-    EFI_UINTN Pages,
-    EFI_VOID *HostAddress
+    size_t Pages,
+    void *HostAddress
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_FLUSH)(EFI_PCI_IO_PROTOCOL *This);
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_LOCATION)(
     EFI_PCI_IO_PROTOCOL *This,
-    EFI_UINTN *SegmentNumber,
-    EFI_UINTN *BusNumber,
-    EFI_UINTN *DeviceNumber,
-    EFI_UINTN *FunctionNumber
+    uintptr_t *SegmentNumber,
+    uintptr_t *BusNumber,
+    uintptr_t *DeviceNumber,
+    uintptr_t *FunctionNumber
 );
 
 typedef enum {
@@ -344,23 +344,23 @@ typedef enum {
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ATTRIBUTES)(
     EFI_PCI_IO_PROTOCOL *This,
     EFI_PCI_IO_PROTOCOL_ATTRIBUTE_OPERATION Operation,
-    EFI_UINT64 Attributes,
-    EFI_UINT64 *Result
+    uint64_t Attributes,
+    uint64_t *Result
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_BAR_ATTRIBUTES)(
     EFI_PCI_IO_PROTOCOL *This,
-    EFI_UINT8 BarIndex,
-    EFI_UINT64 *Supports,
-    EFI_VOID **Resources
+    uint8_t BarIndex,
+    uint64_t *Supports,
+    void **Resources
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_SET_BAR_ATTRIBUTES)(
     EFI_PCI_IO_PROTOCOL *This,
-    EFI_UINT64 Attributes,
-    EFI_UINT8 BarIndex,
-    EFI_UINT64 *Offset,
-    EFI_UINT64 *Length
+    uint64_t Attributes,
+    uint8_t BarIndex,
+    uint64_t *Offset,
+    uint64_t *Length
 );
 
 struct _EFI_PCI_IO_PROTOCOL {
@@ -379,8 +379,8 @@ struct _EFI_PCI_IO_PROTOCOL {
     EFI_PCI_IO_PROTOCOL_ATTRIBUTES Attributes;
     EFI_PCI_IO_PROTOCOL_GET_BAR_ATTRIBUTES GetBarAttributes;
     EFI_PCI_IO_PROTOCOL_SET_BAR_ATTRIBUTES SetBarAttributes;
-    EFI_UINT64 RomSize;
-    EFI_VOID *RomImage;
+    uint64_t RomSize;
+    void *RomImage;
 };
 
 #define EFI_PCI_EXPANSION_ROM_HEADER_SIGNATURE 0xAA55
@@ -393,36 +393,36 @@ struct _EFI_PCI_IO_PROTOCOL {
 #define EFI_PCI_EXPANSION_ROM_HEADER_COMPRESSED 0x0001
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 Signature;
-    EFI_UINT8 Reserved[0x16];
-    EFI_UINT16 PcirOffset;
+    uint16_t Signature;
+    uint8_t Reserved[0x16];
+    uint16_t PcirOffset;
 } EFI_STANDARD_PCI_EXPANSION_ROM_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT16 Signature;
-    EFI_UINT16 InitializationSize;
-    EFI_UINT32 EfiSignature;
-    EFI_UINT16 EfiSubsystem;
-    EFI_UINT16 EfiMachineType;
-    EFI_UINT16 CompressionType;
-    EFI_UINT8 Reserved[8];
-    EFI_UINT16 EfiImageHeaderOffset;
-    EFI_UINT16 PcirOffset;
+    uint16_t Signature;
+    uint16_t InitializationSize;
+    uint32_t EfiSignature;
+    uint16_t EfiSubsystem;
+    uint16_t EfiMachineType;
+    uint16_t CompressionType;
+    uint8_t Reserved[8];
+    uint16_t EfiImageHeaderOffset;
+    uint16_t PcirOffset;
 } EFI_PCI_EXPANSION_ROM_HEADER;
 
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT32 Signature;
-    EFI_UINT16 VendorId;
-    EFI_UINT16 DeviceId;
-    EFI_UINT16 Reserved0;
-    EFI_UINT16 Length;
-    EFI_UINT8 Revision;
-    EFI_UINT8 ClassCode[3];
-    EFI_UINT16 ImageLength;
-    EFI_UINT16 CodeRevision;
-    EFI_UINT8 CodeType;
-    EFI_UINT8 Indicator;
-    EFI_UINT16 Reserved1;
+    uint32_t Signature;
+    uint16_t VendorId;
+    uint16_t DeviceId;
+    uint16_t Reserved0;
+    uint16_t Length;
+    uint8_t Revision;
+    uint8_t ClassCode[3];
+    uint16_t ImageLength;
+    uint16_t CodeRevision;
+    uint8_t CodeType;
+    uint8_t Indicator;
+    uint16_t Reserved1;
 } EFI_PCI_DATA_STRUCTURE;
 
 #ifdef __cplusplus

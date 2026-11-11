@@ -28,46 +28,46 @@ typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_CONFIGURE)(
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_MCAST_IP_TO_MAC)(
     EFI_MANAGED_NETWORK_PROTOCOL *This,
-    EFI_BOOLEAN Ipv6Flag,
+    bool Ipv6Flag,
     EFI_IP_ADDRESS *IpAddress,
     EFI_MAC_ADDRESS *MacAddress
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_GROUPS)(
     EFI_MANAGED_NETWORK_PROTOCOL *This,
-    EFI_BOOLEAN JoinFlag,
+    bool JoinFlag,
     EFI_MAC_ADDRESS *MacAddress
 );
 
 typedef struct {
     EFI_TIME Timestamp;
     EFI_EVENT RecycleEvent;
-    EFI_UINT32 PacketLength;
-    EFI_UINT32 HeaderLength;
-    EFI_UINT32 AddressLength;
-    EFI_UINT32 DataLength;
-    EFI_BOOLEAN BroadcastFlag;
-    EFI_BOOLEAN MulticastFlag;
-    EFI_BOOLEAN PromiscuousFlag;
-    EFI_UINT16 ProtocolType;
-    EFI_VOID *DestinationAddress;
-    EFI_VOID *SourceAddress;
-    EFI_VOID *MediaHeader;
-    EFI_VOID *PacketData;
+    uint32_t PacketLength;
+    uint32_t HeaderLength;
+    uint32_t AddressLength;
+    uint32_t DataLength;
+    uint8_t BroadcastFlag;
+    uint8_t MulticastFlag;
+    uint8_t PromiscuousFlag;
+    uint16_t ProtocolType;
+    void *DestinationAddress;
+    void *SourceAddress;
+    void *MediaHeader;
+    void *PacketData;
 } EFI_MANAGED_NETWORK_RECEIVE_DATA;
 
 typedef struct {
-    EFI_UINT32 FragmentLength;
-    EFI_VOID *FragmentBuffer;
+    uint32_t FragmentLength;
+    void *FragmentBuffer;
 } EFI_MANAGED_NETWORK_FRAGMENT_DATA;
 
 typedef struct {
     EFI_MAC_ADDRESS *DestinationAddress;
     EFI_MAC_ADDRESS *SourceAddress;
-    EFI_UINT16 ProtocolType;
-    EFI_UINT32 DataLength;
-    EFI_UINT16 HeaderLength;
-    EFI_UINT16 FragmentCount;
+    uint16_t ProtocolType;
+    uint32_t DataLength;
+    uint16_t HeaderLength;
+    uint16_t FragmentCount;
     EFI_MANAGED_NETWORK_FRAGMENT_DATA FragmentTable[1];
 } EFI_MANAGED_NETWORK_TRANSMIT_DATA;
 

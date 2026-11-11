@@ -16,77 +16,77 @@ typedef struct _EFI_BLUETOOTH_HC_PROTOCOL EFI_BLUETOOTH_HC_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_SEND_COMMAND)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_RECEIVE_EVENT)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_ASYNC_FUNC_CALLBACK)(
-    EFI_VOID *Data,
-    EFI_UINTN DataLength,
-    EFI_VOID *Context
+    void *Data,
+    size_t DataLength,
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_ASYNC_RECEIVE_EVENT)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_BOOLEAN IsNewTransfer,
-    EFI_UINTN PollingInterval,
-    EFI_UINTN DataLength,
+    bool IsNewTransfer,
+    uintptr_t PollingInterval,
+    size_t DataLength,
     EFI_BLUETOOTH_HC_ASYNC_FUNC_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_SEND_ACL_DATA)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_RECEIVE_ACL_DATA)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_ASYNC_RECEIVE_ACL_DATA)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_BOOLEAN IsNewTransfer,
-    EFI_UINTN PollingInterval,
-    EFI_UINTN DataLength,
+    bool IsNewTransfer,
+    uintptr_t PollingInterval,
+    size_t DataLength,
     EFI_BLUETOOTH_HC_ASYNC_FUNC_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_SEND_SCO_DATA)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_RECEIVE_SCO_DATA)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_HC_ASYNC_RECEIVE_SCO_DATA)(
     EFI_BLUETOOTH_HC_PROTOCOL *This,
-    EFI_BOOLEAN IsNewTransfer,
-    EFI_UINTN PollingInterval,
-    EFI_UINTN DataLength,
+    bool IsNewTransfer,
+    uintptr_t PollingInterval,
+    size_t DataLength,
     EFI_BLUETOOTH_HC_ASYNC_FUNC_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 struct _EFI_BLUETOOTH_HC_PROTOCOL {
@@ -111,100 +111,100 @@ typedef struct _EFI_BLUETOOTH_IO_PROTOCOL EFI_BLUETOOTH_IO_PROTOCOL;
 
 /* Byte-packed as firmware lays it out: the 3-byte Bluetooth Class of Device. */
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT8 FormatType:2;
-    EFI_UINT8 MinorDeviceClass:6;
-    EFI_UINT16 MajorDeviceClass:5;
-    EFI_UINT16 MajorServiceClass:11;
+    uint8_t FormatType:2;
+    uint8_t MinorDeviceClass:6;
+    uint16_t MajorDeviceClass:5;
+    uint16_t MajorServiceClass:11;
 } EFI_BLUETOOTH_CLASS_OF_DEVICE;
 
 typedef struct {
-    EFI_UINT32 Version;
+    uint32_t Version;
     EFI_BLUETOOTH_ADDRESS BD_ADDR;
-    EFI_UINT8 PageScanRepetitionMode;
+    uint8_t PageScanRepetitionMode;
     EFI_BLUETOOTH_CLASS_OF_DEVICE ClassOfDevice;
-    EFI_UINT16 ClockOffset;
-    EFI_UINT8 RSSI;
-    EFI_UINT8 ExtendedInquiryResponse[240];
+    uint16_t ClockOffset;
+    uint8_t RSSI;
+    uint8_t ExtendedInquiryResponse[240];
 } EFI_BLUETOOTH_DEVICE_INFO;
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_GET_DEVICE_INFO)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
-    EFI_UINTN *DeviceInfoSize,
-    EFI_VOID **DeviceInfo
+    size_t *DeviceInfoSize,
+    void **DeviceInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_GET_SDP_INFO)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
-    EFI_UINTN *SdpInfoSize,
-    EFI_VOID **SdpInfo
+    size_t *SdpInfoSize,
+    void **SdpInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_RAW_SEND)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_RAW_RECEIVE)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_ASYNC_FUNC_CALLBACK)(
-    EFI_UINT16 ChannelID,
-    EFI_VOID *Data,
-    EFI_UINTN DataLength,
-    EFI_VOID *Context
+    uint16_t ChannelID,
+    void *Data,
+    size_t DataLength,
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_RAW_ASYNC_RECEIVE)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
-    EFI_BOOLEAN IsNewTransfer,
-    EFI_UINTN PollingInterval,
-    EFI_UINTN DataLength,
+    bool IsNewTransfer,
+    uintptr_t PollingInterval,
+    size_t DataLength,
     EFI_BLUETOOTH_IO_ASYNC_FUNC_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_SEND)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
     EFI_HANDLE Handle,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void *Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_RECEIVE)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
     EFI_HANDLE Handle,
-    EFI_UINTN *BufferSize,
-    EFI_VOID **Buffer,
-    EFI_UINTN Timeout
+    size_t *BufferSize,
+    void **Buffer,
+    uintptr_t Timeout
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_CHANNEL_SERVICE_CALLBACK)(
-    EFI_VOID *Data,
-    EFI_UINTN DataLength,
-    EFI_VOID *Context
+    void *Data,
+    size_t DataLength,
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_ASYNC_RECEIVE)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
     EFI_HANDLE Handle,
     EFI_BLUETOOTH_IO_CHANNEL_SERVICE_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_CONNECT)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
     EFI_HANDLE *Handle,
-    EFI_UINT16 Psm,
-    EFI_UINT16 Mtu,
+    uint16_t Psm,
+    uint16_t Mtu,
     EFI_BLUETOOTH_IO_CHANNEL_SERVICE_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_DISCONNECT)(
@@ -215,10 +215,10 @@ typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_DISCONNECT)(
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_IO_L2CAP_REGISTER_SERVICE)(
     EFI_BLUETOOTH_IO_PROTOCOL *This,
     EFI_HANDLE *Handle,
-    EFI_UINT16 Psm,
-    EFI_UINT16 Mtu,
+    uint16_t Psm,
+    uint16_t Mtu,
     EFI_BLUETOOTH_IO_CHANNEL_SERVICE_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 struct _EFI_BLUETOOTH_IO_PROTOCOL {
@@ -246,23 +246,23 @@ typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_INIT)(EFI_BLUETOOTH_CONFIG_PRO
 
 typedef struct {
     EFI_BLUETOOTH_ADDRESS BDAddr;
-    EFI_UINT8 RemoteDeviceState;
+    uint8_t RemoteDeviceState;
     EFI_BLUETOOTH_CLASS_OF_DEVICE ClassOfDevice;
-    EFI_UINT8 RemoteDeviceName[EFI_BLUETOOTH_HCI_COMMAND_LOCAL_READABLE_NAME_MAX_SIZE];
+    uint8_t RemoteDeviceName[EFI_BLUETOOTH_HCI_COMMAND_LOCAL_READABLE_NAME_MAX_SIZE];
 } EFI_BLUETOOTH_SCAN_CALLBACK_INFORMATION;
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_SCAN_CALLBACK_FUNCTION)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_SCAN_CALLBACK_INFORMATION *CallbackInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_SCAN)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
-    EFI_BOOLEAN ReScan,
-    EFI_UINT8 ScanType,
+    bool ReScan,
+    uint8_t ScanType,
     EFI_BLUETOOTH_CONFIG_SCAN_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_CONNECT)(
@@ -270,11 +270,11 @@ typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_CONNECT)(
     EFI_BLUETOOTH_ADDRESS *BD_ADDR
 );
 
-/* Reason is a value, as described and as in the LE protocol; it is printed UINT8 *Reason. */
+/* Reason is a value, as described and as in the LE protocol; it is printed uint8_t *Reason. */
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_DISCONNECT)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_ADDRESS *BD_ADDR,
-    EFI_UINT8 Reason
+    uint8_t Reason
 );
 
 typedef enum {
@@ -296,7 +296,7 @@ typedef enum {
     EfiBluetoothConfigDataTypeMax
 } EFI_BLUETOOTH_CONFIG_DATA_TYPE;
 
-typedef EFI_UINT32 EFI_BLUETOOTH_CONFIG_REMOTE_DEVICE_STATE_TYPE;
+typedef uint32_t EFI_BLUETOOTH_CONFIG_REMOTE_DEVICE_STATE_TYPE;
 
 #define EFI_BLUETOOTH_CONFIG_REMOTE_DEVICE_STATE_CONNECTED 0x1
 #define EFI_BLUETOOTH_CONFIG_REMOTE_DEVICE_STATE_PAIRED 0x2
@@ -306,23 +306,23 @@ typedef EFI_UINT32 EFI_BLUETOOTH_CONFIG_REMOTE_DEVICE_STATE_TYPE;
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_GET_DATA)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_DATA_TYPE DataType,
-    EFI_UINTN *DataSize,
-    EFI_VOID *Data
+    size_t *DataSize,
+    void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_SET_DATA)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_DATA_TYPE DataType,
-    EFI_UINTN DataSize,
-    EFI_VOID *Data
+    size_t DataSize,
+    void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_GET_REMOTE_DATA)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_DATA_TYPE DataType,
     EFI_BLUETOOTH_ADDRESS *BDAddr,
-    EFI_UINTN *DataSize,
-    EFI_VOID *Data
+    size_t *DataSize,
+    void *Data
 );
 
 typedef enum {
@@ -336,46 +336,46 @@ typedef enum {
 /* Each parameter is printed with a leaked emphasis asterisk; these are the described types. */
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_PIN_CALLBACK_FUNCTION)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_PIN_CALLBACK_TYPE CallbackType,
-    EFI_VOID *InputBuffer,
-    EFI_UINTN InputBufferSize,
-    EFI_VOID **OutputBuffer,
-    EFI_UINTN *OutputBufferSize
+    void *InputBuffer,
+    size_t InputBufferSize,
+    void **OutputBuffer,
+    size_t *OutputBufferSize
 );
 
 /* Callback by value like its siblings; printed as a pointer to the function pointer type. */
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_PIN_CALLBACK)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_REGISTER_PIN_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_GET_LINK_KEY_CALLBACK_FUNCTION)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_ADDRESS *BDAddr,
-    EFI_UINT8 LinkKey[EFI_BLUETOOTH_HCI_LINK_KEY_SIZE]
+    uint8_t LinkKey[EFI_BLUETOOTH_HCI_LINK_KEY_SIZE]
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_GET_LINK_KEY_CALLBACK)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_REGISTER_GET_LINK_KEY_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_SET_LINK_KEY_CALLBACK_FUNCTION)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_ADDRESS *BDAddr,
-    EFI_UINT8 LinkKey[EFI_BLUETOOTH_HCI_LINK_KEY_SIZE]
+    uint8_t LinkKey[EFI_BLUETOOTH_HCI_LINK_KEY_SIZE]
 );
 
 /* Callback by value like its siblings; printed as a pointer to the function pointer type. */
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_SET_LINK_KEY_CALLBACK)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_REGISTER_SET_LINK_KEY_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef enum {
@@ -387,17 +387,17 @@ typedef enum {
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_CONNECT_COMPLETE_CALLBACK_FUNCTION)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_CONNECT_COMPLETE_CALLBACK_TYPE CallbackType,
     EFI_BLUETOOTH_ADDRESS *BDAddr,
-    EFI_VOID *InputBuffer,
-    EFI_UINTN InputBufferSize
+    void *InputBuffer,
+    size_t InputBufferSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_CONFIG_REGISTER_CONNECT_COMPLETE_CALLBACK)(
     EFI_BLUETOOTH_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_REGISTER_CONNECT_COMPLETE_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 struct _EFI_BLUETOOTH_CONFIG_PROTOCOL {
@@ -421,30 +421,30 @@ typedef struct _EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL EFI_BLUETOOTH_ATTRIBUTE_PROTOCO
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_FUNCTION)(
     EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL *This,
-    EFI_VOID *Data,
-    EFI_UINTN DataLength,
-    EFI_VOID *Context
+    void *Data,
+    size_t DataLength,
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_ATTRIBUTE_SEND_REQUEST)(
     EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL *This,
-    EFI_VOID *Data,
-    EFI_UINTN DataLength,
+    void *Data,
+    size_t DataLength,
     EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef struct {
-    EFI_UINT16 AttributeHandle;
+    uint16_t AttributeHandle;
 } EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_PARAMETER_NOTIFICATION;
 
 typedef struct {
-    EFI_UINT16 AttributeHandle;
+    uint16_t AttributeHandle;
 } EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_PARAMETER_INDICATION;
 
 typedef struct {
-    EFI_UINT32 Version;
-    EFI_UINT8 AttributeOpCode;
+    uint32_t Version;
+    uint8_t AttributeOpCode;
     union {
         EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_PARAMETER_NOTIFICATION Notification;
         EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_PARAMETER_INDICATION Indication;
@@ -455,61 +455,61 @@ typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_ATTRIBUTE_REGISTER_FOR_SERVER_NOTIFIC
     EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL *This,
     EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_PARAMETER *CallbackParameter,
     EFI_BLUETOOTH_ATTRIBUTE_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 /* Byte-packed, as firmware lays out these attribute types; the print shows no packing. */
 typedef struct __attribute__((__packed__)) {
-    EFI_UINT8 Length;
+    uint8_t Length;
     union __attribute__((__packed__)) {
-        EFI_UINT16 Uuid16;
-        EFI_UINT32 Uuid32;
-        EFI_UINT8 Uuid128[16];
+        uint16_t Uuid16;
+        uint32_t Uuid32;
+        uint8_t Uuid128[16];
     } Data;
 } EFI_BLUETOOTH_UUID;
 
 typedef union __attribute__((__packed__)) {
     struct __attribute__((__packed__)) {
-        EFI_UINT16 Readable:1;
-        EFI_UINT16 ReadEncryption:1;
-        EFI_UINT16 ReadAuthentication:1;
-        EFI_UINT16 ReadAuthorization:1;
-        EFI_UINT16 ReadKeySize:5;
-        EFI_UINT16 Reserved1:7;
-        EFI_UINT16 Writeable:1;
-        EFI_UINT16 WriteEncryption:1;
-        EFI_UINT16 WriteAuthentication:1;
-        EFI_UINT16 WriteAuthorization:1;
-        EFI_UINT16 WriteKeySize:5;
-        EFI_UINT16 Reserved2:7;
+        uint16_t Readable:1;
+        uint16_t ReadEncryption:1;
+        uint16_t ReadAuthentication:1;
+        uint16_t ReadAuthorization:1;
+        uint16_t ReadKeySize:5;
+        uint16_t Reserved1:7;
+        uint16_t Writeable:1;
+        uint16_t WriteEncryption:1;
+        uint16_t WriteAuthentication:1;
+        uint16_t WriteAuthorization:1;
+        uint16_t WriteKeySize:5;
+        uint16_t Reserved2:7;
     } Permission;
-    EFI_UINT32 Data32;
+    uint32_t Data32;
 } EFI_BLUETOOTH_ATTRIBUTE_PERMISSION;
 
 typedef struct __attribute__((__packed__)) {
     EFI_BLUETOOTH_UUID Type;
-    EFI_UINT16 Length;
-    EFI_UINT16 AttributeHandle;
+    uint16_t Length;
+    uint16_t AttributeHandle;
     EFI_BLUETOOTH_ATTRIBUTE_PERMISSION AttributePermission;
 } EFI_BLUETOOTH_ATTRIBUTE_HEADER;
 
 typedef struct __attribute__((__packed__)) {
     EFI_BLUETOOTH_ATTRIBUTE_HEADER Header;
-    EFI_UINT16 EndGroupHandle;
+    uint16_t EndGroupHandle;
     EFI_BLUETOOTH_UUID ServiceUuid;
 } EFI_BLUETOOTH_GATT_PRIMARY_SERVICE_INFO;
 
 typedef struct __attribute__((__packed__)) {
     EFI_BLUETOOTH_ATTRIBUTE_HEADER Header;
-    EFI_UINT16 StartGroupHandle;
-    EFI_UINT16 EndGroupHandle;
+    uint16_t StartGroupHandle;
+    uint16_t EndGroupHandle;
     EFI_BLUETOOTH_UUID ServiceUuid;
 } EFI_BLUETOOTH_GATT_INCLUDE_SERVICE_INFO;
 
 typedef struct __attribute__((__packed__)) {
     EFI_BLUETOOTH_ATTRIBUTE_HEADER Header;
-    EFI_UINT8 CharacteristicProperties;
-    EFI_UINT16 CharacteristicValueHandle;
+    uint8_t CharacteristicProperties;
+    uint16_t CharacteristicValueHandle;
     EFI_BLUETOOTH_UUID CharacteristicUuid;
 } EFI_BLUETOOTH_GATT_CHARACTERISTIC_INFO;
 
@@ -520,23 +520,23 @@ typedef struct __attribute__((__packed__)) {
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_ATTRIBUTE_GET_SERVICE_INFO)(
     EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL *This,
-    EFI_UINTN *ServiceInfoSize,
-    EFI_VOID **ServiceInfo
+    size_t *ServiceInfoSize,
+    void **ServiceInfo
 );
 
 typedef struct {
-    EFI_UINT32 Version;
+    uint32_t Version;
     EFI_BLUETOOTH_LE_ADDRESS BD_ADDR;
     EFI_BLUETOOTH_LE_ADDRESS DirectAddress;
-    EFI_UINT8 RSSI;
-    EFI_UINTN AdvertisementDataSize;
-    EFI_VOID *AdvertisementData;
+    uint8_t RSSI;
+    size_t AdvertisementDataSize;
+    void *AdvertisementData;
 } EFI_BLUETOOTH_LE_DEVICE_INFO;
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_ATTRIBUTE_GET_DEVICE_INFO)(
     EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL *This,
-    EFI_UINTN *DeviceInfoSize,
-    EFI_VOID **DeviceInfo
+    size_t *DeviceInfoSize,
+    void **DeviceInfo
 );
 
 struct _EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL {
@@ -559,52 +559,52 @@ typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_INIT)(
 );
 
 typedef struct {
-    EFI_UINT32 Version;
-    EFI_UINT8 ScanType;
-    EFI_UINT16 ScanInterval;
-    EFI_UINT16 ScanWindow;
-    EFI_UINT8 ScanningFilterPolicy;
-    EFI_UINT8 AdvertisementFlagFilter;
+    uint32_t Version;
+    uint8_t ScanType;
+    uint16_t ScanInterval;
+    uint16_t ScanWindow;
+    uint8_t ScanningFilterPolicy;
+    uint8_t AdvertisementFlagFilter;
 } EFI_BLUETOOTH_LE_CONFIG_SCAN_PARAMETER;
 
 typedef struct {
     EFI_BLUETOOTH_LE_ADDRESS BDAddr;
     EFI_BLUETOOTH_LE_ADDRESS DirectAddress;
-    EFI_UINT8 RemoteDeviceState;
-    EFI_INT8 RSSI;
-    EFI_UINTN AdvertisementDataSize;
-    EFI_VOID *AdvertisementData;
+    uint8_t RemoteDeviceState;
+    int8_t RSSI;
+    size_t AdvertisementDataSize;
+    void *AdvertisementData;
 } EFI_BLUETOOTH_LE_SCAN_CALLBACK_INFORMATION;
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_SCAN_CALLBACK_FUNCTION)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_LE_SCAN_CALLBACK_INFORMATION *CallbackInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_SCAN)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
-    EFI_BOOLEAN ReScan,
-    EFI_UINT32 Timeout,
+    bool ReScan,
+    uint32_t Timeout,
     EFI_BLUETOOTH_LE_CONFIG_SCAN_PARAMETER *ScanParameter,
     EFI_BLUETOOTH_LE_CONFIG_SCAN_CALLBACK_FUNCTION Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef struct {
-    EFI_UINT32 Version;
-    EFI_UINT16 ScanInterval;
-    EFI_UINT16 ScanWindow;
-    EFI_UINT16 ConnIntervalMin;
-    EFI_UINT16 ConnIntervalMax;
-    EFI_UINT16 ConnLatency;
-    EFI_UINT16 SupervisionTimeout;
+    uint32_t Version;
+    uint16_t ScanInterval;
+    uint16_t ScanWindow;
+    uint16_t ConnIntervalMin;
+    uint16_t ConnIntervalMax;
+    uint16_t ConnLatency;
+    uint16_t SupervisionTimeout;
 } EFI_BLUETOOTH_LE_CONFIG_CONNECT_PARAMETER;
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_CONNECT)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
-    EFI_BOOLEAN AutoReconnect,
-    EFI_BOOLEAN DoBonding,
+    bool AutoReconnect,
+    bool DoBonding,
     EFI_BLUETOOTH_LE_CONFIG_CONNECT_PARAMETER *ConnectParameter,
     EFI_BLUETOOTH_LE_ADDRESS *BD_ADDR
 );
@@ -612,29 +612,29 @@ typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_CONNECT)(
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_DISCONNECT)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_LE_ADDRESS *BD_ADDR,
-    EFI_UINT8 Reason
+    uint8_t Reason
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_GET_DATA)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_DATA_TYPE DataType,
-    EFI_UINTN *DataSize,
-    EFI_VOID *Data
+    size_t *DataSize,
+    void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_SET_DATA)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_DATA_TYPE DataType,
-    EFI_UINTN DataSize,
-    EFI_VOID *Data
+    size_t DataSize,
+    void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_GET_REMOTE_DATA)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_CONFIG_DATA_TYPE DataType,
     EFI_BLUETOOTH_LE_ADDRESS *BDAddr,
-    EFI_UINTN *DataSize,
-    EFI_VOID *Data
+    size_t *DataSize,
+    void *Data
 );
 
 typedef enum {
@@ -647,25 +647,25 @@ typedef enum {
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_SMP_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_LE_ADDRESS *BDAddr,
     EFI_BLUETOOTH_LE_SMP_EVENT_DATA_TYPE EventDataType,
-    EFI_UINTN DataSize,
-    EFI_VOID *Data
+    size_t DataSize,
+    void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_REGISTER_SMP_AUTH_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_LE_SMP_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_SEND_SMP_AUTH_DATA)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_LE_ADDRESS *BDAddr,
     EFI_BLUETOOTH_LE_SMP_EVENT_DATA_TYPE EventDataType,
-    EFI_UINTN DataSize,
-    EFI_VOID *Data
+    size_t DataSize,
+    void *Data
 );
 
 typedef enum {
@@ -692,47 +692,47 @@ typedef enum {
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_SMP_GET_DATA_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_LE_ADDRESS *BDAddr,
     EFI_BLUETOOTH_LE_SMP_DATA_TYPE DataType,
-    EFI_UINTN *DataSize,
-    EFI_VOID *Data
+    size_t *DataSize,
+    void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_REGISTER_SMP_GET_DATA_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_LE_CONFIG_SMP_GET_DATA_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_SMP_SET_DATA_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_LE_ADDRESS *BDAddr,
     EFI_BLUETOOTH_LE_SMP_DATA_TYPE Type,
-    EFI_UINTN DataSize,
-    EFI_VOID *Data
+    size_t DataSize,
+    void *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_REGISTER_SMP_SET_DATA_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_LE_CONFIG_SMP_SET_DATA_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_CONNECT_COMPLETE_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
-    EFI_VOID *Context,
+    void *Context,
     EFI_BLUETOOTH_CONNECT_COMPLETE_CALLBACK_TYPE CallbackType,
     EFI_BLUETOOTH_LE_ADDRESS *BDAddr,
-    EFI_VOID *InputBuffer,
-    EFI_UINTN InputBufferSize
+    void *InputBuffer,
+    size_t InputBufferSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BLUETOOTH_LE_CONFIG_REGISTER_CONNECT_COMPLETE_CALLBACK)(
     EFI_BLUETOOTH_LE_CONFIG_PROTOCOL *This,
     EFI_BLUETOOTH_LE_CONFIG_CONNECT_COMPLETE_CALLBACK Callback,
-    EFI_VOID *Context
+    void *Context
 );
 
 struct _EFI_BLUETOOTH_LE_CONFIG_PROTOCOL {

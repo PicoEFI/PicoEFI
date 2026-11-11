@@ -14,14 +14,14 @@ typedef struct _EFI_ISCSI_INITIATOR_NAME_PROTOCOL EFI_ISCSI_INITIATOR_NAME_PROTO
 
 typedef EFI_STATUS (EFI_API *EFI_ISCSI_INITIATOR_NAME_GET)(
     EFI_ISCSI_INITIATOR_NAME_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    size_t *BufferSize,
+    void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ISCSI_INITIATOR_NAME_SET)(
     EFI_ISCSI_INITIATOR_NAME_PROTOCOL *This,
-    EFI_UINTN *BufferSize,
-    EFI_VOID *Buffer
+    size_t *BufferSize,
+    void *Buffer
 );
 
 struct _EFI_ISCSI_INITIATOR_NAME_PROTOCOL {

@@ -13,8 +13,8 @@ extern "C" {
 typedef struct _EFI_SIMPLE_TEXT_INPUT_PROTOCOL EFI_SIMPLE_TEXT_INPUT_PROTOCOL;
 
 typedef struct {
-    EFI_UINT16 ScanCode;
-    EFI_CHAR16 UnicodeChar;
+    uint16_t ScanCode;
+    uint16_t UnicodeChar;
 } EFI_INPUT_KEY;
 
 /* The specification lists these control characters and scan codes without names. */
@@ -51,7 +51,7 @@ typedef struct {
 
 typedef EFI_STATUS (EFI_API *EFI_INPUT_RESET)(
     EFI_SIMPLE_TEXT_INPUT_PROTOCOL *This,
-    EFI_BOOLEAN ExtendedVerification
+    bool ExtendedVerification
 );
 
 typedef EFI_STATUS (EFI_API *EFI_INPUT_READ_KEY)(
@@ -71,22 +71,22 @@ struct _EFI_SIMPLE_TEXT_INPUT_PROTOCOL {
 typedef struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL;
 
 typedef struct {
-    EFI_INT32 MaxMode;
-    EFI_INT32 Mode;
-    EFI_INT32 Attribute;
-    EFI_INT32 CursorColumn;
-    EFI_INT32 CursorRow;
-    EFI_BOOLEAN CursorVisible;
+    int32_t MaxMode;
+    int32_t Mode;
+    int32_t Attribute;
+    int32_t CursorColumn;
+    int32_t CursorRow;
+    uint8_t CursorVisible;
 } EFI_SIMPLE_TEXT_OUTPUT_MODE;
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_RESET)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_BOOLEAN ExtendedVerification
+    bool ExtendedVerification
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_STRING)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_CHAR16 *String
+    uint16_t *String
 );
 
 #define EFI_BOXDRAW_HORIZONTAL 0x2500
@@ -150,24 +150,24 @@ typedef EFI_STATUS (EFI_API *EFI_TEXT_STRING)(
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_TEST_STRING)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_CHAR16 *String
+    uint16_t *String
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_QUERY_MODE)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_UINTN ModeNumber,
-    EFI_UINTN *Columns,
-    EFI_UINTN *Rows
+    size_t ModeNumber,
+    size_t *Columns,
+    size_t *Rows
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_MODE)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_UINTN ModeNumber
+    size_t ModeNumber
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_ATTRIBUTE)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_UINTN Attribute
+    uintptr_t Attribute
 );
 
 #define EFI_BLACK 0x00
@@ -204,13 +204,13 @@ typedef EFI_STATUS (EFI_API *EFI_TEXT_CLEAR_SCREEN)(EFI_SIMPLE_TEXT_OUTPUT_PROTO
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_CURSOR_POSITION)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_UINTN Column,
-    EFI_UINTN Row
+    size_t Column,
+    size_t Row
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_ENABLE_CURSOR)(
     EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    EFI_BOOLEAN Visible
+    bool Visible
 );
 
 struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL {

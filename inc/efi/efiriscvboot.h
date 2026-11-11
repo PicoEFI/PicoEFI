@@ -17,11 +17,11 @@ typedef struct _EFI_RISCV_EFI_BOOT_PROTOCOL EFI_RISCV_EFI_BOOT_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_GET_BOOT_HARTID)(
     EFI_RISCV_EFI_BOOT_PROTOCOL *This,
-    EFI_UINTN *BootHartId
+    uintptr_t *BootHartId
 );
 
 struct _EFI_RISCV_EFI_BOOT_PROTOCOL {
-    EFI_UINT64 Revision;
+    uint64_t Revision;
     EFI_GET_BOOT_HARTID GetBootHartId;
 };
 
