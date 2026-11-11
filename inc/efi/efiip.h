@@ -85,8 +85,7 @@ typedef efi_status (EFI_API *efi_ip4_routes)(
 );
 
 struct efi_ip4_header {
-    uint8_t header_length:4;
-    uint8_t version:4;
+    uint8_t version_ihl;
     uint8_t type_of_service;
     uint16_t total_length;
     uint16_t identification;
@@ -97,6 +96,11 @@ struct efi_ip4_header {
     struct efi_ipv4_address source_address;
     struct efi_ipv4_address destination_address;
 } __attribute__((__packed__));
+
+#define EFI_IP4_HEADER_HEADER_LENGTH_SHIFT 0
+#define EFI_IP4_HEADER_HEADER_LENGTH_MASK 0x0f
+#define EFI_IP4_HEADER_VERSION_SHIFT 4
+#define EFI_IP4_HEADER_VERSION_MASK 0xf0
 
 struct efi_ip4_fragment_data {
     uint32_t fragment_length;
@@ -308,10 +312,8 @@ typedef efi_status (EFI_API *efi_ip6_neighbors)(
 );
 
 struct efi_ip6_header {
-    uint8_t traffic_class_h:4;
-    uint8_t version:4;
-    uint8_t flow_label_h:4;
-    uint8_t traffic_class_l:4;
+    uint8_t version_class;
+    uint8_t class_flow;
     uint16_t flow_label_l;
     uint16_t payload_length;
     uint8_t next_header;
@@ -319,6 +321,15 @@ struct efi_ip6_header {
     struct efi_ipv6_address source_address;
     struct efi_ipv6_address destination_address;
 } __attribute__((__packed__));
+
+#define EFI_IP6_HEADER_TRAFFIC_CLASS_H_SHIFT 0
+#define EFI_IP6_HEADER_TRAFFIC_CLASS_H_MASK 0x0f
+#define EFI_IP6_HEADER_VERSION_SHIFT 4
+#define EFI_IP6_HEADER_VERSION_MASK 0xf0
+#define EFI_IP6_HEADER_FLOW_LABEL_H_SHIFT 0
+#define EFI_IP6_HEADER_FLOW_LABEL_H_MASK 0x0f
+#define EFI_IP6_HEADER_TRAFFIC_CLASS_L_SHIFT 4
+#define EFI_IP6_HEADER_TRAFFIC_CLASS_L_MASK 0xf0
 
 struct efi_ip6_fragment_data {
     uint32_t fragment_length;

@@ -40,10 +40,13 @@ struct efi_btt_info_block {
 };
 
 struct efi_btt_map_entry {
-    uint32_t post_map_lba : 30;
-    uint32_t error : 1;
-    uint32_t zero : 1;
+    uint32_t entry;
 };
+
+#define EFI_BTT_MAP_ENTRY_POST_MAP_LBA_SHIFT 0
+#define EFI_BTT_MAP_ENTRY_POST_MAP_LBA_MASK 0x3fffffff
+#define EFI_BTT_MAP_ENTRY_ERROR 0x40000000
+#define EFI_BTT_MAP_ENTRY_ZERO 0x80000000
 
 #define EFI_BTT_FLOG_ENTRY_ALIGNMENT 64
 

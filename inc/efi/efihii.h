@@ -31,9 +31,13 @@ typedef uint16_t efi_default_id;
 
 /* The package data (data[]) follows: each package's own header starts with this one. */
 struct efi_hii_package_header {
-    uint32_t length:24;
-    uint32_t type:8;
+    uint32_t header;
 } __attribute__((__packed__));
+
+#define EFI_HII_PACKAGE_HEADER_LENGTH_SHIFT 0
+#define EFI_HII_PACKAGE_HEADER_LENGTH_MASK 0x00ffffff
+#define EFI_HII_PACKAGE_HEADER_TYPE_SHIFT 24
+#define EFI_HII_PACKAGE_HEADER_TYPE_MASK 0xff000000
 
 #define EFI_HII_PACKAGE_TYPE_ALL 0x00
 #define EFI_HII_PACKAGE_TYPE_GUID 0x01
@@ -523,9 +527,12 @@ struct efi_hii_form_package_hdr {
 
 struct efi_ifr_op_header {
     uint8_t op_code;
-    uint8_t length:7;
-    uint8_t scope:1;
+    uint8_t length_scope;
 } __attribute__((__packed__));
+
+#define EFI_IFR_OP_HEADER_LENGTH_SHIFT 0
+#define EFI_IFR_OP_HEADER_LENGTH_MASK 0x7f
+#define EFI_IFR_OP_HEADER_SCOPE 0x80
 
 struct efi_ifr_statement_header {
     efi_string_id prompt;

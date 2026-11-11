@@ -27,21 +27,25 @@ struct efi_load_option {
 #define EFI_BOOT_OPTION_SUPPORT_COUNT 0x00000300
 
 union efi_boot_key_data {
-    struct __attribute__((__packed__)) {
-        uint32_t revision : 8;
-        uint32_t shift_pressed : 1;
-        uint32_t control_pressed : 1;
-        uint32_t alt_pressed : 1;
-        uint32_t logo_pressed : 1;
-        uint32_t menu_pressed : 1;
-        uint32_t sys_req_pressed : 1;
-        uint32_t reserved : 16;
-        uint32_t input_key_count : 2;
-    } options;
+    uint32_t options;
     uint32_t packed_value;
 } __attribute__((__packed__));
 
-/* Variable data: key_data.options.input_key_count struct efi_input_key (keys) follow at byte offset 10. */
+#define EFI_BOOT_KEY_DATA_REVISION_SHIFT 0
+#define EFI_BOOT_KEY_DATA_REVISION_MASK 0x000000ff
+#define EFI_BOOT_KEY_DATA_SHIFT_PRESSED 0x00000100
+#define EFI_BOOT_KEY_DATA_CONTROL_PRESSED 0x00000200
+#define EFI_BOOT_KEY_DATA_ALT_PRESSED 0x00000400
+#define EFI_BOOT_KEY_DATA_LOGO_PRESSED 0x00000800
+#define EFI_BOOT_KEY_DATA_MENU_PRESSED 0x00001000
+#define EFI_BOOT_KEY_DATA_SYS_REQ_PRESSED 0x00002000
+#define EFI_BOOT_KEY_DATA_INPUT_KEY_COUNT_SHIFT 30
+#define EFI_BOOT_KEY_DATA_INPUT_KEY_COUNT_MASK 0xc0000000
+
+/*
+ * Variable data: the struct efi_input_key keys, as many as key_data.options counts under
+ * EFI_BOOT_KEY_DATA_INPUT_KEY_COUNT_MASK, follow at byte offset 10.
+ */
 struct efi_key_option {
     union efi_boot_key_data key_data;
     uint32_t boot_option_crc;

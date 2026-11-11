@@ -95,17 +95,18 @@ struct efi_common_error_record_header {
 } __attribute__((__packed__));
 
 struct efi_generic_error_status {
-    uint64_t resv1:8;
-    uint64_t type:8;
-    uint64_t address_signal:1;
-    uint64_t control_signal:1;
-    uint64_t data_signal:1;
-    uint64_t detected_by_responder:1;
-    uint64_t detected_by_requester:1;
-    uint64_t first_error:1;
-    uint64_t overflow_not_logged:1;
-    uint64_t resv2:41;
+    uint64_t status;
 } __attribute__((__packed__));
+
+#define EFI_GENERIC_ERROR_STATUS_TYPE_SHIFT 8
+#define EFI_GENERIC_ERROR_STATUS_TYPE_MASK 0x000000000000ff00
+#define EFI_GENERIC_ERROR_STATUS_ADDRESS_SIGNAL 0x0000000000010000
+#define EFI_GENERIC_ERROR_STATUS_CONTROL_SIGNAL 0x0000000000020000
+#define EFI_GENERIC_ERROR_STATUS_DATA_SIGNAL 0x0000000000040000
+#define EFI_GENERIC_ERROR_STATUS_DETECTED_BY_RESPONDER 0x0000000000080000
+#define EFI_GENERIC_ERROR_STATUS_DETECTED_BY_REQUESTER 0x0000000000100000
+#define EFI_GENERIC_ERROR_STATUS_FIRST_ERROR 0x0000000000200000
+#define EFI_GENERIC_ERROR_STATUS_OVERFLOW_NOT_LOGGED 0x0000000000400000
 
 #define EFI_ERROR_INTERNAL ((uint32_t)1)
 #define EFI_ERROR_BUS ((uint32_t)16)
@@ -264,12 +265,15 @@ struct efi_processor_generic_error_data {
 #define EFI_IA32_X64_PROCESSOR_ERROR_CPU_ID_INFO_VALID 0x0000000000000002
 
 struct efi_ia32_x64_valid_bits {
-    uint64_t apic_id_valid:1;
-    uint64_t cpu_id_info_valid:1;
-    uint64_t error_info_num:6;
-    uint64_t context_num:6;
-    uint64_t resv1:50;
+    uint64_t valid_bits;
 } __attribute__((__packed__));
+
+#define EFI_IA32_X64_VALID_BITS_APIC_ID_VALID 0x0000000000000001
+#define EFI_IA32_X64_VALID_BITS_CPU_ID_INFO_VALID 0x0000000000000002
+#define EFI_IA32_X64_VALID_BITS_ERROR_INFO_NUM_SHIFT 2
+#define EFI_IA32_X64_VALID_BITS_ERROR_INFO_NUM_MASK 0x00000000000000fc
+#define EFI_IA32_X64_VALID_BITS_CONTEXT_NUM_SHIFT 8
+#define EFI_IA32_X64_VALID_BITS_CONTEXT_NUM_MASK 0x0000000000003f00
 
 /* The error information and context structures that valid_fields counts follow. */
 struct efi_ia32_x64_processor_error_record {
@@ -320,17 +324,22 @@ struct efi_ia32_x64_processor_error_record {
 #define EFI_CACHE_CHECK_OPERATION_TYPE_SNOOP 8
 
 struct efi_ia32_x64_cache_check_info {
-    uint64_t valid_fields:16;
-    uint64_t transaction_type:2;
-    uint64_t operation:4;
-    uint64_t level:3;
-    uint64_t context_corrupt:1;
-    uint64_t error_uncorrected:1;
-    uint64_t precise_ip:1;
-    uint64_t restartable_ip:1;
-    uint64_t overflow:1;
-    uint64_t resv1:34;
+    uint64_t check_info;
 } __attribute__((__packed__));
+
+#define EFI_IA32_X64_CACHE_CHECK_INFO_VALID_FIELDS_SHIFT 0
+#define EFI_IA32_X64_CACHE_CHECK_INFO_VALID_FIELDS_MASK 0x000000000000ffff
+#define EFI_IA32_X64_CACHE_CHECK_INFO_TRANSACTION_TYPE_SHIFT 16
+#define EFI_IA32_X64_CACHE_CHECK_INFO_TRANSACTION_TYPE_MASK 0x0000000000030000
+#define EFI_IA32_X64_CACHE_CHECK_INFO_OPERATION_SHIFT 18
+#define EFI_IA32_X64_CACHE_CHECK_INFO_OPERATION_MASK 0x00000000003c0000
+#define EFI_IA32_X64_CACHE_CHECK_INFO_LEVEL_SHIFT 22
+#define EFI_IA32_X64_CACHE_CHECK_INFO_LEVEL_MASK 0x0000000001c00000
+#define EFI_IA32_X64_CACHE_CHECK_INFO_CONTEXT_CORRUPT 0x0000000002000000
+#define EFI_IA32_X64_CACHE_CHECK_INFO_ERROR_UNCORRECTED 0x0000000004000000
+#define EFI_IA32_X64_CACHE_CHECK_INFO_PRECISE_IP 0x0000000008000000
+#define EFI_IA32_X64_CACHE_CHECK_INFO_RESTARTABLE_IP 0x0000000010000000
+#define EFI_IA32_X64_CACHE_CHECK_INFO_OVERFLOW 0x0000000020000000
 
 #define EFI_TLB_CHECK_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_TLB_CHECK_OPERATION_VALID 0x0002
@@ -354,17 +363,22 @@ struct efi_ia32_x64_cache_check_info {
 #define EFI_TLB_CHECK_OPERATION_TYPE_PREFETCH 6
 
 struct efi_ia32_x64_tlb_check_info {
-    uint64_t valid_fields:16;
-    uint64_t transaction_type:2;
-    uint64_t operation:4;
-    uint64_t level:3;
-    uint64_t context_corrupt:1;
-    uint64_t error_uncorrected:1;
-    uint64_t precise_ip:1;
-    uint64_t restartable_ip:1;
-    uint64_t overflow:1;
-    uint64_t resv1:34;
+    uint64_t check_info;
 } __attribute__((__packed__));
+
+#define EFI_IA32_X64_TLB_CHECK_INFO_VALID_FIELDS_SHIFT 0
+#define EFI_IA32_X64_TLB_CHECK_INFO_VALID_FIELDS_MASK 0x000000000000ffff
+#define EFI_IA32_X64_TLB_CHECK_INFO_TRANSACTION_TYPE_SHIFT 16
+#define EFI_IA32_X64_TLB_CHECK_INFO_TRANSACTION_TYPE_MASK 0x0000000000030000
+#define EFI_IA32_X64_TLB_CHECK_INFO_OPERATION_SHIFT 18
+#define EFI_IA32_X64_TLB_CHECK_INFO_OPERATION_MASK 0x00000000003c0000
+#define EFI_IA32_X64_TLB_CHECK_INFO_LEVEL_SHIFT 22
+#define EFI_IA32_X64_TLB_CHECK_INFO_LEVEL_MASK 0x0000000001c00000
+#define EFI_IA32_X64_TLB_CHECK_INFO_CONTEXT_CORRUPT 0x0000000002000000
+#define EFI_IA32_X64_TLB_CHECK_INFO_ERROR_UNCORRECTED 0x0000000004000000
+#define EFI_IA32_X64_TLB_CHECK_INFO_PRECISE_IP 0x0000000008000000
+#define EFI_IA32_X64_TLB_CHECK_INFO_RESTARTABLE_IP 0x0000000010000000
+#define EFI_IA32_X64_TLB_CHECK_INFO_OVERFLOW 0x0000000020000000
 
 #define EFI_BUS_CHECK_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_BUS_CHECK_OPERATION_VALID 0x0002
@@ -401,20 +415,27 @@ struct efi_ia32_x64_tlb_check_info {
 #define EFI_BUS_CHECK_ADDRESS_SPACE_TYPE_OTHER 3
 
 struct efi_ia32_x64_bus_check_info {
-    uint64_t valid_fields:16;
-    uint64_t transaction_type:2;
-    uint64_t operation:4;
-    uint64_t level:3;
-    uint64_t context_corrupt:1;
-    uint64_t error_uncorrected:1;
-    uint64_t precise_ip:1;
-    uint64_t restartable_ip:1;
-    uint64_t overflow:1;
-    uint64_t participation_type:2;
-    uint64_t time_out:1;
-    uint64_t address_space:2;
-    uint64_t resv1:29;
+    uint64_t check_info;
 } __attribute__((__packed__));
+
+#define EFI_IA32_X64_BUS_CHECK_INFO_VALID_FIELDS_SHIFT 0
+#define EFI_IA32_X64_BUS_CHECK_INFO_VALID_FIELDS_MASK 0x000000000000ffff
+#define EFI_IA32_X64_BUS_CHECK_INFO_TRANSACTION_TYPE_SHIFT 16
+#define EFI_IA32_X64_BUS_CHECK_INFO_TRANSACTION_TYPE_MASK 0x0000000000030000
+#define EFI_IA32_X64_BUS_CHECK_INFO_OPERATION_SHIFT 18
+#define EFI_IA32_X64_BUS_CHECK_INFO_OPERATION_MASK 0x00000000003c0000
+#define EFI_IA32_X64_BUS_CHECK_INFO_LEVEL_SHIFT 22
+#define EFI_IA32_X64_BUS_CHECK_INFO_LEVEL_MASK 0x0000000001c00000
+#define EFI_IA32_X64_BUS_CHECK_INFO_CONTEXT_CORRUPT 0x0000000002000000
+#define EFI_IA32_X64_BUS_CHECK_INFO_ERROR_UNCORRECTED 0x0000000004000000
+#define EFI_IA32_X64_BUS_CHECK_INFO_PRECISE_IP 0x0000000008000000
+#define EFI_IA32_X64_BUS_CHECK_INFO_RESTARTABLE_IP 0x0000000010000000
+#define EFI_IA32_X64_BUS_CHECK_INFO_OVERFLOW 0x0000000020000000
+#define EFI_IA32_X64_BUS_CHECK_INFO_PARTICIPATION_TYPE_SHIFT 30
+#define EFI_IA32_X64_BUS_CHECK_INFO_PARTICIPATION_TYPE_MASK 0x00000000c0000000
+#define EFI_IA32_X64_BUS_CHECK_INFO_TIME_OUT 0x0000000100000000
+#define EFI_IA32_X64_BUS_CHECK_INFO_ADDRESS_SPACE_SHIFT 33
+#define EFI_IA32_X64_BUS_CHECK_INFO_ADDRESS_SPACE_MASK 0x0000000600000000
 
 #define EFI_MS_CHECK_ERROR_TYPE_VALID 0x0001
 #define EFI_MS_CHECK_CONTEXT_CORRUPT_VALID 0x0002
@@ -431,15 +452,18 @@ struct efi_ia32_x64_bus_check_info {
 #define EFI_MS_CHECK_ERROR_TYPE_INTERNAL_UNCLASSIFIED 5
 
 struct efi_ia32_x64_ms_check_info {
-    uint64_t valid_fields:16;
-    uint64_t error_type:3;
-    uint64_t context_corrupt:1;
-    uint64_t error_uncorrected:1;
-    uint64_t precise_ip:1;
-    uint64_t restartable_ip:1;
-    uint64_t overflow:1;
-    uint64_t resv1:40;
+    uint64_t check_info;
 } __attribute__((__packed__));
+
+#define EFI_IA32_X64_MS_CHECK_INFO_VALID_FIELDS_SHIFT 0
+#define EFI_IA32_X64_MS_CHECK_INFO_VALID_FIELDS_MASK 0x000000000000ffff
+#define EFI_IA32_X64_MS_CHECK_INFO_ERROR_TYPE_SHIFT 16
+#define EFI_IA32_X64_MS_CHECK_INFO_ERROR_TYPE_MASK 0x0000000000070000
+#define EFI_IA32_X64_MS_CHECK_INFO_CONTEXT_CORRUPT 0x0000000000080000
+#define EFI_IA32_X64_MS_CHECK_INFO_ERROR_UNCORRECTED 0x0000000000100000
+#define EFI_IA32_X64_MS_CHECK_INFO_PRECISE_IP 0x0000000000200000
+#define EFI_IA32_X64_MS_CHECK_INFO_RESTARTABLE_IP 0x0000000000400000
+#define EFI_IA32_X64_MS_CHECK_INFO_OVERFLOW 0x0000000000800000
 
 union efi_ia32_x64_check_info_item {
     struct efi_ia32_x64_cache_check_info cache_check;
@@ -613,16 +637,21 @@ struct efi_arm_processor_error_record {
 #define EFI_ARM_CACHE_ERROR_OPERATION_MANAGEMENT 10
 
 struct efi_arm_cache_error_info {
-    uint64_t valid_fields:16;
-    uint64_t transaction_type:2;
-    uint64_t operation:4;
-    uint64_t level:3;
-    uint64_t context_corrupt:1;
-    uint64_t error_corrected:1;
-    uint64_t precise_pc:1;
-    uint64_t restartable_pc:1;
-    uint64_t reserved:35;
+    uint64_t error_info;
 } __attribute__((__packed__));
+
+#define EFI_ARM_CACHE_ERROR_INFO_VALID_FIELDS_SHIFT 0
+#define EFI_ARM_CACHE_ERROR_INFO_VALID_FIELDS_MASK 0x000000000000ffff
+#define EFI_ARM_CACHE_ERROR_INFO_TRANSACTION_TYPE_SHIFT 16
+#define EFI_ARM_CACHE_ERROR_INFO_TRANSACTION_TYPE_MASK 0x0000000000030000
+#define EFI_ARM_CACHE_ERROR_INFO_OPERATION_SHIFT 18
+#define EFI_ARM_CACHE_ERROR_INFO_OPERATION_MASK 0x00000000003c0000
+#define EFI_ARM_CACHE_ERROR_INFO_LEVEL_SHIFT 22
+#define EFI_ARM_CACHE_ERROR_INFO_LEVEL_MASK 0x0000000001c00000
+#define EFI_ARM_CACHE_ERROR_INFO_CONTEXT_CORRUPT 0x0000000002000000
+#define EFI_ARM_CACHE_ERROR_INFO_ERROR_CORRECTED 0x0000000004000000
+#define EFI_ARM_CACHE_ERROR_INFO_PRECISE_PC 0x0000000008000000
+#define EFI_ARM_CACHE_ERROR_INFO_RESTARTABLE_PC 0x0000000010000000
 
 #define EFI_ARM_TLB_ERROR_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_ARM_TLB_ERROR_OPERATION_VALID 0x0002
@@ -647,16 +676,21 @@ struct efi_arm_cache_error_info {
 #define EFI_ARM_TLB_ERROR_OPERATION_EXTERNAL_MANAGEMENT_OPERATION 8
 
 struct efi_arm_tlb_error_info {
-    uint64_t valid_fields:16;
-    uint64_t transaction_type:2;
-    uint64_t operation:4;
-    uint64_t level:3;
-    uint64_t context_corrupt:1;
-    uint64_t error_corrected:1;
-    uint64_t precise_pc:1;
-    uint64_t restartable_pc:1;
-    uint64_t reserved:35;
+    uint64_t error_info;
 } __attribute__((__packed__));
+
+#define EFI_ARM_TLB_ERROR_INFO_VALID_FIELDS_SHIFT 0
+#define EFI_ARM_TLB_ERROR_INFO_VALID_FIELDS_MASK 0x000000000000ffff
+#define EFI_ARM_TLB_ERROR_INFO_TRANSACTION_TYPE_SHIFT 16
+#define EFI_ARM_TLB_ERROR_INFO_TRANSACTION_TYPE_MASK 0x0000000000030000
+#define EFI_ARM_TLB_ERROR_INFO_OPERATION_SHIFT 18
+#define EFI_ARM_TLB_ERROR_INFO_OPERATION_MASK 0x00000000003c0000
+#define EFI_ARM_TLB_ERROR_INFO_LEVEL_SHIFT 22
+#define EFI_ARM_TLB_ERROR_INFO_LEVEL_MASK 0x0000000001c00000
+#define EFI_ARM_TLB_ERROR_INFO_CONTEXT_CORRUPT 0x0000000002000000
+#define EFI_ARM_TLB_ERROR_INFO_ERROR_CORRECTED 0x0000000004000000
+#define EFI_ARM_TLB_ERROR_INFO_PRECISE_PC 0x0000000008000000
+#define EFI_ARM_TLB_ERROR_INFO_RESTARTABLE_PC 0x0000000010000000
 
 #define EFI_ARM_BUS_ERROR_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_ARM_BUS_ERROR_OPERATION_VALID 0x0002
@@ -693,21 +727,29 @@ struct efi_arm_tlb_error_info {
 #define EFI_ARM_BUS_CHECK_ADDRESS_SPACE_TYPE_DEVICE_MEMORY 3
 
 struct efi_arm_bus_error_info {
-    uint64_t valid_fields:16;
-    uint64_t transaction_type:2;
-    uint64_t operation:4;
-    uint64_t level:3;
-    uint64_t context_corrupt:1;
-    uint64_t error_corrected:1;
-    uint64_t precise_pc:1;
-    uint64_t restartable_pc:1;
-    uint64_t participation_type:2;
-    uint64_t time_out:1;
-    uint64_t address_space:2;
-    uint64_t memory_access_attribute:9;
-    uint64_t access_mode:1;
-    uint64_t reserved:20;
+    uint64_t error_info;
 } __attribute__((__packed__));
+
+#define EFI_ARM_BUS_ERROR_INFO_VALID_FIELDS_SHIFT 0
+#define EFI_ARM_BUS_ERROR_INFO_VALID_FIELDS_MASK 0x000000000000ffff
+#define EFI_ARM_BUS_ERROR_INFO_TRANSACTION_TYPE_SHIFT 16
+#define EFI_ARM_BUS_ERROR_INFO_TRANSACTION_TYPE_MASK 0x0000000000030000
+#define EFI_ARM_BUS_ERROR_INFO_OPERATION_SHIFT 18
+#define EFI_ARM_BUS_ERROR_INFO_OPERATION_MASK 0x00000000003c0000
+#define EFI_ARM_BUS_ERROR_INFO_LEVEL_SHIFT 22
+#define EFI_ARM_BUS_ERROR_INFO_LEVEL_MASK 0x0000000001c00000
+#define EFI_ARM_BUS_ERROR_INFO_CONTEXT_CORRUPT 0x0000000002000000
+#define EFI_ARM_BUS_ERROR_INFO_ERROR_CORRECTED 0x0000000004000000
+#define EFI_ARM_BUS_ERROR_INFO_PRECISE_PC 0x0000000008000000
+#define EFI_ARM_BUS_ERROR_INFO_RESTARTABLE_PC 0x0000000010000000
+#define EFI_ARM_BUS_ERROR_INFO_PARTICIPATION_TYPE_SHIFT 29
+#define EFI_ARM_BUS_ERROR_INFO_PARTICIPATION_TYPE_MASK 0x0000000060000000
+#define EFI_ARM_BUS_ERROR_INFO_TIME_OUT 0x0000000080000000
+#define EFI_ARM_BUS_ERROR_INFO_ADDRESS_SPACE_SHIFT 32
+#define EFI_ARM_BUS_ERROR_INFO_ADDRESS_SPACE_MASK 0x0000000300000000
+#define EFI_ARM_BUS_ERROR_INFO_MEMORY_ACCESS_ATTRIBUTE_SHIFT 34
+#define EFI_ARM_BUS_ERROR_INFO_MEMORY_ACCESS_ATTRIBUTE_MASK 0x000007fc00000000
+#define EFI_ARM_BUS_ERROR_INFO_ACCESS_MODE 0x0000080000000000
 
 union efi_arm_error_information {
     struct efi_arm_cache_error_info cache_error_info;
@@ -895,14 +937,19 @@ struct efi_arm_aarch64_el3_context_system_registers {
 } __attribute__((__packed__));
 
 struct efi_arm_misc_context_system_register {
-    uint16_t mrs_op2:3;
-    uint16_t mrs_c_rm:4;
-    uint16_t mrs_c_rn:4;
-    uint16_t mrs_op1:3;
-    uint16_t mrs_o0:1;
-    uint16_t reserved:1;
+    uint16_t mrs_encoding;
     uint64_t register_val;
 } __attribute__((__packed__));
+
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_OP2_SHIFT 0
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_OP2_MASK 0x0007
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_C_RM_SHIFT 3
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_C_RM_MASK 0x0078
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_C_RN_SHIFT 7
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_C_RN_MASK 0x0780
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_OP1_SHIFT 11
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_OP1_MASK 0x3800
+#define EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER_MRS_O0 0x4000
 
 struct efi_arm_ttbr128_context_system_registers {
     uint64_t ttbr0_el1[2];
@@ -1083,9 +1130,11 @@ struct efi_platform_memory2_error_data {
 #define EFI_PCIE_ERROR_PORT_ROOT_EVENT_COLLECTOR 0x0000000A
 
 struct efi_generic_error_pci_slot {
-    uint16_t resv1:3;
-    uint16_t number:13;
+    uint16_t slot;
 } __attribute__((__packed__));
+
+#define EFI_GENERIC_ERROR_PCI_SLOT_NUMBER_SHIFT 3
+#define EFI_GENERIC_ERROR_PCI_SLOT_NUMBER_MASK 0xfff8
 
 struct efi_generic_error_pcie_dev_bridge_id {
     uint16_t vendor_id;
@@ -1295,18 +1344,21 @@ struct efi_ccix_per_log_error_data {
 #define EFI_CXL_AGENT_CXL20_USP 7
 
 union efi_cxl_agent_address {
-    struct __attribute__((__packed__)) {
-        uint64_t function:8;
-        uint64_t device:8;
-        uint64_t bus:8;
-        uint64_t segment:16;
-        uint64_t rsvd:24;
-    } bits;
+    uint64_t bits;
     struct __attribute__((__packed__)) {
         uint32_t low;
         uint32_t high;
     } rcrb_base;
 } __attribute__((__packed__));
+
+#define EFI_CXL_AGENT_ADDRESS_FUNCTION_SHIFT 0
+#define EFI_CXL_AGENT_ADDRESS_FUNCTION_MASK 0x00000000000000ff
+#define EFI_CXL_AGENT_ADDRESS_DEVICE_SHIFT 8
+#define EFI_CXL_AGENT_ADDRESS_DEVICE_MASK 0x000000000000ff00
+#define EFI_CXL_AGENT_ADDRESS_BUS_SHIFT 16
+#define EFI_CXL_AGENT_ADDRESS_BUS_MASK 0x0000000000ff0000
+#define EFI_CXL_AGENT_ADDRESS_SEGMENT_SHIFT 24
+#define EFI_CXL_AGENT_ADDRESS_SEGMENT_MASK 0x000000ffff000000
 
 struct efi_cxl_agent_device_id {
     uint16_t vendor_id;
@@ -1314,12 +1366,12 @@ struct efi_cxl_agent_device_id {
     uint16_t svid;
     uint16_t sid;
     uint16_t class_code;
-    struct __attribute__((__packed__)) {
-        uint16_t rsvd:3;
-        uint16_t num:13;
-    } slot;
+    uint16_t slot;
     uint32_t rsvd;
 } __attribute__((__packed__));
+
+#define EFI_CXL_AGENT_DEVICE_ID_SLOT_NUM_SHIFT 3
+#define EFI_CXL_AGENT_DEVICE_ID_SLOT_NUM_MASK 0xfff8
 
 struct efi_cxl_device_serial_num {
     uint32_t lower;

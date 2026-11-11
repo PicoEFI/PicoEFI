@@ -416,10 +416,13 @@ struct efi_nvm_express_pass_thru_mode {
 #define EFI_NVM_EXPRESS_PASS_THRU_ATTRIBUTES_CMD_SET_NVM 0x0008
 
 struct efi_nvme_cdw0 {
-    uint32_t op_code : 8;
-    uint32_t fused_operation : 2;
-    uint32_t reserved : 22;
+    uint32_t cdw0;
 };
+
+#define EFI_NVME_CDW0_OP_CODE_SHIFT 0
+#define EFI_NVME_CDW0_OP_CODE_MASK 0x000000ff
+#define EFI_NVME_CDW0_FUSED_OPERATION_SHIFT 8
+#define EFI_NVME_CDW0_FUSED_OPERATION_MASK 0x00000300
 
 #define EFI_NORMAL_CMD 0x00
 #define EFI_FUSED_FIRST_CMD 0x01

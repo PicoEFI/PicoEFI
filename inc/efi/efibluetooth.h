@@ -111,11 +111,18 @@ struct efi_bluetooth_io_protocol;
 
 /* Byte-packed as firmware lays it out: the 3-byte Bluetooth Class of Device. */
 struct efi_bluetooth_class_of_device {
-    uint8_t format_type:2;
-    uint8_t minor_device_class:6;
-    uint16_t major_device_class:5;
-    uint16_t major_service_class:11;
+    uint8_t minor;
+    uint16_t major;
 } __attribute__((__packed__));
+
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_FORMAT_TYPE_SHIFT 0
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_FORMAT_TYPE_MASK 0x03
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_MINOR_DEVICE_CLASS_SHIFT 2
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_MINOR_DEVICE_CLASS_MASK 0xfc
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_MAJOR_DEVICE_CLASS_SHIFT 0
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_MAJOR_DEVICE_CLASS_MASK 0x001f
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_MAJOR_SERVICE_CLASS_SHIFT 5
+#define EFI_BLUETOOTH_CLASS_OF_DEVICE_MAJOR_SERVICE_CLASS_MASK 0xffe0
 
 struct efi_bluetooth_device_info {
     uint32_t version;
@@ -464,21 +471,24 @@ struct efi_bluetooth_uuid {
 
 union efi_bluetooth_attribute_permission {
     struct __attribute__((__packed__)) {
-        uint16_t readable:1;
-        uint16_t read_encryption:1;
-        uint16_t read_authentication:1;
-        uint16_t read_authorization:1;
-        uint16_t read_key_size:5;
-        uint16_t reserved1:7;
-        uint16_t writeable:1;
-        uint16_t write_encryption:1;
-        uint16_t write_authentication:1;
-        uint16_t write_authorization:1;
-        uint16_t write_key_size:5;
-        uint16_t reserved2:7;
+        uint16_t read;
+        uint16_t write;
     } permission;
     uint32_t data32;
 } __attribute__((__packed__));
+
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_READABLE 0x0001
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_READ_ENCRYPTION 0x0002
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_READ_AUTHENTICATION 0x0004
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_READ_AUTHORIZATION 0x0008
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_READ_KEY_SIZE_SHIFT 4
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_READ_KEY_SIZE_MASK 0x01f0
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_WRITEABLE 0x0001
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_WRITE_ENCRYPTION 0x0002
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_WRITE_AUTHENTICATION 0x0004
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_WRITE_AUTHORIZATION 0x0008
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_WRITE_KEY_SIZE_SHIFT 4
+#define EFI_BLUETOOTH_ATTRIBUTE_PERMISSION_WRITE_KEY_SIZE_MASK 0x01f0
 
 struct efi_bluetooth_attribute_header {
     struct efi_bluetooth_uuid type;

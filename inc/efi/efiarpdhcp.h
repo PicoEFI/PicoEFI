@@ -309,9 +309,13 @@ struct efi_dhcp6_ia_address {
 };
 
 struct efi_dhcp6_header {
-    uint32_t transaction_id:24;
-    uint32_t message_type:8;
+    uint32_t header;
 } __attribute__((__packed__));
+
+#define EFI_DHCP6_HEADER_TRANSACTION_ID_SHIFT 0
+#define EFI_DHCP6_HEADER_TRANSACTION_ID_MASK 0x00ffffff
+#define EFI_DHCP6_HEADER_MESSAGE_TYPE_SHIFT 24
+#define EFI_DHCP6_HEADER_MESSAGE_TYPE_MASK 0xff000000
 
 struct efi_dhcp6_packet {
     uint32_t size;

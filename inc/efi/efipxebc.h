@@ -40,10 +40,14 @@ struct efi_pxe_base_code_dhcpv4_packet {
 };
 
 struct efi_pxe_base_code_dhcpv6_packet {
-    uint32_t message_type : 8;
-    uint32_t transaction_id : 24;
+    uint32_t header;
     uint8_t dhcp_options[1024];
 };
+
+#define EFI_PXE_BASE_CODE_DHCPV6_PACKET_MESSAGE_TYPE_SHIFT 0
+#define EFI_PXE_BASE_CODE_DHCPV6_PACKET_MESSAGE_TYPE_MASK 0x000000ff
+#define EFI_PXE_BASE_CODE_DHCPV6_PACKET_TRANSACTION_ID_SHIFT 8
+#define EFI_PXE_BASE_CODE_DHCPV6_PACKET_TRANSACTION_ID_MASK 0xffffff00
 
 union efi_pxe_base_code_packet {
     uint8_t raw[1472];
