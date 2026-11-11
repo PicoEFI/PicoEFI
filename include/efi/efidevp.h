@@ -716,7 +716,7 @@ static inline bool efi_is_device_path_end(const void *node) {
 #define EFI_DP_IS_END_TYPE(a) efi_is_device_path_end_type(a)
 #define EFI_DP_IS_END_SUBTYPE(a) efi_is_device_path_end_sub_type(a)
 
-static inline void efi_set_device_path_node_length(void *node, size_t length) {
+static inline void efi_set_device_path_node_length(void *node, uint16_t length) {
     struct efi_device_path_protocol *path = (struct efi_device_path_protocol *)node;
 
     path->length[0] = (uint8_t)length;
