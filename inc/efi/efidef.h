@@ -49,17 +49,6 @@ typedef unsigned char EFI_BOOLEAN;
 #endif
 #endif
 
-#ifndef NULL
-#if (defined(__cplusplus) && __cplusplus >= 201103L) || \
-    (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
-#define NULL nullptr
-#elif defined(__cplusplus)
-#define NULL 0
-#else
-#define NULL ((EFI_VOID *)0)
-#endif
-#endif
-
 #ifndef EFI_CONST
 #define EFI_CONST const
 #endif
