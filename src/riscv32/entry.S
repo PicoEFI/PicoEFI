@@ -30,6 +30,7 @@
 // symbolic relocations.
 .globl efi_load_slide
 .hidden efi_load_slide
+.type efi_load_slide, %object
 efi_load_slide:
 .Lheader:
 .ascii "MZ" // e_magic
@@ -102,8 +103,10 @@ efi_load_slide:
 // linkers disagree on how to relocate a link script symbol.
 .globl efi_image_size
 .hidden efi_image_size
+.type efi_image_size, %object
 efi_image_size:
 .long picoefi_image_size - .Lheader // SizeOfImage
+.size efi_image_size, . - efi_image_size
 .long picoefi_text_start - .Lheader // SizeOfHeaders
 .long 0 // CheckSum
 .short EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION // Subsystem
@@ -173,6 +176,7 @@ efi_image_size:
 .short 0 // NumberOfLinenumbers
 .long IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE
 .Lsections_end:
+.size efi_load_slide, . - efi_load_slide
 
 .section .dummy_reloc, "a"
 // Without base relocations, firmware may load the image at ImageBase only. One
@@ -199,16 +203,24 @@ efi_image_size:
 .hidden __init_array_start, __init_array_end, __ctors_start, __ctors_end
 
 .section .picoefi_init_array_start, "aw", @init_array
+.type __init_array_start, %object
 __init_array_start:
+.size __init_array_start, . - __init_array_start
 
 .section .picoefi_init_array_end, "aw", @init_array
+.type __init_array_end, %object
 __init_array_end:
+.size __init_array_end, . - __init_array_end
 
 .section .picoefi_ctors_start, "aw", @progbits
+.type __ctors_start, %object
 __ctors_start:
+.size __ctors_start, . - __ctors_start
 
 .section .picoefi_ctors_end, "aw", @progbits
+.type __ctors_end, %object
 __ctors_end:
+.size __ctors_end, . - __ctors_end
 
 .text
 .globl _start
