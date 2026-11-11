@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-#define EFI_WARN(a) ((EFI_STATUS)(a))
-#define EFI_ERROR(a) ((((EFI_STATUS)(a)) & EFI_ERROR_MASK) != 0)
+#define EFI_WARN(a) ((efi_status)(a))
+#define EFI_ERROR(a) ((((efi_status)(a)) & EFI_ERROR_MASK) != 0)
 
-#define EFI_SUCCESS ((EFI_STATUS)0)
+#define EFI_SUCCESS ((efi_status)0)
 
 #define EFI_LOAD_ERROR EFI_ERR(1)
 #define EFI_INVALID_PARAMETER EFI_ERR(2)

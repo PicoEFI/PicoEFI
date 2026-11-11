@@ -28,9 +28,9 @@
      * Where the image was loaded, for the program. A label, as gold leaves stored pointers to a
      * link script symbol unrelocated, and older GNU ld gives them symbolic relocations.
      */
-    .globl EfiLoadSlide
-    .hidden EfiLoadSlide
-EfiLoadSlide:
+    .globl efi_load_slide
+    .hidden efi_load_slide
+efi_load_slide:
 .Lheader:
     .ascii "MZ" /* e_magic */
     .short 0x0090 /* e_cblp */
@@ -99,9 +99,9 @@ EfiLoadSlide:
      * The image's size in memory, for the program to read from the header, as linkers disagree on
      * how to relocate a link script symbol.
      */
-    .globl EfiImageSize
-    .hidden EfiImageSize
-EfiImageSize:
+    .globl efi_image_size
+    .hidden efi_image_size
+efi_image_size:
     .long picoefi_image_size - .Lheader /* SizeOfImage */
     .long picoefi_text_start - .Lheader /* SizeOfHeaders */
     .long 0 /* CheckSum */
@@ -194,7 +194,7 @@ EfiImageSize:
     .long 0
 
     /*
-     * The constructors' bounds, for the program to call them: labels, as EfiLoadSlide is, in empty
+     * The constructors' bounds, for the program to call them: labels, as efi_load_slide is, in empty
      * sections the link script places first and last in .picoefi_init_array and .picoefi_ctors.
      */
     .globl __init_array_start, __init_array_end, __ctors_start, __ctors_end
@@ -219,7 +219,7 @@ _start:
     /*
      * Save what the UEFI convention preserves beyond the C one and the registers used here, and
      * give the calls the stack alignment, and on x86 the clear direction flag, that not all
-     * firmware provides. ImageHandle and SystemTable wait where the relocator leaves them.
+     * firmware provides. image_handle and system_table wait where the relocator leaves them.
      */
     stp x29, x30, [sp, #-32]!
     mov x29, sp

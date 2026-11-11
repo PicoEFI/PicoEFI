@@ -12,32 +12,32 @@ extern "C" {
 
 struct efi_regular_expression_protocol;
 
-typedef struct efi_guid EFI_REGEX_SYNTAX_TYPE;
+typedef struct efi_guid efi_regex_syntax_type;
 
 struct efi_regex_capture {
-    const uint16_t *CapturePtr;
-    size_t Length;
+    const uint16_t *capture_ptr;
+    size_t length;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_REGULAR_EXPRESSION_MATCH)(
-    struct efi_regular_expression_protocol *This,
-    uint16_t *String,
-    uint16_t *Pattern,
-    EFI_REGEX_SYNTAX_TYPE *SyntaxType,
-    bool *Result,
-    struct efi_regex_capture **Captures,
-    size_t *CapturesCount
+typedef efi_status (EFI_API *efi_regular_expression_match)(
+    struct efi_regular_expression_protocol *self,
+    uint16_t *string,
+    uint16_t *pattern,
+    efi_regex_syntax_type *syntax_type,
+    bool *result,
+    struct efi_regex_capture **captures,
+    size_t *captures_count
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REGULAR_EXPRESSION_GET_INFO)(
-    struct efi_regular_expression_protocol *This,
-    size_t *RegExSyntaxTypeListSize,
-    EFI_REGEX_SYNTAX_TYPE *RegExSyntaxTypeList
+typedef efi_status (EFI_API *efi_regular_expression_get_info)(
+    struct efi_regular_expression_protocol *self,
+    size_t *reg_ex_syntax_type_list_size,
+    efi_regex_syntax_type *reg_ex_syntax_type_list
 );
 
 struct efi_regular_expression_protocol {
-    EFI_REGULAR_EXPRESSION_MATCH MatchString;
-    EFI_REGULAR_EXPRESSION_GET_INFO GetInfo;
+    efi_regular_expression_match match_string;
+    efi_regular_expression_get_info get_info;
 };
 
 #define EFI_REGEX_SYNTAX_TYPE_POSIX_EXTENDED_GUID \
@@ -46,7 +46,7 @@ struct efi_regular_expression_protocol {
 #define EFI_REGEX_SYNTAX_TYPE_PERL_GUID \
     {0x63E60A51, 0x497D, 0xD427, {0xC4, 0xA5, 0xB8, 0xAB, 0xDC, 0x3A, 0xAE, 0xB6}}
 
-/* Printed with the first Data4 byte (0x41) outside the inner braces. */
+/* Printed with the first data4 byte (0x41) outside the inner braces. */
 #define EFI_REGEX_SYNTAX_TYPE_ECMA_262_GUID \
     {0x9A473A4A, 0x4CEB, 0xB95A, {0x41, 0x5E, 0x5B, 0xA0, 0xBC, 0x63, 0x9B, 0x2E}}
 

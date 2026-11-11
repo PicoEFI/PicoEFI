@@ -15,14 +15,14 @@ extern "C" {
 
 struct efi_riscv_efi_boot_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_GET_BOOT_HARTID)(
-    struct efi_riscv_efi_boot_protocol *This,
-    uintptr_t *BootHartId
+typedef efi_status (EFI_API *efi_get_boot_hartid)(
+    struct efi_riscv_efi_boot_protocol *self,
+    uintptr_t *boot_hart_id
 );
 
 struct efi_riscv_efi_boot_protocol {
-    uint64_t Revision;
-    EFI_GET_BOOT_HARTID GetBootHartId;
+    uint64_t revision;
+    efi_get_boot_hartid get_boot_hart_id;
 };
 
 #ifdef __cplusplus

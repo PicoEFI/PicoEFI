@@ -12,27 +12,27 @@ extern "C" {
 
 struct efi_decompress_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_GET_INFO)(
-    struct efi_decompress_protocol *This,
-    void *Source,
-    uint32_t SourceSize,
-    uint32_t *DestinationSize,
-    uint32_t *ScratchSize
+typedef efi_status (EFI_API *efi_decompress_get_info)(
+    struct efi_decompress_protocol *self,
+    void *source,
+    uint32_t source_size,
+    uint32_t *destination_size,
+    uint32_t *scratch_size
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_DECOMPRESS)(
-    struct efi_decompress_protocol *This,
-    void *Source,
-    uint32_t SourceSize,
-    void *Destination,
-    uint32_t DestinationSize,
-    void *Scratch,
-    uint32_t ScratchSize
+typedef efi_status (EFI_API *efi_decompress_decompress)(
+    struct efi_decompress_protocol *self,
+    void *source,
+    uint32_t source_size,
+    void *destination,
+    uint32_t destination_size,
+    void *scratch,
+    uint32_t scratch_size
 );
 
 struct efi_decompress_protocol {
-    EFI_DECOMPRESS_GET_INFO GetInfo;
-    EFI_DECOMPRESS_DECOMPRESS Decompress;
+    efi_decompress_get_info get_info;
+    efi_decompress_decompress decompress;
 };
 
 #ifdef __cplusplus

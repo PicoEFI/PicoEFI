@@ -12,21 +12,21 @@ extern "C" {
 
 struct efi_iscsi_initiator_name_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_ISCSI_INITIATOR_NAME_GET)(
-    struct efi_iscsi_initiator_name_protocol *This,
-    size_t *BufferSize,
-    void *Buffer
+typedef efi_status (EFI_API *efi_iscsi_initiator_name_get)(
+    struct efi_iscsi_initiator_name_protocol *self,
+    size_t *buffer_size,
+    void *buffer
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ISCSI_INITIATOR_NAME_SET)(
-    struct efi_iscsi_initiator_name_protocol *This,
-    size_t *BufferSize,
-    void *Buffer
+typedef efi_status (EFI_API *efi_iscsi_initiator_name_set)(
+    struct efi_iscsi_initiator_name_protocol *self,
+    size_t *buffer_size,
+    void *buffer
 );
 
 struct efi_iscsi_initiator_name_protocol {
-    EFI_ISCSI_INITIATOR_NAME_GET Get;
-    EFI_ISCSI_INITIATOR_NAME_SET Set;
+    efi_iscsi_initiator_name_get get;
+    efi_iscsi_initiator_name_set set;
 };
 
 #ifdef __cplusplus

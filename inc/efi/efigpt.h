@@ -13,25 +13,25 @@ extern "C" {
 
 /* Packed: the header is 92 bytes on disk; natural alignment would pad it to 96. */
 struct efi_partition_table_header {
-    struct efi_table_header Header;
-    EFI_LBA MyLBA;
-    EFI_LBA AlternateLBA;
-    EFI_LBA FirstUsableLBA;
-    EFI_LBA LastUsableLBA;
-    struct efi_guid DiskGUID;
-    EFI_LBA PartitionEntryLBA;
-    uint32_t NumberOfPartitionEntries;
-    uint32_t SizeOfPartitionEntry;
-    uint32_t PartitionEntryArrayCRC32;
+    struct efi_table_header header;
+    efi_lba my_lba;
+    efi_lba alternate_lba;
+    efi_lba first_usable_lba;
+    efi_lba last_usable_lba;
+    struct efi_guid disk_guid;
+    efi_lba partition_entry_lba;
+    uint32_t number_of_partition_entries;
+    uint32_t size_of_partition_entry;
+    uint32_t partition_entry_array_crc32;
 } __attribute__((__packed__));
 
 struct efi_partition_entry {
-    struct efi_guid PartitionTypeGUID;
-    struct efi_guid UniquePartitionGUID;
-    EFI_LBA StartingLBA;
-    EFI_LBA EndingLBA;
-    uint64_t Attributes;
-    uint16_t PartitionName[36];
+    struct efi_guid partition_type_guid;
+    struct efi_guid unique_partition_guid;
+    efi_lba starting_lba;
+    efi_lba ending_lba;
+    uint64_t attributes;
+    uint16_t partition_name[36];
 } __attribute__((__packed__));
 
 #define EFI_PART_TYPE_UNUSED_GUID \

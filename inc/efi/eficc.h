@@ -13,18 +13,18 @@ extern "C" {
 struct efi_cc_measurement_protocol;
 
 struct efi_cc_version {
-    uint8_t Major;
-    uint8_t Minor;
+    uint8_t major;
+    uint8_t minor;
 };
 
-typedef uint32_t EFI_CC_EVENT_LOG_BITMAP;
-typedef uint32_t EFI_CC_EVENT_ALGORITHM_BITMAP;
+typedef uint32_t efi_cc_event_log_bitmap;
+typedef uint32_t efi_cc_event_algorithm_bitmap;
 
 #define EFI_CC_BOOT_HASH_ALG_SHA384 0x00000004
 
 struct efi_cc_type {
-    uint8_t Type;
-    uint8_t SubType;
+    uint8_t type;
+    uint8_t sub_type;
 };
 
 #define EFI_CC_TYPE_NONE 0
@@ -34,84 +34,84 @@ struct efi_cc_type {
 #define EFI_CC_TYPE_RISCV_APTEE 3
 
 struct efi_cc_boot_service_capability {
-    uint8_t Size;
-    struct efi_cc_version StructureVersion;
-    struct efi_cc_version ProtocolVersion;
-    EFI_CC_EVENT_ALGORITHM_BITMAP HashAlgorithmBitmap;
-    EFI_CC_EVENT_LOG_BITMAP SupportedEventLogs;
-    struct efi_cc_type CcType;
+    uint8_t size;
+    struct efi_cc_version structure_version;
+    struct efi_cc_version protocol_version;
+    efi_cc_event_algorithm_bitmap hash_algorithm_bitmap;
+    efi_cc_event_log_bitmap supported_event_logs;
+    struct efi_cc_type cc_type;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_CC_GET_CAPABILITY)(
-    struct efi_cc_measurement_protocol *This,
-    struct efi_cc_boot_service_capability *ProtocolCapability
+typedef efi_status (EFI_API *efi_cc_get_capability)(
+    struct efi_cc_measurement_protocol *self,
+    struct efi_cc_boot_service_capability *protocol_capability
 );
 
-typedef uint32_t EFI_CC_EVENT_LOG_FORMAT;
+typedef uint32_t efi_cc_event_log_format;
 
 #define EFI_CC_EVENT_LOG_FORMAT_TCG_2 0x00000002
 
-typedef EFI_STATUS (EFI_API *EFI_CC_GET_EVENT_LOG)(
-    struct efi_cc_measurement_protocol *This,
-    EFI_CC_EVENT_LOG_FORMAT EventLogFormat,
-    EFI_PHYSICAL_ADDRESS *EventLogLocation,
-    EFI_PHYSICAL_ADDRESS *EventLogLastEntry,
-    bool *EventLogTruncated
+typedef efi_status (EFI_API *efi_cc_get_event_log)(
+    struct efi_cc_measurement_protocol *self,
+    efi_cc_event_log_format event_log_format,
+    efi_physical_address *event_log_location,
+    efi_physical_address *event_log_last_entry,
+    bool *event_log_truncated
 );
 
 #define EFI_CC_FLAG_EXTEND_ONLY 0x0000000000000001
 #define EFI_CC_FLAG_PE_COFF_IMAGE 0x0000000000000010
 
-typedef uint32_t EFI_CC_MR_INDEX;
+typedef uint32_t efi_cc_mr_index;
 
-/* Not named by the specification: the value HeaderVersion must hold. */
+/* Not named by the specification: the value header_version must hold. */
 #define EFI_CC_EVENT_HEADER_VERSION 1
 
 struct efi_cc_event_header {
-    uint32_t HeaderSize;
-    uint16_t HeaderVersion;
-    EFI_CC_MR_INDEX MrIndex;
-    uint32_t EventType;
+    uint32_t header_size;
+    uint16_t header_version;
+    efi_cc_mr_index mr_index;
+    uint32_t event_type;
 } __attribute__((__packed__));
 
-/* Event is variable-length: Size covers the whole record. */
+/* event is variable-length: size covers the whole record. */
 struct efi_cc_event {
-    uint32_t Size;
-    struct efi_cc_event_header Header;
-    uint8_t Event[1];
+    uint32_t size;
+    struct efi_cc_event_header header;
+    uint8_t event[1];
 } __attribute__((__packed__));
 
-/* Printed as a second EFI_CC_GET_EVENT_LOG; named as the protocol structure types it. */
-typedef EFI_STATUS (EFI_API *EFI_CC_HASH_LOG_EXTEND_EVENT)(
-    struct efi_cc_measurement_protocol *This,
-    uint64_t Flags,
-    EFI_PHYSICAL_ADDRESS DataToHash,
-    uint64_t DataToHashLen,
-    struct efi_cc_event *EfiCcEvent
+/* Printed as a second efi_cc_get_event_log; named as the protocol structure types it. */
+typedef efi_status (EFI_API *efi_cc_hash_log_extend_event)(
+    struct efi_cc_measurement_protocol *self,
+    uint64_t flags,
+    efi_physical_address data_to_hash,
+    uint64_t data_to_hash_len,
+    struct efi_cc_event *efi_cc_event
 );
 
-typedef uint32_t EFI_TCG_PCRINDEX;
+typedef uint32_t efi_tcg_pcrindex;
 
-typedef EFI_STATUS (EFI_API *EFI_CC_MAP_PCR_TO_MR_INDEX)(
-    struct efi_cc_measurement_protocol *This,
-    EFI_TCG_PCRINDEX PcrIndex,
-    EFI_CC_MR_INDEX *MrIndex
+typedef efi_status (EFI_API *efi_cc_map_pcr_to_mr_index)(
+    struct efi_cc_measurement_protocol *self,
+    efi_tcg_pcrindex pcr_index,
+    efi_cc_mr_index *mr_index
 );
 
 struct efi_cc_measurement_protocol {
-    EFI_CC_GET_CAPABILITY GetCapability;
-    EFI_CC_GET_EVENT_LOG GetEventLog;
-    EFI_CC_HASH_LOG_EXTEND_EVENT HashLogExtendEvent;
-    EFI_CC_MAP_PCR_TO_MR_INDEX MapPcrToMrIndex;
+    efi_cc_get_capability get_capability;
+    efi_cc_get_event_log get_event_log;
+    efi_cc_hash_log_extend_event hash_log_extend_event;
+    efi_cc_map_pcr_to_mr_index map_pcr_to_mr_index;
 };
 
 #define EFI_CC_FINAL_EVENTS_TABLE_GUID \
     {0xdd4a4648, 0x2de7, 0x4665, {0x96, 0x4d, 0x21, 0xd9, 0xef, 0x5f, 0xb4, 0x46}}
 
-/* NumberOfEvents serialised CC_EVENT records follow; they have no C layout (TCG digest lists). */
+/* number_of_events serialised CC_EVENT records follow; they have no C layout (TCG digest lists). */
 struct efi_cc_final_events_table {
-    uint64_t Version;
-    uint64_t NumberOfEvents;
+    uint64_t version;
+    uint64_t number_of_events;
 };
 
 #ifdef __cplusplus

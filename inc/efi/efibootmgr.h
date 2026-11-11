@@ -7,10 +7,10 @@
 extern "C" {
 #endif
 
-/* Byte-packed variable data: Description, FilePathList and OptionalData follow. */
+/* Byte-packed variable data: description, file_path_list, and optional_data follow. */
 struct efi_load_option {
-    uint32_t Attributes;
-    uint16_t FilePathListLength;
+    uint32_t attributes;
+    uint16_t file_path_list_length;
 } __attribute__((__packed__));
 
 #define EFI_LOAD_OPTION_ACTIVE 0x00000001
@@ -28,24 +28,24 @@ struct efi_load_option {
 
 union efi_boot_key_data {
     struct __attribute__((__packed__)) {
-        uint32_t Revision : 8;
-        uint32_t ShiftPressed : 1;
-        uint32_t ControlPressed : 1;
-        uint32_t AltPressed : 1;
-        uint32_t LogoPressed : 1;
-        uint32_t MenuPressed : 1;
-        uint32_t SysReqPressed : 1;
-        uint32_t Reserved : 16;
-        uint32_t InputKeyCount : 2;
-    } Options;
-    uint32_t PackedValue;
+        uint32_t revision : 8;
+        uint32_t shift_pressed : 1;
+        uint32_t control_pressed : 1;
+        uint32_t alt_pressed : 1;
+        uint32_t logo_pressed : 1;
+        uint32_t menu_pressed : 1;
+        uint32_t sys_req_pressed : 1;
+        uint32_t reserved : 16;
+        uint32_t input_key_count : 2;
+    } options;
+    uint32_t packed_value;
 } __attribute__((__packed__));
 
-/* Variable data: KeyData.Options.InputKeyCount EFI_INPUT_KEYs (Keys) follow at byte offset 10. */
+/* Variable data: key_data.options.input_key_count struct efi_input_key (keys) follow at byte offset 10. */
 struct efi_key_option {
-    union efi_boot_key_data KeyData;
-    uint32_t BootOptionCrc;
-    uint16_t BootOption;
+    union efi_boot_key_data key_data;
+    uint32_t boot_option_crc;
+    uint16_t boot_option;
 } __attribute__((__packed__));
 
 #define EFI_BOOT_MANAGER_POLICY_PROTOCOL_GUID \
@@ -55,15 +55,19 @@ struct efi_key_option {
 
 struct efi_boot_manager_policy_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_PATH)(
-    struct efi_boot_manager_policy_protocol *This,
-    struct efi_device_path_protocol *DevicePath,
-    bool Recursive
+typedef efi_status (EFI_API *efi_boot_manager_policy_connect_device_path)(
+    struct efi_boot_manager_policy_protocol *self,
+    struct efi_device_path_protocol *device_path,
+    bool recursive
 );
 
-typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS)(
-    struct efi_boot_manager_policy_protocol *This,
-    struct efi_guid *Class
+typedef efi_status (EFI_API *efi_boot_manager_policy_connect_device_class)(
+    struct efi_boot_manager_policy_protocol *self,
+#ifdef __cplusplus
+    struct efi_guid *class_
+#else
+    struct efi_guid *class
+#endif
 );
 
 #define EFI_BOOT_MANAGER_POLICY_CONSOLE_GUID \
@@ -79,9 +83,9 @@ typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS)(
     {0x113B2126, 0xFC8A, 0x11E3, {0xBD, 0x6C, 0xB8, 0xE8, 0x56, 0x2C, 0xBA, 0xFA}}
 
 struct efi_boot_manager_policy_protocol {
-    uint64_t Revision;
-    EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_PATH ConnectDevicePath;
-    EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS ConnectDeviceClass;
+    uint64_t revision;
+    efi_boot_manager_policy_connect_device_path connect_device_path;
+    efi_boot_manager_policy_connect_device_class connect_device_class;
 };
 
 #define EFI_GLOBAL_VARIABLE \

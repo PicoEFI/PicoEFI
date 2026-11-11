@@ -17,158 +17,158 @@ extern "C" {
 struct efi_ip4_protocol;
 
 struct efi_ip4_config_data {
-    uint8_t DefaultProtocol;
-    uint8_t AcceptAnyProtocol;
-    uint8_t AcceptIcmpErrors;
-    uint8_t AcceptBroadcast;
-    uint8_t AcceptPromiscuous;
-    uint8_t UseDefaultAddress;
-    struct efi_ipv4_address StationAddress;
-    struct efi_ipv4_address SubnetMask;
-    uint8_t TypeOfService;
-    uint8_t TimeToLive;
-    uint8_t DoNotFragment;
-    uint8_t RawData;
-    uint32_t ReceiveTimeout;
-    uint32_t TransmitTimeout;
+    uint8_t default_protocol;
+    uint8_t accept_any_protocol;
+    uint8_t accept_icmp_errors;
+    uint8_t accept_broadcast;
+    uint8_t accept_promiscuous;
+    uint8_t use_default_address;
+    struct efi_ipv4_address station_address;
+    struct efi_ipv4_address subnet_mask;
+    uint8_t type_of_service;
+    uint8_t time_to_live;
+    uint8_t do_not_fragment;
+    uint8_t raw_data;
+    uint32_t receive_timeout;
+    uint32_t transmit_timeout;
 };
 
 struct efi_ip4_route_table {
-    struct efi_ipv4_address SubnetAddress;
-    struct efi_ipv4_address SubnetMask;
-    struct efi_ipv4_address GatewayAddress;
+    struct efi_ipv4_address subnet_address;
+    struct efi_ipv4_address subnet_mask;
+    struct efi_ipv4_address gateway_address;
 };
 
 struct efi_ip4_icmp_type {
-    uint8_t Type;
-    uint8_t Code;
+    uint8_t type;
+    uint8_t code;
 };
 
-/* RouteTable points to RouteCount entries, as described; the structure prints it by value. */
+/* route_table points to route_count entries, as described; the structure prints it by value. */
 struct efi_ip4_mode_data {
-    uint8_t IsStarted;
-    uint32_t MaxPacketSize;
-    struct efi_ip4_config_data ConfigData;
-    uint8_t IsConfigured;
-    uint32_t GroupCount;
-    struct efi_ipv4_address *GroupTable;
-    uint32_t RouteCount;
-    struct efi_ip4_route_table *RouteTable;
-    uint32_t IcmpTypeCount;
-    struct efi_ip4_icmp_type *IcmpTypeList;
+    uint8_t is_started;
+    uint32_t max_packet_size;
+    struct efi_ip4_config_data config_data;
+    uint8_t is_configured;
+    uint32_t group_count;
+    struct efi_ipv4_address *group_table;
+    uint32_t route_count;
+    struct efi_ip4_route_table *route_table;
+    uint32_t icmp_type_count;
+    struct efi_ip4_icmp_type *icmp_type_list;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_GET_MODE_DATA)(
-    struct efi_ip4_protocol *This,
-    struct efi_ip4_mode_data *Ip4ModeData,
-    struct efi_managed_network_config_data *MnpConfigData,
-    struct efi_simple_network_mode *SnpModeData
+typedef efi_status (EFI_API *efi_ip4_get_mode_data)(
+    struct efi_ip4_protocol *self,
+    struct efi_ip4_mode_data *ip4_mode_data,
+    struct efi_managed_network_config_data *mnp_config_data,
+    struct efi_simple_network_mode *snp_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_CONFIGURE)(
-    struct efi_ip4_protocol *This,
-    struct efi_ip4_config_data *IpConfigData
+typedef efi_status (EFI_API *efi_ip4_configure)(
+    struct efi_ip4_protocol *self,
+    struct efi_ip4_config_data *ip_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_GROUPS)(
-    struct efi_ip4_protocol *This,
-    bool JoinFlag,
-    struct efi_ipv4_address *GroupAddress
+typedef efi_status (EFI_API *efi_ip4_groups)(
+    struct efi_ip4_protocol *self,
+    bool join_flag,
+    struct efi_ipv4_address *group_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_ROUTES)(
-    struct efi_ip4_protocol *This,
-    bool DeleteRoute,
-    struct efi_ipv4_address *SubnetAddress,
-    struct efi_ipv4_address *SubnetMask,
-    struct efi_ipv4_address *GatewayAddress
+typedef efi_status (EFI_API *efi_ip4_routes)(
+    struct efi_ip4_protocol *self,
+    bool delete_route,
+    struct efi_ipv4_address *subnet_address,
+    struct efi_ipv4_address *subnet_mask,
+    struct efi_ipv4_address *gateway_address
 );
 
 struct efi_ip4_header {
-    uint8_t HeaderLength:4;
-    uint8_t Version:4;
-    uint8_t TypeOfService;
-    uint16_t TotalLength;
-    uint16_t Identification;
-    uint16_t Fragmentation;
-    uint8_t TimeToLive;
-    uint8_t Protocol;
-    uint16_t Checksum;
-    struct efi_ipv4_address SourceAddress;
-    struct efi_ipv4_address DestinationAddress;
+    uint8_t header_length:4;
+    uint8_t version:4;
+    uint8_t type_of_service;
+    uint16_t total_length;
+    uint16_t identification;
+    uint16_t fragmentation;
+    uint8_t time_to_live;
+    uint8_t protocol;
+    uint16_t checksum;
+    struct efi_ipv4_address source_address;
+    struct efi_ipv4_address destination_address;
 } __attribute__((__packed__));
 
 struct efi_ip4_fragment_data {
-    uint32_t FragmentLength;
-    void *FragmentBuffer;
+    uint32_t fragment_length;
+    void *fragment_buffer;
 };
 
 struct efi_ip4_receive_data {
-    struct efi_time TimeStamp;
-    EFI_EVENT RecycleSignal;
-    uint32_t HeaderLength;
-    struct efi_ip4_header *Header;
-    uint32_t OptionsLength;
-    void *Options;
-    uint32_t DataLength;
-    uint32_t FragmentCount;
-    struct efi_ip4_fragment_data FragmentTable[1];
+    struct efi_time time_stamp;
+    efi_event recycle_signal;
+    uint32_t header_length;
+    struct efi_ip4_header *header;
+    uint32_t options_length;
+    void *options;
+    uint32_t data_length;
+    uint32_t fragment_count;
+    struct efi_ip4_fragment_data fragment_table[1];
 };
 
 struct efi_ip4_override_data {
-    struct efi_ipv4_address SourceAddress;
-    struct efi_ipv4_address GatewayAddress;
-    uint8_t Protocol;
-    uint8_t TypeOfService;
-    uint8_t TimeToLive;
-    uint8_t DoNotFragment;
+    struct efi_ipv4_address source_address;
+    struct efi_ipv4_address gateway_address;
+    uint8_t protocol;
+    uint8_t type_of_service;
+    uint8_t time_to_live;
+    uint8_t do_not_fragment;
 };
 
 struct efi_ip4_transmit_data {
-    struct efi_ipv4_address DestinationAddress;
-    struct efi_ip4_override_data *OverrideData;
-    uint32_t OptionsLength;
-    void *OptionsBuffer;
-    uint32_t TotalDataLength;
-    uint32_t FragmentCount;
-    struct efi_ip4_fragment_data FragmentTable[1];
+    struct efi_ipv4_address destination_address;
+    struct efi_ip4_override_data *override_data;
+    uint32_t options_length;
+    void *options_buffer;
+    uint32_t total_data_length;
+    uint32_t fragment_count;
+    struct efi_ip4_fragment_data fragment_table[1];
 };
 
 struct efi_ip4_completion_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
+    efi_event event;
+    efi_status status;
     union {
-        struct efi_ip4_receive_data *RxData;
-        struct efi_ip4_transmit_data *TxData;
-    } Packet;
+        struct efi_ip4_receive_data *rx_data;
+        struct efi_ip4_transmit_data *tx_data;
+    } packet;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_TRANSMIT)(
-    struct efi_ip4_protocol *This,
-    struct efi_ip4_completion_token *Token
+typedef efi_status (EFI_API *efi_ip4_transmit)(
+    struct efi_ip4_protocol *self,
+    struct efi_ip4_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_RECEIVE)(
-    struct efi_ip4_protocol *This,
-    struct efi_ip4_completion_token *Token
+typedef efi_status (EFI_API *efi_ip4_receive)(
+    struct efi_ip4_protocol *self,
+    struct efi_ip4_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_CANCEL)(
-    struct efi_ip4_protocol *This,
-    struct efi_ip4_completion_token *Token
+typedef efi_status (EFI_API *efi_ip4_cancel)(
+    struct efi_ip4_protocol *self,
+    struct efi_ip4_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP4_POLL)(struct efi_ip4_protocol *This);
+typedef efi_status (EFI_API *efi_ip4_poll)(struct efi_ip4_protocol *self);
 
 struct efi_ip4_protocol {
-    EFI_IP4_GET_MODE_DATA GetModeData;
-    EFI_IP4_CONFIGURE Configure;
-    EFI_IP4_GROUPS Groups;
-    EFI_IP4_ROUTES Routes;
-    EFI_IP4_TRANSMIT Transmit;
-    EFI_IP4_RECEIVE Receive;
-    EFI_IP4_CANCEL Cancel;
-    EFI_IP4_POLL Poll;
+    efi_ip4_get_mode_data get_mode_data;
+    efi_ip4_configure configure;
+    efi_ip4_groups groups;
+    efi_ip4_routes routes;
+    efi_ip4_transmit transmit;
+    efi_ip4_receive receive;
+    efi_ip4_cancel cancel;
+    efi_ip4_poll poll;
 };
 
 #define EFI_IP6_SERVICE_BINDING_PROTOCOL_GUID \
@@ -180,28 +180,28 @@ struct efi_ip4_protocol {
 struct efi_ip6_protocol;
 
 struct efi_ip6_config_data {
-    uint8_t DefaultProtocol;
-    uint8_t AcceptAnyProtocol;
-    uint8_t AcceptIcmpErrors;
-    uint8_t AcceptPromiscuous;
-    struct efi_ipv6_address DestinationAddress;
-    struct efi_ipv6_address StationAddress;
-    uint8_t TrafficClass;
-    uint8_t HopLimit;
-    uint32_t FlowLabel;
-    uint32_t ReceiveTimeout;
-    uint32_t TransmitTimeout;
+    uint8_t default_protocol;
+    uint8_t accept_any_protocol;
+    uint8_t accept_icmp_errors;
+    uint8_t accept_promiscuous;
+    struct efi_ipv6_address destination_address;
+    struct efi_ipv6_address station_address;
+    uint8_t traffic_class;
+    uint8_t hop_limit;
+    uint32_t flow_label;
+    uint32_t receive_timeout;
+    uint32_t transmit_timeout;
 };
 
 struct efi_ip6_address_info {
-    struct efi_ipv6_address Address;
-    uint8_t PrefixLength;
+    struct efi_ipv6_address address;
+    uint8_t prefix_length;
 };
 
 struct efi_ip6_route_table {
-    struct efi_ipv6_address Gateway;
-    struct efi_ipv6_address Destination;
-    uint8_t PrefixLength;
+    struct efi_ipv6_address gateway;
+    struct efi_ipv6_address destination;
+    uint8_t prefix_length;
 };
 
 #define EFI_NEIGHBOR_IN_COMPLETE ((uint32_t)0)
@@ -211,14 +211,14 @@ struct efi_ip6_route_table {
 #define EFI_NEIGHBOR_PROBE ((uint32_t)4)
 
 struct efi_ip6_neighbor_cache {
-    struct efi_ipv6_address Neighbor;
-    struct efi_mac_address LinkAddress;
-    uint32_t State;
+    struct efi_ipv6_address neighbor;
+    struct efi_mac_address link_address;
+    uint32_t state;
 };
 
 struct efi_ip6_icmp_type {
-    uint8_t Type;
-    uint8_t Code;
+    uint8_t type;
+    uint8_t code;
 };
 
 #define EFI_ICMP_V6_DEST_UNREACHABLE 0x1
@@ -254,140 +254,140 @@ struct efi_ip6_icmp_type {
 #define EFI_ICMP_V6_UNRECOGNIZE_OPTION 0x2
 
 struct efi_ip6_mode_data {
-    uint8_t IsStarted;
-    uint32_t MaxPacketSize;
-    struct efi_ip6_config_data ConfigData;
-    uint8_t IsConfigured;
-    uint32_t AddressCount;
-    struct efi_ip6_address_info *AddressList;
-    uint32_t GroupCount;
-    struct efi_ipv6_address *GroupTable;
-    uint32_t RouteCount;
-    struct efi_ip6_route_table *RouteTable;
-    uint32_t NeighborCount;
-    struct efi_ip6_neighbor_cache *NeighborCache;
-    uint32_t PrefixCount;
-    struct efi_ip6_address_info *PrefixTable;
-    uint32_t IcmpTypeCount;
-    struct efi_ip6_icmp_type *IcmpTypeList;
+    uint8_t is_started;
+    uint32_t max_packet_size;
+    struct efi_ip6_config_data config_data;
+    uint8_t is_configured;
+    uint32_t address_count;
+    struct efi_ip6_address_info *address_list;
+    uint32_t group_count;
+    struct efi_ipv6_address *group_table;
+    uint32_t route_count;
+    struct efi_ip6_route_table *route_table;
+    uint32_t neighbor_count;
+    struct efi_ip6_neighbor_cache *neighbor_cache;
+    uint32_t prefix_count;
+    struct efi_ip6_address_info *prefix_table;
+    uint32_t icmp_type_count;
+    struct efi_ip6_icmp_type *icmp_type_list;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_GET_MODE_DATA)(
-    struct efi_ip6_protocol *This,
-    struct efi_ip6_mode_data *Ip6ModeData,
-    struct efi_managed_network_config_data *MnpConfigData,
-    struct efi_simple_network_mode *SnpModeData
+typedef efi_status (EFI_API *efi_ip6_get_mode_data)(
+    struct efi_ip6_protocol *self,
+    struct efi_ip6_mode_data *ip6_mode_data,
+    struct efi_managed_network_config_data *mnp_config_data,
+    struct efi_simple_network_mode *snp_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_CONFIGURE)(
-    struct efi_ip6_protocol *This,
-    struct efi_ip6_config_data *Ip6ConfigData
+typedef efi_status (EFI_API *efi_ip6_configure)(
+    struct efi_ip6_protocol *self,
+    struct efi_ip6_config_data *ip6_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_GROUPS)(
-    struct efi_ip6_protocol *This,
-    bool JoinFlag,
-    struct efi_ipv6_address *GroupAddress
+typedef efi_status (EFI_API *efi_ip6_groups)(
+    struct efi_ip6_protocol *self,
+    bool join_flag,
+    struct efi_ipv6_address *group_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_ROUTES)(
-    struct efi_ip6_protocol *This,
-    bool DeleteRoute,
-    struct efi_ipv6_address *Destination,
-    uint8_t PrefixLength,
-    struct efi_ipv6_address *GatewayAddress
+typedef efi_status (EFI_API *efi_ip6_routes)(
+    struct efi_ip6_protocol *self,
+    bool delete_route,
+    struct efi_ipv6_address *destination,
+    uint8_t prefix_length,
+    struct efi_ipv6_address *gateway_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_NEIGHBORS)(
-    struct efi_ip6_protocol *This,
-    bool DeleteFlag,
-    struct efi_ipv6_address *TargetIp6Address,
-    struct efi_mac_address *TargetLinkAddress,
-    uint32_t Timeout,
-    bool Override
+typedef efi_status (EFI_API *efi_ip6_neighbors)(
+    struct efi_ip6_protocol *self,
+    bool delete_flag,
+    struct efi_ipv6_address *target_ip6_address,
+    struct efi_mac_address *target_link_address,
+    uint32_t timeout,
+    bool override
 );
 
 struct efi_ip6_header {
-    uint8_t TrafficClassH:4;
-    uint8_t Version:4;
-    uint8_t FlowLabelH:4;
-    uint8_t TrafficClassL:4;
-    uint16_t FlowLabelL;
-    uint16_t PayloadLength;
-    uint8_t NextHeader;
-    uint8_t HopLimit;
-    struct efi_ipv6_address SourceAddress;
-    struct efi_ipv6_address DestinationAddress;
+    uint8_t traffic_class_h:4;
+    uint8_t version:4;
+    uint8_t flow_label_h:4;
+    uint8_t traffic_class_l:4;
+    uint16_t flow_label_l;
+    uint16_t payload_length;
+    uint8_t next_header;
+    uint8_t hop_limit;
+    struct efi_ipv6_address source_address;
+    struct efi_ipv6_address destination_address;
 } __attribute__((__packed__));
 
 struct efi_ip6_fragment_data {
-    uint32_t FragmentLength;
-    void *FragmentBuffer;
+    uint32_t fragment_length;
+    void *fragment_buffer;
 };
 
 struct efi_ip6_receive_data {
-    struct efi_time TimeStamp;
-    EFI_EVENT RecycleSignal;
-    uint32_t HeaderLength;
-    struct efi_ip6_header *Header;
-    uint32_t DataLength;
-    uint32_t FragmentCount;
-    struct efi_ip6_fragment_data FragmentTable[1];
+    struct efi_time time_stamp;
+    efi_event recycle_signal;
+    uint32_t header_length;
+    struct efi_ip6_header *header;
+    uint32_t data_length;
+    uint32_t fragment_count;
+    struct efi_ip6_fragment_data fragment_table[1];
 };
 
 struct efi_ip6_override_data {
-    uint8_t Protocol;
-    uint8_t HopLimit;
-    uint32_t FlowLabel;
+    uint8_t protocol;
+    uint8_t hop_limit;
+    uint32_t flow_label;
 };
 
 struct efi_ip6_transmit_data {
-    struct efi_ipv6_address DestinationAddress;
-    struct efi_ip6_override_data *OverrideData;
-    uint32_t ExtHdrsLength;
-    void *ExtHdrs;
-    uint8_t NextHeader;
-    uint32_t DataLength;
-    uint32_t FragmentCount;
-    struct efi_ip6_fragment_data FragmentTable[1];
+    struct efi_ipv6_address destination_address;
+    struct efi_ip6_override_data *override_data;
+    uint32_t ext_hdrs_length;
+    void *ext_hdrs;
+    uint8_t next_header;
+    uint32_t data_length;
+    uint32_t fragment_count;
+    struct efi_ip6_fragment_data fragment_table[1];
 };
 
 struct efi_ip6_completion_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
+    efi_event event;
+    efi_status status;
     union {
-        struct efi_ip6_receive_data *RxData;
-        struct efi_ip6_transmit_data *TxData;
-    } Packet;
+        struct efi_ip6_receive_data *rx_data;
+        struct efi_ip6_transmit_data *tx_data;
+    } packet;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_TRANSMIT)(
-    struct efi_ip6_protocol *This,
-    struct efi_ip6_completion_token *Token
+typedef efi_status (EFI_API *efi_ip6_transmit)(
+    struct efi_ip6_protocol *self,
+    struct efi_ip6_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_RECEIVE)(
-    struct efi_ip6_protocol *This,
-    struct efi_ip6_completion_token *Token
+typedef efi_status (EFI_API *efi_ip6_receive)(
+    struct efi_ip6_protocol *self,
+    struct efi_ip6_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_CANCEL)(
-    struct efi_ip6_protocol *This,
-    struct efi_ip6_completion_token *Token
+typedef efi_status (EFI_API *efi_ip6_cancel)(
+    struct efi_ip6_protocol *self,
+    struct efi_ip6_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_IP6_POLL)(struct efi_ip6_protocol *This);
+typedef efi_status (EFI_API *efi_ip6_poll)(struct efi_ip6_protocol *self);
 
 struct efi_ip6_protocol {
-    EFI_IP6_GET_MODE_DATA GetModeData;
-    EFI_IP6_CONFIGURE Configure;
-    EFI_IP6_GROUPS Groups;
-    EFI_IP6_ROUTES Routes;
-    EFI_IP6_NEIGHBORS Neighbors;
-    EFI_IP6_TRANSMIT Transmit;
-    EFI_IP6_RECEIVE Receive;
-    EFI_IP6_CANCEL Cancel;
-    EFI_IP6_POLL Poll;
+    efi_ip6_get_mode_data get_mode_data;
+    efi_ip6_configure configure;
+    efi_ip6_groups groups;
+    efi_ip6_routes routes;
+    efi_ip6_neighbors neighbors;
+    efi_ip6_transmit transmit;
+    efi_ip6_receive receive;
+    efi_ip6_cancel cancel;
+    efi_ip6_poll poll;
 };
 
 #ifdef __cplusplus

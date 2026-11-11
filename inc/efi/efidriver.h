@@ -19,20 +19,20 @@ struct efi_driver_diagnostics2_protocol;
 #define EFI_DRIVER_DIAGNOSTIC_TYPE_CANCEL ((uint32_t)3)
 #define EFI_DRIVER_DIAGNOSTIC_TYPE_MAXIMUM ((uint32_t)4)
 
-typedef EFI_STATUS (EFI_API *EFI_DRIVER_DIAGNOSTICS2_RUN_DIAGNOSTICS)(
-    struct efi_driver_diagnostics2_protocol *This,
-    EFI_HANDLE ControllerHandle,
-    EFI_HANDLE ChildHandle,
-    uint32_t DiagnosticType,
-    char *Language,
-    struct efi_guid **ErrorType,
-    size_t *BufferSize,
-    uint16_t **Buffer
+typedef efi_status (EFI_API *efi_driver_diagnostics2_run_diagnostics)(
+    struct efi_driver_diagnostics2_protocol *self,
+    efi_handle controller_handle,
+    efi_handle child_handle,
+    uint32_t diagnostic_type,
+    char *language,
+    struct efi_guid **error_type,
+    size_t *buffer_size,
+    uint16_t **buffer
 );
 
 struct efi_driver_diagnostics2_protocol {
-    EFI_DRIVER_DIAGNOSTICS2_RUN_DIAGNOSTICS RunDiagnostics;
-    char *SupportedLanguages;
+    efi_driver_diagnostics2_run_diagnostics run_diagnostics;
+    char *supported_languages;
 };
 
 #define EFI_PLATFORM_TO_DRIVER_CONFIGURATION_PROTOCOL_GUID \
@@ -41,14 +41,14 @@ struct efi_driver_diagnostics2_protocol {
 struct efi_platform_to_driver_configuration_protocol
 ;
 
-typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_QUERY)(
-    struct efi_platform_to_driver_configuration_protocol *This,
-    EFI_HANDLE ControllerHandle,
-    EFI_HANDLE ChildHandle,
-    size_t *Instance,
-    struct efi_guid **ParameterTypeGuid,
-    void **ParameterBlock,
-    size_t *ParameterBlockSize
+typedef efi_status (EFI_API *efi_platform_to_driver_configuration_query)(
+    struct efi_platform_to_driver_configuration_protocol *self,
+    efi_handle controller_handle,
+    efi_handle child_handle,
+    size_t *instance,
+    struct efi_guid **parameter_type_guid,
+    void **parameter_block,
+    size_t *parameter_block_size
 );
 
 #define EFI_PLATFORM_CONFIGURATION_ACTION_NONE ((uint32_t)0)
@@ -59,41 +59,41 @@ typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_QUERY)(
 #define EFI_PLATFORM_CONFIGURATION_ACTION_UNSUPPORTED_GUID ((uint32_t)5)
 #define EFI_PLATFORM_CONFIGURATION_ACTION_MAXIMUM ((uint32_t)6)
 
-typedef EFI_STATUS (EFI_API *EFI_PLATFORM_TO_DRIVER_CONFIGURATION_RESPONSE)(
-    struct efi_platform_to_driver_configuration_protocol *This,
-    EFI_HANDLE ControllerHandle,
-    EFI_HANDLE ChildHandle,
-    size_t *Instance,
-    struct efi_guid *ParameterTypeGuid,
-    void *ParameterBlock,
-    size_t ParameterBlockSize,
-    uint32_t ConfigurationAction
+typedef efi_status (EFI_API *efi_platform_to_driver_configuration_response)(
+    struct efi_platform_to_driver_configuration_protocol *self,
+    efi_handle controller_handle,
+    efi_handle child_handle,
+    size_t *instance,
+    struct efi_guid *parameter_type_guid,
+    void *parameter_block,
+    size_t parameter_block_size,
+    uint32_t configuration_action
 );
 
 struct efi_platform_to_driver_configuration_protocol {
-    EFI_PLATFORM_TO_DRIVER_CONFIGURATION_QUERY Query;
-    EFI_PLATFORM_TO_DRIVER_CONFIGURATION_RESPONSE Response;
+    efi_platform_to_driver_configuration_query query;
+    efi_platform_to_driver_configuration_response response;
 };
 
 #define EFI_PLATFORM_TO_DRIVER_CONFIGURATION_CLP_GUID \
     {0x345ecc0e, 0xcb6, 0x4b75, {0xbb, 0x57, 0x1b, 0x12, 0x9c, 0x47, 0x33, 0x3e}}
 
 struct efi_configure_clp_parameter_blk {
-    char *CLPCommand;
-    uint32_t CLPCommandLength;
-    char *CLPReturnString;
-    uint32_t CLPReturnStringLength;
-    uint8_t CLPCmdStatus;
-    uint8_t CLPErrorValue;
-    uint16_t CLPMsgCode;
+    char *clp_command;
+    uint32_t clp_command_length;
+    char *clp_return_string;
+    uint32_t clp_return_string_length;
+    uint8_t clp_cmd_status;
+    uint8_t clp_error_value;
+    uint16_t clp_msg_code;
 };
 
 #define EFI_DRIVER_SUPPORTED_EFI_VERSION_PROTOCOL_GUID \
     {0x5c198761, 0x16a8, 0x4e69, {0x97, 0x2c, 0x89, 0xd6, 0x79, 0x54, 0xf8, 0x1d}}
 
 struct efi_driver_supported_efi_version_protocol {
-    uint32_t Length;
-    uint32_t FirmwareVersion;
+    uint32_t length;
+    uint32_t firmware_version;
 };
 
 #define EFI_DRIVER_HEALTH_PROTOCOL_GUID \
@@ -109,35 +109,35 @@ struct efi_driver_health_protocol;
 #define EFI_DRIVER_HEALTH_STATUS_REBOOT_REQUIRED ((uint32_t)5)
 
 struct efi_driver_health_hii_message {
-    EFI_HII_HANDLE HiiHandle;
-    EFI_STRING_ID StringId;
-    uint64_t MessageCode;
+    efi_hii_handle hii_handle;
+    efi_string_id string_id;
+    uint64_t message_code;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_GET_HEALTH_STATUS)(
-    struct efi_driver_health_protocol *This,
-    EFI_HANDLE ControllerHandle,
-    EFI_HANDLE ChildHandle,
-    uint32_t *HealthStatus,
-    struct efi_driver_health_hii_message **MessageList,
-    EFI_HII_HANDLE *FormHiiHandle
+typedef efi_status (EFI_API *efi_driver_health_get_health_status)(
+    struct efi_driver_health_protocol *self,
+    efi_handle controller_handle,
+    efi_handle child_handle,
+    uint32_t *health_status,
+    struct efi_driver_health_hii_message **message_list,
+    efi_hii_handle *form_hii_handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_REPAIR_NOTIFY)(
-    uintptr_t Value,
-    uintptr_t Limit
+typedef efi_status (EFI_API *efi_driver_health_repair_notify)(
+    uintptr_t value,
+    uintptr_t limit
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DRIVER_HEALTH_REPAIR)(
-    struct efi_driver_health_protocol *This,
-    EFI_HANDLE ControllerHandle,
-    EFI_HANDLE ChildHandle,
-    EFI_DRIVER_HEALTH_REPAIR_NOTIFY RepairNotify
+typedef efi_status (EFI_API *efi_driver_health_repair)(
+    struct efi_driver_health_protocol *self,
+    efi_handle controller_handle,
+    efi_handle child_handle,
+    efi_driver_health_repair_notify repair_notify
 );
 
 struct efi_driver_health_protocol {
-    EFI_DRIVER_HEALTH_GET_HEALTH_STATUS GetHealthStatus;
-    EFI_DRIVER_HEALTH_REPAIR Repair;
+    efi_driver_health_get_health_status get_health_status;
+    efi_driver_health_repair repair;
 };
 
 #define EFI_ADAPTER_INFORMATION_PROTOCOL_GUID \
@@ -145,81 +145,81 @@ struct efi_driver_health_protocol {
 
 struct efi_adapter_information_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_ADAPTER_INFO_GET_INFO)(
-    struct efi_adapter_information_protocol *This,
-    struct efi_guid *InformationType,
-    void **InformationBlock,
-    size_t *InformationBlockSize
+typedef efi_status (EFI_API *efi_adapter_info_get_info)(
+    struct efi_adapter_information_protocol *self,
+    struct efi_guid *information_type,
+    void **information_block,
+    size_t *information_block_size
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ADAPTER_INFO_SET_INFO)(
-    struct efi_adapter_information_protocol *This,
-    struct efi_guid *InformationType,
-    void *InformationBlock,
-    size_t InformationBlockSize
+typedef efi_status (EFI_API *efi_adapter_info_set_info)(
+    struct efi_adapter_information_protocol *self,
+    struct efi_guid *information_type,
+    void *information_block,
+    size_t information_block_size
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ADAPTER_INFO_GET_SUPPORTED_TYPES)(
-    struct efi_adapter_information_protocol *This,
-    struct efi_guid **InfoTypesBuffer,
-    size_t *InfoTypesBufferCount
+typedef efi_status (EFI_API *efi_adapter_info_get_supported_types)(
+    struct efi_adapter_information_protocol *self,
+    struct efi_guid **info_types_buffer,
+    size_t *info_types_buffer_count
 );
 
 struct efi_adapter_information_protocol {
-    EFI_ADAPTER_INFO_GET_INFO GetInformation;
-    EFI_ADAPTER_INFO_SET_INFO SetInformation;
-    EFI_ADAPTER_INFO_GET_SUPPORTED_TYPES GetSupportedTypes;
+    efi_adapter_info_get_info get_information;
+    efi_adapter_info_set_info set_information;
+    efi_adapter_info_get_supported_types get_supported_types;
 };
 
 #define EFI_ADAPTER_INFO_MEDIA_STATE_GUID \
     {0xD7C74207, 0xA831, 0x4A26, {0xB1, 0xF5, 0xD1, 0x93, 0x06, 0x5C, 0xE8, 0xB6}}
 
 struct efi_adapter_info_media_state {
-    EFI_STATUS MediaState;
+    efi_status media_state;
 };
 
 #define EFI_ADAPTER_INFO_NETWORK_BOOT_GUID \
     {0x1FBD2960, 0x4130, 0x41E5, {0x94, 0xAC, 0xD2, 0xCF, 0x03, 0x7F, 0xB3, 0x7C}}
 
-/* The first member is misprinted iSsciIpv4BootCapablity in the structure only. */
+/* The first member is misprinted issci_ipv4_boot_capablity in the structure only. */
 struct efi_adapter_info_network_boot {
-    uint8_t iScsiIpv4BootCapablity;
-    uint8_t iScsiIpv6BootCapablity;
-    uint8_t FCoeBootCapablity;
-    uint8_t OffloadCapability;
-    uint8_t iScsiMpioCapability;
-    uint8_t iScsiIpv4Boot;
-    uint8_t iScsiIpv6Boot;
-    uint8_t FCoeBoot;
+    uint8_t iscsi_ipv4_boot_capablity;
+    uint8_t iscsi_ipv6_boot_capablity;
+    uint8_t fcoe_boot_capablity;
+    uint8_t offload_capability;
+    uint8_t iscsi_mpio_capability;
+    uint8_t iscsi_ipv4_boot;
+    uint8_t iscsi_ipv6_boot;
+    uint8_t fcoe_boot;
 };
 
 #define EFI_ADAPTER_INFO_SAN_MAC_ADDRESS_GUID \
     {0x114da5ef, 0x2cf1, 0x4e12, {0x9b, 0xbb, 0xc4, 0x70, 0xb5, 0x52, 0x05, 0xd9}}
 
 struct efi_adapter_info_san_mac_address {
-    struct efi_mac_address SanMacAddress;
+    struct efi_mac_address san_mac_address;
 };
 
 #define EFI_ADAPTER_INFO_UNDI_IPV6_SUPPORT_GUID \
     {0x4bd56be3, 0x4975, 0x4d8a, {0xa0, 0xad, 0xc4, 0x91, 0x20, 0x4b, 0x5d, 0x4d}}
 
 struct efi_adapter_info_undi_ipv6_support {
-    uint8_t Ipv6Support;
+    uint8_t ipv6_support;
 };
 
 #define EFI_ADAPTER_INFO_MEDIA_TYPE_GUID \
     {0x8484472f, 0x71ec, 0x411a, {0xb3, 0x9c, 0x62, 0xcd, 0x94, 0xd9, 0x91, 0x6e}}
 
 struct efi_adapter_info_media_type {
-    uint8_t MediaType;
+    uint8_t media_type;
 };
 
 #define EFI_ADAPTER_INFO_CDAT_TYPE_GUID \
     {0x77af24d1, 0xb6f0, 0x42b9, {0x83, 0xf5, 0x8f, 0xe6, 0xe8, 0x3e, 0xb6, 0xf0}}
 
 __extension__ struct efi_adapter_info_cdat_type_type {
-    size_t CdatSize;
-    uint8_t Cdat[];
+    size_t cdat_size;
+    uint8_t cdat[];
 };
 
 #ifdef __cplusplus

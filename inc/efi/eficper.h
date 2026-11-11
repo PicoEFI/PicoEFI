@@ -22,14 +22,14 @@ extern "C" {
 #define EFI_ERROR_RECORD_HEADER_PARTITION_ID_VALID 0x00000004
 
 struct efi_error_time_stamp {
-    uint8_t Seconds;
-    uint8_t Minutes;
-    uint8_t Hours;
-    uint8_t Flag;
-    uint8_t Day;
-    uint8_t Month;
-    uint8_t Year;
-    uint8_t Century;
+    uint8_t seconds;
+    uint8_t minutes;
+    uint8_t hours;
+    uint8_t flag;
+    uint8_t day;
+    uint8_t month;
+    uint8_t year;
+    uint8_t century;
 } __attribute__((__packed__));
 
 #define EFI_ERROR_TIME_STAMP_PRECISE 0x01
@@ -74,37 +74,37 @@ struct efi_error_time_stamp {
 #define EFI_HW_ERROR_FLAGS_PREVERR 0x00000002
 #define EFI_HW_ERROR_FLAGS_SIMULATED 0x00000004
 
-/* SectionCount struct efi_error_section_descriptor follow, then the section bodies. */
+/* section_count struct efi_error_section_descriptor follow, then the section bodies. */
 struct efi_common_error_record_header {
-    uint32_t SignatureStart;
-    uint16_t Revision;
-    uint32_t SignatureEnd;
-    uint16_t SectionCount;
-    uint32_t ErrorSeverity;
-    uint32_t ValidationBits;
-    uint32_t RecordLength;
-    struct efi_error_time_stamp TimeStamp;
-    struct efi_guid PlatformID;
-    struct efi_guid PartitionID;
-    struct efi_guid CreatorID;
-    struct efi_guid NotificationType;
-    uint64_t RecordID;
-    uint32_t Flags;
-    uint64_t PersistenceInfo;
-    uint8_t Resv1[12];
+    uint32_t signature_start;
+    uint16_t revision;
+    uint32_t signature_end;
+    uint16_t section_count;
+    uint32_t error_severity;
+    uint32_t validation_bits;
+    uint32_t record_length;
+    struct efi_error_time_stamp time_stamp;
+    struct efi_guid platform_id;
+    struct efi_guid partition_id;
+    struct efi_guid creator_id;
+    struct efi_guid notification_type;
+    uint64_t record_id;
+    uint32_t flags;
+    uint64_t persistence_info;
+    uint8_t resv1[12];
 } __attribute__((__packed__));
 
 struct efi_generic_error_status {
-    uint64_t Resv1:8;
-    uint64_t Type:8;
-    uint64_t AddressSignal:1;
-    uint64_t ControlSignal:1;
-    uint64_t DataSignal:1;
-    uint64_t DetectedByResponder:1;
-    uint64_t DetectedByRequester:1;
-    uint64_t FirstError:1;
-    uint64_t OverflowNotLogged:1;
-    uint64_t Resv2:41;
+    uint64_t resv1:8;
+    uint64_t type:8;
+    uint64_t address_signal:1;
+    uint64_t control_signal:1;
+    uint64_t data_signal:1;
+    uint64_t detected_by_responder:1;
+    uint64_t detected_by_requester:1;
+    uint64_t first_error:1;
+    uint64_t overflow_not_logged:1;
+    uint64_t resv2:41;
 } __attribute__((__packed__));
 
 #define EFI_ERROR_INTERNAL ((uint32_t)1)
@@ -190,16 +190,16 @@ struct efi_generic_error_status {
     {0x5E4706C1, 0x5356, 0x48C6, {0x93, 0x0B, 0x52, 0xF2, 0x12, 0x0A, 0x44, 0x58}}
 
 struct efi_error_section_descriptor {
-    uint32_t SectionOffset;
-    uint32_t SectionLength;
-    uint16_t Revision;
-    uint8_t SecValidMask;
-    uint8_t Resv1;
-    uint32_t SectionFlags;
-    struct efi_guid SectionType;
-    struct efi_guid FruId;
-    uint32_t Severity;
-    char FruString[20];
+    uint32_t section_offset;
+    uint32_t section_length;
+    uint16_t revision;
+    uint8_t sec_valid_mask;
+    uint8_t resv1;
+    uint32_t section_flags;
+    struct efi_guid section_type;
+    struct efi_guid fru_id;
+    uint32_t severity;
+    char fru_string[20];
 } __attribute__((__packed__));
 
 #define EFI_GENERIC_ERROR_PROC_TYPE_VALID 0x0000000000000001
@@ -243,39 +243,39 @@ struct efi_error_section_descriptor {
 #define EFI_GENERIC_ERROR_PROC_FLAGS_CORRECTED 0x08
 
 struct efi_processor_generic_error_data {
-    uint64_t ValidFields;
-    uint8_t Type;
-    uint8_t Isa;
-    uint8_t ErrorType;
-    uint8_t Operation;
-    uint8_t Flags;
-    uint8_t Level;
-    uint16_t Resv1;
-    uint64_t VersionInfo;
-    char BrandString[128];
-    uint64_t ApicId;
-    uint64_t TargetAddr;
-    uint64_t RequestorId;
-    uint64_t ResponderId;
-    uint64_t InstructionIP;
+    uint64_t valid_fields;
+    uint8_t type;
+    uint8_t isa;
+    uint8_t error_type;
+    uint8_t operation;
+    uint8_t flags;
+    uint8_t level;
+    uint16_t resv1;
+    uint64_t version_info;
+    char brand_string[128];
+    uint64_t apic_id;
+    uint64_t target_addr;
+    uint64_t requestor_id;
+    uint64_t responder_id;
+    uint64_t instruction_ip;
 } __attribute__((__packed__));
 
 #define EFI_IA32_X64_PROCESSOR_ERROR_APIC_ID_VALID 0x0000000000000001
 #define EFI_IA32_X64_PROCESSOR_ERROR_CPU_ID_INFO_VALID 0x0000000000000002
 
 struct efi_ia32_x64_valid_bits {
-    uint64_t ApicIdValid:1;
-    uint64_t CpuIdInfoValid:1;
-    uint64_t ErrorInfoNum:6;
-    uint64_t ContextNum:6;
-    uint64_t Resv1:50;
+    uint64_t apic_id_valid:1;
+    uint64_t cpu_id_info_valid:1;
+    uint64_t error_info_num:6;
+    uint64_t context_num:6;
+    uint64_t resv1:50;
 } __attribute__((__packed__));
 
-/* The error information and context structures that ValidFields counts follow. */
+/* The error information and context structures that valid_fields counts follow. */
 struct efi_ia32_x64_processor_error_record {
-    uint64_t ValidFields;
-    uint64_t ApicId;
-    uint8_t CpuIdInfo[48];
+    uint64_t valid_fields;
+    uint64_t apic_id;
+    uint8_t cpu_id_info[48];
 } __attribute__((__packed__));
 
 #define EFI_IA32_X64_ERROR_TYPE_CACHE_CHECK_GUID \
@@ -320,16 +320,16 @@ struct efi_ia32_x64_processor_error_record {
 #define EFI_CACHE_CHECK_OPERATION_TYPE_SNOOP 8
 
 struct efi_ia32_x64_cache_check_info {
-    uint64_t ValidFields:16;
-    uint64_t TransactionType:2;
-    uint64_t Operation:4;
-    uint64_t Level:3;
-    uint64_t ContextCorrupt:1;
-    uint64_t ErrorUncorrected:1;
-    uint64_t PreciseIp:1;
-    uint64_t RestartableIp:1;
-    uint64_t Overflow:1;
-    uint64_t Resv1:34;
+    uint64_t valid_fields:16;
+    uint64_t transaction_type:2;
+    uint64_t operation:4;
+    uint64_t level:3;
+    uint64_t context_corrupt:1;
+    uint64_t error_uncorrected:1;
+    uint64_t precise_ip:1;
+    uint64_t restartable_ip:1;
+    uint64_t overflow:1;
+    uint64_t resv1:34;
 } __attribute__((__packed__));
 
 #define EFI_TLB_CHECK_TRANSACTION_TYPE_VALID 0x0001
@@ -354,16 +354,16 @@ struct efi_ia32_x64_cache_check_info {
 #define EFI_TLB_CHECK_OPERATION_TYPE_PREFETCH 6
 
 struct efi_ia32_x64_tlb_check_info {
-    uint64_t ValidFields:16;
-    uint64_t TransactionType:2;
-    uint64_t Operation:4;
-    uint64_t Level:3;
-    uint64_t ContextCorrupt:1;
-    uint64_t ErrorUncorrected:1;
-    uint64_t PreciseIp:1;
-    uint64_t RestartableIp:1;
-    uint64_t Overflow:1;
-    uint64_t Resv1:34;
+    uint64_t valid_fields:16;
+    uint64_t transaction_type:2;
+    uint64_t operation:4;
+    uint64_t level:3;
+    uint64_t context_corrupt:1;
+    uint64_t error_uncorrected:1;
+    uint64_t precise_ip:1;
+    uint64_t restartable_ip:1;
+    uint64_t overflow:1;
+    uint64_t resv1:34;
 } __attribute__((__packed__));
 
 #define EFI_BUS_CHECK_TRANSACTION_TYPE_VALID 0x0001
@@ -401,19 +401,19 @@ struct efi_ia32_x64_tlb_check_info {
 #define EFI_BUS_CHECK_ADDRESS_SPACE_TYPE_OTHER 3
 
 struct efi_ia32_x64_bus_check_info {
-    uint64_t ValidFields:16;
-    uint64_t TransactionType:2;
-    uint64_t Operation:4;
-    uint64_t Level:3;
-    uint64_t ContextCorrupt:1;
-    uint64_t ErrorUncorrected:1;
-    uint64_t PreciseIp:1;
-    uint64_t RestartableIp:1;
-    uint64_t Overflow:1;
-    uint64_t ParticipationType:2;
-    uint64_t TimeOut:1;
-    uint64_t AddressSpace:2;
-    uint64_t Resv1:29;
+    uint64_t valid_fields:16;
+    uint64_t transaction_type:2;
+    uint64_t operation:4;
+    uint64_t level:3;
+    uint64_t context_corrupt:1;
+    uint64_t error_uncorrected:1;
+    uint64_t precise_ip:1;
+    uint64_t restartable_ip:1;
+    uint64_t overflow:1;
+    uint64_t participation_type:2;
+    uint64_t time_out:1;
+    uint64_t address_space:2;
+    uint64_t resv1:29;
 } __attribute__((__packed__));
 
 #define EFI_MS_CHECK_ERROR_TYPE_VALID 0x0001
@@ -431,32 +431,32 @@ struct efi_ia32_x64_bus_check_info {
 #define EFI_MS_CHECK_ERROR_TYPE_INTERNAL_UNCLASSIFIED 5
 
 struct efi_ia32_x64_ms_check_info {
-    uint64_t ValidFields:16;
-    uint64_t ErrorType:3;
-    uint64_t ContextCorrupt:1;
-    uint64_t ErrorUncorrected:1;
-    uint64_t PreciseIp:1;
-    uint64_t RestartableIp:1;
-    uint64_t Overflow:1;
-    uint64_t Resv1:40;
+    uint64_t valid_fields:16;
+    uint64_t error_type:3;
+    uint64_t context_corrupt:1;
+    uint64_t error_uncorrected:1;
+    uint64_t precise_ip:1;
+    uint64_t restartable_ip:1;
+    uint64_t overflow:1;
+    uint64_t resv1:40;
 } __attribute__((__packed__));
 
 union efi_ia32_x64_check_info_item {
-    struct efi_ia32_x64_cache_check_info CacheCheck;
-    struct efi_ia32_x64_tlb_check_info TlbCheck;
-    struct efi_ia32_x64_bus_check_info BusCheck;
-    struct efi_ia32_x64_ms_check_info MsCheck;
-    uint64_t Data64;
+    struct efi_ia32_x64_cache_check_info cache_check;
+    struct efi_ia32_x64_tlb_check_info tlb_check;
+    struct efi_ia32_x64_bus_check_info bus_check;
+    struct efi_ia32_x64_ms_check_info ms_check;
+    uint64_t data64;
 } __attribute__((__packed__));
 
 struct efi_ia32_x64_process_error_info {
-    struct efi_guid ErrorType;
-    uint64_t ValidFields;
-    union efi_ia32_x64_check_info_item CheckInfo;
-    uint64_t TargetId;
-    uint64_t RequestorId;
-    uint64_t ResponderId;
-    uint64_t InstructionIP;
+    struct efi_guid error_type;
+    uint64_t valid_fields;
+    union efi_ia32_x64_check_info_item check_info;
+    uint64_t target_id;
+    uint64_t requestor_id;
+    uint64_t responder_id;
+    uint64_t instruction_ip;
 } __attribute__((__packed__));
 
 #define EFI_REG_CONTEXT_TYPE_UNCLASSIFIED 0x0000
@@ -468,79 +468,79 @@ struct efi_ia32_x64_process_error_info {
 #define EFI_REG_CONTEXT_TYPE_DR_X64 0x0006
 #define EFI_REG_CONTEXT_TYPE_MEM_MAP 0x0007
 
-/* The register array follows: ArraySize bytes, zero-padded to a multiple of 16. */
+/* The register array follows: array_size bytes, zero-padded to a multiple of 16. */
 struct efi_ia32_x64_processor_context_info {
-    uint16_t RegisterType;
-    uint16_t ArraySize;
-    uint32_t MsrAddress;
-    uint64_t MmRegisterAddress;
+    uint16_t register_type;
+    uint16_t array_size;
+    uint32_t msr_address;
+    uint64_t mm_register_address;
 } __attribute__((__packed__));
 
 struct efi_context_ia32_register_state {
-    uint32_t Eax;
-    uint32_t Ebx;
-    uint32_t Ecx;
-    uint32_t Edx;
-    uint32_t Esi;
-    uint32_t Edi;
-    uint32_t Ebp;
-    uint32_t Esp;
-    uint16_t Cs;
-    uint16_t Ds;
-    uint16_t Ss;
-    uint16_t Es;
-    uint16_t Fs;
-    uint16_t Gs;
-    uint32_t Eflags;
-    uint32_t Eip;
-    uint32_t Cr0;
-    uint32_t Cr1;
-    uint32_t Cr2;
-    uint32_t Cr3;
-    uint32_t Cr4;
-    uint32_t Gdtr[2];
-    uint32_t Idtr[2];
-    uint16_t Ldtr;
-    uint16_t Tr;
+    uint32_t eax;
+    uint32_t ebx;
+    uint32_t ecx;
+    uint32_t edx;
+    uint32_t esi;
+    uint32_t edi;
+    uint32_t ebp;
+    uint32_t esp;
+    uint16_t cs;
+    uint16_t ds;
+    uint16_t ss;
+    uint16_t es;
+    uint16_t fs;
+    uint16_t gs;
+    uint32_t eflags;
+    uint32_t eip;
+    uint32_t cr0;
+    uint32_t cr1;
+    uint32_t cr2;
+    uint32_t cr3;
+    uint32_t cr4;
+    uint32_t gdtr[2];
+    uint32_t idtr[2];
+    uint16_t ldtr;
+    uint16_t tr;
 } __attribute__((__packed__));
 
 /* The instruction pointer is misprinted EIP. */
 struct efi_context_x64_register_state {
-    uint64_t Rax;
-    uint64_t Rbx;
-    uint64_t Rcx;
-    uint64_t Rdx;
-    uint64_t Rsi;
-    uint64_t Rdi;
-    uint64_t Rbp;
-    uint64_t Rsp;
-    uint64_t R8;
-    uint64_t R9;
-    uint64_t R10;
-    uint64_t R11;
-    uint64_t R12;
-    uint64_t R13;
-    uint64_t R14;
-    uint64_t R15;
-    uint16_t Cs;
-    uint16_t Ds;
-    uint16_t Ss;
-    uint16_t Es;
-    uint16_t Fs;
-    uint16_t Gs;
-    uint32_t Resv1;
-    uint64_t Rflags;
-    uint64_t Rip;
-    uint64_t Cr0;
-    uint64_t Cr1;
-    uint64_t Cr2;
-    uint64_t Cr3;
-    uint64_t Cr4;
-    uint64_t Cr8;
-    uint64_t Gdtr[2];
-    uint64_t Idtr[2];
-    uint16_t Ldtr;
-    uint16_t Tr;
+    uint64_t rax;
+    uint64_t rbx;
+    uint64_t rcx;
+    uint64_t rdx;
+    uint64_t rsi;
+    uint64_t rdi;
+    uint64_t rbp;
+    uint64_t rsp;
+    uint64_t r8;
+    uint64_t r9;
+    uint64_t r10;
+    uint64_t r11;
+    uint64_t r12;
+    uint64_t r13;
+    uint64_t r14;
+    uint64_t r15;
+    uint16_t cs;
+    uint16_t ds;
+    uint16_t ss;
+    uint16_t es;
+    uint16_t fs;
+    uint16_t gs;
+    uint32_t resv1;
+    uint64_t rflags;
+    uint64_t rip;
+    uint64_t cr0;
+    uint64_t cr1;
+    uint64_t cr2;
+    uint64_t cr3;
+    uint64_t cr4;
+    uint64_t cr8;
+    uint64_t gdtr[2];
+    uint64_t idtr[2];
+    uint16_t ldtr;
+    uint16_t tr;
 } __attribute__((__packed__));
 
 #define EFI_ARM_PROC_ERROR_MPIDR_VALID 0x00000001
@@ -554,20 +554,20 @@ struct efi_context_x64_register_state {
 #define EFI_ARM_PROC_ERROR_AFFINITY_LVL_3 0x03
 
 /*
- * ErrInfoNum struct efi_arm_processor_error_information follow, then ContextInfoNum
+ * err_info_num struct efi_arm_processor_error_information follow, then context_info_num
  * struct efi_arm_processor_context_information, then any vendor-specific information.
  */
 struct efi_arm_processor_error_record {
-    uint32_t ValidFields;
-    uint16_t ErrInfoNum;
-    uint16_t ContextInfoNum;
-    uint32_t SectionLength;
-    uint8_t ErrAffinityLvl;
-    uint8_t Reserved[3];
-    uint64_t MPIDR_EL1;
-    uint64_t MIDR_EL1;
-    uint32_t RunState;
-    uint32_t PsciState;
+    uint32_t valid_fields;
+    uint16_t err_info_num;
+    uint16_t context_info_num;
+    uint32_t section_length;
+    uint8_t err_affinity_lvl;
+    uint8_t reserved[3];
+    uint64_t mpidr_el1;
+    uint64_t midr_el1;
+    uint32_t run_state;
+    uint32_t psci_state;
 } __attribute__((__packed__));
 
 #define EFI_ARM_PROCESSOR_ERROR_INFO_STRUCTURE_REVISION 0
@@ -613,15 +613,15 @@ struct efi_arm_processor_error_record {
 #define EFI_ARM_CACHE_ERROR_OPERATION_MANAGEMENT 10
 
 struct efi_arm_cache_error_info {
-    uint64_t ValidFields:16;
-    uint64_t TransactionType:2;
-    uint64_t Operation:4;
-    uint64_t Level:3;
-    uint64_t ContextCorrupt:1;
-    uint64_t ErrorCorrected:1;
-    uint64_t PrecisePc:1;
-    uint64_t RestartablePc:1;
-    uint64_t Reserved:35;
+    uint64_t valid_fields:16;
+    uint64_t transaction_type:2;
+    uint64_t operation:4;
+    uint64_t level:3;
+    uint64_t context_corrupt:1;
+    uint64_t error_corrected:1;
+    uint64_t precise_pc:1;
+    uint64_t restartable_pc:1;
+    uint64_t reserved:35;
 } __attribute__((__packed__));
 
 #define EFI_ARM_TLB_ERROR_TRANSACTION_TYPE_VALID 0x0001
@@ -647,15 +647,15 @@ struct efi_arm_cache_error_info {
 #define EFI_ARM_TLB_ERROR_OPERATION_EXTERNAL_MANAGEMENT_OPERATION 8
 
 struct efi_arm_tlb_error_info {
-    uint64_t ValidFields:16;
-    uint64_t TransactionType:2;
-    uint64_t Operation:4;
-    uint64_t Level:3;
-    uint64_t ContextCorrupt:1;
-    uint64_t ErrorCorrected:1;
-    uint64_t PrecisePc:1;
-    uint64_t RestartablePc:1;
-    uint64_t Reserved:35;
+    uint64_t valid_fields:16;
+    uint64_t transaction_type:2;
+    uint64_t operation:4;
+    uint64_t level:3;
+    uint64_t context_corrupt:1;
+    uint64_t error_corrected:1;
+    uint64_t precise_pc:1;
+    uint64_t restartable_pc:1;
+    uint64_t reserved:35;
 } __attribute__((__packed__));
 
 #define EFI_ARM_BUS_ERROR_TRANSACTION_TYPE_VALID 0x0001
@@ -693,38 +693,38 @@ struct efi_arm_tlb_error_info {
 #define EFI_ARM_BUS_CHECK_ADDRESS_SPACE_TYPE_DEVICE_MEMORY 3
 
 struct efi_arm_bus_error_info {
-    uint64_t ValidFields:16;
-    uint64_t TransactionType:2;
-    uint64_t Operation:4;
-    uint64_t Level:3;
-    uint64_t ContextCorrupt:1;
-    uint64_t ErrorCorrected:1;
-    uint64_t PrecisePc:1;
-    uint64_t RestartablePc:1;
-    uint64_t ParticipationType:2;
-    uint64_t TimeOut:1;
-    uint64_t AddressSpace:2;
-    uint64_t MemoryAccessAttribute:9;
-    uint64_t AccessMode:1;
-    uint64_t Reserved:20;
+    uint64_t valid_fields:16;
+    uint64_t transaction_type:2;
+    uint64_t operation:4;
+    uint64_t level:3;
+    uint64_t context_corrupt:1;
+    uint64_t error_corrected:1;
+    uint64_t precise_pc:1;
+    uint64_t restartable_pc:1;
+    uint64_t participation_type:2;
+    uint64_t time_out:1;
+    uint64_t address_space:2;
+    uint64_t memory_access_attribute:9;
+    uint64_t access_mode:1;
+    uint64_t reserved:20;
 } __attribute__((__packed__));
 
 union efi_arm_error_information {
-    struct efi_arm_cache_error_info CacheErrorInfo;
-    struct efi_arm_tlb_error_info TlbErrorInfo;
-    struct efi_arm_bus_error_info BusErrorInfo;
+    struct efi_arm_cache_error_info cache_error_info;
+    struct efi_arm_tlb_error_info tlb_error_info;
+    struct efi_arm_bus_error_info bus_error_info;
 } __attribute__((__packed__));
 
 struct efi_arm_processor_error_information {
-    uint8_t Version;
-    uint8_t Length;
-    uint16_t ValidFields;
-    uint8_t Type;
-    uint16_t ErrorCount;
-    uint8_t Flags;
-    union efi_arm_error_information ErrorInfo;
-    uint64_t VirtualFaultAddress;
-    uint64_t PhysicalFaultAddress;
+    uint8_t version;
+    uint8_t length;
+    uint16_t valid_fields;
+    uint8_t type;
+    uint16_t error_count;
+    uint8_t flags;
+    union efi_arm_error_information error_info;
+    uint64_t virtual_fault_address;
+    uint64_t physical_fault_address;
 } __attribute__((__packed__));
 
 #define EFI_ARM_REG_CONTEXT_TYPE_AARCH32_GPRS 0
@@ -739,198 +739,198 @@ struct efi_arm_processor_error_information {
 #define EFI_ARM_REG_CONTEXT_TYPE_TTBR128 9
 
 struct efi_arm_aarch32_context_gpr {
-    uint32_t R0;
-    uint32_t R1;
-    uint32_t R2;
-    uint32_t R3;
-    uint32_t R4;
-    uint32_t R5;
-    uint32_t R6;
-    uint32_t R7;
-    uint32_t R8;
-    uint32_t R9;
-    uint32_t R10;
-    uint32_t R11;
-    uint32_t R12;
-    uint32_t R13_SP;
-    uint32_t R14_LR;
-    uint32_t R15_PC;
+    uint32_t r0;
+    uint32_t r1;
+    uint32_t r2;
+    uint32_t r3;
+    uint32_t r4;
+    uint32_t r5;
+    uint32_t r6;
+    uint32_t r7;
+    uint32_t r8;
+    uint32_t r9;
+    uint32_t r10;
+    uint32_t r11;
+    uint32_t r12;
+    uint32_t r13_sp;
+    uint32_t r14_lr;
+    uint32_t r15_pc;
 } __attribute__((__packed__));
 
 struct efi_arm_aarch32_el1_context_system_registers {
-    uint32_t DFAR;
-    uint32_t DFSR;
-    uint32_t IFAR;
-    uint32_t ISR;
-    uint32_t MAIR0;
-    uint32_t MAIR1;
-    uint32_t MIDR;
-    uint32_t MPIDR;
-    uint32_t NMRR;
-    uint32_t PRRR;
-    uint32_t SCTLR;
-    uint32_t SPSR;
-    uint32_t SPSR_abt;
-    uint32_t SPSR_fiq;
-    uint32_t SPSR_irq;
-    uint32_t SPSR_svc;
-    uint32_t SPSR_und;
-    uint32_t TPIDRPRW;
-    uint32_t TPIDRURO;
-    uint32_t TPIDRURW;
-    uint32_t TTBCR;
-    uint32_t TTBR0;
-    uint32_t TTBR1;
-    uint32_t DACR;
+    uint32_t dfar;
+    uint32_t dfsr;
+    uint32_t ifar;
+    uint32_t isr;
+    uint32_t mair0;
+    uint32_t mair1;
+    uint32_t midr;
+    uint32_t mpidr;
+    uint32_t nmrr;
+    uint32_t prrr;
+    uint32_t sctlr;
+    uint32_t spsr;
+    uint32_t spsr_abt;
+    uint32_t spsr_fiq;
+    uint32_t spsr_irq;
+    uint32_t spsr_svc;
+    uint32_t spsr_und;
+    uint32_t tpidrprw;
+    uint32_t tpidruro;
+    uint32_t tpidrurw;
+    uint32_t ttbcr;
+    uint32_t ttbr0;
+    uint32_t ttbr1;
+    uint32_t dacr;
 } __attribute__((__packed__));
 
 struct efi_arm_aarch32_el2_context_system_registers {
-    uint32_t ELR_hyp;
-    uint32_t HAMAIR0;
-    uint32_t HAMAIR1;
-    uint32_t HCR;
-    uint32_t HCR2;
-    uint32_t HDFAR;
-    uint32_t HIFAR;
-    uint32_t HPFAR;
-    uint32_t HSR;
-    uint32_t HTCR;
-    uint32_t HTPIDR;
-    uint32_t HTTBR;
-    uint32_t SPSR_hyp;
-    uint32_t VTCR;
-    uint32_t VTTBR;
-    uint32_t DACR32_EL2;
+    uint32_t elr_hyp;
+    uint32_t hamair0;
+    uint32_t hamair1;
+    uint32_t hcr;
+    uint32_t hcr2;
+    uint32_t hdfar;
+    uint32_t hifar;
+    uint32_t hpfar;
+    uint32_t hsr;
+    uint32_t htcr;
+    uint32_t htpidr;
+    uint32_t httbr;
+    uint32_t spsr_hyp;
+    uint32_t vtcr;
+    uint32_t vttbr;
+    uint32_t dacr32_el2;
 } __attribute__((__packed__));
 
 struct efi_arm_aarch32_secure_context_system_registers {
-    uint32_t SCTLR;
-    uint32_t SPSR_mon;
+    uint32_t sctlr;
+    uint32_t spsr_mon;
 } __attribute__((__packed__));
 
 struct efi_arm_aarch64_context_gpr {
-    uint64_t X0;
-    uint64_t X1;
-    uint64_t X2;
-    uint64_t X3;
-    uint64_t X4;
-    uint64_t X5;
-    uint64_t X6;
-    uint64_t X7;
-    uint64_t X8;
-    uint64_t X9;
-    uint64_t X10;
-    uint64_t X11;
-    uint64_t X12;
-    uint64_t X13;
-    uint64_t X14;
-    uint64_t X15;
-    uint64_t X16;
-    uint64_t X17;
-    uint64_t X18;
-    uint64_t X19;
-    uint64_t X20;
-    uint64_t X21;
-    uint64_t X22;
-    uint64_t X23;
-    uint64_t X24;
-    uint64_t X25;
-    uint64_t X26;
-    uint64_t X27;
-    uint64_t X28;
-    uint64_t X29;
-    uint64_t X30;
-    uint64_t SP;
+    uint64_t x0;
+    uint64_t x1;
+    uint64_t x2;
+    uint64_t x3;
+    uint64_t x4;
+    uint64_t x5;
+    uint64_t x6;
+    uint64_t x7;
+    uint64_t x8;
+    uint64_t x9;
+    uint64_t x10;
+    uint64_t x11;
+    uint64_t x12;
+    uint64_t x13;
+    uint64_t x14;
+    uint64_t x15;
+    uint64_t x16;
+    uint64_t x17;
+    uint64_t x18;
+    uint64_t x19;
+    uint64_t x20;
+    uint64_t x21;
+    uint64_t x22;
+    uint64_t x23;
+    uint64_t x24;
+    uint64_t x25;
+    uint64_t x26;
+    uint64_t x27;
+    uint64_t x28;
+    uint64_t x29;
+    uint64_t x30;
+    uint64_t sp;
 } __attribute__((__packed__));
 
 struct efi_arm_aarch64_el1_context_system_registers {
-    uint64_t ELR_EL1;
-    uint64_t ESR_EL1;
-    uint64_t FAR_EL1;
-    uint64_t ISR_EL1;
-    uint64_t MAIR_EL1;
-    uint64_t MIDR_EL1;
-    uint64_t MPIDR_EL1;
-    uint64_t SCTLR_EL1;
-    uint64_t SP_EL0;
-    uint64_t SP_EL1;
-    uint64_t SPSR_EL1;
-    uint64_t TCR_EL1;
-    uint64_t TPIDR_EL0;
-    uint64_t TPIDR_EL1;
-    uint64_t TPIDRRO_EL0;
-    uint64_t TTBR0_EL1;
-    uint64_t TTBR1_EL1;
+    uint64_t elr_el1;
+    uint64_t esr_el1;
+    uint64_t far_el1;
+    uint64_t isr_el1;
+    uint64_t mair_el1;
+    uint64_t midr_el1;
+    uint64_t mpidr_el1;
+    uint64_t sctlr_el1;
+    uint64_t sp_el0;
+    uint64_t sp_el1;
+    uint64_t spsr_el1;
+    uint64_t tcr_el1;
+    uint64_t tpidr_el0;
+    uint64_t tpidr_el1;
+    uint64_t tpidrro_el0;
+    uint64_t ttbr0_el1;
+    uint64_t ttbr1_el1;
 } __attribute__((__packed__));
 
 struct efi_arm_aarch64_el2_context_system_registers {
-    uint64_t ELR_EL2;
-    uint64_t ESR_EL2;
-    uint64_t FAR_EL2;
-    uint64_t HACR_EL2;
-    uint64_t HCR_EL2;
-    uint64_t HPFAR_EL2;
-    uint64_t MAIR_EL2;
-    uint64_t SCTLR_EL2;
-    uint64_t SP_EL2;
-    uint64_t SPSR_EL2;
-    uint64_t TCR_EL2;
-    uint64_t TPIDR_EL2;
-    uint64_t TTBR0_EL2;
-    uint64_t VTCR_EL2;
-    uint64_t VTTBR_EL2;
+    uint64_t elr_el2;
+    uint64_t esr_el2;
+    uint64_t far_el2;
+    uint64_t hacr_el2;
+    uint64_t hcr_el2;
+    uint64_t hpfar_el2;
+    uint64_t mair_el2;
+    uint64_t sctlr_el2;
+    uint64_t sp_el2;
+    uint64_t spsr_el2;
+    uint64_t tcr_el2;
+    uint64_t tpidr_el2;
+    uint64_t ttbr0_el2;
+    uint64_t vtcr_el2;
+    uint64_t vttbr_el2;
 } __attribute__((__packed__));
 
 struct efi_arm_aarch64_el3_context_system_registers {
-    uint64_t ELR_EL3;
-    uint64_t ESR_EL3;
-    uint64_t FAR_EL3;
-    uint64_t MAIR_EL3;
-    uint64_t SCTLR_EL3;
-    uint64_t SP_EL3;
-    uint64_t SPSR_EL3;
-    uint64_t TCR_EL3;
-    uint64_t TPIDR_EL3;
-    uint64_t TTBR0_EL3;
+    uint64_t elr_el3;
+    uint64_t esr_el3;
+    uint64_t far_el3;
+    uint64_t mair_el3;
+    uint64_t sctlr_el3;
+    uint64_t sp_el3;
+    uint64_t spsr_el3;
+    uint64_t tcr_el3;
+    uint64_t tpidr_el3;
+    uint64_t ttbr0_el3;
 } __attribute__((__packed__));
 
 struct efi_arm_misc_context_system_register {
-    uint16_t MRS_Op2:3;
-    uint16_t MRS_CRm:4;
-    uint16_t MRS_CRn:4;
-    uint16_t MRS_Op1:3;
-    uint16_t MRS_O0:1;
-    uint16_t Reserved:1;
-    uint64_t RegisterVal;
+    uint16_t mrs_op2:3;
+    uint16_t mrs_c_rm:4;
+    uint16_t mrs_c_rn:4;
+    uint16_t mrs_op1:3;
+    uint16_t mrs_o0:1;
+    uint16_t reserved:1;
+    uint64_t register_val;
 } __attribute__((__packed__));
 
 struct efi_arm_ttbr128_context_system_registers {
-    uint64_t TTBR0_EL1[2];
-    uint64_t TTBR0_EL2[2];
-    uint64_t TTBR0_EL3[2];
-    uint64_t TTBR1_EL1[2];
-    uint64_t TTBR1_EL2[2];
-    uint64_t VTTBR_EL2[2];
+    uint64_t ttbr0_el1[2];
+    uint64_t ttbr0_el2[2];
+    uint64_t ttbr0_el3[2];
+    uint64_t ttbr1_el1[2];
+    uint64_t ttbr1_el2[2];
+    uint64_t vttbr_el2[2];
 } __attribute__((__packed__));
 
 union efi_context_register_array_info {
-    struct efi_arm_aarch32_context_gpr Type0SysRegs;
-    struct efi_arm_aarch32_el1_context_system_registers Type1SysRegs;
-    struct efi_arm_aarch32_el2_context_system_registers Type2SysRegs;
-    struct efi_arm_aarch32_secure_context_system_registers Type3SysRegs;
-    struct efi_arm_aarch64_context_gpr Type4SysRegs;
-    struct efi_arm_aarch64_el1_context_system_registers Type5SysRegs;
-    struct efi_arm_aarch64_el2_context_system_registers Type6SysRegs;
-    struct efi_arm_aarch64_el3_context_system_registers Type7SysRegs;
-    struct efi_arm_misc_context_system_register SysRegInfo;
-    struct efi_arm_ttbr128_context_system_registers Type9SysRegs;
+    struct efi_arm_aarch32_context_gpr type0_sys_regs;
+    struct efi_arm_aarch32_el1_context_system_registers type1_sys_regs;
+    struct efi_arm_aarch32_el2_context_system_registers type2_sys_regs;
+    struct efi_arm_aarch32_secure_context_system_registers type3_sys_regs;
+    struct efi_arm_aarch64_context_gpr type4_sys_regs;
+    struct efi_arm_aarch64_el1_context_system_registers type5_sys_regs;
+    struct efi_arm_aarch64_el2_context_system_registers type6_sys_regs;
+    struct efi_arm_aarch64_el3_context_system_registers type7_sys_regs;
+    struct efi_arm_misc_context_system_register sys_reg_info;
+    struct efi_arm_ttbr128_context_system_registers type9_sys_regs;
 } __attribute__((__packed__));
 
 struct efi_arm_processor_context_information {
-    uint16_t Version;
-    uint16_t RegisterContextType;
-    uint32_t RegisterArraySize;
-    union efi_context_register_array_info RegisterArray;
+    uint16_t version;
+    uint16_t register_context_type;
+    uint32_t register_array_size;
+    union efi_context_register_array_info register_array;
 } __attribute__((__packed__));
 
 #define EFI_PLATFORM_MEMORY_ERROR_STATUS_VALID 0x0000000000000001
@@ -974,26 +974,26 @@ struct efi_arm_processor_context_information {
 #define EFI_PLATFORM_MEMORY_ERROR_MEMORY_MAP_EVENT 15
 
 struct efi_platform_memory_error_data {
-    uint64_t ValidFields;
-    struct efi_generic_error_status ErrorStatus;
-    uint64_t PhysicalAddress;
-    uint64_t PhysicalAddressMask;
-    uint16_t Node;
-    uint16_t Card;
-    uint16_t ModuleRank;
-    uint16_t Bank;
-    uint16_t Device;
-    uint16_t Row;
-    uint16_t Column;
-    uint16_t BitPosition;
-    uint64_t RequestorId;
-    uint64_t ResponderId;
-    uint64_t TargetId;
-    uint8_t ErrorType;
-    uint8_t Extended;
-    uint16_t RankNum;
-    uint16_t CardHandle;
-    uint16_t ModuleHandle;
+    uint64_t valid_fields;
+    struct efi_generic_error_status error_status;
+    uint64_t physical_address;
+    uint64_t physical_address_mask;
+    uint16_t node;
+    uint16_t card;
+    uint16_t module_rank;
+    uint16_t bank;
+    uint16_t device;
+    uint16_t row;
+    uint16_t column;
+    uint16_t bit_position;
+    uint64_t requestor_id;
+    uint64_t responder_id;
+    uint64_t target_id;
+    uint8_t error_type;
+    uint8_t extended;
+    uint16_t rank_num;
+    uint16_t card_handle;
+    uint16_t module_handle;
 } __attribute__((__packed__));
 
 #define EFI_PLATFORM_MEMORY2_ERROR_STATUS_VALID 0x0000000000000001
@@ -1037,28 +1037,28 @@ struct efi_platform_memory_error_data {
 #define EFI_PLATFORM_MEMORY2_ERROR_MEMORY_MAP_EVENT 15
 
 struct efi_platform_memory2_error_data {
-    uint64_t ValidFields;
-    struct efi_generic_error_status ErrorStatus;
-    uint64_t PhysicalAddress;
-    uint64_t PhysicalAddressMask;
-    uint16_t Node;
-    uint16_t Card;
-    uint16_t Module;
-    uint16_t Bank;
-    uint32_t Device;
-    uint32_t Row;
-    uint32_t Column;
-    uint32_t Rank;
-    uint32_t BitPosition;
-    uint8_t ChipId;
-    uint8_t MemErrorType;
-    uint8_t Status;
-    uint8_t Reserved;
-    uint64_t RequestorId;
-    uint64_t ResponderId;
-    uint64_t TargetId;
-    uint32_t CardHandle;
-    uint32_t ModuleHandle;
+    uint64_t valid_fields;
+    struct efi_generic_error_status error_status;
+    uint64_t physical_address;
+    uint64_t physical_address_mask;
+    uint16_t node;
+    uint16_t card;
+    uint16_t module;
+    uint16_t bank;
+    uint32_t device;
+    uint32_t row;
+    uint32_t column;
+    uint32_t rank;
+    uint32_t bit_position;
+    uint8_t chip_id;
+    uint8_t mem_error_type;
+    uint8_t status;
+    uint8_t reserved;
+    uint64_t requestor_id;
+    uint64_t responder_id;
+    uint64_t target_id;
+    uint32_t card_handle;
+    uint32_t module_handle;
 } __attribute__((__packed__));
 
 #define EFI_PCIE_ERROR_PORT_TYPE_VALID 0x0000000000000001
@@ -1083,42 +1083,42 @@ struct efi_platform_memory2_error_data {
 #define EFI_PCIE_ERROR_PORT_ROOT_EVENT_COLLECTOR 0x0000000A
 
 struct efi_generic_error_pci_slot {
-    uint16_t Resv1:3;
-    uint16_t Number:13;
+    uint16_t resv1:3;
+    uint16_t number:13;
 } __attribute__((__packed__));
 
 struct efi_generic_error_pcie_dev_bridge_id {
-    uint16_t VendorId;
-    uint16_t DeviceId;
-    uint8_t ClassCode[3];
-    uint8_t Function;
-    uint8_t Device;
-    uint16_t Segment;
-    uint8_t PrimaryOrDeviceBus;
-    uint8_t SecondaryBus;
-    struct efi_generic_error_pci_slot Slot;
-    uint8_t Resv1;
+    uint16_t vendor_id;
+    uint16_t device_id;
+    uint8_t class_code[3];
+    uint8_t function;
+    uint8_t device;
+    uint16_t segment;
+    uint8_t primary_or_device_bus;
+    uint8_t secondary_bus;
+    struct efi_generic_error_pci_slot slot;
+    uint8_t resv1;
 } __attribute__((__packed__));
 
 struct efi_pcie_error_data_capability {
-    uint8_t PcieCap[60];
+    uint8_t pcie_cap[60];
 } __attribute__((__packed__));
 
 struct efi_pcie_error_data_aer {
-    uint8_t PcieAer[96];
+    uint8_t pcie_aer[96];
 } __attribute__((__packed__));
 
 struct efi_pcie_error_data {
-    uint64_t ValidFields;
-    uint32_t PortType;
-    uint32_t Version;
-    uint32_t CommandStatus;
-    uint32_t RcrbHighAddress;
-    struct efi_generic_error_pcie_dev_bridge_id DevBridge;
-    uint64_t SerialNo;
-    uint32_t BridgeControlStatus;
-    struct efi_pcie_error_data_capability Capability;
-    struct efi_pcie_error_data_aer AerInfo;
+    uint64_t valid_fields;
+    uint32_t port_type;
+    uint32_t version;
+    uint32_t command_status;
+    uint32_t rcrb_high_address;
+    struct efi_generic_error_pcie_dev_bridge_id dev_bridge;
+    uint64_t serial_no;
+    uint32_t bridge_control_status;
+    struct efi_pcie_error_data_capability capability;
+    struct efi_pcie_error_data_aer aer_info;
 } __attribute__((__packed__));
 
 #define EFI_PCI_PCIX_BUS_ERROR_STATUS_VALID 0x0000000000000001
@@ -1141,17 +1141,17 @@ struct efi_pcie_error_data {
 #define EFI_PCI_PCIX_BUS_ERROR_COMMAND_PARITY 0x0007
 
 struct efi_pci_pcix_bus_error_data {
-    uint64_t ValidFields;
-    struct efi_generic_error_status ErrorStatus;
-    uint16_t Type;
-    uint16_t BusId;
-    uint32_t Resv2;
-    uint64_t BusAddress;
-    uint64_t BusData;
-    uint64_t BusCommand;
-    uint64_t RequestorId;
-    uint64_t ResponderId;
-    uint64_t TargetId;
+    uint64_t valid_fields;
+    struct efi_generic_error_status error_status;
+    uint16_t type;
+    uint16_t bus_id;
+    uint32_t resv2;
+    uint64_t bus_address;
+    uint64_t bus_data;
+    uint64_t bus_command;
+    uint64_t requestor_id;
+    uint64_t responder_id;
+    uint64_t target_id;
 } __attribute__((__packed__));
 
 #define EFI_PCI_PCIX_DEVICE_ERROR_STATUS_VALID 0x0000000000000001
@@ -1161,37 +1161,37 @@ struct efi_pci_pcix_bus_error_data {
 #define EFI_PCI_PCIX_DEVICE_ERROR_REG_DATA_PAIR_VALID 0x0000000000000010
 
 struct efi_generic_error_pci_device_id {
-    uint16_t VendorId;
-    uint16_t DeviceId;
-    uint8_t ClassCode[3];
-    uint8_t Function;
-    uint8_t Device;
-    uint8_t Bus;
-    uint8_t Segment;
-    uint8_t Resv1;
-    uint32_t Resv2;
+    uint16_t vendor_id;
+    uint16_t device_id;
+    uint8_t class_code[3];
+    uint8_t function;
+    uint8_t device;
+    uint8_t bus;
+    uint8_t segment;
+    uint8_t resv1;
+    uint32_t resv2;
 } __attribute__((__packed__));
 
-/* MemoryNumber + IoNumber register address/data pairs, two uint64_t each, follow. */
+/* memory_number + io_number register address/data pairs, two uint64_t each, follow. */
 struct efi_pci_pcix_device_error_data {
-    uint64_t ValidFields;
-    struct efi_generic_error_status ErrorStatus;
-    struct efi_generic_error_pci_device_id IdInfo;
-    uint32_t MemoryNumber;
-    uint32_t IoNumber;
+    uint64_t valid_fields;
+    struct efi_generic_error_status error_status;
+    struct efi_generic_error_pci_device_id id_info;
+    uint32_t memory_number;
+    uint32_t io_number;
 } __attribute__((__packed__));
 
 #define EFI_FIRMWARE_ERROR_TYPE_IPF_SAL 0x00
 #define EFI_FIRMWARE_ERROR_TYPE_SOC_TYPE1 0x01
 #define EFI_FIRMWARE_ERROR_TYPE_SOC_TYPE2 0x02
 
-/* The reserved bytes are misprinted at offset 1, over Revision: they are offsets 2 to 7. */
+/* The reserved bytes are misprinted at offset 1, over revision: they are offsets 2 to 7. */
 struct efi_firmware_error_data {
-    uint8_t ErrorType;
-    uint8_t Revision;
-    uint8_t Resv1[6];
-    uint64_t RecordId;
-    struct efi_guid RecordIdGuid;
+    uint8_t error_type;
+    uint8_t revision;
+    uint8_t resv1[6];
+    uint64_t record_id;
+    struct efi_guid record_id_guid;
 } __attribute__((__packed__));
 
 #define EFI_DMA_FAULT_REASON_TABLE_ENTRY_NOT_PRESENT 0x01
@@ -1216,65 +1216,65 @@ struct efi_firmware_error_data {
 #define EFI_DMA_ARCH_TYPE_IOMMU 0x02
 
 struct efi_dmar_generic_error_data {
-    uint16_t RequesterId;
-    uint16_t SegmentNumber;
-    uint8_t FaultReason;
-    uint8_t AccessType;
-    uint8_t AddressType;
-    uint8_t ArchType;
-    uint64_t DeviceAddr;
-    uint8_t Resv1[16];
+    uint16_t requester_id;
+    uint16_t segment_number;
+    uint8_t fault_reason;
+    uint8_t access_type;
+    uint8_t address_type;
+    uint8_t arch_type;
+    uint64_t device_addr;
+    uint8_t resv1[16];
 } __attribute__((__packed__));
 
 struct efi_directed_io_dmar_error_data {
-    uint8_t Version;
-    uint8_t Revision;
-    uint8_t OemId[6];
-    uint64_t Capability;
-    uint64_t CapabilityEx;
-    uint32_t GlobalCommand;
-    uint32_t GlobalStatus;
-    uint32_t FaultStatus;
-    uint8_t Resv1[12];
-    uint64_t FaultRecord[2];
-    uint64_t RootEntry[2];
-    uint64_t ContextEntry[2];
-    uint64_t PteL6;
-    uint64_t PteL5;
-    uint64_t PteL4;
-    uint64_t PteL3;
-    uint64_t PteL2;
-    uint64_t PteL1;
+    uint8_t version;
+    uint8_t revision;
+    uint8_t oem_id[6];
+    uint64_t capability;
+    uint64_t capability_ex;
+    uint32_t global_command;
+    uint32_t global_status;
+    uint32_t fault_status;
+    uint8_t resv1[12];
+    uint64_t fault_record[2];
+    uint64_t root_entry[2];
+    uint64_t context_entry[2];
+    uint64_t pte_l6;
+    uint64_t pte_l5;
+    uint64_t pte_l4;
+    uint64_t pte_l3;
+    uint64_t pte_l2;
+    uint64_t pte_l1;
 } __attribute__((__packed__));
 
 struct efi_iommu_dmar_error_data {
-    uint8_t Revision;
-    uint8_t Resv1[7];
-    uint64_t Control;
-    uint64_t Status;
-    uint8_t Resv2[8];
-    uint64_t EventLogEntry[2];
-    uint8_t Resv3[16];
-    uint64_t DeviceTableEntry[4];
-    uint64_t PteL6;
-    uint64_t PteL5;
-    uint64_t PteL4;
-    uint64_t PteL3;
-    uint64_t PteL2;
-    uint64_t PteL1;
+    uint8_t revision;
+    uint8_t resv1[7];
+    uint64_t control;
+    uint64_t status;
+    uint8_t resv2[8];
+    uint64_t event_log_entry[2];
+    uint8_t resv3[16];
+    uint64_t device_table_entry[4];
+    uint64_t pte_l6;
+    uint64_t pte_l5;
+    uint64_t pte_l4;
+    uint64_t pte_l3;
+    uint64_t pte_l2;
+    uint64_t pte_l1;
 } __attribute__((__packed__));
 
 #define EFI_CCIX_PER_LOG_SOURCE_ID_VALID 0x0000000000000001
 #define EFI_CCIX_PER_LOG_PORT_ID_VALID 0x0000000000000002
 #define EFI_CCIX_PER_LOG_VALID 0x0000000000000004
 
-/* The CCIX PER log follows, up to Length bytes in all. */
+/* The CCIX PER log follows, up to length bytes in all. */
 struct efi_ccix_per_log_error_data {
-    uint32_t Length;
-    uint64_t ValidFields;
-    uint8_t CcixSourceId;
-    uint8_t CcixPortId;
-    uint16_t Resv1;
+    uint32_t length;
+    uint64_t valid_fields;
+    uint8_t ccix_source_id;
+    uint8_t ccix_port_id;
+    uint16_t resv1;
 } __attribute__((__packed__));
 
 #define EFI_CXL_CACHEMEM_AGENT_TYPE 0x0000000000000001
@@ -1296,48 +1296,48 @@ struct efi_ccix_per_log_error_data {
 
 union efi_cxl_agent_address {
     struct __attribute__((__packed__)) {
-        uint64_t Function:8;
-        uint64_t Device:8;
-        uint64_t Bus:8;
-        uint64_t Segment:16;
-        uint64_t Rsvd:24;
-    } Bits;
+        uint64_t function:8;
+        uint64_t device:8;
+        uint64_t bus:8;
+        uint64_t segment:16;
+        uint64_t rsvd:24;
+    } bits;
     struct __attribute__((__packed__)) {
-        uint32_t Low;
-        uint32_t High;
-    } RcrbBase;
+        uint32_t low;
+        uint32_t high;
+    } rcrb_base;
 } __attribute__((__packed__));
 
 struct efi_cxl_agent_device_id {
-    uint16_t VendorId;
-    uint16_t DeviceId;
-    uint16_t Svid;
-    uint16_t Sid;
-    uint16_t ClassCode;
+    uint16_t vendor_id;
+    uint16_t device_id;
+    uint16_t svid;
+    uint16_t sid;
+    uint16_t class_code;
     struct __attribute__((__packed__)) {
-        uint16_t Rsvd:3;
-        uint16_t Num:13;
-    } Slot;
-    uint32_t Rsvd;
+        uint16_t rsvd:3;
+        uint16_t num:13;
+    } slot;
+    uint32_t rsvd;
 } __attribute__((__packed__));
 
 struct efi_cxl_device_serial_num {
-    uint32_t Lower;
-    uint32_t Upper;
+    uint32_t lower;
+    uint32_t upper;
 } __attribute__((__packed__));
 
-/* The CXL DVSEC (CxlDvsecLength bytes) follows, then the CXL error log (CxlErrorLogLength). */
+/* The CXL DVSEC (cxl_dvsec_length bytes) follows, then the CXL error log (cxl_error_log_length). */
 struct efi_cxl_protocol_error_data {
-    uint64_t ValidFields;
-    uint8_t CxlAgentType;
-    uint8_t Resv1[7];
-    union efi_cxl_agent_address CxlAgentAddress;
-    struct efi_cxl_agent_device_id DeviceId;
-    struct efi_cxl_device_serial_num DeviceSerialNumber;
-    uint8_t CapabilityStructure[60];
-    uint16_t CxlDvsecLength;
-    uint16_t CxlErrorLogLength;
-    uint32_t Resv2;
+    uint64_t valid_fields;
+    uint8_t cxl_agent_type;
+    uint8_t resv1[7];
+    union efi_cxl_agent_address cxl_agent_address;
+    struct efi_cxl_agent_device_id device_id;
+    struct efi_cxl_device_serial_num device_serial_number;
+    uint8_t capability_structure[60];
+    uint16_t cxl_dvsec_length;
+    uint16_t cxl_error_log_length;
+    uint32_t resv2;
 } __attribute__((__packed__));
 
 #define EFI_CXL_MEM_DEVICE_ID 0x0000000000000001
@@ -1345,22 +1345,22 @@ struct efi_cxl_protocol_error_data {
 #define EFI_CXL_MEM_COMP_ERROR_LOG 0x0000000000000004
 
 struct efi_cxl_error_pcie_dev_id {
-    uint16_t VendorId;
-    uint16_t DeviceId;
-    uint8_t Function;
-    uint8_t Device;
-    uint8_t Bus;
-    uint16_t Segment;
-    struct efi_generic_error_pci_slot Slot;
-    uint8_t Resvd;
+    uint16_t vendor_id;
+    uint16_t device_id;
+    uint8_t function;
+    uint8_t device;
+    uint8_t bus;
+    uint16_t segment;
+    struct efi_generic_error_pci_slot slot;
+    uint8_t resvd;
 } __attribute__((__packed__));
 
-/* The CXL component event log follows, up to Length bytes in all. */
+/* The CXL component event log follows, up to length bytes in all. */
 struct efi_cxl_component_event_log {
-    uint32_t Length;
-    uint64_t ValidFields;
-    struct efi_cxl_error_pcie_dev_id CxlDeviceId;
-    uint64_t DeviceSerialNo;
+    uint32_t length;
+    uint64_t valid_fields;
+    struct efi_cxl_error_pcie_dev_id cxl_device_id;
+    uint64_t device_serial_no;
 } __attribute__((__packed__));
 
 #define EFI_FRU_MEMORY_POISON_ARCH_TYPE_VALID 0x0000000000000001
@@ -1375,23 +1375,23 @@ struct efi_cxl_component_event_log {
 #define EFI_FRU_MEMORY_POISON_HW_ID_TYPE_MCA_IPID 0
 #define EFI_FRU_MEMORY_POISON_ADDRESS_TYPE_MCA_ADDR 0
 
-/* PoisonListEntries struct efi_fru_memory_poison_descriptor follow. */
+/* poison_list_entries struct efi_fru_memory_poison_descriptor follow. */
 struct efi_fru_memory_poison_data {
-    uint32_t Checksum;
-    uint64_t ValidFields;
-    uint32_t FruArchType;
-    uint64_t FruArchValue;
-    uint32_t FruIdType;
-    uint64_t FruIdValue;
-    uint32_t PoisonListEntries;
+    uint32_t checksum;
+    uint64_t valid_fields;
+    uint32_t fru_arch_type;
+    uint64_t fru_arch_value;
+    uint32_t fru_id_type;
+    uint64_t fru_id_value;
+    uint32_t poison_list_entries;
 } __attribute__((__packed__));
 
 struct efi_fru_memory_poison_descriptor {
-    uint64_t PoisonTimestamp;
-    uint32_t HwIdType;
-    uint64_t HwIdValue;
-    uint32_t AddressType;
-    uint64_t AddressValue;
+    uint64_t poison_timestamp;
+    uint32_t hw_id_type;
+    uint64_t hw_id_value;
+    uint32_t address_type;
+    uint64_t address_value;
 } __attribute__((__packed__));
 
 #ifdef __cplusplus

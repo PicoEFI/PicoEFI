@@ -37,12 +37,12 @@ extern "C" {
 
 struct efi_simple_text_input_ex_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_INPUT_RESET_EX)(
-    struct efi_simple_text_input_ex_protocol *This,
-    bool ExtendedVerification
+typedef efi_status (EFI_API *efi_input_reset_ex)(
+    struct efi_simple_text_input_ex_protocol *self,
+    bool extended_verification
 );
 
-typedef uint8_t EFI_KEY_TOGGLE_STATE;
+typedef uint8_t efi_key_toggle_state;
 
 #define EFI_TOGGLE_STATE_VALID 0x80
 #define EFI_KEY_STATE_EXPOSED 0x40
@@ -51,8 +51,8 @@ typedef uint8_t EFI_KEY_TOGGLE_STATE;
 #define EFI_CAPS_LOCK_ACTIVE 0x04
 
 struct efi_key_state {
-    uint32_t KeyShiftState;
-    EFI_KEY_TOGGLE_STATE KeyToggleState;
+    uint32_t key_shift_state;
+    efi_key_toggle_state key_toggle_state;
 };
 
 #define EFI_SHIFT_STATE_VALID 0x80000000
@@ -68,41 +68,41 @@ struct efi_key_state {
 #define EFI_SYS_REQ_PRESSED 0x00000200
 
 struct efi_key_data {
-    struct efi_input_key Key;
-    struct efi_key_state KeyState;
+    struct efi_input_key key;
+    struct efi_key_state key_state;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_INPUT_READ_KEY_EX)(
-    struct efi_simple_text_input_ex_protocol *This,
-    struct efi_key_data *KeyData
+typedef efi_status (EFI_API *efi_input_read_key_ex)(
+    struct efi_simple_text_input_ex_protocol *self,
+    struct efi_key_data *key_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SET_STATE)(
-    struct efi_simple_text_input_ex_protocol *This,
-    EFI_KEY_TOGGLE_STATE *KeyToggleState
+typedef efi_status (EFI_API *efi_set_state)(
+    struct efi_simple_text_input_ex_protocol *self,
+    efi_key_toggle_state *key_toggle_state
 );
 
-typedef EFI_STATUS (EFI_API *EFI_KEY_NOTIFY_FUNCTION)(struct efi_key_data *KeyData);
+typedef efi_status (EFI_API *efi_key_notify_function)(struct efi_key_data *key_data);
 
-typedef EFI_STATUS (EFI_API *EFI_REGISTER_KEYSTROKE_NOTIFY)(
-    struct efi_simple_text_input_ex_protocol *This,
-    struct efi_key_data *KeyData,
-    EFI_KEY_NOTIFY_FUNCTION KeyNotificationFunction,
-    void **NotifyHandle
+typedef efi_status (EFI_API *efi_register_keystroke_notify)(
+    struct efi_simple_text_input_ex_protocol *self,
+    struct efi_key_data *key_data,
+    efi_key_notify_function key_notification_function,
+    void **notify_handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_UNREGISTER_KEYSTROKE_NOTIFY)(
-    struct efi_simple_text_input_ex_protocol *This,
-    void *NotificationHandle
+typedef efi_status (EFI_API *efi_unregister_keystroke_notify)(
+    struct efi_simple_text_input_ex_protocol *self,
+    void *notification_handle
 );
 
 struct efi_simple_text_input_ex_protocol {
-    EFI_INPUT_RESET_EX Reset;
-    EFI_INPUT_READ_KEY_EX ReadKeyStrokeEx;
-    EFI_EVENT WaitForKeyEx;
-    EFI_SET_STATE SetState;
-    EFI_REGISTER_KEYSTROKE_NOTIFY RegisterKeyNotify;
-    EFI_UNREGISTER_KEYSTROKE_NOTIFY UnregisterKeyNotify;
+    efi_input_reset_ex reset;
+    efi_input_read_key_ex read_key_stroke_ex;
+    efi_event wait_for_key_ex;
+    efi_set_state set_state;
+    efi_register_keystroke_notify register_key_notify;
+    efi_unregister_keystroke_notify unregister_key_notify;
 };
 
 #ifdef __cplusplus

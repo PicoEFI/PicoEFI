@@ -16,22 +16,22 @@ extern "C" {
 struct efi_redfish_discover_protocol;
 
 struct efi_redfish_discover_network_interface {
-    struct efi_mac_address MacAddress;
-    uint8_t IsIpv6;
-    union efi_ip_address SubnetId;
-    uint8_t SubnetPrefixLength;
-    uint16_t VlanId;
+    struct efi_mac_address mac_address;
+    uint8_t is_ipv6;
+    union efi_ip_address subnet_id;
+    uint8_t subnet_prefix_length;
+    uint16_t vlan_id;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_NETWORK_LIST)(
-    struct efi_redfish_discover_protocol *This,
-    EFI_HANDLE ImageHandle,
-    size_t *NumberOfNetworkInterfaces,
-    struct efi_redfish_discover_network_interface **NetworkInterfaces
+typedef efi_status (EFI_API *efi_redfish_discover_network_list)(
+    struct efi_redfish_discover_protocol *self,
+    efi_handle image_handle,
+    size_t *number_of_network_interfaces,
+    struct efi_redfish_discover_network_interface **network_interfaces
 );
 
 /* The specification uses this type and lists its 32-bit flags but prints no definition for it. */
-typedef uint32_t EFI_REDFISH_DISCOVER_FLAG;
+typedef uint32_t efi_redfish_discover_flag;
 
 #define EFI_REDFISH_DISCOVER_HOST_INTERFACE 0x00000001
 #define EFI_REDFISH_DISCOVER_SSDP 0x00000002
@@ -42,62 +42,62 @@ typedef uint32_t EFI_REDFISH_DISCOVER_FLAG;
 #define EFI_REDFISH_DISCOVER_DURATION_MASK 0x0f000000
 
 struct efi_redfish_discovered_information {
-    EFI_HANDLE RedfishRestExHandle;
-    uint8_t IsIPv6;
-    union efi_ip_address RedfishHostIpAddress;
-    uint16_t RedfishVersion;
-    uint16_t *Location;
-    uint16_t *Uuid;
-    uint16_t *Os;
-    uint16_t *OsVersion;
-    uint16_t *Product;
-    uint16_t *ProductVersion;
-    uint8_t UseHttps;
+    efi_handle redfish_rest_ex_handle;
+    uint8_t is_ipv6;
+    union efi_ip_address redfish_host_ip_address;
+    uint16_t redfish_version;
+    uint16_t *location;
+    uint16_t *uuid;
+    uint16_t *os;
+    uint16_t *os_version;
+    uint16_t *product;
+    uint16_t *product_version;
+    uint8_t use_https;
 };
 
 struct efi_redfish_discovered_instance {
-    EFI_STATUS Status;
-    struct efi_redfish_discovered_information Information;
+    efi_status status;
+    struct efi_redfish_discovered_information information;
 };
 
 struct efi_redfish_discovered_list {
-    size_t NumberOfServiceFound;
-    struct efi_redfish_discovered_instance *RedfishInstances;
+    size_t number_of_service_found;
+    struct efi_redfish_discovered_instance *redfish_instances;
 };
 
 /* The specification writes SIGNATURE_32, defined nowhere; EFI_SIGNATURE_32 packs the same way. */
 #define EFI_REDFISH_DISCOVER_TOKEN_SIGNATURE EFI_SIGNATURE_32('R', 'F', 'T', 'S')
 
 struct efi_redfish_discovered_token {
-    uint32_t Signature;
-    struct efi_redfish_discovered_list DiscoveredList;
-    EFI_EVENT Event;
-    uintptr_t Timeout;
+    uint32_t signature;
+    struct efi_redfish_discovered_list discovered_list;
+    efi_event event;
+    uintptr_t timeout;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_ACQUIRE_SERVICE)(
-    struct efi_redfish_discover_protocol *This,
-    EFI_HANDLE ImageHandle,
-    struct efi_redfish_discover_network_interface *TargetNetworkInterface,
-    EFI_REDFISH_DISCOVER_FLAG Flags,
-    struct efi_redfish_discovered_token *Token
+typedef efi_status (EFI_API *efi_redfish_discover_acquire_service)(
+    struct efi_redfish_discover_protocol *self,
+    efi_handle image_handle,
+    struct efi_redfish_discover_network_interface *target_network_interface,
+    efi_redfish_discover_flag flags,
+    struct efi_redfish_discovered_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_ABORT_ACQUIRE)(
-    struct efi_redfish_discover_protocol *This,
-    struct efi_redfish_discover_network_interface *TargetNetworkInterface
+typedef efi_status (EFI_API *efi_redfish_discover_abort_acquire)(
+    struct efi_redfish_discover_protocol *self,
+    struct efi_redfish_discover_network_interface *target_network_interface
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_RELEASE_SERVICE)(
-    struct efi_redfish_discover_protocol *This,
-    struct efi_redfish_discovered_list *List
+typedef efi_status (EFI_API *efi_redfish_discover_release_service)(
+    struct efi_redfish_discover_protocol *self,
+    struct efi_redfish_discovered_list *list
 );
 
 struct efi_redfish_discover_protocol {
-    EFI_REDFISH_DISCOVER_NETWORK_LIST GetNetworkInterfaceList;
-    EFI_REDFISH_DISCOVER_ACQUIRE_SERVICE AcquireRedfishService;
-    EFI_REDFISH_DISCOVER_ABORT_ACQUIRE AbortAcquireRedfishService;
-    EFI_REDFISH_DISCOVER_RELEASE_SERVICE ReleaseRedfishService;
+    efi_redfish_discover_network_list get_network_interface_list;
+    efi_redfish_discover_acquire_service acquire_redfish_service;
+    efi_redfish_discover_abort_acquire abort_acquire_redfish_service;
+    efi_redfish_discover_release_service release_redfish_service;
 };
 
 #ifdef __cplusplus

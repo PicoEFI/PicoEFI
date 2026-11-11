@@ -12,64 +12,64 @@ extern "C" {
 
 struct efi_bis_protocol;
 
-typedef void *EFI_BIS_APPLICATION_HANDLE;
+typedef void *efi_bis_application_handle;
 
 struct efi_bis_version {
-    uint32_t Major;
-    uint32_t Minor;
+    uint32_t major;
+    uint32_t minor;
 };
 
 #define EFI_BIS_CURRENT_VERSION_MAJOR EFI_BIS_VERSION_1
 #define EFI_BIS_VERSION_1 1
 
 struct efi_bis_data {
-    uint32_t Length;
-    uint8_t *Data;
+    uint32_t length;
+    uint8_t *data;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_INITIALIZE)(
-    struct efi_bis_protocol *This,
-    EFI_BIS_APPLICATION_HANDLE *AppHandle,
-    struct efi_bis_version *InterfaceVersion,
-    struct efi_bis_data *TargetAddress
+typedef efi_status (EFI_API *efi_bis_initialize)(
+    struct efi_bis_protocol *self,
+    efi_bis_application_handle *app_handle,
+    struct efi_bis_version *interface_version,
+    struct efi_bis_data *target_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_SHUTDOWN)(EFI_BIS_APPLICATION_HANDLE AppHandle);
+typedef efi_status (EFI_API *efi_bis_shutdown)(efi_bis_application_handle app_handle);
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_FREE)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    struct efi_bis_data *ToFree
+typedef efi_status (EFI_API *efi_bis_free)(
+    efi_bis_application_handle app_handle,
+    struct efi_bis_data *to_free
 );
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CERTIFICATE)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    struct efi_bis_data **Certificate
+typedef efi_status (EFI_API *efi_bis_get_boot_object_authorization_certificate)(
+    efi_bis_application_handle app_handle,
+    struct efi_bis_data **certificate
 );
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CHECKFLAG)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    bool *CheckIsRequired
+typedef efi_status (EFI_API *efi_bis_get_boot_object_authorization_checkflag)(
+    efi_bis_application_handle app_handle,
+    bool *check_is_required
 );
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_UPDATE_TOKEN)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    struct efi_bis_data **UpdateToken
+typedef efi_status (EFI_API *efi_bis_get_boot_object_authorization_update_token)(
+    efi_bis_application_handle app_handle,
+    struct efi_bis_data **update_token
 );
 
-typedef uint32_t EFI_BIS_CERT_ID;
+typedef uint32_t efi_bis_cert_id;
 
-typedef uint16_t EFI_BIS_ALG_ID;
+typedef uint16_t efi_bis_alg_id;
 
 struct efi_bis_signature_info {
-    EFI_BIS_CERT_ID CertificateID;
-    EFI_BIS_ALG_ID AlgorithmID;
-    uint16_t KeyLength;
+    efi_bis_cert_id certificate_id;
+    efi_bis_alg_id algorithm_id;
+    uint16_t key_length;
 };
 
-#define EFI_BIS_GET_SIGINFO_COUNT(BisDataPtr) \
-    ((BisDataPtr)->Length / sizeof(struct efi_bis_signature_info))
+#define EFI_BIS_GET_SIGINFO_COUNT(bis_data_ptr) \
+    ((bis_data_ptr)->length / sizeof(struct efi_bis_signature_info))
 
-#define EFI_BIS_GET_SIGINFO_ARRAY(BisDataPtr) ((struct efi_bis_signature_info *)(BisDataPtr)->Data)
+#define EFI_BIS_GET_SIGINFO_ARRAY(bis_data_ptr) ((struct efi_bis_signature_info *)(bis_data_ptr)->data)
 
 #define EFI_BIS_CERT_ID_DSA EFI_BIS_ALG_DSA
 #define EFI_BIS_CERT_ID_RSA_MD5 EFI_BIS_ALG_RSA_MD5
@@ -79,47 +79,47 @@ struct efi_bis_signature_info {
 #define EFI_BIS_ALG_DSA (41)
 #define EFI_BIS_ALG_RSA_MD5 (42)
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_GET_SIGNATURE_INFO)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    struct efi_bis_data **SignatureInfo
+typedef efi_status (EFI_API *efi_bis_get_signature_info)(
+    efi_bis_application_handle app_handle,
+    struct efi_bis_data **signature_info
 );
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_UPDATE_BOOT_OBJECT_AUTHORIZATION)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    struct efi_bis_data *RequestCredential,
-    struct efi_bis_data **NewUpdateToken
+typedef efi_status (EFI_API *efi_bis_update_boot_object_authorization)(
+    efi_bis_application_handle app_handle,
+    struct efi_bis_data *request_credential,
+    struct efi_bis_data **new_update_token
 );
 
 #define EFI_BOOT_OBJECT_AUTHORIZATION_PARMSET_GUID \
     {0xedd35e31, 0x7b9, 0x11d2, {0x83, 0xa3, 0x0, 0xa0, 0xc9, 0x1f, 0xad, 0xcf}}
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_VERIFY_BOOT_OBJECT)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    struct efi_bis_data *Credentials,
-    struct efi_bis_data *DataObject,
-    bool *IsVerified
+typedef efi_status (EFI_API *efi_bis_verify_boot_object)(
+    efi_bis_application_handle app_handle,
+    struct efi_bis_data *credentials,
+    struct efi_bis_data *data_object,
+    bool *is_verified
 );
 
-typedef EFI_STATUS (EFI_API *EFI_BIS_VERIFY_OBJECT_WITH_CREDENTIAL)(
-    EFI_BIS_APPLICATION_HANDLE AppHandle,
-    struct efi_bis_data *Credentials,
-    struct efi_bis_data *DataObject,
-    struct efi_bis_data *SectionName,
-    struct efi_bis_data *AuthorityCertificate,
-    bool *IsVerified
+typedef efi_status (EFI_API *efi_bis_verify_object_with_credential)(
+    efi_bis_application_handle app_handle,
+    struct efi_bis_data *credentials,
+    struct efi_bis_data *data_object,
+    struct efi_bis_data *section_name,
+    struct efi_bis_data *authority_certificate,
+    bool *is_verified
 );
 
 struct efi_bis_protocol {
-    EFI_BIS_INITIALIZE Initialize;
-    EFI_BIS_SHUTDOWN Shutdown;
-    EFI_BIS_FREE Free;
-    EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CERTIFICATE GetBootObjectAuthorizationCertificate;
-    EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_CHECKFLAG GetBootObjectAuthorizationCheckFlag;
-    EFI_BIS_GET_BOOT_OBJECT_AUTHORIZATION_UPDATE_TOKEN GetBootObjectAuthorizationUpdateToken;
-    EFI_BIS_GET_SIGNATURE_INFO GetSignatureInfo;
-    EFI_BIS_UPDATE_BOOT_OBJECT_AUTHORIZATION UpdateBootObjectAuthorization;
-    EFI_BIS_VERIFY_BOOT_OBJECT VerifyBootObject;
-    EFI_BIS_VERIFY_OBJECT_WITH_CREDENTIAL VerifyObjectWithCredential;
+    efi_bis_initialize initialize;
+    efi_bis_shutdown shutdown;
+    efi_bis_free free;
+    efi_bis_get_boot_object_authorization_certificate get_boot_object_authorization_certificate;
+    efi_bis_get_boot_object_authorization_checkflag get_boot_object_authorization_check_flag;
+    efi_bis_get_boot_object_authorization_update_token get_boot_object_authorization_update_token;
+    efi_bis_get_signature_info get_signature_info;
+    efi_bis_update_boot_object_authorization update_boot_object_authorization;
+    efi_bis_verify_boot_object verify_boot_object;
+    efi_bis_verify_object_with_credential verify_object_with_credential;
 };
 
 #define EFI_HTTP_BOOT_CALLBACK_PROTOCOL_GUID \
@@ -135,16 +135,16 @@ struct efi_http_boot_callback_protocol;
 #define EFI_HTTP_BOOT_HTTP_AUTH_INFO ((uint32_t)5)
 #define EFI_HTTP_BOOT_TYPE_MAX ((uint32_t)6)
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_BOOT_CALLBACK)(
-    struct efi_http_boot_callback_protocol *This,
-    uint32_t DataType,
-    bool Received,
-    uint32_t DataLength,
-    void *Data
+typedef efi_status (EFI_API *efi_http_boot_callback)(
+    struct efi_http_boot_callback_protocol *self,
+    uint32_t data_type,
+    bool received,
+    uint32_t data_length,
+    void *data
 );
 
 struct efi_http_boot_callback_protocol {
-    EFI_HTTP_BOOT_CALLBACK Callback;
+    efi_http_boot_callback callback;
 };
 
 #ifdef __cplusplus

@@ -22,25 +22,25 @@ struct efi_simple_network_protocol;
 #define EFI_MAX_MCAST_FILTER_CNT 16
 
 struct efi_simple_network_mode {
-    uint32_t State;
-    uint32_t HwAddressSize;
-    uint32_t MediaHeaderSize;
-    uint32_t MaxPacketSize;
-    uint32_t NvRamSize;
-    uint32_t NvRamAccessSize;
-    uint32_t ReceiveFilterMask;
-    uint32_t ReceiveFilterSetting;
-    uint32_t MaxMCastFilterCount;
-    uint32_t MCastFilterCount;
-    struct efi_mac_address MCastFilter[EFI_MAX_MCAST_FILTER_CNT];
-    struct efi_mac_address CurrentAddress;
-    struct efi_mac_address BroadcastAddress;
-    struct efi_mac_address PermanentAddress;
-    uint8_t IfType;
-    uint8_t MacAddressChangeable;
-    uint8_t MultipleTxSupported;
-    uint8_t MediaPresentSupported;
-    uint8_t MediaPresent;
+    uint32_t state;
+    uint32_t hw_address_size;
+    uint32_t media_header_size;
+    uint32_t max_packet_size;
+    uint32_t nv_ram_size;
+    uint32_t nv_ram_access_size;
+    uint32_t receive_filter_mask;
+    uint32_t receive_filter_setting;
+    uint32_t max_mcast_filter_count;
+    uint32_t mcast_filter_count;
+    struct efi_mac_address mcast_filter[EFI_MAX_MCAST_FILTER_CNT];
+    struct efi_mac_address current_address;
+    struct efi_mac_address broadcast_address;
+    struct efi_mac_address permanent_address;
+    uint8_t if_type;
+    uint8_t mac_address_changeable;
+    uint8_t multiple_tx_supported;
+    uint8_t media_present_supported;
+    uint8_t media_present;
 };
 
 #define EFI_SIMPLE_NETWORK_RECEIVE_UNICAST 0x01
@@ -49,94 +49,98 @@ struct efi_simple_network_mode {
 #define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS 0x08
 #define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS_MULTICAST 0x10
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_START)(struct efi_simple_network_protocol *This);
+typedef efi_status (EFI_API *efi_simple_network_start)(struct efi_simple_network_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_STOP)(struct efi_simple_network_protocol *This);
+typedef efi_status (EFI_API *efi_simple_network_stop)(struct efi_simple_network_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_INITIALIZE)(
-    struct efi_simple_network_protocol *This,
-    size_t ExtraRxBufferSize,
-    size_t ExtraTxBufferSize
+typedef efi_status (EFI_API *efi_simple_network_initialize)(
+    struct efi_simple_network_protocol *self,
+    size_t extra_rx_buffer_size,
+    size_t extra_tx_buffer_size
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_RESET)(
-    struct efi_simple_network_protocol *This,
-    bool ExtendedVerification
+typedef efi_status (EFI_API *efi_simple_network_reset)(
+    struct efi_simple_network_protocol *self,
+    bool extended_verification
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_SHUTDOWN)(struct efi_simple_network_protocol *This);
+typedef efi_status (EFI_API *efi_simple_network_shutdown)(struct efi_simple_network_protocol *self);
 
-/* MCastFilter points to a list, as described; the prototype prints it by value. */
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_RECEIVE_FILTERS)(
-    struct efi_simple_network_protocol *This,
-    uint32_t Enable,
-    uint32_t Disable,
-    bool ResetMCastFilter,
-    size_t MCastFilterCnt,
-    struct efi_mac_address *MCastFilter
+/* mcast_filter points to a list, as described; the prototype prints it by value. */
+typedef efi_status (EFI_API *efi_simple_network_receive_filters)(
+    struct efi_simple_network_protocol *self,
+    uint32_t enable,
+    uint32_t disable,
+    bool reset_mcast_filter,
+    size_t mcast_filter_cnt,
+    struct efi_mac_address *mcast_filter
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_STATION_ADDRESS)(
-    struct efi_simple_network_protocol *This,
-    bool Reset,
-    struct efi_mac_address *New
+typedef efi_status (EFI_API *efi_simple_network_station_address)(
+    struct efi_simple_network_protocol *self,
+    bool reset,
+#ifdef __cplusplus
+    struct efi_mac_address *new_
+#else
+    struct efi_mac_address *new
+#endif
 );
 
 struct efi_network_statistics {
-    uint64_t RxTotalFrames;
-    uint64_t RxGoodFrames;
-    uint64_t RxUndersizeFrames;
-    uint64_t RxOversizeFrames;
-    uint64_t RxDroppedFrames;
-    uint64_t RxUnicastFrames;
-    uint64_t RxBroadcastFrames;
-    uint64_t RxMulticastFrames;
-    uint64_t RxCrcErrorFrames;
-    uint64_t RxTotalBytes;
-    uint64_t TxTotalFrames;
-    uint64_t TxGoodFrames;
-    uint64_t TxUndersizeFrames;
-    uint64_t TxOversizeFrames;
-    uint64_t TxDroppedFrames;
-    uint64_t TxUnicastFrames;
-    uint64_t TxBroadcastFrames;
-    uint64_t TxMulticastFrames;
-    uint64_t TxCrcErrorFrames;
-    uint64_t TxTotalBytes;
-    uint64_t Collisions;
-    uint64_t UnsupportedProtocol;
-    uint64_t RxDuplicatedFrames;
-    uint64_t RxDecryptErrorFrames;
-    uint64_t TxErrorFrames;
-    uint64_t TxRetryFrames;
+    uint64_t rx_total_frames;
+    uint64_t rx_good_frames;
+    uint64_t rx_undersize_frames;
+    uint64_t rx_oversize_frames;
+    uint64_t rx_dropped_frames;
+    uint64_t rx_unicast_frames;
+    uint64_t rx_broadcast_frames;
+    uint64_t rx_multicast_frames;
+    uint64_t rx_crc_error_frames;
+    uint64_t rx_total_bytes;
+    uint64_t tx_total_frames;
+    uint64_t tx_good_frames;
+    uint64_t tx_undersize_frames;
+    uint64_t tx_oversize_frames;
+    uint64_t tx_dropped_frames;
+    uint64_t tx_unicast_frames;
+    uint64_t tx_broadcast_frames;
+    uint64_t tx_multicast_frames;
+    uint64_t tx_crc_error_frames;
+    uint64_t tx_total_bytes;
+    uint64_t collisions;
+    uint64_t unsupported_protocol;
+    uint64_t rx_duplicated_frames;
+    uint64_t rx_decrypt_error_frames;
+    uint64_t tx_error_frames;
+    uint64_t tx_retry_frames;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_STATISTICS)(
-    struct efi_simple_network_protocol *This,
-    bool Reset,
-    size_t *StatisticsSize,
-    struct efi_network_statistics *StatisticsTable
+typedef efi_status (EFI_API *efi_simple_network_statistics)(
+    struct efi_simple_network_protocol *self,
+    bool reset,
+    size_t *statistics_size,
+    struct efi_network_statistics *statistics_table
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_MCAST_IP_TO_MAC)(
-    struct efi_simple_network_protocol *This,
-    bool IPv6,
-    union efi_ip_address *IP,
-    struct efi_mac_address *MAC
+typedef efi_status (EFI_API *efi_simple_network_mcast_ip_to_mac)(
+    struct efi_simple_network_protocol *self,
+    bool ipv6,
+    union efi_ip_address *ip,
+    struct efi_mac_address *mac
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_NVDATA)(
-    struct efi_simple_network_protocol *This,
-    bool ReadWrite,
-    size_t Offset,
-    size_t BufferSize,
-    void *Buffer
+typedef efi_status (EFI_API *efi_simple_network_nvdata)(
+    struct efi_simple_network_protocol *self,
+    bool read_write,
+    size_t offset,
+    size_t buffer_size,
+    void *buffer
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_GET_STATUS)(
-    struct efi_simple_network_protocol *This,
-    uint32_t *InterruptStatus,
-    void **TxBuf
+typedef efi_status (EFI_API *efi_simple_network_get_status)(
+    struct efi_simple_network_protocol *self,
+    uint32_t *interrupt_status,
+    void **tx_buf
 );
 
 #define EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT 0x01
@@ -144,43 +148,43 @@ typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_GET_STATUS)(
 #define EFI_SIMPLE_NETWORK_COMMAND_INTERRUPT 0x04
 #define EFI_SIMPLE_NETWORK_SOFTWARE_INTERRUPT 0x08
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_TRANSMIT)(
-    struct efi_simple_network_protocol *This,
-    size_t HeaderSize,
-    size_t BufferSize,
-    void *Buffer,
-    struct efi_mac_address *SrcAddr,
-    struct efi_mac_address *DestAddr,
-    uint16_t *Protocol
+typedef efi_status (EFI_API *efi_simple_network_transmit)(
+    struct efi_simple_network_protocol *self,
+    size_t header_size,
+    size_t buffer_size,
+    void *buffer,
+    struct efi_mac_address *src_addr,
+    struct efi_mac_address *dest_addr,
+    uint16_t *protocol
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_NETWORK_RECEIVE)(
-    struct efi_simple_network_protocol *This,
-    size_t *HeaderSize,
-    size_t *BufferSize,
-    void *Buffer,
-    struct efi_mac_address *SrcAddr,
-    struct efi_mac_address *DestAddr,
-    uint16_t *Protocol
+typedef efi_status (EFI_API *efi_simple_network_receive)(
+    struct efi_simple_network_protocol *self,
+    size_t *header_size,
+    size_t *buffer_size,
+    void *buffer,
+    struct efi_mac_address *src_addr,
+    struct efi_mac_address *dest_addr,
+    uint16_t *protocol
 );
 
 struct efi_simple_network_protocol {
-    uint64_t Revision;
-    EFI_SIMPLE_NETWORK_START Start;
-    EFI_SIMPLE_NETWORK_STOP Stop;
-    EFI_SIMPLE_NETWORK_INITIALIZE Initialize;
-    EFI_SIMPLE_NETWORK_RESET Reset;
-    EFI_SIMPLE_NETWORK_SHUTDOWN Shutdown;
-    EFI_SIMPLE_NETWORK_RECEIVE_FILTERS ReceiveFilters;
-    EFI_SIMPLE_NETWORK_STATION_ADDRESS StationAddress;
-    EFI_SIMPLE_NETWORK_STATISTICS Statistics;
-    EFI_SIMPLE_NETWORK_MCAST_IP_TO_MAC MCastIpToMac;
-    EFI_SIMPLE_NETWORK_NVDATA NvData;
-    EFI_SIMPLE_NETWORK_GET_STATUS GetStatus;
-    EFI_SIMPLE_NETWORK_TRANSMIT Transmit;
-    EFI_SIMPLE_NETWORK_RECEIVE Receive;
-    EFI_EVENT WaitForPacket;
-    struct efi_simple_network_mode *Mode;
+    uint64_t revision;
+    efi_simple_network_start start;
+    efi_simple_network_stop stop;
+    efi_simple_network_initialize initialize;
+    efi_simple_network_reset reset;
+    efi_simple_network_shutdown shutdown;
+    efi_simple_network_receive_filters receive_filters;
+    efi_simple_network_station_address station_address;
+    efi_simple_network_statistics statistics;
+    efi_simple_network_mcast_ip_to_mac mcast_ip_to_mac;
+    efi_simple_network_nvdata nv_data;
+    efi_simple_network_get_status get_status;
+    efi_simple_network_transmit transmit;
+    efi_simple_network_receive receive;
+    efi_event wait_for_packet;
+    struct efi_simple_network_mode *mode;
 };
 
 #ifdef __cplusplus

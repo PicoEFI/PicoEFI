@@ -14,25 +14,25 @@ extern "C" {
 #define EFI_MBR_SIZE 512
 
 struct efi_mbr_partition_record {
-    uint8_t BootIndicator;
-    uint8_t StartHead;
-    uint8_t StartSector;
-    uint8_t StartTrack;
-    uint8_t OSIndicator;
-    uint8_t EndHead;
-    uint8_t EndSector;
-    uint8_t EndTrack;
-    uint8_t StartingLBA[4];
-    uint8_t SizeInLBA[4];
+    uint8_t boot_indicator;
+    uint8_t start_head;
+    uint8_t start_sector;
+    uint8_t start_track;
+    uint8_t os_indicator;
+    uint8_t end_head;
+    uint8_t end_sector;
+    uint8_t end_track;
+    uint8_t starting_lba[4];
+    uint8_t size_in_lba[4];
 } __attribute__((__packed__));
 
-/* BootStrapCode is 440 bytes, as the C definition and the field offsets require. */
+/* boot_strap_code is 440 bytes, as the C definition and the field offsets require. */
 struct efi_master_boot_record {
-    uint8_t BootStrapCode[440];
-    uint8_t UniqueMbrSignature[4];
-    uint8_t Unknown[2];
-    struct efi_mbr_partition_record Partition[EFI_MAX_MBR_PARTITIONS];
-    uint16_t Signature;
+    uint8_t boot_strap_code[440];
+    uint8_t unique_mbr_signature[4];
+    uint8_t unknown[2];
+    struct efi_mbr_partition_record partition[EFI_MAX_MBR_PARTITIONS];
+    uint16_t signature;
 } __attribute__((__packed__));
 
 #ifdef __cplusplus

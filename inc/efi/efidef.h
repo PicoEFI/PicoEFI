@@ -33,70 +33,70 @@ extern "C" {
 #endif
 
 #if defined(__SIZEOF_INT128__)
-__extension__ typedef __int128 EFI_INT128;
-__extension__ typedef unsigned __int128 EFI_UINT128;
+__extension__ typedef __int128 efi_int128;
+__extension__ typedef unsigned __int128 efi_uint128;
 #else
 /* No 128-bit integer type on 32-bit targets. */
 typedef struct __attribute__((__aligned__(16))) {
-    uint64_t Lo;
-    uint64_t Hi;
-} EFI_INT128;
+    uint64_t lo;
+    uint64_t hi;
+} efi_int128;
 
 typedef struct __attribute__((__aligned__(16))) {
-    uint64_t Lo;
-    uint64_t Hi;
-} EFI_UINT128;
+    uint64_t lo;
+    uint64_t hi;
+} efi_uint128;
 #endif
 
-typedef uintptr_t EFI_STATUS;
+typedef uintptr_t efi_status;
 
 #define EFI_ERROR_MASK (~((uintptr_t)-1 >> 1))
-#define EFI_ERR(a) ((EFI_STATUS)(EFI_ERROR_MASK | (a)))
-#define EFI_ERR_OEM(a) ((EFI_STATUS)(~((uintptr_t)-1 >> 2) | (a)))
+#define EFI_ERR(a) ((efi_status)(EFI_ERROR_MASK | (a)))
+#define EFI_ERR_OEM(a) ((efi_status)(~((uintptr_t)-1 >> 2) | (a)))
 
-typedef void *EFI_HANDLE;
-typedef void *EFI_EVENT;
-typedef uint64_t EFI_LBA;
-typedef uintptr_t EFI_TPL;
+typedef void *efi_handle;
+typedef void *efi_event;
+typedef uint64_t efi_lba;
+typedef uintptr_t efi_tpl;
 
 struct efi_mac_address {
-    uint8_t Addr[32];
+    uint8_t addr[32];
 };
 
 struct efi_ipv4_address {
-    uint8_t Addr[4];
+    uint8_t addr[4];
 };
 
 struct efi_ipv6_address {
-    uint8_t Addr[16];
+    uint8_t addr[16];
 };
 
 union efi_ip_address {
-    uint32_t Addr[4];
+    uint32_t addr[4];
     struct efi_ipv4_address v4;
     struct efi_ipv6_address v6;
 };
 
 /* Natural 4-byte alignment: the specification's 64-bit boundary is about buffers, not the type. */
 struct efi_guid {
-    uint32_t Data1;
-    uint16_t Data2;
-    uint16_t Data3;
-    uint8_t Data4[8];
+    uint32_t data1;
+    uint16_t data2;
+    uint16_t data3;
+    uint8_t data4[8];
 };
 
 struct efi_time {
-    uint16_t Year;
-    uint8_t Month;
-    uint8_t Day;
-    uint8_t Hour;
-    uint8_t Minute;
-    uint8_t Second;
-    uint8_t Pad1;
-    uint32_t Nanosecond;
-    int16_t TimeZone;
-    uint8_t Daylight;
-    uint8_t Pad2;
+    uint16_t year;
+    uint8_t month;
+    uint8_t day;
+    uint8_t hour;
+    uint8_t minute;
+    uint8_t second;
+    uint8_t pad1;
+    uint32_t nanosecond;
+    int16_t time_zone;
+    uint8_t daylight;
+    uint8_t pad2;
 };
 
 #define EFI_TIME_ADJUST_DAYLIGHT 0x01
@@ -104,8 +104,8 @@ struct efi_time {
 
 #define EFI_UNSPECIFIED_TIMEZONE 0x07FF
 
-typedef uint64_t EFI_PHYSICAL_ADDRESS;
-typedef uint64_t EFI_VIRTUAL_ADDRESS;
+typedef uint64_t efi_physical_address;
+typedef uint64_t efi_virtual_address;
 
 #define EFI_ALLOCATE_ANY_PAGES ((uint32_t)0)
 #define EFI_ALLOCATE_MAX_ADDRESS ((uint32_t)1)
@@ -151,11 +151,11 @@ typedef uint64_t EFI_VIRTUAL_ADDRESS;
 #define EFI_MEMORY_DESCRIPTOR_VERSION 1
 
 struct efi_memory_descriptor {
-    uint32_t Type;
-    EFI_PHYSICAL_ADDRESS PhysicalStart;
-    EFI_VIRTUAL_ADDRESS VirtualStart;
-    uint64_t NumberOfPages;
-    uint64_t Attribute;
+    uint32_t type;
+    efi_physical_address physical_start;
+    efi_virtual_address virtual_start;
+    uint64_t number_of_pages;
+    uint64_t attribute;
 };
 
 /* UEFI aligns 64-bit fields to 8 bytes, which the IA-32 ABI does only with -malign-double. */
@@ -176,16 +176,16 @@ _Static_assert(sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-d
 #define EFI_OS_INDICATIONS_JSON_CONFIG_DATA_REFRESH 0x0000000000000080
 
 struct efi_managed_network_config_data {
-    uint32_t ReceivedQueueTimeoutValue;
-    uint32_t TransmitQueueTimeoutValue;
-    uint16_t ProtocolTypeFilter;
-    uint8_t EnableUnicastReceive;
-    uint8_t EnableMulticastReceive;
-    uint8_t EnableBroadcastReceive;
-    uint8_t EnablePromiscuousReceive;
-    uint8_t FlushQueuesOnReset;
-    uint8_t EnableReceiveTimestamps;
-    uint8_t DisableBackgroundPolling;
+    uint32_t received_queue_timeout_value;
+    uint32_t transmit_queue_timeout_value;
+    uint16_t protocol_type_filter;
+    uint8_t enable_unicast_receive;
+    uint8_t enable_multicast_receive;
+    uint8_t enable_broadcast_receive;
+    uint8_t enable_promiscuous_receive;
+    uint8_t flush_queues_on_reset;
+    uint8_t enable_receive_timestamps;
+    uint8_t disable_background_polling;
 };
 
 #define EFI_PAGE_SIZE 4096

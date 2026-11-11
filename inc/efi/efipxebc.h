@@ -17,69 +17,69 @@ struct efi_pxe_base_code_protocol;
 #define EFI_PXE_BASE_CODE_MAX_ARP_ENTRIES 8
 #define EFI_PXE_BASE_CODE_MAX_ROUTE_ENTRIES 8
 
-typedef uint16_t EFI_PXE_BASE_CODE_UDP_PORT;
+typedef uint16_t efi_pxe_base_code_udp_port;
 
 /* Not packed: firmware lays these out naturally, though the specification says byte-packed. */
 struct efi_pxe_base_code_dhcpv4_packet {
-    uint8_t BootpOpcode;
-    uint8_t BootpHwType;
-    uint8_t BootpHwAddrLen;
-    uint8_t BootpGateHops;
-    uint32_t BootpIdent;
-    uint16_t BootpSeconds;
-    uint16_t BootpFlags;
-    uint8_t BootpCiAddr[4];
-    uint8_t BootpYiAddr[4];
-    uint8_t BootpSiAddr[4];
-    uint8_t BootpGiAddr[4];
-    uint8_t BootpHwAddr[16];
-    uint8_t BootpSrvName[64];
-    uint8_t BootpBootFile[128];
-    uint32_t DhcpMagik;
-    uint8_t DhcpOptions[56];
+    uint8_t bootp_opcode;
+    uint8_t bootp_hw_type;
+    uint8_t bootp_hw_addr_len;
+    uint8_t bootp_gate_hops;
+    uint32_t bootp_ident;
+    uint16_t bootp_seconds;
+    uint16_t bootp_flags;
+    uint8_t bootp_ci_addr[4];
+    uint8_t bootp_yi_addr[4];
+    uint8_t bootp_si_addr[4];
+    uint8_t bootp_gi_addr[4];
+    uint8_t bootp_hw_addr[16];
+    uint8_t bootp_srv_name[64];
+    uint8_t bootp_boot_file[128];
+    uint32_t dhcp_magik;
+    uint8_t dhcp_options[56];
 };
 
 struct efi_pxe_base_code_dhcpv6_packet {
-    uint32_t MessageType : 8;
-    uint32_t TransactionId : 24;
-    uint8_t DhcpOptions[1024];
+    uint32_t message_type : 8;
+    uint32_t transaction_id : 24;
+    uint8_t dhcp_options[1024];
 };
 
 union efi_pxe_base_code_packet {
-    uint8_t Raw[1472];
-    struct efi_pxe_base_code_dhcpv4_packet Dhcpv4;
-    struct efi_pxe_base_code_dhcpv6_packet Dhcpv6;
+    uint8_t raw[1472];
+    struct efi_pxe_base_code_dhcpv4_packet dhcpv4;
+    struct efi_pxe_base_code_dhcpv6_packet dhcpv6;
 };
 
-/* Data ends at offset 502; natural alignment makes the size 504. */
+/* data ends at offset 502; natural alignment makes the size 504. */
 struct efi_pxe_base_code_icmp_error {
-    uint8_t Type;
-    uint8_t Code;
-    uint16_t Checksum;
+    uint8_t type;
+    uint8_t code;
+    uint16_t checksum;
     union {
         uint32_t reserved;
-        uint32_t Mtu;
-        uint32_t Pointer;
+        uint32_t mtu;
+        uint32_t pointer;
         struct {
-            uint16_t Identifier;
-            uint16_t Sequence;
-        } Echo;
+            uint16_t identifier;
+            uint16_t sequence;
+        } echo;
     } u;
-    uint8_t Data[494];
+    uint8_t data[494];
 };
 
 struct efi_pxe_base_code_tftp_error {
-    uint8_t ErrorCode;
-    char ErrorString[127];
+    uint8_t error_code;
+    char error_string[127];
 };
 
 #define EFI_PXE_BASE_CODE_MAX_IPCNT 8
 
 struct efi_pxe_base_code_ip_filter {
-    uint8_t Filters;
-    uint8_t IpCnt;
+    uint8_t filters;
+    uint8_t ip_cnt;
     uint16_t reserved;
-    union efi_ip_address IpList[EFI_PXE_BASE_CODE_MAX_IPCNT];
+    union efi_ip_address ip_list[EFI_PXE_BASE_CODE_MAX_IPCNT];
 };
 
 #define EFI_PXE_BASE_CODE_IP_FILTER_STATION_IP 0x0001
@@ -88,51 +88,51 @@ struct efi_pxe_base_code_ip_filter {
 #define EFI_PXE_BASE_CODE_IP_FILTER_PROMISCUOUS_MULTICAST 0x0008
 
 struct efi_pxe_base_code_arp_entry {
-    union efi_ip_address IpAddr;
-    struct efi_mac_address MacAddr;
+    union efi_ip_address ip_addr;
+    struct efi_mac_address mac_addr;
 };
 
 struct efi_pxe_base_code_route_entry {
-    union efi_ip_address IpAddr;
-    union efi_ip_address SubnetMask;
-    union efi_ip_address GwAddr;
+    union efi_ip_address ip_addr;
+    union efi_ip_address subnet_mask;
+    union efi_ip_address gw_addr;
 };
 
 struct efi_pxe_base_code_mode {
-    uint8_t Started;
-    uint8_t Ipv6Available;
-    uint8_t Ipv6Supported;
-    uint8_t UsingIpv6;
-    uint8_t BisSupported;
-    uint8_t BisDetected;
-    uint8_t AutoArp;
-    uint8_t SendGUID;
-    uint8_t DhcpDiscoverValid;
-    uint8_t DhcpAckReceived;
-    uint8_t ProxyOfferReceived;
-    uint8_t PxeDiscoverValid;
-    uint8_t PxeReplyReceived;
-    uint8_t PxeBisReplyReceived;
-    uint8_t IcmpErrorReceived;
-    uint8_t TftpErrorReceived;
-    uint8_t MakeCallbacks;
-    uint8_t TTL;
-    uint8_t ToS;
-    union efi_ip_address StationIp;
-    union efi_ip_address SubnetMask;
-    union efi_pxe_base_code_packet DhcpDiscover;
-    union efi_pxe_base_code_packet DhcpAck;
-    union efi_pxe_base_code_packet ProxyOffer;
-    union efi_pxe_base_code_packet PxeDiscover;
-    union efi_pxe_base_code_packet PxeReply;
-    union efi_pxe_base_code_packet PxeBisReply;
-    struct efi_pxe_base_code_ip_filter IpFilter;
-    uint32_t ArpCacheEntries;
-    struct efi_pxe_base_code_arp_entry ArpCache[EFI_PXE_BASE_CODE_MAX_ARP_ENTRIES];
-    uint32_t RouteTableEntries;
-    struct efi_pxe_base_code_route_entry RouteTable[EFI_PXE_BASE_CODE_MAX_ROUTE_ENTRIES];
-    struct efi_pxe_base_code_icmp_error IcmpError;
-    struct efi_pxe_base_code_tftp_error TftpError;
+    uint8_t started;
+    uint8_t ipv6_available;
+    uint8_t ipv6_supported;
+    uint8_t using_ipv6;
+    uint8_t bis_supported;
+    uint8_t bis_detected;
+    uint8_t auto_arp;
+    uint8_t send_guid;
+    uint8_t dhcp_discover_valid;
+    uint8_t dhcp_ack_received;
+    uint8_t proxy_offer_received;
+    uint8_t pxe_discover_valid;
+    uint8_t pxe_reply_received;
+    uint8_t pxe_bis_reply_received;
+    uint8_t icmp_error_received;
+    uint8_t tftp_error_received;
+    uint8_t make_callbacks;
+    uint8_t ttl;
+    uint8_t tos;
+    union efi_ip_address station_ip;
+    union efi_ip_address subnet_mask;
+    union efi_pxe_base_code_packet dhcp_discover;
+    union efi_pxe_base_code_packet dhcp_ack;
+    union efi_pxe_base_code_packet proxy_offer;
+    union efi_pxe_base_code_packet pxe_discover;
+    union efi_pxe_base_code_packet pxe_reply;
+    union efi_pxe_base_code_packet pxe_bis_reply;
+    struct efi_pxe_base_code_ip_filter ip_filter;
+    uint32_t arp_cache_entries;
+    struct efi_pxe_base_code_arp_entry arp_cache[EFI_PXE_BASE_CODE_MAX_ARP_ENTRIES];
+    uint32_t route_table_entries;
+    struct efi_pxe_base_code_route_entry route_table[EFI_PXE_BASE_CODE_MAX_ROUTE_ENTRIES];
+    struct efi_pxe_base_code_icmp_error icmp_error;
+    struct efi_pxe_base_code_tftp_error tftp_error;
 };
 
 #define EFI_PXE_BASE_CODE_UDP_OPFLAGS_ANY_SRC_IP 0x0001
@@ -142,18 +142,18 @@ struct efi_pxe_base_code_mode {
 #define EFI_PXE_BASE_CODE_UDP_OPFLAGS_USE_FILTER 0x0010
 #define EFI_PXE_BASE_CODE_UDP_OPFLAGS_MAY_FRAGMENT 0x0020
 #define EFI_DEFAULT_TTL 64
-#define EFI_DEFAULT_ToS 0
+#define EFI_DEFAULT_TOS 0
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_START)(
-    struct efi_pxe_base_code_protocol *This,
-    bool UseIpv6
+typedef efi_status (EFI_API *efi_pxe_base_code_start)(
+    struct efi_pxe_base_code_protocol *self,
+    bool use_ipv6
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_STOP)(struct efi_pxe_base_code_protocol *This);
+typedef efi_status (EFI_API *efi_pxe_base_code_stop)(struct efi_pxe_base_code_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DHCP)(
-    struct efi_pxe_base_code_protocol *This,
-    bool SortOffers
+typedef efi_status (EFI_API *efi_pxe_base_code_dhcp)(
+    struct efi_pxe_base_code_protocol *self,
+    bool sort_offers
 );
 
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_BOOTSTRAP 0
@@ -161,7 +161,7 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DHCP)(
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_INTEL_LCM 2
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_DOSUNDI 3
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_NEC_ESMPRO 4
-#define EFI_PXE_BASE_CODE_BOOT_TYPE_IBM_WSoD 5
+#define EFI_PXE_BASE_CODE_BOOT_TYPE_IBM_WSOD 5
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_IBM_LCCM 6
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_CA_UNICENTER_TNG 7
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_HP_OPENVIEW 8
@@ -179,29 +179,29 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DHCP)(
 #define EFI_PXE_BASE_CODE_BOOT_LAYER_INITIAL 0x0000
 
 struct efi_pxe_base_code_srvlist {
-    uint16_t Type;
-    uint8_t AcceptAnyResponse;
+    uint16_t type;
+    uint8_t accept_any_response;
     uint8_t reserved;
-    union efi_ip_address IpAddr;
+    union efi_ip_address ip_addr;
 };
 
-/* SrvList holds IpCnt entries (printed SrvList[IpCnt]). */
+/* srv_list holds ip_cnt entries (printed srv_list[ip_cnt]). */
 struct efi_pxe_base_code_discover_info {
-    uint8_t UseMCast;
-    uint8_t UseBCast;
-    uint8_t UseUCast;
-    uint8_t MustUseList;
-    union efi_ip_address ServerMCastIp;
-    uint16_t IpCnt;
-    struct efi_pxe_base_code_srvlist SrvList[1];
+    uint8_t use_mcast;
+    uint8_t use_bcast;
+    uint8_t use_ucast;
+    uint8_t must_use_list;
+    union efi_ip_address server_mcast_ip;
+    uint16_t ip_cnt;
+    struct efi_pxe_base_code_srvlist srv_list[1];
 };
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DISCOVER)(
-    struct efi_pxe_base_code_protocol *This,
-    uint16_t Type,
-    uint16_t *Layer,
-    bool UseBis,
-    struct efi_pxe_base_code_discover_info *Info
+typedef efi_status (EFI_API *efi_pxe_base_code_discover)(
+    struct efi_pxe_base_code_protocol *self,
+    uint16_t type,
+    uint16_t *layer,
+    bool use_bis,
+    struct efi_pxe_base_code_discover_info *info
 );
 
 #define EFI_PXE_BASE_CODE_TFTP_FIRST ((uint32_t)0)
@@ -215,110 +215,110 @@ typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_DISCOVER)(
 #define EFI_PXE_BASE_CODE_MTFTP_LAST ((uint32_t)8)
 
 struct efi_pxe_base_code_mtftp_info {
-    union efi_ip_address MCastIp;
-    EFI_PXE_BASE_CODE_UDP_PORT CPort;
-    EFI_PXE_BASE_CODE_UDP_PORT SPort;
-    uint16_t ListenTimeout;
-    uint16_t TransmitTimeout;
+    union efi_ip_address mcast_ip;
+    efi_pxe_base_code_udp_port cport;
+    efi_pxe_base_code_udp_port sport;
+    uint16_t listen_timeout;
+    uint16_t transmit_timeout;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_MTFTP)(
-    struct efi_pxe_base_code_protocol *This,
-    uint32_t Operation,
-    void *BufferPtr,
-    bool Overwrite,
-    uint64_t *BufferSize,
-    size_t *BlockSize,
-    union efi_ip_address *ServerIp,
-    char *Filename,
-    struct efi_pxe_base_code_mtftp_info *Info,
-    bool DontUseBuffer
+typedef efi_status (EFI_API *efi_pxe_base_code_mtftp)(
+    struct efi_pxe_base_code_protocol *self,
+    uint32_t operation,
+    void *buffer_ptr,
+    bool overwrite,
+    uint64_t *buffer_size,
+    size_t *block_size,
+    union efi_ip_address *server_ip,
+    char *filename,
+    struct efi_pxe_base_code_mtftp_info *info,
+    bool dont_use_buffer
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_UDP_WRITE)(
-    struct efi_pxe_base_code_protocol *This,
-    uint16_t OpFlags,
-    union efi_ip_address *DestIp,
-    EFI_PXE_BASE_CODE_UDP_PORT *DestPort,
-    union efi_ip_address *GatewayIp,
-    union efi_ip_address *SrcIp,
-    EFI_PXE_BASE_CODE_UDP_PORT *SrcPort,
-    size_t *HeaderSize,
-    void *HeaderPtr,
-    size_t *BufferSize,
-    void *BufferPtr
+typedef efi_status (EFI_API *efi_pxe_base_code_udp_write)(
+    struct efi_pxe_base_code_protocol *self,
+    uint16_t op_flags,
+    union efi_ip_address *dest_ip,
+    efi_pxe_base_code_udp_port *dest_port,
+    union efi_ip_address *gateway_ip,
+    union efi_ip_address *src_ip,
+    efi_pxe_base_code_udp_port *src_port,
+    size_t *header_size,
+    void *header_ptr,
+    size_t *buffer_size,
+    void *buffer_ptr
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_UDP_READ)(
-    struct efi_pxe_base_code_protocol *This,
-    uint16_t OpFlags,
-    union efi_ip_address *DestIp,
-    EFI_PXE_BASE_CODE_UDP_PORT *DestPort,
-    union efi_ip_address *SrcIp,
-    EFI_PXE_BASE_CODE_UDP_PORT *SrcPort,
-    size_t *HeaderSize,
-    void *HeaderPtr,
-    size_t *BufferSize,
-    void *BufferPtr
+typedef efi_status (EFI_API *efi_pxe_base_code_udp_read)(
+    struct efi_pxe_base_code_protocol *self,
+    uint16_t op_flags,
+    union efi_ip_address *dest_ip,
+    efi_pxe_base_code_udp_port *dest_port,
+    union efi_ip_address *src_ip,
+    efi_pxe_base_code_udp_port *src_port,
+    size_t *header_size,
+    void *header_ptr,
+    size_t *buffer_size,
+    void *buffer_ptr
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_IP_FILTER)(
-    struct efi_pxe_base_code_protocol *This,
-    struct efi_pxe_base_code_ip_filter *NewFilter
+typedef efi_status (EFI_API *efi_pxe_base_code_set_ip_filter)(
+    struct efi_pxe_base_code_protocol *self,
+    struct efi_pxe_base_code_ip_filter *new_filter
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_ARP)(
-    struct efi_pxe_base_code_protocol *This,
-    union efi_ip_address *IpAddr,
-    struct efi_mac_address *MacAddr
+typedef efi_status (EFI_API *efi_pxe_base_code_arp)(
+    struct efi_pxe_base_code_protocol *self,
+    union efi_ip_address *ip_addr,
+    struct efi_mac_address *mac_addr
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_PARAMETERS)(
-    struct efi_pxe_base_code_protocol *This,
-    bool *NewAutoArp,
-    bool *NewSendGUID,
-    uint8_t *NewTTL,
-    uint8_t *NewToS,
-    bool *NewMakeCallback
+typedef efi_status (EFI_API *efi_pxe_base_code_set_parameters)(
+    struct efi_pxe_base_code_protocol *self,
+    bool *new_auto_arp,
+    bool *new_send_guid,
+    uint8_t *new_ttl,
+    uint8_t *new_tos,
+    bool *new_make_callback
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_STATION_IP)(
-    struct efi_pxe_base_code_protocol *This,
-    union efi_ip_address *NewStationIp,
-    union efi_ip_address *NewSubnetMask
+typedef efi_status (EFI_API *efi_pxe_base_code_set_station_ip)(
+    struct efi_pxe_base_code_protocol *self,
+    union efi_ip_address *new_station_ip,
+    union efi_ip_address *new_subnet_mask
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PXE_BASE_CODE_SET_PACKETS)(
-    struct efi_pxe_base_code_protocol *This,
-    bool *NewDhcpDiscoverValid,
-    bool *NewDhcpAckReceived,
-    bool *NewProxyOfferReceived,
-    bool *NewPxeDiscoverValid,
-    bool *NewPxeReplyReceived,
-    bool *NewPxeBisReplyReceived,
-    union efi_pxe_base_code_packet *NewDhcpDiscover,
-    union efi_pxe_base_code_packet *NewDhcpAck,
-    union efi_pxe_base_code_packet *NewProxyOffer,
-    union efi_pxe_base_code_packet *NewPxeDiscover,
-    union efi_pxe_base_code_packet *NewPxeReply,
-    union efi_pxe_base_code_packet *NewPxeBisReply
+typedef efi_status (EFI_API *efi_pxe_base_code_set_packets)(
+    struct efi_pxe_base_code_protocol *self,
+    bool *new_dhcp_discover_valid,
+    bool *new_dhcp_ack_received,
+    bool *new_proxy_offer_received,
+    bool *new_pxe_discover_valid,
+    bool *new_pxe_reply_received,
+    bool *new_pxe_bis_reply_received,
+    union efi_pxe_base_code_packet *new_dhcp_discover,
+    union efi_pxe_base_code_packet *new_dhcp_ack,
+    union efi_pxe_base_code_packet *new_proxy_offer,
+    union efi_pxe_base_code_packet *new_pxe_discover,
+    union efi_pxe_base_code_packet *new_pxe_reply,
+    union efi_pxe_base_code_packet *new_pxe_bis_reply
 );
 
 struct efi_pxe_base_code_protocol {
-    uint64_t Revision;
-    EFI_PXE_BASE_CODE_START Start;
-    EFI_PXE_BASE_CODE_STOP Stop;
-    EFI_PXE_BASE_CODE_DHCP Dhcp;
-    EFI_PXE_BASE_CODE_DISCOVER Discover;
-    EFI_PXE_BASE_CODE_MTFTP Mtftp;
-    EFI_PXE_BASE_CODE_UDP_WRITE UdpWrite;
-    EFI_PXE_BASE_CODE_UDP_READ UdpRead;
-    EFI_PXE_BASE_CODE_SET_IP_FILTER SetIpFilter;
-    EFI_PXE_BASE_CODE_ARP Arp;
-    EFI_PXE_BASE_CODE_SET_PARAMETERS SetParameters;
-    EFI_PXE_BASE_CODE_SET_STATION_IP SetStationIp;
-    EFI_PXE_BASE_CODE_SET_PACKETS SetPackets;
-    struct efi_pxe_base_code_mode *Mode;
+    uint64_t revision;
+    efi_pxe_base_code_start start;
+    efi_pxe_base_code_stop stop;
+    efi_pxe_base_code_dhcp dhcp;
+    efi_pxe_base_code_discover discover;
+    efi_pxe_base_code_mtftp mtftp;
+    efi_pxe_base_code_udp_write udp_write;
+    efi_pxe_base_code_udp_read udp_read;
+    efi_pxe_base_code_set_ip_filter set_ip_filter;
+    efi_pxe_base_code_arp arp;
+    efi_pxe_base_code_set_parameters set_parameters;
+    efi_pxe_base_code_set_station_ip set_station_ip;
+    efi_pxe_base_code_set_packets set_packets;
+    struct efi_pxe_base_code_mode *mode;
 };
 
 #define EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL_GUID \
@@ -343,17 +343,17 @@ struct efi_pxe_base_code_callback_protocol;
 #define EFI_PXE_BASE_CODE_FUNCTION_IGMP ((uint32_t)7)
 #define EFI_PXE_BASE_CODE_PXE_FUNCTION_LAST ((uint32_t)8)
 
-typedef uint32_t (EFI_API *EFI_PXE_CALLBACK)(
-    struct efi_pxe_base_code_callback_protocol *This,
-    uint32_t Function,
-    bool Received,
-    uint32_t PacketLen,
-    union efi_pxe_base_code_packet *Packet
+typedef uint32_t (EFI_API *efi_pxe_callback)(
+    struct efi_pxe_base_code_callback_protocol *self,
+    uint32_t function,
+    bool received,
+    uint32_t packet_len,
+    union efi_pxe_base_code_packet *packet
 );
 
 struct efi_pxe_base_code_callback_protocol {
-    uint64_t Revision;
-    EFI_PXE_CALLBACK Callback;
+    uint64_t revision;
+    efi_pxe_callback callback;
 };
 
 #ifdef __cplusplus

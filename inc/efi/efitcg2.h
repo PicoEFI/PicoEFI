@@ -16,28 +16,28 @@ struct efi_tcg2_protocol;
 #define EFI_TCG2_EVENT_LOG_FORMAT_TCG_1_2 0x00000001
 #define EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 0x00000002
 
-typedef uint32_t EFI_TCG2_EVENT_LOG_BITMAP;
-typedef uint32_t EFI_TCG2_EVENT_LOG_FORMAT;
-typedef uint32_t EFI_TCG2_EVENT_ALGORITHM_BITMAP;
+typedef uint32_t efi_tcg2_event_log_bitmap;
+typedef uint32_t efi_tcg2_event_log_format;
+typedef uint32_t efi_tcg2_event_algorithm_bitmap;
 
 struct efi_tcg2_version {
-    uint8_t Major;
-    uint8_t Minor;
+    uint8_t major;
+    uint8_t minor;
 };
 
 /* Explicitly not packed, unlike the document's other structures: 36 bytes. */
 struct efi_tcg2_boot_service_capability {
-    uint8_t Size;
-    struct efi_tcg2_version StructureVersion;
-    struct efi_tcg2_version ProtocolVersion;
-    EFI_TCG2_EVENT_ALGORITHM_BITMAP HashAlgorithmBitmap;
-    EFI_TCG2_EVENT_LOG_BITMAP SupportedEventLogs;
-    uint8_t TPMPresentFlag;
-    uint16_t MaxCommandSize;
-    uint16_t MaxResponseSize;
-    uint32_t ManufacturerID;
-    uint32_t NumberOfPcrBanks;
-    EFI_TCG2_EVENT_ALGORITHM_BITMAP ActivePcrBanks;
+    uint8_t size;
+    struct efi_tcg2_version structure_version;
+    struct efi_tcg2_version protocol_version;
+    efi_tcg2_event_algorithm_bitmap hash_algorithm_bitmap;
+    efi_tcg2_event_log_bitmap supported_event_logs;
+    uint8_t tpm_present_flag;
+    uint16_t max_command_size;
+    uint16_t max_response_size;
+    uint32_t manufacturer_id;
+    uint32_t number_of_pcr_banks;
+    efi_tcg2_event_algorithm_bitmap active_pcr_banks;
 };
 
 #define EFI_TCG2_BOOT_HASH_ALG_SHA1 0x00000001
@@ -46,88 +46,88 @@ struct efi_tcg2_boot_service_capability {
 #define EFI_TCG2_BOOT_HASH_ALG_SHA512 0x00000008
 #define EFI_TCG2_BOOT_HASH_ALG_SM3_256 0x00000010
 
-typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_CAPABILITY)(
-    struct efi_tcg2_protocol *This,
-    struct efi_tcg2_boot_service_capability *ProtocolCapability
+typedef efi_status (EFI_API *efi_tcg2_get_capability)(
+    struct efi_tcg2_protocol *self,
+    struct efi_tcg2_boot_service_capability *protocol_capability
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_EVENT_LOG)(
-    struct efi_tcg2_protocol *This,
-    EFI_TCG2_EVENT_LOG_FORMAT EventLogFormat,
-    EFI_PHYSICAL_ADDRESS *EventLogLocation,
-    EFI_PHYSICAL_ADDRESS *EventLogLastEntry,
-    bool *EventLogTruncated
+typedef efi_status (EFI_API *efi_tcg2_get_event_log)(
+    struct efi_tcg2_protocol *self,
+    efi_tcg2_event_log_format event_log_format,
+    efi_physical_address *event_log_location,
+    efi_physical_address *event_log_last_entry,
+    bool *event_log_truncated
 );
 
-typedef uint32_t EFI_TCG_EVENTTYPE;
+typedef uint32_t efi_tcg_eventtype;
 
 struct efi_tcg2_event_header {
-    uint32_t HeaderSize;
-    uint16_t HeaderVersion;
-    EFI_TCG_PCRINDEX PCRIndex;
-    EFI_TCG_EVENTTYPE EventType;
+    uint32_t header_size;
+    uint16_t header_version;
+    efi_tcg_pcrindex pcr_index;
+    efi_tcg_eventtype event_type;
 } __attribute__((__packed__));
 
-/* Event is printed as []; it is variable-length, and Size covers the whole record. */
+/* event is printed as []; it is variable-length, and size covers the whole record. */
 struct efi_tcg2_event {
-    uint32_t Size;
-    struct efi_tcg2_event_header Header;
-    uint8_t Event[1];
+    uint32_t size;
+    struct efi_tcg2_event_header header;
+    uint8_t event[1];
 } __attribute__((__packed__));
 
 #define EFI_TCG2_EXTEND_ONLY 0x0000000000000001
 #define EFI_PE_COFF_IMAGE 0x0000000000000010
 
-typedef EFI_STATUS (EFI_API *EFI_TCG2_HASH_LOG_EXTEND_EVENT)(
-    struct efi_tcg2_protocol *This,
-    uint64_t Flags,
-    EFI_PHYSICAL_ADDRESS DataToHash,
-    uint64_t DataToHashLen,
-    struct efi_tcg2_event *EfiTcgEvent
+typedef efi_status (EFI_API *efi_tcg2_hash_log_extend_event)(
+    struct efi_tcg2_protocol *self,
+    uint64_t flags,
+    efi_physical_address data_to_hash,
+    uint64_t data_to_hash_len,
+    struct efi_tcg2_event *efi_tcg_event
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCG2_SUBMIT_COMMAND)(
-    struct efi_tcg2_protocol *This,
-    uint32_t InputParameterBlockSize,
-    uint8_t *InputParameterBlock,
-    uint32_t OutputParameterBlockSize,
-    uint8_t *OutputParameterBlock
+typedef efi_status (EFI_API *efi_tcg2_submit_command)(
+    struct efi_tcg2_protocol *self,
+    uint32_t input_parameter_block_size,
+    uint8_t *input_parameter_block,
+    uint32_t output_parameter_block_size,
+    uint8_t *output_parameter_block
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_ACTIVE_PCR_BANKS)(
-    struct efi_tcg2_protocol *This,
-    uint32_t *ActivePcrBanks
+typedef efi_status (EFI_API *efi_tcg2_get_active_pcr_banks)(
+    struct efi_tcg2_protocol *self,
+    uint32_t *active_pcr_banks
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCG2_SET_ACTIVE_PCR_BANKS)(
-    struct efi_tcg2_protocol *This,
-    uint32_t ActivePcrBanks
+typedef efi_status (EFI_API *efi_tcg2_set_active_pcr_banks)(
+    struct efi_tcg2_protocol *self,
+    uint32_t active_pcr_banks
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_RESULT_OF_SET_ACTIVE_PCR_BANKS)(
-    struct efi_tcg2_protocol *This,
-    uint32_t *OperationPresent,
-    uint32_t *Response
+typedef efi_status (EFI_API *efi_tcg2_get_result_of_set_active_pcr_banks)(
+    struct efi_tcg2_protocol *self,
+    uint32_t *operation_present,
+    uint32_t *response
 );
 
 struct efi_tcg2_protocol {
-    EFI_TCG2_GET_CAPABILITY GetCapability;
-    EFI_TCG2_GET_EVENT_LOG GetEventLog;
-    EFI_TCG2_HASH_LOG_EXTEND_EVENT HashLogExtendEvent;
-    EFI_TCG2_SUBMIT_COMMAND SubmitCommand;
-    EFI_TCG2_GET_ACTIVE_PCR_BANKS GetActivePcrBanks;
-    EFI_TCG2_SET_ACTIVE_PCR_BANKS SetActivePcrBanks;
-    EFI_TCG2_GET_RESULT_OF_SET_ACTIVE_PCR_BANKS GetResultOfSetActivePcrBanks;
+    efi_tcg2_get_capability get_capability;
+    efi_tcg2_get_event_log get_event_log;
+    efi_tcg2_hash_log_extend_event hash_log_extend_event;
+    efi_tcg2_submit_command submit_command;
+    efi_tcg2_get_active_pcr_banks get_active_pcr_banks;
+    efi_tcg2_set_active_pcr_banks set_active_pcr_banks;
+    efi_tcg2_get_result_of_set_active_pcr_banks get_result_of_set_active_pcr_banks;
 };
 
 #define EFI_TCG2_FINAL_EVENTS_TABLE_GUID \
     {0x1e2ed096, 0x30e2, 0x4254, {0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25}}
 
-/* Natural alignment; Event starts NumberOfEvents serialised TCG_PCR_EVENT2 records. */
+/* Natural alignment; event starts number_of_events serialised TCG_PCR_EVENT2 records. */
 struct efi_tcg2_final_events_table {
-    uint64_t Version;
-    uint64_t NumberOfEvents;
-    uint8_t Event[1];
+    uint64_t version;
+    uint64_t number_of_events;
+    uint8_t event[1];
 };
 
 #define EFI_TCG2_FINAL_EVENTS_TABLE_VERSION 1

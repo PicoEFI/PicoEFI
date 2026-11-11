@@ -15,97 +15,97 @@ extern "C" {
 
 struct efi_managed_network_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_GET_MODE_DATA)(
-    struct efi_managed_network_protocol *This,
-    struct efi_managed_network_config_data *MnpConfigData,
-    struct efi_simple_network_mode *SnpModeData
+typedef efi_status (EFI_API *efi_managed_network_get_mode_data)(
+    struct efi_managed_network_protocol *self,
+    struct efi_managed_network_config_data *mnp_config_data,
+    struct efi_simple_network_mode *snp_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_CONFIGURE)(
-    struct efi_managed_network_protocol *This,
-    struct efi_managed_network_config_data *MnpConfigData
+typedef efi_status (EFI_API *efi_managed_network_configure)(
+    struct efi_managed_network_protocol *self,
+    struct efi_managed_network_config_data *mnp_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_MCAST_IP_TO_MAC)(
-    struct efi_managed_network_protocol *This,
-    bool Ipv6Flag,
-    union efi_ip_address *IpAddress,
-    struct efi_mac_address *MacAddress
+typedef efi_status (EFI_API *efi_managed_network_mcast_ip_to_mac)(
+    struct efi_managed_network_protocol *self,
+    bool ipv6_flag,
+    union efi_ip_address *ip_address,
+    struct efi_mac_address *mac_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_GROUPS)(
-    struct efi_managed_network_protocol *This,
-    bool JoinFlag,
-    struct efi_mac_address *MacAddress
+typedef efi_status (EFI_API *efi_managed_network_groups)(
+    struct efi_managed_network_protocol *self,
+    bool join_flag,
+    struct efi_mac_address *mac_address
 );
 
 struct efi_managed_network_receive_data {
-    struct efi_time Timestamp;
-    EFI_EVENT RecycleEvent;
-    uint32_t PacketLength;
-    uint32_t HeaderLength;
-    uint32_t AddressLength;
-    uint32_t DataLength;
-    uint8_t BroadcastFlag;
-    uint8_t MulticastFlag;
-    uint8_t PromiscuousFlag;
-    uint16_t ProtocolType;
-    void *DestinationAddress;
-    void *SourceAddress;
-    void *MediaHeader;
-    void *PacketData;
+    struct efi_time timestamp;
+    efi_event recycle_event;
+    uint32_t packet_length;
+    uint32_t header_length;
+    uint32_t address_length;
+    uint32_t data_length;
+    uint8_t broadcast_flag;
+    uint8_t multicast_flag;
+    uint8_t promiscuous_flag;
+    uint16_t protocol_type;
+    void *destination_address;
+    void *source_address;
+    void *media_header;
+    void *packet_data;
 };
 
 struct efi_managed_network_fragment_data {
-    uint32_t FragmentLength;
-    void *FragmentBuffer;
+    uint32_t fragment_length;
+    void *fragment_buffer;
 };
 
 struct efi_managed_network_transmit_data {
-    struct efi_mac_address *DestinationAddress;
-    struct efi_mac_address *SourceAddress;
-    uint16_t ProtocolType;
-    uint32_t DataLength;
-    uint16_t HeaderLength;
-    uint16_t FragmentCount;
-    struct efi_managed_network_fragment_data FragmentTable[1];
+    struct efi_mac_address *destination_address;
+    struct efi_mac_address *source_address;
+    uint16_t protocol_type;
+    uint32_t data_length;
+    uint16_t header_length;
+    uint16_t fragment_count;
+    struct efi_managed_network_fragment_data fragment_table[1];
 };
 
 struct efi_managed_network_completion_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
+    efi_event event;
+    efi_status status;
     union {
-        struct efi_managed_network_receive_data *RxData;
-        struct efi_managed_network_transmit_data *TxData;
-    } Packet;
+        struct efi_managed_network_receive_data *rx_data;
+        struct efi_managed_network_transmit_data *tx_data;
+    } packet;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_TRANSMIT)(
-    struct efi_managed_network_protocol *This,
-    struct efi_managed_network_completion_token *Token
+typedef efi_status (EFI_API *efi_managed_network_transmit)(
+    struct efi_managed_network_protocol *self,
+    struct efi_managed_network_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_RECEIVE)(
-    struct efi_managed_network_protocol *This,
-    struct efi_managed_network_completion_token *Token
+typedef efi_status (EFI_API *efi_managed_network_receive)(
+    struct efi_managed_network_protocol *self,
+    struct efi_managed_network_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_CANCEL)(
-    struct efi_managed_network_protocol *This,
-    struct efi_managed_network_completion_token *Token
+typedef efi_status (EFI_API *efi_managed_network_cancel)(
+    struct efi_managed_network_protocol *self,
+    struct efi_managed_network_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_POLL)(struct efi_managed_network_protocol *This);
+typedef efi_status (EFI_API *efi_managed_network_poll)(struct efi_managed_network_protocol *self);
 
 struct efi_managed_network_protocol {
-    EFI_MANAGED_NETWORK_GET_MODE_DATA GetModeData;
-    EFI_MANAGED_NETWORK_CONFIGURE Configure;
-    EFI_MANAGED_NETWORK_MCAST_IP_TO_MAC McastIpToMac;
-    EFI_MANAGED_NETWORK_GROUPS Groups;
-    EFI_MANAGED_NETWORK_TRANSMIT Transmit;
-    EFI_MANAGED_NETWORK_RECEIVE Receive;
-    EFI_MANAGED_NETWORK_CANCEL Cancel;
-    EFI_MANAGED_NETWORK_POLL Poll;
+    efi_managed_network_get_mode_data get_mode_data;
+    efi_managed_network_configure configure;
+    efi_managed_network_mcast_ip_to_mac mcast_ip_to_mac;
+    efi_managed_network_groups groups;
+    efi_managed_network_transmit transmit;
+    efi_managed_network_receive receive;
+    efi_managed_network_cancel cancel;
+    efi_managed_network_poll poll;
 };
 
 #ifdef __cplusplus

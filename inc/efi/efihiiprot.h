@@ -13,7 +13,7 @@ extern "C" {
 
 struct efi_hii_font_protocol;
 
-typedef uint32_t EFI_HII_OUT_FLAGS;
+typedef uint32_t efi_hii_out_flags;
 
 #define EFI_HII_OUT_FLAG_CLIP 0x00000001
 #define EFI_HII_OUT_FLAG_WRAP 0x00000002
@@ -25,21 +25,21 @@ typedef uint32_t EFI_HII_OUT_FLAGS;
 #define EFI_HII_DIRECT_TO_SCREEN 0x00000080
 
 struct efi_hii_row_info {
-    size_t StartIndex;
-    size_t EndIndex;
-    size_t LineHeight;
-    size_t LineWidth;
-    size_t BaselineOffset;
+    size_t start_index;
+    size_t end_index;
+    size_t line_height;
+    size_t line_width;
+    size_t baseline_offset;
 };
 
-/* FontName has one element, as firmware lays it out: struct efi_font_display_info embeds this. */
+/* font_name has one element, as firmware lays it out: struct efi_font_display_info embeds this. */
 struct efi_font_info {
-    EFI_HII_FONT_STYLE FontStyle;
-    uint16_t FontSize;
-    uint16_t FontName[1];
+    efi_hii_font_style font_style;
+    uint16_t font_size;
+    uint16_t font_name[1];
 };
 
-typedef uint32_t EFI_FONT_INFO_MASK;
+typedef uint32_t efi_font_info_mask;
 
 #define EFI_FONT_INFO_SYS_FONT 0x00000001
 #define EFI_FONT_INFO_SYS_SIZE 0x00000002
@@ -53,72 +53,72 @@ typedef uint32_t EFI_FONT_INFO_MASK;
 #define EFI_FONT_INFO_ANY_STYLE 0x00040000
 
 struct efi_font_display_info {
-    struct efi_graphics_output_blt_pixel ForegroundColor;
-    struct efi_graphics_output_blt_pixel BackgroundColor;
-    EFI_FONT_INFO_MASK FontInfoMask;
-    struct efi_font_info FontInfo;
+    struct efi_graphics_output_blt_pixel foreground_color;
+    struct efi_graphics_output_blt_pixel background_color;
+    efi_font_info_mask font_info_mask;
+    struct efi_font_info font_info;
 };
 
 struct efi_image_output {
-    uint16_t Width;
-    uint16_t Height;
+    uint16_t width;
+    uint16_t height;
     union {
-        struct efi_graphics_output_blt_pixel *Bitmap;
-        struct efi_graphics_output_protocol *Screen;
-    } Image;
+        struct efi_graphics_output_blt_pixel *bitmap;
+        struct efi_graphics_output_protocol *screen;
+    } image;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_HII_STRING_TO_IMAGE)(
-    const struct efi_hii_font_protocol *This,
-    EFI_HII_OUT_FLAGS Flags,
-    const EFI_STRING String,
-    const struct efi_font_display_info *StringInfo,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY,
-    struct efi_hii_row_info **RowInfoArray,
-    size_t *RowInfoArraySize,
-    size_t *ColumnInfoArray
+typedef efi_status (EFI_API *efi_hii_string_to_image)(
+    const struct efi_hii_font_protocol *self,
+    efi_hii_out_flags flags,
+    const efi_string string,
+    const struct efi_font_display_info *string_info,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y,
+    struct efi_hii_row_info **row_info_array,
+    size_t *row_info_array_size,
+    size_t *column_info_array
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_STRING_ID_TO_IMAGE)(
-    const struct efi_hii_font_protocol *This,
-    EFI_HII_OUT_FLAGS Flags,
-    EFI_HII_HANDLE PackageList,
-    EFI_STRING_ID StringId,
-    const char *Language,
-    const struct efi_font_display_info *StringInfo,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY,
-    struct efi_hii_row_info **RowInfoArray,
-    size_t *RowInfoArraySize,
-    size_t *ColumnInfoArray
+typedef efi_status (EFI_API *efi_hii_string_id_to_image)(
+    const struct efi_hii_font_protocol *self,
+    efi_hii_out_flags flags,
+    efi_hii_handle package_list,
+    efi_string_id string_id,
+    const char *language,
+    const struct efi_font_display_info *string_info,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y,
+    struct efi_hii_row_info **row_info_array,
+    size_t *row_info_array_size,
+    size_t *column_info_array
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_GLYPH)(
-    const struct efi_hii_font_protocol *This,
-    uint16_t Char,
-    const struct efi_font_display_info *StringInfo,
-    struct efi_image_output **Blt,
-    size_t *Baseline
+typedef efi_status (EFI_API *efi_hii_get_glyph)(
+    const struct efi_hii_font_protocol *self,
+    uint16_t char_,
+    const struct efi_font_display_info *string_info,
+    struct efi_image_output **blt,
+    size_t *baseline
 );
 
-typedef void *EFI_FONT_HANDLE;
+typedef void *efi_font_handle;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_FONT_INFO)(
-    const struct efi_hii_font_protocol *This,
-    EFI_FONT_HANDLE *FontHandle,
-    const struct efi_font_display_info *StringInfoIn,
-    struct efi_font_display_info **StringInfoOut,
-    const EFI_STRING String
+typedef efi_status (EFI_API *efi_hii_get_font_info)(
+    const struct efi_hii_font_protocol *self,
+    efi_font_handle *font_handle,
+    const struct efi_font_display_info *string_info_in,
+    struct efi_font_display_info **string_info_out,
+    const efi_string string
 );
 
 struct efi_hii_font_protocol {
-    EFI_HII_STRING_TO_IMAGE StringToImage;
-    EFI_HII_STRING_ID_TO_IMAGE StringIdToImage;
-    EFI_HII_GET_GLYPH GetGlyph;
-    EFI_HII_GET_FONT_INFO GetFontInfo;
+    efi_hii_string_to_image string_to_image;
+    efi_hii_string_id_to_image string_id_to_image;
+    efi_hii_get_glyph get_glyph;
+    efi_hii_get_font_info get_font_info;
 };
 
 #define EFI_HII_FONT_EX_PROTOCOL_GUID \
@@ -126,64 +126,64 @@ struct efi_hii_font_protocol {
 
 struct efi_hii_font_ex_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_STRING_TO_IMAGE_EX)(
-    const struct efi_hii_font_ex_protocol *This,
-    EFI_HII_OUT_FLAGS Flags,
-    const EFI_STRING String,
-    const struct efi_font_display_info *StringInfo,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY,
-    struct efi_hii_row_info **RowInfoArray,
-    size_t *RowInfoArraySize,
-    size_t *ColumnInfoArray
+typedef efi_status (EFI_API *efi_hii_string_to_image_ex)(
+    const struct efi_hii_font_ex_protocol *self,
+    efi_hii_out_flags flags,
+    const efi_string string,
+    const struct efi_font_display_info *string_info,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y,
+    struct efi_hii_row_info **row_info_array,
+    size_t *row_info_array_size,
+    size_t *column_info_array
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_STRING_ID_TO_IMAGE_EX)(
-    const struct efi_hii_font_ex_protocol *This,
-    EFI_HII_OUT_FLAGS Flags,
-    EFI_HII_HANDLE PackageList,
-    EFI_STRING_ID StringId,
-    const char *Language,
-    const struct efi_font_display_info *StringInfo,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY,
-    struct efi_hii_row_info **RowInfoArray,
-    size_t *RowInfoArraySize,
-    size_t *ColumnInfoArray
+typedef efi_status (EFI_API *efi_hii_string_id_to_image_ex)(
+    const struct efi_hii_font_ex_protocol *self,
+    efi_hii_out_flags flags,
+    efi_hii_handle package_list,
+    efi_string_id string_id,
+    const char *language,
+    const struct efi_font_display_info *string_info,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y,
+    struct efi_hii_row_info **row_info_array,
+    size_t *row_info_array_size,
+    size_t *column_info_array
 );
 
-/* Baseline is printed by value, but the parameters are GetGlyph()'s, which returns it. */
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_GLYPH_EX)(
-    const struct efi_hii_font_ex_protocol *This,
-    uint16_t Char,
-    const struct efi_font_display_info *StringInfo,
-    struct efi_image_output **Blt,
-    size_t *Baseline
+/* baseline is printed by value, but the parameters are get_glyph()'s, which returns it. */
+typedef efi_status (EFI_API *efi_hii_get_glyph_ex)(
+    const struct efi_hii_font_ex_protocol *self,
+    uint16_t char_,
+    const struct efi_font_display_info *string_info,
+    struct efi_image_output **blt,
+    size_t *baseline
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_FONT_INFO_EX)(
-    const struct efi_hii_font_ex_protocol *This,
-    EFI_FONT_HANDLE *FontHandle,
-    const struct efi_font_display_info *StringInfoIn,
-    struct efi_font_display_info **StringInfoOut,
-    const EFI_STRING String
+typedef efi_status (EFI_API *efi_hii_get_font_info_ex)(
+    const struct efi_hii_font_ex_protocol *self,
+    efi_font_handle *font_handle,
+    const struct efi_font_display_info *string_info_in,
+    struct efi_font_display_info **string_info_out,
+    const efi_string string
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_GLYPH_INFO)(
-    const struct efi_hii_font_ex_protocol *This,
-    uint16_t Char,
-    const struct efi_font_display_info *FontDisplayInfo,
-    struct efi_hii_glyph_info *GlyphInfo
+typedef efi_status (EFI_API *efi_hii_get_glyph_info)(
+    const struct efi_hii_font_ex_protocol *self,
+    uint16_t char_,
+    const struct efi_font_display_info *font_display_info,
+    struct efi_hii_glyph_info *glyph_info
 );
 
 struct efi_hii_font_ex_protocol {
-    EFI_HII_STRING_TO_IMAGE_EX StringToImageEx;
-    EFI_HII_STRING_ID_TO_IMAGE_EX StringIdToImageEx;
-    EFI_HII_GET_GLYPH_EX GetGlyphEx;
-    EFI_HII_GET_FONT_INFO_EX GetFontInfoEx;
-    EFI_HII_GET_GLYPH_INFO GetGlyphInfo;
+    efi_hii_string_to_image_ex string_to_image_ex;
+    efi_hii_string_id_to_image_ex string_id_to_image_ex;
+    efi_hii_get_glyph_ex get_glyph_ex;
+    efi_hii_get_font_info_ex get_font_info_ex;
+    efi_hii_get_glyph_info get_glyph_info;
 };
 
 #define EFI_HII_STRING_PROTOCOL_GUID \
@@ -191,56 +191,56 @@ struct efi_hii_font_ex_protocol {
 
 struct efi_hii_string_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_NEW_STRING)(
-    const struct efi_hii_string_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_STRING_ID *StringId,
-    const char *Language,
-    const uint16_t *LanguageName,
-    const EFI_STRING String,
-    const struct efi_font_info *StringFontInfo
+typedef efi_status (EFI_API *efi_hii_new_string)(
+    const struct efi_hii_string_protocol *self,
+    efi_hii_handle package_list,
+    efi_string_id *string_id,
+    const char *language,
+    const uint16_t *language_name,
+    const efi_string string,
+    const struct efi_font_info *string_font_info
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_STRING)(
-    const struct efi_hii_string_protocol *This,
-    const char *Language,
-    EFI_HII_HANDLE PackageList,
-    EFI_STRING_ID StringId,
-    EFI_STRING String,
-    size_t *StringSize,
-    struct efi_font_info **StringFontInfo
+typedef efi_status (EFI_API *efi_hii_get_string)(
+    const struct efi_hii_string_protocol *self,
+    const char *language,
+    efi_hii_handle package_list,
+    efi_string_id string_id,
+    efi_string string,
+    size_t *string_size,
+    struct efi_font_info **string_font_info
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_SET_STRING)(
-    const struct efi_hii_string_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_STRING_ID StringId,
-    const char *Language,
-    const EFI_STRING String,
-    const struct efi_font_info *StringFontInfo
+typedef efi_status (EFI_API *efi_hii_set_string)(
+    const struct efi_hii_string_protocol *self,
+    efi_hii_handle package_list,
+    efi_string_id string_id,
+    const char *language,
+    const efi_string string,
+    const struct efi_font_info *string_font_info
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_LANGUAGES)(
-    const struct efi_hii_string_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    char *Languages,
-    size_t *LanguagesSize
+typedef efi_status (EFI_API *efi_hii_get_languages)(
+    const struct efi_hii_string_protocol *self,
+    efi_hii_handle package_list,
+    char *languages,
+    size_t *languages_size
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_2ND_LANGUAGES)(
-    const struct efi_hii_string_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    const char *PrimaryLanguage,
-    char *SecondaryLanguages,
-    size_t *SecondaryLanguagesSize
+typedef efi_status (EFI_API *efi_hii_get_2nd_languages)(
+    const struct efi_hii_string_protocol *self,
+    efi_hii_handle package_list,
+    const char *primary_language,
+    char *secondary_languages,
+    size_t *secondary_languages_size
 );
 
 struct efi_hii_string_protocol {
-    EFI_HII_NEW_STRING NewString;
-    EFI_HII_GET_STRING GetString;
-    EFI_HII_SET_STRING SetString;
-    EFI_HII_GET_LANGUAGES GetLanguages;
-    EFI_HII_GET_2ND_LANGUAGES GetSecondaryLanguages;
+    efi_hii_new_string new_string;
+    efi_hii_get_string get_string;
+    efi_hii_set_string set_string;
+    efi_hii_get_languages get_languages;
+    efi_hii_get_2nd_languages get_secondary_languages;
 };
 
 #define EFI_HII_IMAGE_PROTOCOL_GUID \
@@ -249,36 +249,36 @@ struct efi_hii_string_protocol {
 struct efi_hii_image_protocol;
 
 struct efi_image_input {
-    uint32_t Flags;
-    uint16_t Width;
-    uint16_t Height;
-    struct efi_graphics_output_blt_pixel *Bitmap;
+    uint32_t flags;
+    uint16_t width;
+    uint16_t height;
+    struct efi_graphics_output_blt_pixel *bitmap;
 };
 
 #define EFI_IMAGE_TRANSPARENT 0x00000001
 
-typedef EFI_STATUS (EFI_API *EFI_HII_NEW_IMAGE)(
-    const struct efi_hii_image_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID *ImageId,
-    const struct efi_image_input *Image
+typedef efi_status (EFI_API *efi_hii_new_image)(
+    const struct efi_hii_image_protocol *self,
+    efi_hii_handle package_list,
+    efi_image_id *image_id,
+    const struct efi_image_input *image
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_IMAGE)(
-    const struct efi_hii_image_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID ImageId,
-    struct efi_image_input *Image
+typedef efi_status (EFI_API *efi_hii_get_image)(
+    const struct efi_hii_image_protocol *self,
+    efi_hii_handle package_list,
+    efi_image_id image_id,
+    struct efi_image_input *image
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_SET_IMAGE)(
-    const struct efi_hii_image_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID ImageId,
-    const struct efi_image_input *Image
+typedef efi_status (EFI_API *efi_hii_set_image)(
+    const struct efi_hii_image_protocol *self,
+    efi_hii_handle package_list,
+    efi_image_id image_id,
+    const struct efi_image_input *image
 );
 
-typedef uint32_t EFI_HII_DRAW_FLAGS;
+typedef uint32_t efi_hii_draw_flags;
 
 #define EFI_HII_DRAW_FLAG_CLIP 0x00000001
 #define EFI_HII_DRAW_FLAG_TRANSPARENT 0x00000030
@@ -286,31 +286,31 @@ typedef uint32_t EFI_HII_DRAW_FLAGS;
 #define EFI_HII_DRAW_FLAG_FORCE_TRANS 0x00000010
 #define EFI_HII_DRAW_FLAG_FORCE_OPAQUE 0x00000020
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DRAW_IMAGE)(
-    const struct efi_hii_image_protocol *This,
-    EFI_HII_DRAW_FLAGS Flags,
-    const struct efi_image_input *Image,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY
+typedef efi_status (EFI_API *efi_hii_draw_image)(
+    const struct efi_hii_image_protocol *self,
+    efi_hii_draw_flags flags,
+    const struct efi_image_input *image,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DRAW_IMAGE_ID)(
-    const struct efi_hii_image_protocol *This,
-    EFI_HII_DRAW_FLAGS Flags,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID ImageId,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY
+typedef efi_status (EFI_API *efi_hii_draw_image_id)(
+    const struct efi_hii_image_protocol *self,
+    efi_hii_draw_flags flags,
+    efi_hii_handle package_list,
+    efi_image_id image_id,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y
 );
 
 struct efi_hii_image_protocol {
-    EFI_HII_NEW_IMAGE NewImage;
-    EFI_HII_GET_IMAGE GetImage;
-    EFI_HII_SET_IMAGE SetImage;
-    EFI_HII_DRAW_IMAGE DrawImage;
-    EFI_HII_DRAW_IMAGE_ID DrawImageId;
+    efi_hii_new_image new_image;
+    efi_hii_get_image get_image;
+    efi_hii_set_image set_image;
+    efi_hii_draw_image draw_image;
+    efi_hii_draw_image_id draw_image_id;
 };
 
 #define EFI_HII_IMAGE_EX_PROTOCOL_GUID \
@@ -318,60 +318,60 @@ struct efi_hii_image_protocol {
 
 struct efi_hii_image_ex_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_NEW_IMAGE_EX)(
-    const struct efi_hii_image_ex_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID *ImageId,
-    struct efi_image_input *Image
+typedef efi_status (EFI_API *efi_hii_new_image_ex)(
+    const struct efi_hii_image_ex_protocol *self,
+    efi_hii_handle package_list,
+    efi_image_id *image_id,
+    struct efi_image_input *image
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_IMAGE_EX)(
-    const struct efi_hii_image_ex_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID ImageId,
-    struct efi_image_input *Image
+typedef efi_status (EFI_API *efi_hii_get_image_ex)(
+    const struct efi_hii_image_ex_protocol *self,
+    efi_hii_handle package_list,
+    efi_image_id image_id,
+    struct efi_image_input *image
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_SET_IMAGE_EX)(
-    const struct efi_hii_image_ex_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID ImageId,
-    const struct efi_image_input *Image
+typedef efi_status (EFI_API *efi_hii_set_image_ex)(
+    const struct efi_hii_image_ex_protocol *self,
+    efi_hii_handle package_list,
+    efi_image_id image_id,
+    const struct efi_image_input *image
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DRAW_IMAGE_EX)(
-    const struct efi_hii_image_ex_protocol *This,
-    EFI_HII_DRAW_FLAGS Flags,
-    const struct efi_image_input *Image,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY
+typedef efi_status (EFI_API *efi_hii_draw_image_ex)(
+    const struct efi_hii_image_ex_protocol *self,
+    efi_hii_draw_flags flags,
+    const struct efi_image_input *image,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DRAW_IMAGE_ID_EX)(
-    const struct efi_hii_image_ex_protocol *This,
-    EFI_HII_DRAW_FLAGS Flags,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID ImageId,
-    struct efi_image_output **Blt,
-    size_t BltX,
-    size_t BltY
+typedef efi_status (EFI_API *efi_hii_draw_image_id_ex)(
+    const struct efi_hii_image_ex_protocol *self,
+    efi_hii_draw_flags flags,
+    efi_hii_handle package_list,
+    efi_image_id image_id,
+    struct efi_image_output **blt,
+    size_t blt_x,
+    size_t blt_y
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_IMAGE_INFO)(
-    const struct efi_hii_image_ex_protocol *This,
-    EFI_HII_HANDLE PackageList,
-    EFI_IMAGE_ID ImageId,
-    struct efi_image_output *Image
+typedef efi_status (EFI_API *efi_hii_get_image_info)(
+    const struct efi_hii_image_ex_protocol *self,
+    efi_hii_handle package_list,
+    efi_image_id image_id,
+    struct efi_image_output *image
 );
 
 struct efi_hii_image_ex_protocol {
-    EFI_HII_NEW_IMAGE_EX NewImageEx;
-    EFI_HII_GET_IMAGE_EX GetImageEx;
-    EFI_HII_SET_IMAGE_EX SetImageEx;
-    EFI_HII_DRAW_IMAGE_EX DrawImageEx;
-    EFI_HII_DRAW_IMAGE_ID_EX DrawImageIdEx;
-    EFI_HII_GET_IMAGE_INFO GetImageInfo;
+    efi_hii_new_image_ex new_image_ex;
+    efi_hii_get_image_ex get_image_ex;
+    efi_hii_set_image_ex set_image_ex;
+    efi_hii_draw_image_ex draw_image_ex;
+    efi_hii_draw_image_id_ex draw_image_id_ex;
+    efi_hii_get_image_info get_image_info;
 };
 
 #define EFI_HII_IMAGE_DECODER_PROTOCOL_GUID \
@@ -379,10 +379,10 @@ struct efi_hii_image_ex_protocol {
 
 struct efi_hii_image_decoder_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_IMAGE_DECODER_GET_NAME)(
-    const struct efi_hii_image_decoder_protocol *This,
-    struct efi_guid **DecoderName,
-    uint16_t *NumberOfDecoderName
+typedef efi_status (EFI_API *efi_hii_image_decoder_get_name)(
+    const struct efi_hii_image_decoder_protocol *self,
+    struct efi_guid **decoder_name,
+    uint16_t *number_of_decoder_name
 );
 
 #define EFI_HII_IMAGE_DECODER_NAME_JPEG_GUID \
@@ -397,57 +397,57 @@ typedef EFI_STATUS (EFI_API *EFI_HII_IMAGE_DECODER_GET_NAME)(
 #define EFI_HII_IMAGE_DECODER_COLOR_TYPE_UNKNOWN ((uint32_t)0xff)
 
 struct efi_hii_image_decoder_image_info_header {
-    struct efi_guid DecoderName;
-    uint16_t ImageInfoSize;
-    uint16_t ImageWidth;
-    uint16_t ImageHeight;
-    uint32_t ColorType;
-    uint8_t ColorDepthInBits;
+    struct efi_guid decoder_name;
+    uint16_t image_info_size;
+    uint16_t image_width;
+    uint16_t image_height;
+    uint32_t color_type;
+    uint8_t color_depth_in_bits;
 };
 
 struct efi_hii_image_decoder_jpeg_info {
-    struct efi_hii_image_decoder_image_info_header Header;
-    uint16_t ScanType;
-    uint64_t Reserved;
+    struct efi_hii_image_decoder_image_info_header header;
+    uint16_t scan_type;
+    uint64_t reserved;
 };
 
 #define EFI_IMAGE_JPEG_SCANTYPE_PROGREESSIVE 0x01
 #define EFI_IMAGE_JPEG_SCANTYPE_INTERLACED 0x02
 
 struct efi_hii_image_decoder_png_info {
-    struct efi_hii_image_decoder_image_info_header Header;
-    uint16_t Channels;
-    uint64_t Reserved;
+    struct efi_hii_image_decoder_image_info_header header;
+    uint16_t channels;
+    uint64_t reserved;
 };
 
 struct efi_hii_image_decoder_other_info {
-    struct efi_hii_image_decoder_image_info_header Header;
-    uint16_t ImageExtenion[1];
+    struct efi_hii_image_decoder_image_info_header header;
+    uint16_t image_extenion[1];
 };
 
 /*
- * ImageInfo is printed as EFI_HII_IMAGE_DECODER_IMAGE_INFO, which is defined nowhere; every image
+ * image_info is printed as EFI_HII_IMAGE_DECODER_IMAGE_INFO, which is defined nowhere; every image
  * information structure starts with struct efi_hii_image_decoder_image_info_header.
  */
-typedef EFI_STATUS (EFI_API *EFI_HII_IMAGE_DECODER_GET_IMAGE_INFO)(
-    const struct efi_hii_image_decoder_protocol *This,
-    void *Image,
-    size_t SizeOfImage,
-    struct efi_hii_image_decoder_image_info_header **ImageInfo
+typedef efi_status (EFI_API *efi_hii_image_decoder_get_image_info)(
+    const struct efi_hii_image_decoder_protocol *self,
+    void *image,
+    size_t size_of_image,
+    struct efi_hii_image_decoder_image_info_header **image_info
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_IMAGE_DECODER_DECODE)(
-    const struct efi_hii_image_decoder_protocol *This,
-    void *Image,
-    size_t ImageRawDataSize,
-    struct efi_image_output **Bitmap,
-    bool Transparent
+typedef efi_status (EFI_API *efi_hii_image_decoder_decode)(
+    const struct efi_hii_image_decoder_protocol *self,
+    void *image,
+    size_t image_raw_data_size,
+    struct efi_image_output **bitmap,
+    bool transparent
 );
 
 struct efi_hii_image_decoder_protocol {
-    EFI_HII_IMAGE_DECODER_GET_NAME GetImageDecoderName;
-    EFI_HII_IMAGE_DECODER_GET_IMAGE_INFO GetImageInfo;
-    EFI_HII_IMAGE_DECODER_DECODE DecodeImage;
+    efi_hii_image_decoder_get_name get_image_decoder_name;
+    efi_hii_image_decoder_get_image_info get_image_info;
+    efi_hii_image_decoder_decode decode_image;
 };
 
 #define EFI_HII_FONT_GLYPH_GENERATOR_PROTOCOL_GUID \
@@ -455,28 +455,28 @@ struct efi_hii_image_decoder_protocol {
 
 struct efi_hii_font_glyph_generator_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GENERATE_GLYPH)(
-    const struct efi_hii_font_glyph_generator_protocol *This,
-    uint16_t Char,
-    const struct efi_font_display_info *FontInfo,
-    struct efi_hii_gibt_variability_block *GlyphBlock
+typedef efi_status (EFI_API *efi_hii_generate_glyph)(
+    const struct efi_hii_font_glyph_generator_protocol *self,
+    uint16_t char_,
+    const struct efi_font_display_info *font_info,
+    struct efi_hii_gibt_variability_block *glyph_block
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GENERATE_GLYPH_IMAGE)(
-    const struct efi_hii_font_glyph_generator_protocol *This,
-    const struct efi_hii_glyph_info *Cell,
-    uint8_t *GlyphBuffer,
-    const struct efi_font_display_info *FontInfo,
-    struct efi_image_output *Image,
-    int32_t *BltX,
-    int32_t *BltY,
-    bool Transparent
+typedef efi_status (EFI_API *efi_hii_generate_glyph_image)(
+    const struct efi_hii_font_glyph_generator_protocol *self,
+    const struct efi_hii_glyph_info *cell,
+    uint8_t *glyph_buffer,
+    const struct efi_font_display_info *font_info,
+    struct efi_image_output *image,
+    int32_t *blt_x,
+    int32_t *blt_y,
+    bool transparent
 );
 
 /* The member types are printed EFI_GENERATE_GLYPH and EFI_GENERATE_IMAGE, defined nowhere. */
 struct efi_hii_font_glyph_generator_protocol {
-    EFI_HII_GENERATE_GLYPH GenerateGlyph;
-    EFI_HII_GENERATE_GLYPH_IMAGE GenerateGlyphImage;
+    efi_hii_generate_glyph generate_glyph;
+    efi_hii_generate_glyph_image generate_glyph_image;
 };
 
 #define EFI_HII_DATABASE_PROTOCOL_GUID \
@@ -484,72 +484,72 @@ struct efi_hii_font_glyph_generator_protocol {
 
 struct efi_hii_database_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_NEW_PACK)(
-    const struct efi_hii_database_protocol *This,
-    const struct efi_hii_package_list_header *PackageList,
-    const EFI_HANDLE DriverHandle,
-    EFI_HII_HANDLE *Handle
+typedef efi_status (EFI_API *efi_hii_database_new_pack)(
+    const struct efi_hii_database_protocol *self,
+    const struct efi_hii_package_list_header *package_list,
+    const efi_handle driver_handle,
+    efi_hii_handle *handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_REMOVE_PACK)(
-    const struct efi_hii_database_protocol *This,
-    EFI_HII_HANDLE Handle
+typedef efi_status (EFI_API *efi_hii_database_remove_pack)(
+    const struct efi_hii_database_protocol *self,
+    efi_hii_handle handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_UPDATE_PACK)(
-    const struct efi_hii_database_protocol *This,
-    EFI_HII_HANDLE Handle,
-    const struct efi_hii_package_list_header *PackageList
+typedef efi_status (EFI_API *efi_hii_database_update_pack)(
+    const struct efi_hii_database_protocol *self,
+    efi_hii_handle handle,
+    const struct efi_hii_package_list_header *package_list
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_LIST_PACKS)(
-    const struct efi_hii_database_protocol *This,
-    uint8_t PackageType,
-    const struct efi_guid *PackageGuid,
-    size_t *HandleBufferLength,
-    EFI_HII_HANDLE *Handle
+typedef efi_status (EFI_API *efi_hii_database_list_packs)(
+    const struct efi_hii_database_protocol *self,
+    uint8_t package_type,
+    const struct efi_guid *package_guid,
+    size_t *handle_buffer_length,
+    efi_hii_handle *handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_EXPORT_PACKS)(
-    const struct efi_hii_database_protocol *This,
-    EFI_HII_HANDLE Handle,
-    size_t *BufferSize,
-    struct efi_hii_package_list_header *Buffer
+typedef efi_status (EFI_API *efi_hii_database_export_packs)(
+    const struct efi_hii_database_protocol *self,
+    efi_hii_handle handle,
+    size_t *buffer_size,
+    struct efi_hii_package_list_header *buffer
 );
 
-typedef uintptr_t EFI_HII_DATABASE_NOTIFY_TYPE;
+typedef uintptr_t efi_hii_database_notify_type;
 
 #define EFI_HII_DATABASE_NOTIFY_NEW_PACK 0x00000001
 #define EFI_HII_DATABASE_NOTIFY_REMOVE_PACK 0x00000002
 #define EFI_HII_DATABASE_NOTIFY_EXPORT_PACK 0x00000004
 #define EFI_HII_DATABASE_NOTIFY_ADD_PACK 0x00000008
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_NOTIFY)(
-    uint8_t PackageType,
-    const struct efi_guid *PackageGuid,
-    const struct efi_hii_package_header *Package,
-    EFI_HII_HANDLE Handle,
-    EFI_HII_DATABASE_NOTIFY_TYPE NotifyType
+typedef efi_status (EFI_API *efi_hii_database_notify)(
+    uint8_t package_type,
+    const struct efi_guid *package_guid,
+    const struct efi_hii_package_header *package,
+    efi_hii_handle handle,
+    efi_hii_database_notify_type notify_type
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_REGISTER_NOTIFY)(
-    const struct efi_hii_database_protocol *This,
-    uint8_t PackageType,
-    const struct efi_guid *PackageGuid,
-    const EFI_HII_DATABASE_NOTIFY PackageNotifyFn,
-    EFI_HII_DATABASE_NOTIFY_TYPE NotifyType,
-    EFI_HANDLE *NotifyHandle
+typedef efi_status (EFI_API *efi_hii_database_register_notify)(
+    const struct efi_hii_database_protocol *self,
+    uint8_t package_type,
+    const struct efi_guid *package_guid,
+    const efi_hii_database_notify package_notify_fn,
+    efi_hii_database_notify_type notify_type,
+    efi_handle *notify_handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_UNREGISTER_NOTIFY)(
-    const struct efi_hii_database_protocol *This,
-    EFI_HANDLE NotificationHandle
+typedef efi_status (EFI_API *efi_hii_database_unregister_notify)(
+    const struct efi_hii_database_protocol *self,
+    efi_handle notification_handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_FIND_KEYBOARD_LAYOUTS)(
-    const struct efi_hii_database_protocol *This,
-    uint16_t *KeyGuidBufferLength,
-    struct efi_guid *KeyGuidBuffer
+typedef efi_status (EFI_API *efi_hii_find_keyboard_layouts)(
+    const struct efi_hii_database_protocol *self,
+    uint16_t *key_guid_buffer_length,
+    struct efi_guid *key_guid_buffer
 );
 
 #define EFI_KEY_LCTRL ((uint32_t)0)
@@ -669,13 +669,13 @@ typedef EFI_STATUS (EFI_API *EFI_HII_FIND_KEYBOARD_LAYOUTS)(
 #define EFI_KEY_INTL9 ((uint32_t)114)
 
 struct efi_key_descriptor {
-    uint32_t Key;
-    uint16_t Unicode;
-    uint16_t ShiftedUnicode;
-    uint16_t AltGrUnicode;
-    uint16_t ShiftedAltGrUnicode;
-    uint16_t Modifier;
-    uint16_t AffectedAttribute;
+    uint32_t key;
+    uint16_t unicode;
+    uint16_t shifted_unicode;
+    uint16_t alt_gr_unicode;
+    uint16_t shifted_alt_gr_unicode;
+    uint16_t modifier;
+    uint16_t affected_attribute;
 } __attribute__((__packed__));
 
 #define EFI_AFFECTED_BY_STANDARD_SHIFT 0x0001
@@ -684,16 +684,16 @@ struct efi_key_descriptor {
 
 /* __extension__: a flexible array member is standard C but an extension in C++. */
 __extension__ struct efi_hii_keyboard_layout {
-    uint16_t LayoutLength;
-    struct efi_guid Guid;
-    uint32_t LayoutDescriptorStringOffset;
-    uint8_t DescriptorCount;
-    struct efi_key_descriptor Descriptors[];
+    uint16_t layout_length;
+    struct efi_guid guid;
+    uint32_t layout_descriptor_string_offset;
+    uint8_t descriptor_count;
+    struct efi_key_descriptor descriptors[];
 } __attribute__((__packed__));
 
 /* The fixed part: each EFI_DESCRIPTION_STRING that follows starts with a variable-length array. */
 struct efi_description_string_bundle {
-    uint16_t DescriptionCount;
+    uint16_t description_count;
 } __attribute__((__packed__));
 
 #define EFI_NULL_MODIFIER 0x0000
@@ -739,39 +739,39 @@ struct efi_description_string_bundle {
 #define EFI_RIGHT_LOGO_MODIFIER 0x0028
 #define EFI_MENU_MODIFIER 0x0029
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_KEYBOARD_LAYOUT)(
-    const struct efi_hii_database_protocol *This,
-    struct efi_guid *KeyGuid,
-    uint16_t *KeyboardLayoutLength,
-    struct efi_hii_keyboard_layout *KeyboardLayout
+typedef efi_status (EFI_API *efi_hii_get_keyboard_layout)(
+    const struct efi_hii_database_protocol *self,
+    struct efi_guid *key_guid,
+    uint16_t *keyboard_layout_length,
+    struct efi_hii_keyboard_layout *keyboard_layout
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_SET_KEYBOARD_LAYOUT)(
-    const struct efi_hii_database_protocol *This,
-    struct efi_guid *KeyGuid
+typedef efi_status (EFI_API *efi_hii_set_keyboard_layout)(
+    const struct efi_hii_database_protocol *self,
+    struct efi_guid *key_guid
 );
 
 #define EFI_HII_SET_KEYBOARD_LAYOUT_EVENT_GUID \
     {0x14982a4f, 0xb0ed, 0x45b8, {0xa8, 0x11, 0x5a, 0x7a, 0x9b, 0xc2, 0x32, 0xdf}}
 
-typedef EFI_STATUS (EFI_API *EFI_HII_DATABASE_GET_PACK_HANDLE)(
-    const struct efi_hii_database_protocol *This,
-    EFI_HII_HANDLE PackageListHandle,
-    EFI_HANDLE *DriverHandle
+typedef efi_status (EFI_API *efi_hii_database_get_pack_handle)(
+    const struct efi_hii_database_protocol *self,
+    efi_hii_handle package_list_handle,
+    efi_handle *driver_handle
 );
 
 struct efi_hii_database_protocol {
-    EFI_HII_DATABASE_NEW_PACK NewPackageList;
-    EFI_HII_DATABASE_REMOVE_PACK RemovePackageList;
-    EFI_HII_DATABASE_UPDATE_PACK UpdatePackageList;
-    EFI_HII_DATABASE_LIST_PACKS ListPackageLists;
-    EFI_HII_DATABASE_EXPORT_PACKS ExportPackageLists;
-    EFI_HII_DATABASE_REGISTER_NOTIFY RegisterPackageNotify;
-    EFI_HII_DATABASE_UNREGISTER_NOTIFY UnregisterPackageNotify;
-    EFI_HII_FIND_KEYBOARD_LAYOUTS FindKeyboardLayouts;
-    EFI_HII_GET_KEYBOARD_LAYOUT GetKeyboardLayout;
-    EFI_HII_SET_KEYBOARD_LAYOUT SetKeyboardLayout;
-    EFI_HII_DATABASE_GET_PACK_HANDLE GetPackageListHandle;
+    efi_hii_database_new_pack new_package_list;
+    efi_hii_database_remove_pack remove_package_list;
+    efi_hii_database_update_pack update_package_list;
+    efi_hii_database_list_packs list_package_lists;
+    efi_hii_database_export_packs export_package_lists;
+    efi_hii_database_register_notify register_package_notify;
+    efi_hii_database_unregister_notify unregister_package_notify;
+    efi_hii_find_keyboard_layouts find_keyboard_layouts;
+    efi_hii_get_keyboard_layout get_keyboard_layout;
+    efi_hii_set_keyboard_layout set_keyboard_layout;
+    efi_hii_database_get_pack_handle get_package_list_handle;
 };
 
 #ifdef __cplusplus

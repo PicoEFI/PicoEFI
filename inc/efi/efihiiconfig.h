@@ -13,11 +13,11 @@ extern "C" {
 struct efi_config_keyword_handler_protocol;
 
 /* Named as the protocol structure names them; the prototypes print EFI_KEYWORD_HANDLER_*. */
-typedef EFI_STATUS (EFI_API *EFI_CONFIG_KEYWORD_HANDLER_SET_DATA)(
-    struct efi_config_keyword_handler_protocol *This,
-    const EFI_STRING KeywordString,
-    EFI_STRING *Progress,
-    uint32_t *ProgressErr
+typedef efi_status (EFI_API *efi_config_keyword_handler_set_data)(
+    struct efi_config_keyword_handler_protocol *self,
+    const efi_string keyword_string,
+    efi_string *progress,
+    uint32_t *progress_err
 );
 
 #define EFI_KEYWORD_HANDLER_NO_ERROR 0x00000000
@@ -28,18 +28,18 @@ typedef EFI_STATUS (EFI_API *EFI_CONFIG_KEYWORD_HANDLER_SET_DATA)(
 #define EFI_KEYWORD_HANDLER_ACCESS_NOT_PERMITTED 0x00000010
 #define EFI_KEYWORD_HANDLER_UNDEFINED_PROCESSING_ERROR 0x80000000
 
-typedef EFI_STATUS (EFI_API *EFI_CONFIG_KEYWORD_HANDLER_GET_DATA)(
-    struct efi_config_keyword_handler_protocol *This,
-    const EFI_STRING NameSpaceId,
-    const EFI_STRING KeywordString,
-    EFI_STRING *Progress,
-    uint32_t *ProgressErr,
-    EFI_STRING *Results
+typedef efi_status (EFI_API *efi_config_keyword_handler_get_data)(
+    struct efi_config_keyword_handler_protocol *self,
+    const efi_string name_space_id,
+    const efi_string keyword_string,
+    efi_string *progress,
+    uint32_t *progress_err,
+    efi_string *results
 );
 
 struct efi_config_keyword_handler_protocol {
-    EFI_CONFIG_KEYWORD_HANDLER_SET_DATA SetData;
-    EFI_CONFIG_KEYWORD_HANDLER_GET_DATA GetData;
+    efi_config_keyword_handler_set_data set_data;
+    efi_config_keyword_handler_get_data get_data;
 };
 
 #define EFI_HII_CONFIG_ROUTING_PROTOCOL_GUID \
@@ -47,62 +47,62 @@ struct efi_config_keyword_handler_protocol {
 
 struct efi_hii_config_routing_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_EXTRACT_CONFIG)(
-    const struct efi_hii_config_routing_protocol *This,
-    const EFI_STRING Request,
-    EFI_STRING *Progress,
-    EFI_STRING *Results
+typedef efi_status (EFI_API *efi_hii_extract_config)(
+    const struct efi_hii_config_routing_protocol *self,
+    const efi_string request,
+    efi_string *progress,
+    efi_string *results
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_EXPORT_CONFIG)(
-    const struct efi_hii_config_routing_protocol *This,
-    EFI_STRING *Results
+typedef efi_status (EFI_API *efi_hii_export_config)(
+    const struct efi_hii_config_routing_protocol *self,
+    efi_string *results
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_ROUTE_CONFIG)(
-    const struct efi_hii_config_routing_protocol *This,
-    const EFI_STRING Configuration,
-    EFI_STRING *Progress
+typedef efi_status (EFI_API *efi_hii_route_config)(
+    const struct efi_hii_config_routing_protocol *self,
+    const efi_string configuration,
+    efi_string *progress
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_BLOCK_TO_CONFIG)(
-    const struct efi_hii_config_routing_protocol *This,
-    const EFI_STRING ConfigRequest,
-    const uint8_t *Block,
-    const size_t BlockSize,
-    EFI_STRING *Config,
-    EFI_STRING *Progress
+typedef efi_status (EFI_API *efi_hii_block_to_config)(
+    const struct efi_hii_config_routing_protocol *self,
+    const efi_string config_request,
+    const uint8_t *block,
+    const size_t block_size,
+    efi_string *config,
+    efi_string *progress
 );
 
 /*
- * Printed with ConfigResp as a pointer to an EFI_STRING and Block as const: ConfigResp is
+ * Printed with config_resp as a pointer to an efi_string and block as const: config_resp is
  * described as the string itself, and the function writes the block.
  */
-typedef EFI_STATUS (EFI_API *EFI_HII_CONFIG_TO_BLOCK)(
-    const struct efi_hii_config_routing_protocol *This,
-    const EFI_STRING ConfigResp,
-    uint8_t *Block,
-    size_t *BlockSize,
-    EFI_STRING *Progress
+typedef efi_status (EFI_API *efi_hii_config_to_block)(
+    const struct efi_hii_config_routing_protocol *self,
+    const efi_string config_resp,
+    uint8_t *block,
+    size_t *block_size,
+    efi_string *progress
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_GET_ALT_CFG)(
-    const struct efi_hii_config_routing_protocol *This,
-    const EFI_STRING ConfigResp,
-    const struct efi_guid *Guid,
-    const EFI_STRING Name,
-    const struct efi_device_path_protocol *DevicePath,
-    const EFI_STRING AltCfgId,
-    EFI_STRING *AltCfgResp
+typedef efi_status (EFI_API *efi_hii_get_alt_cfg)(
+    const struct efi_hii_config_routing_protocol *self,
+    const efi_string config_resp,
+    const struct efi_guid *guid,
+    const efi_string name,
+    const struct efi_device_path_protocol *device_path,
+    const efi_string alt_cfg_id,
+    efi_string *alt_cfg_resp
 );
 
 struct efi_hii_config_routing_protocol {
-    EFI_HII_EXTRACT_CONFIG ExtractConfig;
-    EFI_HII_EXPORT_CONFIG ExportConfig;
-    EFI_HII_ROUTE_CONFIG RouteConfig;
-    EFI_HII_BLOCK_TO_CONFIG BlockToConfig;
-    EFI_HII_CONFIG_TO_BLOCK ConfigToBlock;
-    EFI_HII_GET_ALT_CFG GetAltConfig;
+    efi_hii_extract_config extract_config;
+    efi_hii_export_config export_config;
+    efi_hii_route_config route_config;
+    efi_hii_block_to_config block_to_config;
+    efi_hii_config_to_block config_to_block;
+    efi_hii_get_alt_cfg get_alt_config;
 };
 
 #define EFI_HII_CONFIG_ACCESS_PROTOCOL_GUID \
@@ -110,20 +110,20 @@ struct efi_hii_config_routing_protocol {
 
 struct efi_hii_config_access_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HII_ACCESS_EXTRACT_CONFIG)(
-    const struct efi_hii_config_access_protocol *This,
-    const EFI_STRING Request,
-    EFI_STRING *Progress,
-    EFI_STRING *Results
+typedef efi_status (EFI_API *efi_hii_access_extract_config)(
+    const struct efi_hii_config_access_protocol *self,
+    const efi_string request,
+    efi_string *progress,
+    efi_string *results
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HII_ACCESS_ROUTE_CONFIG)(
-    const struct efi_hii_config_access_protocol *This,
-    const EFI_STRING Configuration,
-    EFI_STRING *Progress
+typedef efi_status (EFI_API *efi_hii_access_route_config)(
+    const struct efi_hii_config_access_protocol *self,
+    const efi_string configuration,
+    efi_string *progress
 );
 
-typedef uintptr_t EFI_BROWSER_ACTION;
+typedef uintptr_t efi_browser_action;
 
 #define EFI_BROWSER_ACTION_CHANGING 0
 #define EFI_BROWSER_ACTION_CHANGED 1
@@ -138,7 +138,7 @@ typedef uintptr_t EFI_BROWSER_ACTION;
 #define EFI_BROWSER_ACTION_DEFAULT_HARDWARE 0x3000
 #define EFI_BROWSER_ACTION_DEFAULT_FIRMWARE 0x4000
 
-typedef uintptr_t EFI_BROWSER_ACTION_REQUEST;
+typedef uintptr_t efi_browser_action_request;
 
 #define EFI_BROWSER_ACTION_REQUEST_NONE 0
 #define EFI_BROWSER_ACTION_REQUEST_RESET 1
@@ -151,19 +151,19 @@ typedef uintptr_t EFI_BROWSER_ACTION_REQUEST;
 #define EFI_BROWSER_ACTION_REQUEST_RECONNECT 8
 #define EFI_BROWSER_ACTION_REQUEST_QUESTION_APPLY 9
 
-typedef EFI_STATUS (EFI_API *EFI_HII_ACCESS_FORM_CALLBACK)(
-    const struct efi_hii_config_access_protocol *This,
-    EFI_BROWSER_ACTION Action,
-    EFI_QUESTION_ID QuestionId,
-    uint8_t Type,
-    union efi_ifr_type_value *Value,
-    EFI_BROWSER_ACTION_REQUEST *ActionRequest
+typedef efi_status (EFI_API *efi_hii_access_form_callback)(
+    const struct efi_hii_config_access_protocol *self,
+    efi_browser_action action,
+    efi_question_id question_id,
+    uint8_t type,
+    union efi_ifr_type_value *value,
+    efi_browser_action_request *action_request
 );
 
 struct efi_hii_config_access_protocol {
-    EFI_HII_ACCESS_EXTRACT_CONFIG ExtractConfig;
-    EFI_HII_ACCESS_ROUTE_CONFIG RouteConfig;
-    EFI_HII_ACCESS_FORM_CALLBACK Callback;
+    efi_hii_access_extract_config extract_config;
+    efi_hii_access_route_config route_config;
+    efi_hii_access_form_callback callback;
 };
 
 #define EFI_FORM_BROWSER2_PROTOCOL_GUID \
@@ -172,20 +172,20 @@ struct efi_hii_config_access_protocol {
 struct efi_form_browser2_protocol;
 
 struct efi_screen_descriptor {
-    size_t LeftColumn;
-    size_t RightColumn;
-    size_t TopRow;
-    size_t BottomRow;
+    size_t left_column;
+    size_t right_column;
+    size_t top_row;
+    size_t bottom_row;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_SEND_FORM2)(
-    const struct efi_form_browser2_protocol *This,
-    EFI_HII_HANDLE *Handles,
-    size_t HandleCount,
-    const struct efi_guid *FormsetGuid,
-    EFI_FORM_ID FormId,
-    const struct efi_screen_descriptor *ScreenDimensions,
-    EFI_BROWSER_ACTION_REQUEST *ActionRequest
+typedef efi_status (EFI_API *efi_send_form2)(
+    const struct efi_form_browser2_protocol *self,
+    efi_hii_handle *handles,
+    size_t handle_count,
+    const struct efi_guid *formset_guid,
+    efi_form_id form_id,
+    const struct efi_screen_descriptor *screen_dimensions,
+    efi_browser_action_request *action_request
 );
 
 #define EFI_HII_PLATFORM_SETUP_FORMSET_GUID \
@@ -200,18 +200,18 @@ typedef EFI_STATUS (EFI_API *EFI_SEND_FORM2)(
 #define EFI_HII_REST_STYLE_FORMSET_GUID \
     {0x790217bd, 0xbecf, 0x485b, {0x91, 0x70, 0x5f, 0xf7, 0x11, 0x31, 0x8b, 0x27}}
 
-typedef EFI_STATUS (EFI_API *EFI_BROWSER_CALLBACK2)(
-    const struct efi_form_browser2_protocol *This,
-    size_t *ResultsDataSize,
-    EFI_STRING ResultsData,
-    bool RetrieveData,
-    const struct efi_guid *VariableGuid,
-    const uint16_t *VariableName
+typedef efi_status (EFI_API *efi_browser_callback2)(
+    const struct efi_form_browser2_protocol *self,
+    size_t *results_data_size,
+    efi_string results_data,
+    bool retrieve_data,
+    const struct efi_guid *variable_guid,
+    const uint16_t *variable_name
 );
 
 struct efi_form_browser2_protocol {
-    EFI_SEND_FORM2 SendForm;
-    EFI_BROWSER_CALLBACK2 BrowserCallback;
+    efi_send_form2 send_form;
+    efi_browser_callback2 browser_callback;
 };
 
 #define EFI_HII_POPUP_PROTOCOL_GUID \
@@ -235,18 +235,18 @@ struct efi_hii_popup_protocol;
 #define EFI_HII_POPUP_SELECTION_YES ((uint32_t)2)
 #define EFI_HII_POPUP_SELECTION_NO ((uint32_t)3)
 
-typedef EFI_STATUS (EFI_API *EFI_HII_CREATE_POPUP)(
-    struct efi_hii_popup_protocol *This,
-    uint32_t PopupStyle,
-    uint32_t PopupType,
-    EFI_HII_HANDLE HiiHandle,
-    EFI_STRING_ID Message,
-    uint32_t *UserSelection
+typedef efi_status (EFI_API *efi_hii_create_popup)(
+    struct efi_hii_popup_protocol *self,
+    uint32_t popup_style,
+    uint32_t popup_type,
+    efi_hii_handle hii_handle,
+    efi_string_id message,
+    uint32_t *user_selection
 );
 
 struct efi_hii_popup_protocol {
-    uint64_t Revision;
-    EFI_HII_CREATE_POPUP CreatePopup;
+    uint64_t revision;
+    efi_hii_create_popup create_popup;
 };
 
 #ifdef __cplusplus

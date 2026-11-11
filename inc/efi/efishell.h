@@ -13,281 +13,281 @@ extern "C" {
 #define EFI_SHELL_PROTOCOL_GUID \
     {0x6302d008, 0x7f9b, 0x4f30, {0x87, 0xac, 0x60, 0xc9, 0xfe, 0xf5, 0xda, 0x4e}}
 
-typedef void *EFI_SHELL_FILE_HANDLE;
+typedef void *efi_shell_file_handle;
 
 struct efi_list_entry {
-    struct efi_list_entry *Flink;
-    struct efi_list_entry *Blink;
+    struct efi_list_entry *flink;
+    struct efi_list_entry *blink;
 };
 
 struct efi_shell_file_info {
-    struct efi_list_entry Link;
-    EFI_STATUS Status;
-    const uint16_t *FullName;
-    const uint16_t *FileName;
-    EFI_SHELL_FILE_HANDLE Handle;
-    struct efi_file_info *Info;
+    struct efi_list_entry link;
+    efi_status status;
+    const uint16_t *full_name;
+    const uint16_t *file_name;
+    efi_shell_file_handle handle;
+    struct efi_file_info *info;
 };
 
-typedef uint32_t EFI_DEVICE_NAME_FLAGS;
+typedef uint32_t efi_device_name_flags;
 
-/* The prototype of GetDeviceName() spells the flags type this way. */
-typedef EFI_DEVICE_NAME_FLAGS EFI_SHELL_DEVICE_NAME_FLAGS;
+/* The prototype of get_device_name() spells the flags type this way. */
+typedef efi_device_name_flags efi_shell_device_name_flags;
 
 #define EFI_DEVICE_NAME_USE_COMPONENT_NAME 0x00000001
 #define EFI_DEVICE_NAME_USE_DEVICE_PATH 0x00000002
 
-typedef bool (EFI_API *EFI_SHELL_BATCH_IS_ACTIVE)(void);
+typedef bool (EFI_API *efi_shell_batch_is_active)(void);
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_CLOSE_FILE)(EFI_SHELL_FILE_HANDLE FileHandle);
+typedef efi_status (EFI_API *efi_shell_close_file)(efi_shell_file_handle file_handle);
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_CREATE_FILE)(
-    const uint16_t *FileName,
-    uint64_t FileAttribs,
-    EFI_SHELL_FILE_HANDLE *FileHandle
+typedef efi_status (EFI_API *efi_shell_create_file)(
+    const uint16_t *file_name,
+    uint64_t file_attribs,
+    efi_shell_file_handle *file_handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_DELETE_FILE)(EFI_SHELL_FILE_HANDLE FileHandle);
+typedef efi_status (EFI_API *efi_shell_delete_file)(efi_shell_file_handle file_handle);
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_DELETE_FILE_BY_NAME)(const uint16_t *FileName);
+typedef efi_status (EFI_API *efi_shell_delete_file_by_name)(const uint16_t *file_name);
 
-typedef void (EFI_API *EFI_SHELL_DISABLE_PAGE_BREAK)(void);
+typedef void (EFI_API *efi_shell_disable_page_break)(void);
 
-typedef void (EFI_API *EFI_SHELL_ENABLE_PAGE_BREAK)(void);
+typedef void (EFI_API *efi_shell_enable_page_break)(void);
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_EXECUTE)(
-    EFI_HANDLE *ParentImageHandle,
-    uint16_t *CommandLine,
-    uint16_t **Environment,
-    EFI_STATUS *StatusCode
+typedef efi_status (EFI_API *efi_shell_execute)(
+    efi_handle *parent_image_handle,
+    uint16_t *command_line,
+    uint16_t **environment,
+    efi_status *status_code
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_FIND_FILES)(
-    const uint16_t *FilePattern,
-    struct efi_shell_file_info **FileList
+typedef efi_status (EFI_API *efi_shell_find_files)(
+    const uint16_t *file_pattern,
+    struct efi_shell_file_info **file_list
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_FIND_FILES_IN_DIR)(
-    EFI_SHELL_FILE_HANDLE FileDirHandle,
-    struct efi_shell_file_info **FileList
+typedef efi_status (EFI_API *efi_shell_find_files_in_dir)(
+    efi_shell_file_handle file_dir_handle,
+    struct efi_shell_file_info **file_list
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_FLUSH_FILE)(EFI_SHELL_FILE_HANDLE FileHandle);
+typedef efi_status (EFI_API *efi_shell_flush_file)(efi_shell_file_handle file_handle);
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_FREE_FILE_LIST)(struct efi_shell_file_info **FileList);
+typedef efi_status (EFI_API *efi_shell_free_file_list)(struct efi_shell_file_info **file_list);
 
-typedef const uint16_t *(EFI_API *EFI_SHELL_GET_ALIAS)(
-    const uint16_t *Alias,
-    bool *Volatile
+typedef const uint16_t *(EFI_API *efi_shell_get_alias)(
+    const uint16_t *alias,
+    bool *volatile_
 );
 
-typedef const uint16_t *(EFI_API *EFI_SHELL_GET_CUR_DIR)(
-    const uint16_t *FileSystemMapping
+typedef const uint16_t *(EFI_API *efi_shell_get_cur_dir)(
+    const uint16_t *file_system_mapping
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_DEVICE_NAME)(
-    EFI_HANDLE DeviceHandle,
-    EFI_SHELL_DEVICE_NAME_FLAGS Flags,
-    char *Language,
-    uint16_t **BestDeviceName
+typedef efi_status (EFI_API *efi_shell_get_device_name)(
+    efi_handle device_handle,
+    efi_shell_device_name_flags flags,
+    char *language,
+    uint16_t **best_device_name
 );
 
-typedef const struct efi_device_path_protocol *(EFI_API *EFI_SHELL_GET_DEVICE_PATH_FROM_MAP)(
-    const uint16_t *Mapping
+typedef const struct efi_device_path_protocol *(EFI_API *efi_shell_get_device_path_from_map)(
+    const uint16_t *mapping
 );
 
-typedef struct efi_device_path_protocol *(EFI_API *EFI_SHELL_GET_DEVICE_PATH_FROM_FILE_PATH)(
-    const uint16_t *Path
+typedef struct efi_device_path_protocol *(EFI_API *efi_shell_get_device_path_from_file_path)(
+    const uint16_t *path
 );
 
-typedef const uint16_t *(EFI_API *EFI_SHELL_GET_ENV)(const uint16_t *Name);
+typedef const uint16_t *(EFI_API *efi_shell_get_env)(const uint16_t *name);
 
-typedef const uint16_t *(EFI_API *EFI_SHELL_GET_ENV_EX)(
-    const uint16_t *Name,
-    uint32_t *Attributes
+typedef const uint16_t *(EFI_API *efi_shell_get_env_ex)(
+    const uint16_t *name,
+    uint32_t *attributes
 );
 
-typedef struct efi_file_info *(EFI_API *EFI_SHELL_GET_FILE_INFO)(EFI_SHELL_FILE_HANDLE FileHandle);
+typedef struct efi_file_info *(EFI_API *efi_shell_get_file_info)(efi_shell_file_handle file_handle);
 
-typedef uint16_t *(EFI_API *EFI_SHELL_GET_FILE_PATH_FROM_DEVICE_PATH)(
-    const struct efi_device_path_protocol *Path
+typedef uint16_t *(EFI_API *efi_shell_get_file_path_from_device_path)(
+    const struct efi_device_path_protocol *path
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_FILE_POSITION)(
-    EFI_SHELL_FILE_HANDLE FileHandle,
-    uint64_t *Position
+typedef efi_status (EFI_API *efi_shell_get_file_position)(
+    efi_shell_file_handle file_handle,
+    uint64_t *position
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_FILE_SIZE)(
-    EFI_SHELL_FILE_HANDLE FileHandle,
-    uint64_t *Size
+typedef efi_status (EFI_API *efi_shell_get_file_size)(
+    efi_shell_file_handle file_handle,
+    uint64_t *size
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_GUID_FROM_NAME)(
-    const uint16_t *GuidName,
-    struct efi_guid *Guid
+typedef efi_status (EFI_API *efi_shell_get_guid_from_name)(
+    const uint16_t *guid_name,
+    struct efi_guid *guid
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_GUID_NAME)(
-    const struct efi_guid *Guid,
-    const uint16_t **GuidName
+typedef efi_status (EFI_API *efi_shell_get_guid_name)(
+    const struct efi_guid *guid,
+    const uint16_t **guid_name
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_HELP_TEXT)(
-    const uint16_t *Command,
-    const uint16_t *Sections,
-    uint16_t **HelpText
+typedef efi_status (EFI_API *efi_shell_get_help_text)(
+    const uint16_t *command,
+    const uint16_t *sections,
+    uint16_t **help_text
 );
 
-typedef const uint16_t *(EFI_API *EFI_SHELL_GET_MAP_FROM_DEVICE_PATH)(
-    struct efi_device_path_protocol **DevicePath
+typedef const uint16_t *(EFI_API *efi_shell_get_map_from_device_path)(
+    struct efi_device_path_protocol **device_path
 );
 
-typedef bool (EFI_API *EFI_SHELL_GET_PAGE_BREAK)(void);
+typedef bool (EFI_API *efi_shell_get_page_break)(void);
 
-typedef bool (EFI_API *EFI_SHELL_IS_ROOT_SHELL)(void);
+typedef bool (EFI_API *efi_shell_is_root_shell)(void);
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_OPEN_FILE_BY_NAME)(
-    const uint16_t *FileName,
-    EFI_SHELL_FILE_HANDLE *FileHandle,
-    uint64_t OpenMode
+typedef efi_status (EFI_API *efi_shell_open_file_by_name)(
+    const uint16_t *file_name,
+    efi_shell_file_handle *file_handle,
+    uint64_t open_mode
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_OPEN_FILE_LIST)(
-    uint16_t *Path,
-    uint64_t OpenMode,
-    struct efi_shell_file_info **FileList
+typedef efi_status (EFI_API *efi_shell_open_file_list)(
+    uint16_t *path,
+    uint64_t open_mode,
+    struct efi_shell_file_info **file_list
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_OPEN_ROOT)(
-    struct efi_device_path_protocol *DevicePath,
-    EFI_SHELL_FILE_HANDLE *FileHandle
+typedef efi_status (EFI_API *efi_shell_open_root)(
+    struct efi_device_path_protocol *device_path,
+    efi_shell_file_handle *file_handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_OPEN_ROOT_BY_HANDLE)(
-    EFI_HANDLE DeviceHandle,
-    EFI_SHELL_FILE_HANDLE *FileHandle
+typedef efi_status (EFI_API *efi_shell_open_root_by_handle)(
+    efi_handle device_handle,
+    efi_shell_file_handle *file_handle
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_READ_FILE)(
-    EFI_SHELL_FILE_HANDLE FileHandle,
-    size_t *ReadSize,
-    void *Buffer
+typedef efi_status (EFI_API *efi_shell_read_file)(
+    efi_shell_file_handle file_handle,
+    size_t *read_size,
+    void *buffer
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_REGISTER_GUID_NAME)(
-    const struct efi_guid *Guid,
-    const uint16_t *GuidName
+typedef efi_status (EFI_API *efi_shell_register_guid_name)(
+    const struct efi_guid *guid,
+    const uint16_t *guid_name
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_REMOVE_DUP_IN_FILE_LIST)(
-    struct efi_shell_file_info **FileList
+typedef efi_status (EFI_API *efi_shell_remove_dup_in_file_list)(
+    struct efi_shell_file_info **file_list
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_ALIAS)(
-    const uint16_t *Command,
-    const uint16_t *Alias,
-    bool Replace,
-    bool Volatile
+typedef efi_status (EFI_API *efi_shell_set_alias)(
+    const uint16_t *command,
+    const uint16_t *alias,
+    bool replace,
+    bool volatile_
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_CUR_DIR)(
-    const uint16_t *FileSystem,
-    const uint16_t *Dir
+typedef efi_status (EFI_API *efi_shell_set_cur_dir)(
+    const uint16_t *file_system,
+    const uint16_t *dir
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_ENV)(
-    const uint16_t *Name,
-    const uint16_t *Value,
-    bool Volatile
+typedef efi_status (EFI_API *efi_shell_set_env)(
+    const uint16_t *name,
+    const uint16_t *value,
+    bool volatile_
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_FILE_INFO)(
-    EFI_SHELL_FILE_HANDLE FileHandle,
-    const struct efi_file_info *FileInfo
+typedef efi_status (EFI_API *efi_shell_set_file_info)(
+    efi_shell_file_handle file_handle,
+    const struct efi_file_info *file_info
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_FILE_POSITION)(
-    EFI_SHELL_FILE_HANDLE FileHandle,
-    uint64_t Position
+typedef efi_status (EFI_API *efi_shell_set_file_position)(
+    efi_shell_file_handle file_handle,
+    uint64_t position
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_MAP)(
-    const struct efi_device_path_protocol *DevicePath,
-    const uint16_t *Mapping
+typedef efi_status (EFI_API *efi_shell_set_map)(
+    const struct efi_device_path_protocol *device_path,
+    const uint16_t *mapping
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_WRITE_FILE)(
-    EFI_SHELL_FILE_HANDLE FileHandle,
-    size_t *BufferSize,
-    void *Buffer
+typedef efi_status (EFI_API *efi_shell_write_file)(
+    efi_shell_file_handle file_handle,
+    size_t *buffer_size,
+    void *buffer
 );
 
 struct efi_shell_protocol {
-    EFI_SHELL_EXECUTE Execute;
-    EFI_SHELL_GET_ENV GetEnv;
-    EFI_SHELL_SET_ENV SetEnv;
-    EFI_SHELL_GET_ALIAS GetAlias;
-    EFI_SHELL_SET_ALIAS SetAlias;
-    EFI_SHELL_GET_HELP_TEXT GetHelpText;
-    EFI_SHELL_GET_DEVICE_PATH_FROM_MAP GetDevicePathFromMap;
-    EFI_SHELL_GET_MAP_FROM_DEVICE_PATH GetMapFromDevicePath;
-    EFI_SHELL_GET_DEVICE_PATH_FROM_FILE_PATH GetDevicePathFromFilePath;
-    EFI_SHELL_GET_FILE_PATH_FROM_DEVICE_PATH GetFilePathFromDevicePath;
-    EFI_SHELL_SET_MAP SetMap;
+    efi_shell_execute execute;
+    efi_shell_get_env get_env;
+    efi_shell_set_env set_env;
+    efi_shell_get_alias get_alias;
+    efi_shell_set_alias set_alias;
+    efi_shell_get_help_text get_help_text;
+    efi_shell_get_device_path_from_map get_device_path_from_map;
+    efi_shell_get_map_from_device_path get_map_from_device_path;
+    efi_shell_get_device_path_from_file_path get_device_path_from_file_path;
+    efi_shell_get_file_path_from_device_path get_file_path_from_device_path;
+    efi_shell_set_map set_map;
 
-    EFI_SHELL_GET_CUR_DIR GetCurDir;
-    EFI_SHELL_SET_CUR_DIR SetCurDir;
-    EFI_SHELL_OPEN_FILE_LIST OpenFileList;
-    EFI_SHELL_FREE_FILE_LIST FreeFileList;
-    EFI_SHELL_REMOVE_DUP_IN_FILE_LIST RemoveDupInFileList;
+    efi_shell_get_cur_dir get_cur_dir;
+    efi_shell_set_cur_dir set_cur_dir;
+    efi_shell_open_file_list open_file_list;
+    efi_shell_free_file_list free_file_list;
+    efi_shell_remove_dup_in_file_list remove_dup_in_file_list;
 
-    EFI_SHELL_BATCH_IS_ACTIVE BatchIsActive;
-    EFI_SHELL_IS_ROOT_SHELL IsRootShell;
-    EFI_SHELL_ENABLE_PAGE_BREAK EnablePageBreak;
-    EFI_SHELL_DISABLE_PAGE_BREAK DisablePageBreak;
-    EFI_SHELL_GET_PAGE_BREAK GetPageBreak;
-    EFI_SHELL_GET_DEVICE_NAME GetDeviceName;
+    efi_shell_batch_is_active batch_is_active;
+    efi_shell_is_root_shell is_root_shell;
+    efi_shell_enable_page_break enable_page_break;
+    efi_shell_disable_page_break disable_page_break;
+    efi_shell_get_page_break get_page_break;
+    efi_shell_get_device_name get_device_name;
 
-    EFI_SHELL_GET_FILE_INFO GetFileInfo;
-    EFI_SHELL_SET_FILE_INFO SetFileInfo;
-    EFI_SHELL_OPEN_FILE_BY_NAME OpenFileByName;
-    EFI_SHELL_CLOSE_FILE CloseFile;
-    EFI_SHELL_CREATE_FILE CreateFile;
-    EFI_SHELL_READ_FILE ReadFile;
-    EFI_SHELL_WRITE_FILE WriteFile;
-    EFI_SHELL_DELETE_FILE DeleteFile;
-    EFI_SHELL_DELETE_FILE_BY_NAME DeleteFileByName;
-    EFI_SHELL_GET_FILE_POSITION GetFilePosition;
-    EFI_SHELL_SET_FILE_POSITION SetFilePosition;
-    EFI_SHELL_FLUSH_FILE FlushFile;
-    EFI_SHELL_FIND_FILES FindFiles;
-    EFI_SHELL_FIND_FILES_IN_DIR FindFilesInDir;
-    EFI_SHELL_GET_FILE_SIZE GetFileSize;
+    efi_shell_get_file_info get_file_info;
+    efi_shell_set_file_info set_file_info;
+    efi_shell_open_file_by_name open_file_by_name;
+    efi_shell_close_file close_file;
+    efi_shell_create_file create_file;
+    efi_shell_read_file read_file;
+    efi_shell_write_file write_file;
+    efi_shell_delete_file delete_file;
+    efi_shell_delete_file_by_name delete_file_by_name;
+    efi_shell_get_file_position get_file_position;
+    efi_shell_set_file_position set_file_position;
+    efi_shell_flush_file flush_file;
+    efi_shell_find_files find_files;
+    efi_shell_find_files_in_dir find_files_in_dir;
+    efi_shell_get_file_size get_file_size;
 
-    EFI_SHELL_OPEN_ROOT OpenRoot;
-    EFI_SHELL_OPEN_ROOT_BY_HANDLE OpenRootByHandle;
+    efi_shell_open_root open_root;
+    efi_shell_open_root_by_handle open_root_by_handle;
 
-    EFI_EVENT ExecutionBreak;
+    efi_event execution_break;
 
-    uint32_t MajorVersion;
-    uint32_t MinorVersion;
+    uint32_t major_version;
+    uint32_t minor_version;
     /* The last four members exist from version 2.1 on. */
-    EFI_SHELL_REGISTER_GUID_NAME RegisterGuidName;
-    EFI_SHELL_GET_GUID_NAME GetGuidName;
-    EFI_SHELL_GET_GUID_FROM_NAME GetGuidFromName;
-    EFI_SHELL_GET_ENV_EX GetEnvEx;
+    efi_shell_register_guid_name register_guid_name;
+    efi_shell_get_guid_name get_guid_name;
+    efi_shell_get_guid_from_name get_guid_from_name;
+    efi_shell_get_env_ex get_env_ex;
 };
 
 #define EFI_SHELL_PARAMETERS_PROTOCOL_GUID \
     {0x752f3136, 0x4e16, 0x4fdc, {0xa2, 0x2a, 0xe5, 0xf4, 0x68, 0x12, 0xf4, 0xca}}
 
 struct efi_shell_parameters_protocol {
-    uint16_t **Argv;
-    size_t Argc;
-    EFI_SHELL_FILE_HANDLE StdIn;
-    EFI_SHELL_FILE_HANDLE StdOut;
-    EFI_SHELL_FILE_HANDLE StdErr;
+    uint16_t **argv;
+    size_t argc;
+    efi_shell_file_handle std_in;
+    efi_shell_file_handle std_out;
+    efi_shell_file_handle std_err;
 };
 
 #define EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL_GUID \
@@ -295,22 +295,22 @@ struct efi_shell_parameters_protocol {
 
 struct efi_shell_dynamic_command_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_COMMAND_HANDLER)(
-    struct efi_shell_dynamic_command_protocol *This,
-    struct efi_system_table *SystemTable,
-    struct efi_shell_parameters_protocol *ShellParameters,
-    struct efi_shell_protocol *Shell
+typedef efi_status (EFI_API *efi_shell_command_handler)(
+    struct efi_shell_dynamic_command_protocol *self,
+    struct efi_system_table *system_table,
+    struct efi_shell_parameters_protocol *shell_parameters,
+    struct efi_shell_protocol *shell
 );
 
-typedef uint16_t *(EFI_API *EFI_SHELL_COMMAND_GETHELP)(
-    struct efi_shell_dynamic_command_protocol *This,
-    const char *Language
+typedef uint16_t *(EFI_API *efi_shell_command_gethelp)(
+    struct efi_shell_dynamic_command_protocol *self,
+    const char *language
 );
 
 struct efi_shell_dynamic_command_protocol {
-    const uint16_t *CommandName;
-    EFI_SHELL_COMMAND_HANDLER Handler;
-    EFI_SHELL_COMMAND_GETHELP GetHelp;
+    const uint16_t *command_name;
+    efi_shell_command_handler handler;
+    efi_shell_command_gethelp get_help;
 };
 
 #define EFI_SHELL_SUCCESS ((uint32_t)0)

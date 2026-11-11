@@ -18,39 +18,39 @@ extern "C" {
 struct efi_tcp4_protocol;
 
 struct efi_tcp4_access_point {
-    uint8_t UseDefaultAddress;
-    struct efi_ipv4_address StationAddress;
-    struct efi_ipv4_address SubnetMask;
-    uint16_t StationPort;
-    struct efi_ipv4_address RemoteAddress;
-    uint16_t RemotePort;
-    uint8_t ActiveFlag;
+    uint8_t use_default_address;
+    struct efi_ipv4_address station_address;
+    struct efi_ipv4_address subnet_mask;
+    uint16_t station_port;
+    struct efi_ipv4_address remote_address;
+    uint16_t remote_port;
+    uint8_t active_flag;
 };
 
 struct efi_tcp4_option {
-    uint32_t ReceiveBufferSize;
-    uint32_t SendBufferSize;
-    uint32_t MaxSynBackLog;
-    uint32_t ConnectionTimeout;
-    uint32_t DataRetries;
-    uint32_t FinTimeout;
-    uint32_t TimeWaitTimeout;
-    uint32_t KeepAliveProbes;
-    uint32_t KeepAliveTime;
-    uint32_t KeepAliveInterval;
-    uint8_t EnableNagle;
-    uint8_t EnableTimeStamp;
-    uint8_t EnableWindowScaling;
-    uint8_t EnableSelectiveAck;
-    uint8_t EnablePathMtuDiscovery;
+    uint32_t receive_buffer_size;
+    uint32_t send_buffer_size;
+    uint32_t max_syn_back_log;
+    uint32_t connection_timeout;
+    uint32_t data_retries;
+    uint32_t fin_timeout;
+    uint32_t time_wait_timeout;
+    uint32_t keep_alive_probes;
+    uint32_t keep_alive_time;
+    uint32_t keep_alive_interval;
+    uint8_t enable_nagle;
+    uint8_t enable_time_stamp;
+    uint8_t enable_window_scaling;
+    uint8_t enable_selective_ack;
+    uint8_t enable_path_mtu_discovery;
 };
 
-/* ControlOption may be NULL, as described (and a pointer in TCPv6); printed by value. */
+/* control_option may be NULL, as described (and a pointer in TCPv6); printed by value. */
 struct efi_tcp4_config_data {
-    uint8_t TypeOfService;
-    uint8_t TimeToLive;
-    struct efi_tcp4_access_point AccessPoint;
-    struct efi_tcp4_option *ControlOption;
+    uint8_t type_of_service;
+    uint8_t time_to_live;
+    struct efi_tcp4_access_point access_point;
+    struct efi_tcp4_option *control_option;
 };
 
 #define EFI_TCP4_STATE_CLOSED ((uint32_t)0)
@@ -65,118 +65,118 @@ struct efi_tcp4_config_data {
 #define EFI_TCP4_STATE_CLOSE_WAIT ((uint32_t)9)
 #define EFI_TCP4_STATE_LAST_ACK ((uint32_t)10)
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_GET_MODE_DATA)(
-    struct efi_tcp4_protocol *This,
-    uint32_t *Tcp4State,
-    struct efi_tcp4_config_data *Tcp4ConfigData,
-    struct efi_ip4_mode_data *Ip4ModeData,
-    struct efi_managed_network_config_data *MnpConfigData,
-    struct efi_simple_network_mode *SnpModeData
+typedef efi_status (EFI_API *efi_tcp4_get_mode_data)(
+    struct efi_tcp4_protocol *self,
+    uint32_t *tcp4_state,
+    struct efi_tcp4_config_data *tcp4_config_data,
+    struct efi_ip4_mode_data *ip4_mode_data,
+    struct efi_managed_network_config_data *mnp_config_data,
+    struct efi_simple_network_mode *snp_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_CONFIGURE)(
-    struct efi_tcp4_protocol *This,
-    struct efi_tcp4_config_data *TcpConfigData
+typedef efi_status (EFI_API *efi_tcp4_configure)(
+    struct efi_tcp4_protocol *self,
+    struct efi_tcp4_config_data *tcp_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_ROUTES)(
-    struct efi_tcp4_protocol *This,
-    bool DeleteRoute,
-    struct efi_ipv4_address *SubnetAddress,
-    struct efi_ipv4_address *SubnetMask,
-    struct efi_ipv4_address *GatewayAddress
+typedef efi_status (EFI_API *efi_tcp4_routes)(
+    struct efi_tcp4_protocol *self,
+    bool delete_route,
+    struct efi_ipv4_address *subnet_address,
+    struct efi_ipv4_address *subnet_mask,
+    struct efi_ipv4_address *gateway_address
 );
 
 struct efi_tcp4_completion_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
+    efi_event event;
+    efi_status status;
 };
 
 struct efi_tcp4_connection_token {
-    struct efi_tcp4_completion_token CompletionToken;
+    struct efi_tcp4_completion_token completion_token;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_CONNECT)(
-    struct efi_tcp4_protocol *This,
-    struct efi_tcp4_connection_token *ConnectionToken
+typedef efi_status (EFI_API *efi_tcp4_connect)(
+    struct efi_tcp4_protocol *self,
+    struct efi_tcp4_connection_token *connection_token
 );
 
 struct efi_tcp4_listen_token {
-    struct efi_tcp4_completion_token CompletionToken;
-    EFI_HANDLE NewChildHandle;
+    struct efi_tcp4_completion_token completion_token;
+    efi_handle new_child_handle;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_ACCEPT)(
-    struct efi_tcp4_protocol *This,
-    struct efi_tcp4_listen_token *ListenToken
+typedef efi_status (EFI_API *efi_tcp4_accept)(
+    struct efi_tcp4_protocol *self,
+    struct efi_tcp4_listen_token *listen_token
 );
 
 struct efi_tcp4_fragment_data {
-    uint32_t FragmentLength;
-    void *FragmentBuffer;
+    uint32_t fragment_length;
+    void *fragment_buffer;
 };
 
 struct efi_tcp4_receive_data {
-    uint8_t UrgentFlag;
-    uint32_t DataLength;
-    uint32_t FragmentCount;
-    struct efi_tcp4_fragment_data FragmentTable[1];
+    uint8_t urgent_flag;
+    uint32_t data_length;
+    uint32_t fragment_count;
+    struct efi_tcp4_fragment_data fragment_table[1];
 };
 
 struct efi_tcp4_transmit_data {
-    uint8_t Push;
-    uint8_t Urgent;
-    uint32_t DataLength;
-    uint32_t FragmentCount;
-    struct efi_tcp4_fragment_data FragmentTable[1];
+    uint8_t push;
+    uint8_t urgent;
+    uint32_t data_length;
+    uint32_t fragment_count;
+    struct efi_tcp4_fragment_data fragment_table[1];
 };
 
 struct efi_tcp4_io_token {
-    struct efi_tcp4_completion_token CompletionToken;
+    struct efi_tcp4_completion_token completion_token;
     union {
-        struct efi_tcp4_receive_data *RxData;
-        struct efi_tcp4_transmit_data *TxData;
-    } Packet;
+        struct efi_tcp4_receive_data *rx_data;
+        struct efi_tcp4_transmit_data *tx_data;
+    } packet;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_TRANSMIT)(
-    struct efi_tcp4_protocol *This,
-    struct efi_tcp4_io_token *Token
+typedef efi_status (EFI_API *efi_tcp4_transmit)(
+    struct efi_tcp4_protocol *self,
+    struct efi_tcp4_io_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_RECEIVE)(
-    struct efi_tcp4_protocol *This,
-    struct efi_tcp4_io_token *Token
+typedef efi_status (EFI_API *efi_tcp4_receive)(
+    struct efi_tcp4_protocol *self,
+    struct efi_tcp4_io_token *token
 );
 
 struct efi_tcp4_close_token {
-    struct efi_tcp4_completion_token CompletionToken;
-    uint8_t AbortOnClose;
+    struct efi_tcp4_completion_token completion_token;
+    uint8_t abort_on_close;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_CLOSE)(
-    struct efi_tcp4_protocol *This,
-    struct efi_tcp4_close_token *CloseToken
+typedef efi_status (EFI_API *efi_tcp4_close)(
+    struct efi_tcp4_protocol *self,
+    struct efi_tcp4_close_token *close_token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_CANCEL)(
-    struct efi_tcp4_protocol *This,
-    struct efi_tcp4_completion_token *Token
+typedef efi_status (EFI_API *efi_tcp4_cancel)(
+    struct efi_tcp4_protocol *self,
+    struct efi_tcp4_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP4_POLL)(struct efi_tcp4_protocol *This);
+typedef efi_status (EFI_API *efi_tcp4_poll)(struct efi_tcp4_protocol *self);
 
 struct efi_tcp4_protocol {
-    EFI_TCP4_GET_MODE_DATA GetModeData;
-    EFI_TCP4_CONFIGURE Configure;
-    EFI_TCP4_ROUTES Routes;
-    EFI_TCP4_CONNECT Connect;
-    EFI_TCP4_ACCEPT Accept;
-    EFI_TCP4_TRANSMIT Transmit;
-    EFI_TCP4_RECEIVE Receive;
-    EFI_TCP4_CLOSE Close;
-    EFI_TCP4_CANCEL Cancel;
-    EFI_TCP4_POLL Poll;
+    efi_tcp4_get_mode_data get_mode_data;
+    efi_tcp4_configure configure;
+    efi_tcp4_routes routes;
+    efi_tcp4_connect connect;
+    efi_tcp4_accept accept;
+    efi_tcp4_transmit transmit;
+    efi_tcp4_receive receive;
+    efi_tcp4_close close;
+    efi_tcp4_cancel cancel;
+    efi_tcp4_poll poll;
 };
 
 #define EFI_TCP6_SERVICE_BINDING_PROTOCOL_GUID \
@@ -188,36 +188,36 @@ struct efi_tcp4_protocol {
 struct efi_tcp6_protocol;
 
 struct efi_tcp6_access_point {
-    struct efi_ipv6_address StationAddress;
-    uint16_t StationPort;
-    struct efi_ipv6_address RemoteAddress;
-    uint16_t RemotePort;
-    uint8_t ActiveFlag;
+    struct efi_ipv6_address station_address;
+    uint16_t station_port;
+    struct efi_ipv6_address remote_address;
+    uint16_t remote_port;
+    uint8_t active_flag;
 };
 
 struct efi_tcp6_option {
-    uint32_t ReceiveBufferSize;
-    uint32_t SendBufferSize;
-    uint32_t MaxSynBackLog;
-    uint32_t ConnectionTimeout;
-    uint32_t DataRetries;
-    uint32_t FinTimeout;
-    uint32_t TimeWaitTimeout;
-    uint32_t KeepAliveProbes;
-    uint32_t KeepAliveTime;
-    uint32_t KeepAliveInterval;
-    uint8_t EnableNagle;
-    uint8_t EnableTimeStamp;
-    uint8_t EnableWindowScaling;
-    uint8_t EnableSelectiveAck;
-    uint8_t EnablePathMtuDiscovery;
+    uint32_t receive_buffer_size;
+    uint32_t send_buffer_size;
+    uint32_t max_syn_back_log;
+    uint32_t connection_timeout;
+    uint32_t data_retries;
+    uint32_t fin_timeout;
+    uint32_t time_wait_timeout;
+    uint32_t keep_alive_probes;
+    uint32_t keep_alive_time;
+    uint32_t keep_alive_interval;
+    uint8_t enable_nagle;
+    uint8_t enable_time_stamp;
+    uint8_t enable_window_scaling;
+    uint8_t enable_selective_ack;
+    uint8_t enable_path_mtu_discovery;
 };
 
 struct efi_tcp6_config_data {
-    uint8_t TrafficClass;
-    uint8_t HopLimit;
-    struct efi_tcp6_access_point AccessPoint;
-    struct efi_tcp6_option *ControlOption;
+    uint8_t traffic_class;
+    uint8_t hop_limit;
+    struct efi_tcp6_access_point access_point;
+    struct efi_tcp6_option *control_option;
 };
 
 #define EFI_TCP6_STATE_CLOSED ((uint32_t)0)
@@ -232,109 +232,109 @@ struct efi_tcp6_config_data {
 #define EFI_TCP6_STATE_CLOSE_WAIT ((uint32_t)9)
 #define EFI_TCP6_STATE_LAST_ACK ((uint32_t)10)
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_GET_MODE_DATA)(
-    struct efi_tcp6_protocol *This,
-    uint32_t *Tcp6State,
-    struct efi_tcp6_config_data *Tcp6ConfigData,
-    struct efi_ip6_mode_data *Ip6ModeData,
-    struct efi_managed_network_config_data *MnpConfigData,
-    struct efi_simple_network_mode *SnpModeData
+typedef efi_status (EFI_API *efi_tcp6_get_mode_data)(
+    struct efi_tcp6_protocol *self,
+    uint32_t *tcp6_state,
+    struct efi_tcp6_config_data *tcp6_config_data,
+    struct efi_ip6_mode_data *ip6_mode_data,
+    struct efi_managed_network_config_data *mnp_config_data,
+    struct efi_simple_network_mode *snp_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_CONFIGURE)(
-    struct efi_tcp6_protocol *This,
-    struct efi_tcp6_config_data *Tcp6ConfigData
+typedef efi_status (EFI_API *efi_tcp6_configure)(
+    struct efi_tcp6_protocol *self,
+    struct efi_tcp6_config_data *tcp6_config_data
 );
 
 struct efi_tcp6_completion_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
+    efi_event event;
+    efi_status status;
 };
 
 struct efi_tcp6_connection_token {
-    struct efi_tcp6_completion_token CompletionToken;
+    struct efi_tcp6_completion_token completion_token;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_CONNECT)(
-    struct efi_tcp6_protocol *This,
-    struct efi_tcp6_connection_token *ConnectionToken
+typedef efi_status (EFI_API *efi_tcp6_connect)(
+    struct efi_tcp6_protocol *self,
+    struct efi_tcp6_connection_token *connection_token
 );
 
 struct efi_tcp6_listen_token {
-    struct efi_tcp6_completion_token CompletionToken;
-    EFI_HANDLE NewChildHandle;
+    struct efi_tcp6_completion_token completion_token;
+    efi_handle new_child_handle;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_ACCEPT)(
-    struct efi_tcp6_protocol *This,
-    struct efi_tcp6_listen_token *ListenToken
+typedef efi_status (EFI_API *efi_tcp6_accept)(
+    struct efi_tcp6_protocol *self,
+    struct efi_tcp6_listen_token *listen_token
 );
 
 struct efi_tcp6_fragment_data {
-    uint32_t FragmentLength;
-    void *FragmentBuffer;
+    uint32_t fragment_length;
+    void *fragment_buffer;
 };
 
 struct efi_tcp6_receive_data {
-    uint8_t UrgentFlag;
-    uint32_t DataLength;
-    uint32_t FragmentCount;
-    struct efi_tcp6_fragment_data FragmentTable[1];
+    uint8_t urgent_flag;
+    uint32_t data_length;
+    uint32_t fragment_count;
+    struct efi_tcp6_fragment_data fragment_table[1];
 };
 
 struct efi_tcp6_transmit_data {
-    uint8_t Push;
-    uint8_t Urgent;
-    uint32_t DataLength;
-    uint32_t FragmentCount;
-    struct efi_tcp6_fragment_data FragmentTable[1];
+    uint8_t push;
+    uint8_t urgent;
+    uint32_t data_length;
+    uint32_t fragment_count;
+    struct efi_tcp6_fragment_data fragment_table[1];
 };
 
 struct efi_tcp6_io_token {
-    struct efi_tcp6_completion_token CompletionToken;
+    struct efi_tcp6_completion_token completion_token;
     union {
-        struct efi_tcp6_receive_data *RxData;
-        struct efi_tcp6_transmit_data *TxData;
-    } Packet;
+        struct efi_tcp6_receive_data *rx_data;
+        struct efi_tcp6_transmit_data *tx_data;
+    } packet;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_TRANSMIT)(
-    struct efi_tcp6_protocol *This,
-    struct efi_tcp6_io_token *Token
+typedef efi_status (EFI_API *efi_tcp6_transmit)(
+    struct efi_tcp6_protocol *self,
+    struct efi_tcp6_io_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_RECEIVE)(
-    struct efi_tcp6_protocol *This,
-    struct efi_tcp6_io_token *Token
+typedef efi_status (EFI_API *efi_tcp6_receive)(
+    struct efi_tcp6_protocol *self,
+    struct efi_tcp6_io_token *token
 );
 
 struct efi_tcp6_close_token {
-    struct efi_tcp6_completion_token CompletionToken;
-    uint8_t AbortOnClose;
+    struct efi_tcp6_completion_token completion_token;
+    uint8_t abort_on_close;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_CLOSE)(
-    struct efi_tcp6_protocol *This,
-    struct efi_tcp6_close_token *CloseToken
+typedef efi_status (EFI_API *efi_tcp6_close)(
+    struct efi_tcp6_protocol *self,
+    struct efi_tcp6_close_token *close_token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_CANCEL)(
-    struct efi_tcp6_protocol *This,
-    struct efi_tcp6_completion_token *Token
+typedef efi_status (EFI_API *efi_tcp6_cancel)(
+    struct efi_tcp6_protocol *self,
+    struct efi_tcp6_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TCP6_POLL)(struct efi_tcp6_protocol *This);
+typedef efi_status (EFI_API *efi_tcp6_poll)(struct efi_tcp6_protocol *self);
 
 struct efi_tcp6_protocol {
-    EFI_TCP6_GET_MODE_DATA GetModeData;
-    EFI_TCP6_CONFIGURE Configure;
-    EFI_TCP6_CONNECT Connect;
-    EFI_TCP6_ACCEPT Accept;
-    EFI_TCP6_TRANSMIT Transmit;
-    EFI_TCP6_RECEIVE Receive;
-    EFI_TCP6_CLOSE Close;
-    EFI_TCP6_CANCEL Cancel;
-    EFI_TCP6_POLL Poll;
+    efi_tcp6_get_mode_data get_mode_data;
+    efi_tcp6_configure configure;
+    efi_tcp6_connect connect;
+    efi_tcp6_accept accept;
+    efi_tcp6_transmit transmit;
+    efi_tcp6_receive receive;
+    efi_tcp6_close close;
+    efi_tcp6_cancel cancel;
+    efi_tcp6_poll poll;
 };
 
 #ifdef __cplusplus

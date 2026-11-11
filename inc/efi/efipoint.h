@@ -13,37 +13,37 @@ extern "C" {
 struct efi_simple_pointer_protocol;
 
 struct efi_simple_pointer_mode {
-    uint64_t ResolutionX;
-    uint64_t ResolutionY;
-    uint64_t ResolutionZ;
-    uint8_t LeftButton;
-    uint8_t RightButton;
+    uint64_t resolution_x;
+    uint64_t resolution_y;
+    uint64_t resolution_z;
+    uint8_t left_button;
+    uint8_t right_button;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_POINTER_RESET)(
-    struct efi_simple_pointer_protocol *This,
-    bool ExtendedVerification
+typedef efi_status (EFI_API *efi_simple_pointer_reset)(
+    struct efi_simple_pointer_protocol *self,
+    bool extended_verification
 );
 
 struct efi_simple_pointer_state {
-    int32_t RelativeMovementX;
-    int32_t RelativeMovementY;
-    int32_t RelativeMovementZ;
-    uint8_t LeftButton;
-    uint8_t RightButton;
+    int32_t relative_movement_x;
+    int32_t relative_movement_y;
+    int32_t relative_movement_z;
+    uint8_t left_button;
+    uint8_t right_button;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_SIMPLE_POINTER_GET_STATE)(
-    struct efi_simple_pointer_protocol *This,
-    struct efi_simple_pointer_state *State
+typedef efi_status (EFI_API *efi_simple_pointer_get_state)(
+    struct efi_simple_pointer_protocol *self,
+    struct efi_simple_pointer_state *state
 );
 
-/* Mode is printed with a nonexistent type; its description names EFI_SIMPLE_POINTER_MODE. */
+/* mode is printed with a nonexistent type; its description names struct efi_simple_pointer_mode. */
 struct efi_simple_pointer_protocol {
-    EFI_SIMPLE_POINTER_RESET Reset;
-    EFI_SIMPLE_POINTER_GET_STATE GetState;
-    EFI_EVENT WaitForInput;
-    struct efi_simple_pointer_mode *Mode;
+    efi_simple_pointer_reset reset;
+    efi_simple_pointer_get_state get_state;
+    efi_event wait_for_input;
+    struct efi_simple_pointer_mode *mode;
 };
 
 #define EFI_ABSOLUTE_POINTER_PROTOCOL_GUID \
@@ -52,44 +52,44 @@ struct efi_simple_pointer_protocol {
 struct efi_absolute_pointer_protocol;
 
 struct efi_absolute_pointer_mode {
-    uint64_t AbsoluteMinX;
-    uint64_t AbsoluteMinY;
-    uint64_t AbsoluteMinZ;
-    uint64_t AbsoluteMaxX;
-    uint64_t AbsoluteMaxY;
-    uint64_t AbsoluteMaxZ;
-    uint32_t Attributes;
+    uint64_t absolute_min_x;
+    uint64_t absolute_min_y;
+    uint64_t absolute_min_z;
+    uint64_t absolute_max_x;
+    uint64_t absolute_max_y;
+    uint64_t absolute_max_z;
+    uint32_t attributes;
 };
 
-#define EFI_ABSP_SupportsAltActive 0x00000001
-#define EFI_ABSP_SupportsPressureAsZ 0x00000002
+#define EFI_ABSP_SUPPORTS_ALT_ACTIVE 0x00000001
+#define EFI_ABSP_SUPPORTS_PRESSURE_AS_Z 0x00000002
 
-typedef EFI_STATUS (EFI_API *EFI_ABSOLUTE_POINTER_RESET)(
-    struct efi_absolute_pointer_protocol *This,
-    bool ExtendedVerification
+typedef efi_status (EFI_API *efi_absolute_pointer_reset)(
+    struct efi_absolute_pointer_protocol *self,
+    bool extended_verification
 );
 
 struct efi_absolute_pointer_state {
-    uint64_t CurrentX;
-    uint64_t CurrentY;
-    uint64_t CurrentZ;
-    uint32_t ActiveButtons;
+    uint64_t current_x;
+    uint64_t current_y;
+    uint64_t current_z;
+    uint32_t active_buttons;
 };
 
-/* EFI_ABS_AltActive (not EFI_ABSP_) is the specification's own, consistent spelling. */
-#define EFI_ABSP_TouchActive 0x00000001
-#define EFI_ABS_AltActive 0x00000002
+/* EFI_ABS_ALT_ACTIVE (not EFI_ABSP_) is the specification's own, consistent spelling. */
+#define EFI_ABSP_TOUCH_ACTIVE 0x00000001
+#define EFI_ABS_ALT_ACTIVE 0x00000002
 
-typedef EFI_STATUS (EFI_API *EFI_ABSOLUTE_POINTER_GET_STATE)(
-    struct efi_absolute_pointer_protocol *This,
-    struct efi_absolute_pointer_state *State
+typedef efi_status (EFI_API *efi_absolute_pointer_get_state)(
+    struct efi_absolute_pointer_protocol *self,
+    struct efi_absolute_pointer_state *state
 );
 
 struct efi_absolute_pointer_protocol {
-    EFI_ABSOLUTE_POINTER_RESET Reset;
-    EFI_ABSOLUTE_POINTER_GET_STATE GetState;
-    EFI_EVENT WaitForInput;
-    struct efi_absolute_pointer_mode *Mode;
+    efi_absolute_pointer_reset reset;
+    efi_absolute_pointer_get_state get_state;
+    efi_event wait_for_input;
+    struct efi_absolute_pointer_mode *mode;
 };
 
 #ifdef __cplusplus

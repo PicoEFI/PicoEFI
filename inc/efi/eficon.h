@@ -13,8 +13,8 @@ extern "C" {
 struct efi_simple_text_input_protocol;
 
 struct efi_input_key {
-    uint16_t ScanCode;
-    uint16_t UnicodeChar;
+    uint16_t scan_code;
+    uint16_t unicode_char;
 };
 
 /* The specification lists these control characters and scan codes without names. */
@@ -49,20 +49,20 @@ struct efi_input_key {
 #define EFI_SCAN_F12 0x0016
 #define EFI_SCAN_ESC 0x0017
 
-typedef EFI_STATUS (EFI_API *EFI_INPUT_RESET)(
-    struct efi_simple_text_input_protocol *This,
-    bool ExtendedVerification
+typedef efi_status (EFI_API *efi_input_reset)(
+    struct efi_simple_text_input_protocol *self,
+    bool extended_verification
 );
 
-typedef EFI_STATUS (EFI_API *EFI_INPUT_READ_KEY)(
-    struct efi_simple_text_input_protocol *This,
-    struct efi_input_key *Key
+typedef efi_status (EFI_API *efi_input_read_key)(
+    struct efi_simple_text_input_protocol *self,
+    struct efi_input_key *key
 );
 
 struct efi_simple_text_input_protocol {
-    EFI_INPUT_RESET Reset;
-    EFI_INPUT_READ_KEY ReadKeyStroke;
-    EFI_EVENT WaitForKey;
+    efi_input_reset reset;
+    efi_input_read_key read_key_stroke;
+    efi_event wait_for_key;
 };
 
 #define EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL_GUID \
@@ -71,22 +71,22 @@ struct efi_simple_text_input_protocol {
 struct efi_simple_text_output_protocol;
 
 struct efi_simple_text_output_mode {
-    int32_t MaxMode;
-    int32_t Mode;
-    int32_t Attribute;
-    int32_t CursorColumn;
-    int32_t CursorRow;
-    uint8_t CursorVisible;
+    int32_t max_mode;
+    int32_t mode;
+    int32_t attribute;
+    int32_t cursor_column;
+    int32_t cursor_row;
+    uint8_t cursor_visible;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_RESET)(
-    struct efi_simple_text_output_protocol *This,
-    bool ExtendedVerification
+typedef efi_status (EFI_API *efi_text_reset)(
+    struct efi_simple_text_output_protocol *self,
+    bool extended_verification
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_STRING)(
-    struct efi_simple_text_output_protocol *This,
-    uint16_t *String
+typedef efi_status (EFI_API *efi_text_string)(
+    struct efi_simple_text_output_protocol *self,
+    uint16_t *string
 );
 
 #define EFI_BOXDRAW_HORIZONTAL 0x2500
@@ -148,26 +148,26 @@ typedef EFI_STATUS (EFI_API *EFI_TEXT_STRING)(
 #define EFI_ARROW_UP 0x2191
 #define EFI_ARROW_DOWN 0x2193
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_TEST_STRING)(
-    struct efi_simple_text_output_protocol *This,
-    uint16_t *String
+typedef efi_status (EFI_API *efi_text_test_string)(
+    struct efi_simple_text_output_protocol *self,
+    uint16_t *string
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_QUERY_MODE)(
-    struct efi_simple_text_output_protocol *This,
-    size_t ModeNumber,
-    size_t *Columns,
-    size_t *Rows
+typedef efi_status (EFI_API *efi_text_query_mode)(
+    struct efi_simple_text_output_protocol *self,
+    size_t mode_number,
+    size_t *columns,
+    size_t *rows
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_MODE)(
-    struct efi_simple_text_output_protocol *This,
-    size_t ModeNumber
+typedef efi_status (EFI_API *efi_text_set_mode)(
+    struct efi_simple_text_output_protocol *self,
+    size_t mode_number
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_ATTRIBUTE)(
-    struct efi_simple_text_output_protocol *This,
-    uintptr_t Attribute
+typedef efi_status (EFI_API *efi_text_set_attribute)(
+    struct efi_simple_text_output_protocol *self,
+    uintptr_t attribute
 );
 
 #define EFI_BLACK 0x00
@@ -197,33 +197,33 @@ typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_ATTRIBUTE)(
 #define EFI_BACKGROUND_BROWN 0x60
 #define EFI_BACKGROUND_LIGHTGRAY 0x70
 
-/* Printed commented out (a misprint). Background is EFI_BLACK ... EFI_LIGHTGRAY. */
-#define EFI_TEXT_ATTR(Foreground, Background) ((Foreground) | ((Background) << 4))
+/* Printed commented out (a misprint). background is EFI_BLACK ... EFI_LIGHTGRAY. */
+#define EFI_TEXT_ATTR(foreground, background) ((foreground) | ((background) << 4))
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_CLEAR_SCREEN)(struct efi_simple_text_output_protocol *This);
+typedef efi_status (EFI_API *efi_text_clear_screen)(struct efi_simple_text_output_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_CURSOR_POSITION)(
-    struct efi_simple_text_output_protocol *This,
-    size_t Column,
-    size_t Row
+typedef efi_status (EFI_API *efi_text_set_cursor_position)(
+    struct efi_simple_text_output_protocol *self,
+    size_t column,
+    size_t row
 );
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_ENABLE_CURSOR)(
-    struct efi_simple_text_output_protocol *This,
-    bool Visible
+typedef efi_status (EFI_API *efi_text_enable_cursor)(
+    struct efi_simple_text_output_protocol *self,
+    bool visible
 );
 
 struct efi_simple_text_output_protocol {
-    EFI_TEXT_RESET Reset;
-    EFI_TEXT_STRING OutputString;
-    EFI_TEXT_TEST_STRING TestString;
-    EFI_TEXT_QUERY_MODE QueryMode;
-    EFI_TEXT_SET_MODE SetMode;
-    EFI_TEXT_SET_ATTRIBUTE SetAttribute;
-    EFI_TEXT_CLEAR_SCREEN ClearScreen;
-    EFI_TEXT_SET_CURSOR_POSITION SetCursorPosition;
-    EFI_TEXT_ENABLE_CURSOR EnableCursor;
-    struct efi_simple_text_output_mode *Mode;
+    efi_text_reset reset;
+    efi_text_string output_string;
+    efi_text_test_string test_string;
+    efi_text_query_mode query_mode;
+    efi_text_set_mode set_mode;
+    efi_text_set_attribute set_attribute;
+    efi_text_clear_screen clear_screen;
+    efi_text_set_cursor_position set_cursor_position;
+    efi_text_enable_cursor enable_cursor;
+    struct efi_simple_text_output_mode *mode;
 };
 
 #ifdef __cplusplus

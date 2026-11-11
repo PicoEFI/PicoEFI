@@ -18,77 +18,81 @@ extern "C" {
 struct efi_arp_protocol;
 
 struct efi_arp_config_data {
-    uint16_t SwAddressType;
-    uint8_t SwAddressLength;
-    void *StationAddress;
-    uint32_t EntryTimeOut;
-    uint32_t RetryCount;
-    uint32_t RetryTimeOut;
+    uint16_t sw_address_type;
+    uint8_t sw_address_length;
+    void *station_address;
+    uint32_t entry_time_out;
+    uint32_t retry_count;
+    uint32_t retry_time_out;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_ARP_CONFIGURE)(
-    struct efi_arp_protocol *This,
-    struct efi_arp_config_data *ConfigData
+typedef efi_status (EFI_API *efi_arp_configure)(
+    struct efi_arp_protocol *self,
+    struct efi_arp_config_data *config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ARP_ADD)(
-    struct efi_arp_protocol *This,
-    bool DenyFlag,
-    void *TargetSwAddress,
-    void *TargetHwAddress,
-    uint32_t TimeoutValue,
-    bool Overwrite
+typedef efi_status (EFI_API *efi_arp_add)(
+    struct efi_arp_protocol *self,
+    bool deny_flag,
+    void *target_sw_address,
+    void *target_hw_address,
+    uint32_t timeout_value,
+    bool overwrite
 );
 
 struct efi_arp_find_data {
-    uint32_t Size;
-    uint8_t DenyFlag;
-    uint8_t StaticFlag;
-    uint16_t HwAddressType;
-    uint16_t SwAddressType;
-    uint8_t HwAddressLength;
-    uint8_t SwAddressLength;
+    uint32_t size;
+    uint8_t deny_flag;
+    uint8_t static_flag;
+    uint16_t hw_address_type;
+    uint16_t sw_address_type;
+    uint8_t hw_address_length;
+    uint8_t sw_address_length;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_ARP_FIND)(
-    struct efi_arp_protocol *This,
-    bool BySwAddress,
-    void *AddressBuffer,
-    uint32_t *EntryLength,
-    uint32_t *EntryCount,
-    struct efi_arp_find_data **Entries,
-    bool Refresh
+typedef efi_status (EFI_API *efi_arp_find)(
+    struct efi_arp_protocol *self,
+    bool by_sw_address,
+    void *address_buffer,
+    uint32_t *entry_length,
+    uint32_t *entry_count,
+    struct efi_arp_find_data **entries,
+    bool refresh
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ARP_DELETE)(
-    struct efi_arp_protocol *This,
-    bool BySwAddress,
-    void *AddressBuffer
+typedef efi_status (EFI_API *efi_arp_delete)(
+    struct efi_arp_protocol *self,
+    bool by_sw_address,
+    void *address_buffer
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ARP_FLUSH)(struct efi_arp_protocol *This);
+typedef efi_status (EFI_API *efi_arp_flush)(struct efi_arp_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_ARP_REQUEST)(
-    struct efi_arp_protocol *This,
-    void *TargetSwAddress,
-    EFI_EVENT ResolvedEvent,
-    void *TargetHwAddress
+typedef efi_status (EFI_API *efi_arp_request)(
+    struct efi_arp_protocol *self,
+    void *target_sw_address,
+    efi_event resolved_event,
+    void *target_hw_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ARP_CANCEL)(
-    struct efi_arp_protocol *This,
-    void *TargetSwAddress,
-    EFI_EVENT ResolvedEvent
+typedef efi_status (EFI_API *efi_arp_cancel)(
+    struct efi_arp_protocol *self,
+    void *target_sw_address,
+    efi_event resolved_event
 );
 
 struct efi_arp_protocol {
-    EFI_ARP_CONFIGURE Configure;
-    EFI_ARP_ADD Add;
-    EFI_ARP_FIND Find;
-    EFI_ARP_DELETE Delete;
-    EFI_ARP_FLUSH Flush;
-    EFI_ARP_REQUEST Request;
-    EFI_ARP_CANCEL Cancel;
+    efi_arp_configure configure;
+    efi_arp_add add;
+    efi_arp_find find;
+#ifdef __cplusplus
+    efi_arp_delete delete_;
+#else
+    efi_arp_delete delete;
+#endif
+    efi_arp_flush flush;
+    efi_arp_request request;
+    efi_arp_cancel cancel;
 };
 
 #define EFI_DHCP4_SERVICE_BINDING_PROTOCOL_GUID \
@@ -123,148 +127,148 @@ struct efi_dhcp4_protocol;
 #define EFI_DHCP4_FAIL ((uint32_t)0x0c)
 
 struct efi_dhcp4_header {
-    uint8_t OpCode;
-    uint8_t HwType;
-    uint8_t HwAddrLen;
-    uint8_t Hops;
-    uint32_t Xid;
-    uint16_t Seconds;
-    uint16_t Reserved;
-    struct efi_ipv4_address ClientAddr;
-    struct efi_ipv4_address YourAddr;
-    struct efi_ipv4_address ServerAddr;
-    struct efi_ipv4_address GatewayAddr;
-    uint8_t ClientHwAddr[16];
-    char ServerName[64];
-    char BootFileName[128];
+    uint8_t op_code;
+    uint8_t hw_type;
+    uint8_t hw_addr_len;
+    uint8_t hops;
+    uint32_t xid;
+    uint16_t seconds;
+    uint16_t reserved;
+    struct efi_ipv4_address client_addr;
+    struct efi_ipv4_address your_addr;
+    struct efi_ipv4_address server_addr;
+    struct efi_ipv4_address gateway_addr;
+    uint8_t client_hw_addr[16];
+    char server_name[64];
+    char boot_file_name[128];
 } __attribute__((__packed__));
 
 struct efi_dhcp4_packet {
-    uint32_t Size;
-    uint32_t Length;
+    uint32_t size;
+    uint32_t length;
     struct __attribute__((__packed__)) {
-        struct efi_dhcp4_header Header;
-        uint32_t Magik;
-        uint8_t Option[1];
-    } Dhcp4;
+        struct efi_dhcp4_header header;
+        uint32_t magik;
+        uint8_t option[1];
+    } dhcp4;
 } __attribute__((__packed__));
 
 struct efi_dhcp4_packet_option {
-    uint8_t OpCode;
-    uint8_t Length;
-    uint8_t Data[1];
+    uint8_t op_code;
+    uint8_t length;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_CALLBACK)(
-    struct efi_dhcp4_protocol *This,
-    void *Context,
-    uint32_t CurrentState,
-    uint32_t Dhcp4Event,
-    struct efi_dhcp4_packet *Packet,
-    struct efi_dhcp4_packet **NewPacket
+typedef efi_status (EFI_API *efi_dhcp4_callback)(
+    struct efi_dhcp4_protocol *self,
+    void *context,
+    uint32_t current_state,
+    uint32_t dhcp4_event,
+    struct efi_dhcp4_packet *packet,
+    struct efi_dhcp4_packet **new_packet
 );
 
 struct efi_dhcp4_config_data {
-    uint32_t DiscoverTryCount;
-    uint32_t *DiscoverTimeout;
-    uint32_t RequestTryCount;
-    uint32_t *RequestTimeout;
-    struct efi_ipv4_address ClientAddress;
-    EFI_DHCP4_CALLBACK Dhcp4Callback;
-    void *CallbackContext;
-    uint32_t OptionCount;
-    struct efi_dhcp4_packet_option **OptionList;
+    uint32_t discover_try_count;
+    uint32_t *discover_timeout;
+    uint32_t request_try_count;
+    uint32_t *request_timeout;
+    struct efi_ipv4_address client_address;
+    efi_dhcp4_callback dhcp4_callback;
+    void *callback_context;
+    uint32_t option_count;
+    struct efi_dhcp4_packet_option **option_list;
 };
 
 struct efi_dhcp4_mode_data {
-    uint32_t State;
-    struct efi_dhcp4_config_data ConfigData;
-    struct efi_ipv4_address ClientAddress;
-    struct efi_mac_address ClientMacAddress;
-    struct efi_ipv4_address ServerAddress;
-    struct efi_ipv4_address RouterAddress;
-    struct efi_ipv4_address SubnetMask;
-    uint32_t LeaseTime;
-    struct efi_dhcp4_packet *ReplyPacket;
+    uint32_t state;
+    struct efi_dhcp4_config_data config_data;
+    struct efi_ipv4_address client_address;
+    struct efi_mac_address client_mac_address;
+    struct efi_ipv4_address server_address;
+    struct efi_ipv4_address router_address;
+    struct efi_ipv4_address subnet_mask;
+    uint32_t lease_time;
+    struct efi_dhcp4_packet *reply_packet;
 };
 
 struct efi_dhcp4_listen_point {
-    struct efi_ipv4_address ListenAddress;
-    struct efi_ipv4_address SubnetMask;
-    uint16_t ListenPort;
+    struct efi_ipv4_address listen_address;
+    struct efi_ipv4_address subnet_mask;
+    uint16_t listen_port;
 };
 
 struct efi_dhcp4_transmit_receive_token {
-    EFI_STATUS Status;
-    EFI_EVENT CompletionEvent;
-    struct efi_ipv4_address RemoteAddress;
-    uint16_t RemotePort;
-    struct efi_ipv4_address GatewayAddress;
-    uint32_t ListenPointCount;
-    struct efi_dhcp4_listen_point *ListenPoints;
-    uint32_t TimeoutValue;
-    struct efi_dhcp4_packet *Packet;
-    uint32_t ResponseCount;
-    struct efi_dhcp4_packet *ResponseList;
+    efi_status status;
+    efi_event completion_event;
+    struct efi_ipv4_address remote_address;
+    uint16_t remote_port;
+    struct efi_ipv4_address gateway_address;
+    uint32_t listen_point_count;
+    struct efi_dhcp4_listen_point *listen_points;
+    uint32_t timeout_value;
+    struct efi_dhcp4_packet *packet;
+    uint32_t response_count;
+    struct efi_dhcp4_packet *response_list;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_GET_MODE_DATA)(
-    struct efi_dhcp4_protocol *This,
-    struct efi_dhcp4_mode_data *Dhcp4ModeData
+typedef efi_status (EFI_API *efi_dhcp4_get_mode_data)(
+    struct efi_dhcp4_protocol *self,
+    struct efi_dhcp4_mode_data *dhcp4_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_CONFIGURE)(
-    struct efi_dhcp4_protocol *This,
-    struct efi_dhcp4_config_data *Dhcp4CfgData
+typedef efi_status (EFI_API *efi_dhcp4_configure)(
+    struct efi_dhcp4_protocol *self,
+    struct efi_dhcp4_config_data *dhcp4_cfg_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_START)(
-    struct efi_dhcp4_protocol *This,
-    EFI_EVENT CompletionEvent
+typedef efi_status (EFI_API *efi_dhcp4_start)(
+    struct efi_dhcp4_protocol *self,
+    efi_event completion_event
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_RENEW_REBIND)(
-    struct efi_dhcp4_protocol *This,
-    bool RebindRequest,
-    EFI_EVENT CompletionEvent
+typedef efi_status (EFI_API *efi_dhcp4_renew_rebind)(
+    struct efi_dhcp4_protocol *self,
+    bool rebind_request,
+    efi_event completion_event
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_RELEASE)(struct efi_dhcp4_protocol *This);
+typedef efi_status (EFI_API *efi_dhcp4_release)(struct efi_dhcp4_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_STOP)(struct efi_dhcp4_protocol *This);
+typedef efi_status (EFI_API *efi_dhcp4_stop)(struct efi_dhcp4_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_BUILD)(
-    struct efi_dhcp4_protocol *This,
-    struct efi_dhcp4_packet *SeedPacket,
-    uint32_t DeleteCount,
-    uint8_t *DeleteList,
-    uint32_t AppendCount,
-    struct efi_dhcp4_packet_option *AppendList[],
-    struct efi_dhcp4_packet **NewPacket
+typedef efi_status (EFI_API *efi_dhcp4_build)(
+    struct efi_dhcp4_protocol *self,
+    struct efi_dhcp4_packet *seed_packet,
+    uint32_t delete_count,
+    uint8_t *delete_list,
+    uint32_t append_count,
+    struct efi_dhcp4_packet_option *append_list[],
+    struct efi_dhcp4_packet **new_packet
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_TRANSMIT_RECEIVE)(
-    struct efi_dhcp4_protocol *This,
-    struct efi_dhcp4_transmit_receive_token *Token
+typedef efi_status (EFI_API *efi_dhcp4_transmit_receive)(
+    struct efi_dhcp4_protocol *self,
+    struct efi_dhcp4_transmit_receive_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP4_PARSE)(
-    struct efi_dhcp4_protocol *This,
-    struct efi_dhcp4_packet *Packet,
-    uint32_t *OptionCount,
-    struct efi_dhcp4_packet_option *PacketOptionList[]
+typedef efi_status (EFI_API *efi_dhcp4_parse)(
+    struct efi_dhcp4_protocol *self,
+    struct efi_dhcp4_packet *packet,
+    uint32_t *option_count,
+    struct efi_dhcp4_packet_option *packet_option_list[]
 );
 
 struct efi_dhcp4_protocol {
-    EFI_DHCP4_GET_MODE_DATA GetModeData;
-    EFI_DHCP4_CONFIGURE Configure;
-    EFI_DHCP4_START Start;
-    EFI_DHCP4_RENEW_REBIND RenewRebind;
-    EFI_DHCP4_RELEASE Release;
-    EFI_DHCP4_STOP Stop;
-    EFI_DHCP4_BUILD Build;
-    EFI_DHCP4_TRANSMIT_RECEIVE TransmitReceive;
-    EFI_DHCP4_PARSE Parse;
+    efi_dhcp4_get_mode_data get_mode_data;
+    efi_dhcp4_configure configure;
+    efi_dhcp4_start start;
+    efi_dhcp4_renew_rebind renew_rebind;
+    efi_dhcp4_release release;
+    efi_dhcp4_stop stop;
+    efi_dhcp4_build build;
+    efi_dhcp4_transmit_receive transmit_receive;
+    efi_dhcp4_parse parse;
 };
 
 #define EFI_DHCP6_SERVICE_BINDING_PROTOCOL_GUID \
@@ -276,13 +280,13 @@ struct efi_dhcp4_protocol {
 struct efi_dhcp6_protocol;
 
 struct efi_dhcp6_duid {
-    uint16_t Length;
-    uint8_t Duid[1];
+    uint16_t length;
+    uint8_t duid[1];
 };
 
 struct efi_dhcp6_ia_descriptor {
-    uint16_t Type;
-    uint32_t IaId;
+    uint16_t type;
+    uint32_t ia_id;
 };
 
 #define EFI_DHCP6_IA_TYPE_NA 3
@@ -299,42 +303,42 @@ struct efi_dhcp6_ia_descriptor {
 #define EFI_DHCP6_REBINDING ((uint32_t)0x8)
 
 struct efi_dhcp6_ia_address {
-    struct efi_ipv6_address IpAddress;
-    uint32_t PreferredLifetime;
-    uint32_t ValidLifetime;
+    struct efi_ipv6_address ip_address;
+    uint32_t preferred_lifetime;
+    uint32_t valid_lifetime;
 };
 
 struct efi_dhcp6_header {
-    uint32_t TransactionId:24;
-    uint32_t MessageType:8;
+    uint32_t transaction_id:24;
+    uint32_t message_type:8;
 } __attribute__((__packed__));
 
 struct efi_dhcp6_packet {
-    uint32_t Size;
-    uint32_t Length;
+    uint32_t size;
+    uint32_t length;
     struct __attribute__((__packed__)) {
-        struct efi_dhcp6_header Header;
-        uint8_t Option[1];
-    } Dhcp6;
+        struct efi_dhcp6_header header;
+        uint8_t option[1];
+    } dhcp6;
 } __attribute__((__packed__));
 
 struct efi_dhcp6_ia {
-    struct efi_dhcp6_ia_descriptor Descriptor;
-    uint32_t State;
-    struct efi_dhcp6_packet *ReplyPacket;
-    uint32_t IaAddressCount;
-    struct efi_dhcp6_ia_address IaAddress[1];
+    struct efi_dhcp6_ia_descriptor descriptor;
+    uint32_t state;
+    struct efi_dhcp6_packet *reply_packet;
+    uint32_t ia_address_count;
+    struct efi_dhcp6_ia_address ia_address[1];
 };
 
 struct efi_dhcp6_mode_data {
-    struct efi_dhcp6_duid *ClientId;
-    struct efi_dhcp6_ia *Ia;
+    struct efi_dhcp6_duid *client_id;
+    struct efi_dhcp6_ia *ia;
 };
 
 struct efi_dhcp6_packet_option {
-    uint16_t OpCode;
-    uint16_t OpLen;
-    uint8_t Data[1];
+    uint16_t op_code;
+    uint16_t op_len;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
 #define EFI_DHCP6_SEND_SOLICIT ((uint32_t)0x0)
@@ -349,101 +353,101 @@ struct efi_dhcp6_packet_option {
 #define EFI_DHCP6_SEND_RENEW ((uint32_t)0x9)
 #define EFI_DHCP6_SEND_REBIND ((uint32_t)0xa)
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_CALLBACK)(
-    struct efi_dhcp6_protocol *This,
-    void *Context,
-    uint32_t CurrentState,
-    uint32_t Dhcp6Event,
-    struct efi_dhcp6_packet *Packet,
-    struct efi_dhcp6_packet **NewPacket
+typedef efi_status (EFI_API *efi_dhcp6_callback)(
+    struct efi_dhcp6_protocol *self,
+    void *context,
+    uint32_t current_state,
+    uint32_t dhcp6_event,
+    struct efi_dhcp6_packet *packet,
+    struct efi_dhcp6_packet **new_packet
 );
 
 struct efi_dhcp6_retransmission {
-    uint32_t Irt;
-    uint32_t Mrc;
-    uint32_t Mrt;
-    uint32_t Mrd;
+    uint32_t irt;
+    uint32_t mrc;
+    uint32_t mrt;
+    uint32_t mrd;
 };
 
 struct efi_dhcp6_config_data {
-    EFI_DHCP6_CALLBACK Dhcp6Callback;
-    void *CallbackContext;
-    uint32_t OptionCount;
-    struct efi_dhcp6_packet_option **OptionList;
-    struct efi_dhcp6_ia_descriptor IaDescriptor;
-    EFI_EVENT IaInfoEvent;
-    uint8_t ReconfigureAccept;
-    uint8_t RapidCommit;
-    struct efi_dhcp6_retransmission *SolicitRetransmission;
+    efi_dhcp6_callback dhcp6_callback;
+    void *callback_context;
+    uint32_t option_count;
+    struct efi_dhcp6_packet_option **option_list;
+    struct efi_dhcp6_ia_descriptor ia_descriptor;
+    efi_event ia_info_event;
+    uint8_t reconfigure_accept;
+    uint8_t rapid_commit;
+    struct efi_dhcp6_retransmission *solicit_retransmission;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_GET_MODE_DATA)(
-    struct efi_dhcp6_protocol *This,
-    struct efi_dhcp6_mode_data *Dhcp6ModeData,
-    struct efi_dhcp6_config_data *Dhcp6ConfigData
+typedef efi_status (EFI_API *efi_dhcp6_get_mode_data)(
+    struct efi_dhcp6_protocol *self,
+    struct efi_dhcp6_mode_data *dhcp6_mode_data,
+    struct efi_dhcp6_config_data *dhcp6_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_CONFIGURE)(
-    struct efi_dhcp6_protocol *This,
-    struct efi_dhcp6_config_data *Dhcp6CfgData
+typedef efi_status (EFI_API *efi_dhcp6_configure)(
+    struct efi_dhcp6_protocol *self,
+    struct efi_dhcp6_config_data *dhcp6_cfg_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_START)(struct efi_dhcp6_protocol *This);
+typedef efi_status (EFI_API *efi_dhcp6_start)(struct efi_dhcp6_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_INFO_CALLBACK)(
-    struct efi_dhcp6_protocol *This,
-    void *Context,
-    struct efi_dhcp6_packet *Packet
+typedef efi_status (EFI_API *efi_dhcp6_info_callback)(
+    struct efi_dhcp6_protocol *self,
+    void *context,
+    struct efi_dhcp6_packet *packet
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_INFO_REQUEST)(
-    struct efi_dhcp6_protocol *This,
-    bool SendClientId,
-    struct efi_dhcp6_packet_option *OptionRequest,
-    uint32_t OptionCount,
-    struct efi_dhcp6_packet_option *OptionList[],
-    struct efi_dhcp6_retransmission *Retransmission,
-    EFI_EVENT TimeoutEvent,
-    EFI_DHCP6_INFO_CALLBACK ReplyCallback,
-    void *CallbackContext
+typedef efi_status (EFI_API *efi_dhcp6_info_request)(
+    struct efi_dhcp6_protocol *self,
+    bool send_client_id,
+    struct efi_dhcp6_packet_option *option_request,
+    uint32_t option_count,
+    struct efi_dhcp6_packet_option *option_list[],
+    struct efi_dhcp6_retransmission *retransmission,
+    efi_event timeout_event,
+    efi_dhcp6_info_callback reply_callback,
+    void *callback_context
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_RENEW_REBIND)(
-    struct efi_dhcp6_protocol *This,
-    bool RebindRequest
+typedef efi_status (EFI_API *efi_dhcp6_renew_rebind)(
+    struct efi_dhcp6_protocol *self,
+    bool rebind_request
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_DECLINE)(
-    struct efi_dhcp6_protocol *This,
-    uint32_t AddressCount,
-    struct efi_ipv6_address *Addresses
+typedef efi_status (EFI_API *efi_dhcp6_decline)(
+    struct efi_dhcp6_protocol *self,
+    uint32_t address_count,
+    struct efi_ipv6_address *addresses
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_RELEASE)(
-    struct efi_dhcp6_protocol *This,
-    uint32_t AddressCount,
-    struct efi_ipv6_address *Addresses
+typedef efi_status (EFI_API *efi_dhcp6_release)(
+    struct efi_dhcp6_protocol *self,
+    uint32_t address_count,
+    struct efi_ipv6_address *addresses
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_STOP)(struct efi_dhcp6_protocol *This);
+typedef efi_status (EFI_API *efi_dhcp6_stop)(struct efi_dhcp6_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_DHCP6_PARSE)(
-    struct efi_dhcp6_protocol *This,
-    struct efi_dhcp6_packet *Packet,
-    uint32_t *OptionCount,
-    struct efi_dhcp6_packet_option *PacketOptionList[]
+typedef efi_status (EFI_API *efi_dhcp6_parse)(
+    struct efi_dhcp6_protocol *self,
+    struct efi_dhcp6_packet *packet,
+    uint32_t *option_count,
+    struct efi_dhcp6_packet_option *packet_option_list[]
 );
 
 struct efi_dhcp6_protocol {
-    EFI_DHCP6_GET_MODE_DATA GetModeData;
-    EFI_DHCP6_CONFIGURE Configure;
-    EFI_DHCP6_START Start;
-    EFI_DHCP6_INFO_REQUEST InfoRequest;
-    EFI_DHCP6_RENEW_REBIND RenewRebind;
-    EFI_DHCP6_DECLINE Decline;
-    EFI_DHCP6_RELEASE Release;
-    EFI_DHCP6_STOP Stop;
-    EFI_DHCP6_PARSE Parse;
+    efi_dhcp6_get_mode_data get_mode_data;
+    efi_dhcp6_configure configure;
+    efi_dhcp6_start start;
+    efi_dhcp6_info_request info_request;
+    efi_dhcp6_renew_rebind renew_rebind;
+    efi_dhcp6_decline decline;
+    efi_dhcp6_release release;
+    efi_dhcp6_stop stop;
+    efi_dhcp6_parse parse;
 };
 
 #define EFI_DNS4_SERVICE_BINDING_PROTOCOL_GUID \
@@ -455,120 +459,120 @@ struct efi_dhcp6_protocol {
 struct efi_dns4_protocol;
 
 struct efi_dns4_config_data {
-    size_t DnsServerListCount;
-    struct efi_ipv4_address *DnsServerList;
-    uint8_t UseDefaultSetting;
-    uint8_t EnableDnsCache;
-    uint8_t Protocol;
-    struct efi_ipv4_address StationIp;
-    struct efi_ipv4_address SubnetMask;
-    uint16_t LocalPort;
-    uint32_t RetryCount;
-    uint32_t RetryInterval;
+    size_t dns_server_list_count;
+    struct efi_ipv4_address *dns_server_list;
+    uint8_t use_default_setting;
+    uint8_t enable_dns_cache;
+    uint8_t protocol;
+    struct efi_ipv4_address station_ip;
+    struct efi_ipv4_address subnet_mask;
+    uint16_t local_port;
+    uint32_t retry_count;
+    uint32_t retry_interval;
 };
 
 struct efi_dns4_cache_entry {
-    uint16_t *HostName;
-    struct efi_ipv4_address *IpAddress;
-    uint32_t Timeout;
+    uint16_t *host_name;
+    struct efi_ipv4_address *ip_address;
+    uint32_t timeout;
 };
 
 struct efi_dns4_mode_data {
-    struct efi_dns4_config_data DnsConfigData;
-    uint32_t DnsServerCount;
-    struct efi_ipv4_address *DnsServerList;
-    uint32_t DnsCacheCount;
-    struct efi_dns4_cache_entry *DnsCacheList;
+    struct efi_dns4_config_data dns_config_data;
+    uint32_t dns_server_count;
+    struct efi_ipv4_address *dns_server_list;
+    uint32_t dns_cache_count;
+    struct efi_dns4_cache_entry *dns_cache_list;
 };
 
 struct efi_dns_host_to_addr_data {
-    uint32_t IpCount;
-    struct efi_ipv4_address *IpList;
+    uint32_t ip_count;
+    struct efi_ipv4_address *ip_list;
 };
 
 struct efi_dns_addr_to_host_data {
-    uint16_t *HostName;
+    uint16_t *host_name;
 };
 
 struct efi_dns_resource_record {
-    char *QName;
-    uint16_t QType;
-    uint16_t QClass;
-    uint32_t TTL;
-    uint16_t DataLength;
-    char *RData;
+    char *qname;
+    uint16_t qtype;
+    uint16_t qclass;
+    uint32_t ttl;
+    uint16_t data_length;
+    char *rdata;
 };
 
 struct efi_dns_general_lookup_data {
-    size_t RRCount;
-    struct efi_dns_resource_record *RRList;
+    size_t rr_count;
+    struct efi_dns_resource_record *rr_list;
 };
 
 struct efi_dns4_completion_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
-    uint32_t RetryCount;
-    uint32_t RetryInterval;
+    efi_event event;
+    efi_status status;
+    uint32_t retry_count;
+    uint32_t retry_interval;
     union {
-        struct efi_dns_host_to_addr_data *H2AData;
-        struct efi_dns_addr_to_host_data *A2HData;
-        struct efi_dns_general_lookup_data *GLookupData;
-    } RspData;
+        struct efi_dns_host_to_addr_data *h2a_data;
+        struct efi_dns_addr_to_host_data *a2h_data;
+        struct efi_dns_general_lookup_data *glookup_data;
+    } rsp_data;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_GET_MODE_DATA)(
-    struct efi_dns4_protocol *This,
-    struct efi_dns4_mode_data *DnsModeData
+typedef efi_status (EFI_API *efi_dns4_get_mode_data)(
+    struct efi_dns4_protocol *self,
+    struct efi_dns4_mode_data *dns_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_CONFIGURE)(
-    struct efi_dns4_protocol *This,
-    struct efi_dns4_config_data *DnsConfigData
+typedef efi_status (EFI_API *efi_dns4_configure)(
+    struct efi_dns4_protocol *self,
+    struct efi_dns4_config_data *dns_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_HOST_NAME_TO_IP)(
-    struct efi_dns4_protocol *This,
-    uint16_t *HostName,
-    struct efi_dns4_completion_token *Token
+typedef efi_status (EFI_API *efi_dns4_host_name_to_ip)(
+    struct efi_dns4_protocol *self,
+    uint16_t *host_name,
+    struct efi_dns4_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_IP_TO_HOST_NAME)(
-    struct efi_dns4_protocol *This,
-    struct efi_ipv4_address IpAddress,
-    struct efi_dns4_completion_token *Token
+typedef efi_status (EFI_API *efi_dns4_ip_to_host_name)(
+    struct efi_dns4_protocol *self,
+    struct efi_ipv4_address ip_address,
+    struct efi_dns4_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_GENERAL_LOOKUP)(
-    struct efi_dns4_protocol *This,
-    char *QName,
-    uint16_t QType,
-    uint16_t QClass,
-    struct efi_dns4_completion_token *Token
+typedef efi_status (EFI_API *efi_dns4_general_lookup)(
+    struct efi_dns4_protocol *self,
+    char *qname,
+    uint16_t qtype,
+    uint16_t qclass,
+    struct efi_dns4_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_UPDATE_DNS_CACHE)(
-    struct efi_dns4_protocol *This,
-    bool DeleteFlag,
-    bool Override,
-    struct efi_dns4_cache_entry DnsCacheEntry
+typedef efi_status (EFI_API *efi_dns4_update_dns_cache)(
+    struct efi_dns4_protocol *self,
+    bool delete_flag,
+    bool override,
+    struct efi_dns4_cache_entry dns_cache_entry
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_POLL)(struct efi_dns4_protocol *This);
+typedef efi_status (EFI_API *efi_dns4_poll)(struct efi_dns4_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_DNS4_CANCEL)(
-    struct efi_dns4_protocol *This,
-    struct efi_dns4_completion_token *Token
+typedef efi_status (EFI_API *efi_dns4_cancel)(
+    struct efi_dns4_protocol *self,
+    struct efi_dns4_completion_token *token
 );
 
 struct efi_dns4_protocol {
-    EFI_DNS4_GET_MODE_DATA GetModeData;
-    EFI_DNS4_CONFIGURE Configure;
-    EFI_DNS4_HOST_NAME_TO_IP HostNameToIp;
-    EFI_DNS4_IP_TO_HOST_NAME IpToHostName;
-    EFI_DNS4_GENERAL_LOOKUP GeneralLookUp;
-    EFI_DNS4_UPDATE_DNS_CACHE UpdateDnsCache;
-    EFI_DNS4_POLL Poll;
-    EFI_DNS4_CANCEL Cancel;
+    efi_dns4_get_mode_data get_mode_data;
+    efi_dns4_configure configure;
+    efi_dns4_host_name_to_ip host_name_to_ip;
+    efi_dns4_ip_to_host_name ip_to_host_name;
+    efi_dns4_general_lookup general_look_up;
+    efi_dns4_update_dns_cache update_dns_cache;
+    efi_dns4_poll poll;
+    efi_dns4_cancel cancel;
 };
 
 #define EFI_DNS6_SERVICE_BINDING_PROTOCOL_GUID \
@@ -580,118 +584,118 @@ struct efi_dns4_protocol {
 struct efi_dns6_protocol;
 
 struct efi_dns6_config_data {
-    uint8_t EnableDnsCache;
-    uint8_t Protocol;
-    struct efi_ipv6_address StationIp;
-    uint16_t LocalPort;
-    uint32_t DnsServerCount;
-    struct efi_ipv6_address *DnsServerList;
-    uint32_t RetryCount;
-    uint32_t RetryInterval;
+    uint8_t enable_dns_cache;
+    uint8_t protocol;
+    struct efi_ipv6_address station_ip;
+    uint16_t local_port;
+    uint32_t dns_server_count;
+    struct efi_ipv6_address *dns_server_list;
+    uint32_t retry_count;
+    uint32_t retry_interval;
 };
 
 struct efi_dns6_cache_entry {
-    uint16_t *HostName;
-    struct efi_ipv6_address *IpAddress;
-    uint32_t Timeout;
+    uint16_t *host_name;
+    struct efi_ipv6_address *ip_address;
+    uint32_t timeout;
 };
 
 struct efi_dns6_mode_data {
-    struct efi_dns6_config_data DnsConfigData;
-    uint32_t DnsServerCount;
-    struct efi_ipv6_address *DnsServerList;
-    uint32_t DnsCacheCount;
-    struct efi_dns6_cache_entry *DnsCacheList;
+    struct efi_dns6_config_data dns_config_data;
+    uint32_t dns_server_count;
+    struct efi_ipv6_address *dns_server_list;
+    uint32_t dns_cache_count;
+    struct efi_dns6_cache_entry *dns_cache_list;
 };
 
 struct efi_dns6_host_to_addr_data {
-    uint32_t IpCount;
-    struct efi_ipv6_address *IpList;
+    uint32_t ip_count;
+    struct efi_ipv6_address *ip_list;
 };
 
 struct efi_dns6_addr_to_host_data {
-    uint16_t *HostName;
+    uint16_t *host_name;
 };
 
 struct efi_dns6_resource_record {
-    char *QName;
-    uint16_t QType;
-    uint16_t QClass;
-    uint32_t TTL;
-    uint16_t DataLength;
-    char *RData;
+    char *qname;
+    uint16_t qtype;
+    uint16_t qclass;
+    uint32_t ttl;
+    uint16_t data_length;
+    char *rdata;
 };
 
 struct efi_dns6_general_lookup_data {
-    size_t RRCount;
-    struct efi_dns6_resource_record *RRList;
+    size_t rr_count;
+    struct efi_dns6_resource_record *rr_list;
 };
 
 struct efi_dns6_completion_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
-    uint32_t RetryCount;
-    uint32_t RetryInterval;
+    efi_event event;
+    efi_status status;
+    uint32_t retry_count;
+    uint32_t retry_interval;
     union {
-        struct efi_dns6_host_to_addr_data *H2AData;
-        struct efi_dns6_addr_to_host_data *A2HData;
-        struct efi_dns6_general_lookup_data *GLookupData;
-    } RspData;
+        struct efi_dns6_host_to_addr_data *h2a_data;
+        struct efi_dns6_addr_to_host_data *a2h_data;
+        struct efi_dns6_general_lookup_data *glookup_data;
+    } rsp_data;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_GET_MODE_DATA)(
-    struct efi_dns6_protocol *This,
-    struct efi_dns6_mode_data *DnsModeData
+typedef efi_status (EFI_API *efi_dns6_get_mode_data)(
+    struct efi_dns6_protocol *self,
+    struct efi_dns6_mode_data *dns_mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_CONFIGURE)(
-    struct efi_dns6_protocol *This,
-    struct efi_dns6_config_data *DnsConfigData
+typedef efi_status (EFI_API *efi_dns6_configure)(
+    struct efi_dns6_protocol *self,
+    struct efi_dns6_config_data *dns_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_HOST_NAME_TO_IP)(
-    struct efi_dns6_protocol *This,
-    uint16_t *HostName,
-    struct efi_dns6_completion_token *Token
+typedef efi_status (EFI_API *efi_dns6_host_name_to_ip)(
+    struct efi_dns6_protocol *self,
+    uint16_t *host_name,
+    struct efi_dns6_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_IP_TO_HOST_NAME)(
-    struct efi_dns6_protocol *This,
-    struct efi_ipv6_address IpAddress,
-    struct efi_dns6_completion_token *Token
+typedef efi_status (EFI_API *efi_dns6_ip_to_host_name)(
+    struct efi_dns6_protocol *self,
+    struct efi_ipv6_address ip_address,
+    struct efi_dns6_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_GENERAL_LOOKUP)(
-    struct efi_dns6_protocol *This,
-    char *QName,
-    uint16_t QType,
-    uint16_t QClass,
-    struct efi_dns6_completion_token *Token
+typedef efi_status (EFI_API *efi_dns6_general_lookup)(
+    struct efi_dns6_protocol *self,
+    char *qname,
+    uint16_t qtype,
+    uint16_t qclass,
+    struct efi_dns6_completion_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_UPDATE_DNS_CACHE)(
-    struct efi_dns6_protocol *This,
-    bool DeleteFlag,
-    bool Override,
-    struct efi_dns6_cache_entry DnsCacheEntry
+typedef efi_status (EFI_API *efi_dns6_update_dns_cache)(
+    struct efi_dns6_protocol *self,
+    bool delete_flag,
+    bool override,
+    struct efi_dns6_cache_entry dns_cache_entry
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_POLL)(struct efi_dns6_protocol *This);
+typedef efi_status (EFI_API *efi_dns6_poll)(struct efi_dns6_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_DNS6_CANCEL)(
-    struct efi_dns6_protocol *This,
-    struct efi_dns6_completion_token *Token
+typedef efi_status (EFI_API *efi_dns6_cancel)(
+    struct efi_dns6_protocol *self,
+    struct efi_dns6_completion_token *token
 );
 
 struct efi_dns6_protocol {
-    EFI_DNS6_GET_MODE_DATA GetModeData;
-    EFI_DNS6_CONFIGURE Configure;
-    EFI_DNS6_HOST_NAME_TO_IP HostNameToIp;
-    EFI_DNS6_IP_TO_HOST_NAME IpToHostName;
-    EFI_DNS6_GENERAL_LOOKUP GeneralLookUp;
-    EFI_DNS6_UPDATE_DNS_CACHE UpdateDnsCache;
-    EFI_DNS6_POLL Poll;
-    EFI_DNS6_CANCEL Cancel;
+    efi_dns6_get_mode_data get_mode_data;
+    efi_dns6_configure configure;
+    efi_dns6_host_name_to_ip host_name_to_ip;
+    efi_dns6_ip_to_host_name ip_to_host_name;
+    efi_dns6_general_lookup general_look_up;
+    efi_dns6_update_dns_cache update_dns_cache;
+    efi_dns6_poll poll;
+    efi_dns6_cancel cancel;
 };
 
 #define EFI_HTTP_SERVICE_BINDING_PROTOCOL_GUID \
@@ -707,35 +711,35 @@ struct efi_http_protocol;
 #define EFI_HTTP_VERSION_UNSUPPORTED ((uint32_t)2)
 
 struct efi_httpv4_access_point {
-    uint8_t UseDefaultAddress;
-    struct efi_ipv4_address LocalAddress;
-    struct efi_ipv4_address LocalSubnet;
-    uint16_t LocalPort;
+    uint8_t use_default_address;
+    struct efi_ipv4_address local_address;
+    struct efi_ipv4_address local_subnet;
+    uint16_t local_port;
 };
 
 struct efi_httpv6_access_point {
-    struct efi_ipv6_address LocalAddress;
-    uint16_t LocalPort;
+    struct efi_ipv6_address local_address;
+    uint16_t local_port;
 };
 
 struct efi_http_config_data {
-    uint32_t HttpVersion;
-    uint32_t TimeOutMillisec;
-    uint8_t LocalAddressIsIPv6;
+    uint32_t http_version;
+    uint32_t time_out_millisec;
+    uint8_t local_address_is_ipv6;
     union {
-        struct efi_httpv4_access_point *IPv4Node;
-        struct efi_httpv6_access_point *IPv6Node;
-    } AccessPoint;
+        struct efi_httpv4_access_point *ipv4_node;
+        struct efi_httpv6_access_point *ipv6_node;
+    } access_point;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_GET_MODE_DATA)(
-    struct efi_http_protocol *This,
-    struct efi_http_config_data *HttpConfigData
+typedef efi_status (EFI_API *efi_http_get_mode_data)(
+    struct efi_http_protocol *self,
+    struct efi_http_config_data *http_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_CONFIGURE)(
-    struct efi_http_protocol *This,
-    struct efi_http_config_data *HttpConfigData
+typedef efi_status (EFI_API *efi_http_configure)(
+    struct efi_http_protocol *self,
+    struct efi_http_config_data *http_config_data
 );
 
 #define EFI_HTTP_METHOD_GET ((uint32_t)0)
@@ -750,13 +754,13 @@ typedef EFI_STATUS (EFI_API *EFI_HTTP_CONFIGURE)(
 #define EFI_HTTP_METHOD_MAX ((uint32_t)9)
 
 struct efi_http_request_data {
-    uint32_t Method;
-    uint16_t *Url;
+    uint32_t method;
+    uint16_t *url;
 };
 
 struct efi_http_connect_request_data {
-    struct efi_http_request_data Base;
-    uint16_t *ProxyUrl;
+    struct efi_http_request_data base;
+    uint16_t *proxy_url;
 };
 
 #define EFI_HTTP_STATUS_UNSUPPORTED_STATUS ((uint32_t)0)
@@ -803,55 +807,55 @@ struct efi_http_connect_request_data {
 #define EFI_HTTP_STATUS_308_PERMANENT_REDIRECT ((uint32_t)41)
 
 struct efi_http_response_data {
-    uint32_t StatusCode;
+    uint32_t status_code;
 };
 
 struct efi_http_header {
-    char *FieldName;
-    char *FieldValue;
+    char *field_name;
+    char *field_value;
 };
 
 struct efi_http_message {
     union {
-        struct efi_http_request_data *Request;
-        struct efi_http_response_data *Response;
-    } Data;
-    size_t HeaderCount;
-    struct efi_http_header *Headers;
-    size_t BodyLength;
-    void *Body;
+        struct efi_http_request_data *request;
+        struct efi_http_response_data *response;
+    } data;
+    size_t header_count;
+    struct efi_http_header *headers;
+    size_t body_length;
+    void *body;
 };
 
 struct efi_http_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
-    struct efi_http_message *Message;
+    efi_event event;
+    efi_status status;
+    struct efi_http_message *message;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_REQUEST)(
-    struct efi_http_protocol *This,
-    struct efi_http_token *Token
+typedef efi_status (EFI_API *efi_http_request)(
+    struct efi_http_protocol *self,
+    struct efi_http_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_CANCEL)(
-    struct efi_http_protocol *This,
-    struct efi_http_token *Token
+typedef efi_status (EFI_API *efi_http_cancel)(
+    struct efi_http_protocol *self,
+    struct efi_http_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_RESPONSE)(
-    struct efi_http_protocol *This,
-    struct efi_http_token *Token
+typedef efi_status (EFI_API *efi_http_response)(
+    struct efi_http_protocol *self,
+    struct efi_http_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_POLL)(struct efi_http_protocol *This);
+typedef efi_status (EFI_API *efi_http_poll)(struct efi_http_protocol *self);
 
 struct efi_http_protocol {
-    EFI_HTTP_GET_MODE_DATA GetModeData;
-    EFI_HTTP_CONFIGURE Configure;
-    EFI_HTTP_REQUEST Request;
-    EFI_HTTP_CANCEL Cancel;
-    EFI_HTTP_RESPONSE Response;
-    EFI_HTTP_POLL Poll;
+    efi_http_get_mode_data get_mode_data;
+    efi_http_configure configure;
+    efi_http_request request;
+    efi_http_cancel cancel;
+    efi_http_response response;
+    efi_http_poll poll;
 };
 
 #define EFI_HTTP_UTILITIES_PROTOCOL_GUID \
@@ -859,30 +863,30 @@ struct efi_http_protocol {
 
 struct efi_http_utilities_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_HTTP_UTILS_BUILD)(
-    struct efi_http_utilities_protocol *This,
-    size_t SeedMessageSize,
-    void *SeedMessage,
-    size_t DeleteCount,
-    char *DeleteList[],
-    size_t AppendCount,
-    struct efi_http_header *AppendList[],
-    size_t *NewMessageSize,
-    void **NewMessage
+typedef efi_status (EFI_API *efi_http_utils_build)(
+    struct efi_http_utilities_protocol *self,
+    size_t seed_message_size,
+    void *seed_message,
+    size_t delete_count,
+    char *delete_list[],
+    size_t append_count,
+    struct efi_http_header *append_list[],
+    size_t *new_message_size,
+    void **new_message
 );
 
-/* This is the utilities protocol, as described; the prototype prints EFI_HTTP_PROTOCOL. */
-typedef EFI_STATUS (EFI_API *EFI_HTTP_UTILS_PARSE)(
-    struct efi_http_utilities_protocol *This,
-    char *HttpMessage,
-    size_t HttpMessageSize,
-    struct efi_http_header **HeaderFields,
-    size_t *FieldCount
+/* self is the utilities protocol, as described; the prototype prints struct efi_http_protocol. */
+typedef efi_status (EFI_API *efi_http_utils_parse)(
+    struct efi_http_utilities_protocol *self,
+    char *http_message,
+    size_t http_message_size,
+    struct efi_http_header **header_fields,
+    size_t *field_count
 );
 
 struct efi_http_utilities_protocol {
-    EFI_HTTP_UTILS_BUILD Build;
-    EFI_HTTP_UTILS_PARSE Parse;
+    efi_http_utils_build build;
+    efi_http_utils_parse parse;
 };
 
 #define EFI_REST_PROTOCOL_GUID \
@@ -890,21 +894,21 @@ struct efi_http_utilities_protocol {
 
 struct efi_rest_protocol;
 
-/* Shared by struct efi_rest_ex_protocol, whose section reprints it with an EFI_REST_EX_PROTOCOL This. */
-typedef EFI_STATUS (EFI_API *EFI_REST_SEND_RECEIVE)(
-    struct efi_rest_protocol *This,
-    struct efi_http_message *RequestMessage,
-    struct efi_http_message *ResponseMessage
+/* Shared by struct efi_rest_ex_protocol, whose section reprints it with a struct efi_rest_ex_protocol *self. */
+typedef efi_status (EFI_API *efi_rest_send_receive)(
+    struct efi_rest_protocol *self,
+    struct efi_http_message *request_message,
+    struct efi_http_message *response_message
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REST_GET_TIME)(
-    struct efi_rest_protocol *This,
-    struct efi_time *Time
+typedef efi_status (EFI_API *efi_rest_get_time)(
+    struct efi_rest_protocol *self,
+    struct efi_time *time
 );
 
 struct efi_rest_protocol {
-    EFI_REST_SEND_RECEIVE SendReceive;
-    EFI_REST_GET_TIME GetServiceTime;
+    efi_rest_send_receive send_receive;
+    efi_rest_get_time get_service_time;
 };
 
 #define EFI_REST_EX_SERVICE_BINDING_PROTOCOL_GUID \
@@ -916,13 +920,13 @@ struct efi_rest_protocol {
 struct efi_rest_ex_protocol;
 
 struct efi_rest_ex_service_info_ver {
-    uint8_t Major;
-    uint8_t Minor;
+    uint8_t major;
+    uint8_t minor;
 };
 
 struct efi_rest_ex_service_info_header {
-    uint32_t Length;
-    struct efi_rest_ex_service_info_ver RestServiceInfoVer;
+    uint32_t length;
+    struct efi_rest_ex_service_info_ver rest_service_info_ver;
 };
 
 #define EFI_REST_EX_SERVICE_UNSPECIFIC ((uint32_t)1)
@@ -940,70 +944,70 @@ struct efi_rest_ex_service_info_header {
 #define EFI_REST_EX_CONFIG_TYPE_MAX ((uint32_t)2)
 
 struct efi_rest_ex_service_info_v_1_0 {
-    struct efi_rest_ex_service_info_header EfiRestExServiceInfoHeader;
-    uint32_t RestExServiceType;
-    uint32_t RestServiceAccessMode;
-    struct efi_guid VendorRestServiceName;
-    uint32_t VendorSpecificDataLength;
-    uint8_t *VendorSpecifcData;
-    uint32_t RestExConfigType;
-    uint8_t RestExConfigDataLength;
+    struct efi_rest_ex_service_info_header efi_rest_ex_service_info_header;
+    uint32_t rest_ex_service_type;
+    uint32_t rest_service_access_mode;
+    struct efi_guid vendor_rest_service_name;
+    uint32_t vendor_specific_data_length;
+    uint8_t *vendor_specifc_data;
+    uint32_t rest_ex_config_type;
+    uint8_t rest_ex_config_data_length;
 };
 
 union efi_rest_ex_service_info {
-    struct efi_rest_ex_service_info_header EfiRestExServiceInfoHeader;
-    struct efi_rest_ex_service_info_v_1_0 EfiRestExServiceInfoV10;
+    struct efi_rest_ex_service_info_header efi_rest_ex_service_info_header;
+    struct efi_rest_ex_service_info_v_1_0 efi_rest_ex_service_info_v10;
 };
 
 struct efi_rest_ex_http_config_data {
-    struct efi_http_config_data HttpConfigData;
-    uint32_t SendReceiveTimeout;
+    struct efi_http_config_data http_config_data;
+    uint32_t send_receive_timeout;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_REST_EX_GET_SERVICE)(
-    struct efi_rest_ex_protocol *This,
-    union efi_rest_ex_service_info **RestExServiceInfo
+typedef efi_status (EFI_API *efi_rest_ex_get_service)(
+    struct efi_rest_ex_protocol *self,
+    union efi_rest_ex_service_info **rest_ex_service_info
 );
 
-typedef uint8_t *EFI_REST_EX_CONFIG_DATA;
+typedef uint8_t *efi_rest_ex_config_data;
 
-typedef EFI_STATUS (EFI_API *EFI_REST_EX_GET_MODE_DATA)(
-    struct efi_rest_ex_protocol *This,
-    EFI_REST_EX_CONFIG_DATA *RestExConfigData
+typedef efi_status (EFI_API *efi_rest_ex_get_mode_data)(
+    struct efi_rest_ex_protocol *self,
+    efi_rest_ex_config_data *rest_ex_config_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REST_EX_CONFIGURE)(
-    struct efi_rest_ex_protocol *This,
-    EFI_REST_EX_CONFIG_DATA RestExConfigData
+typedef efi_status (EFI_API *efi_rest_ex_configure)(
+    struct efi_rest_ex_protocol *self,
+    efi_rest_ex_config_data rest_ex_config_data
 );
 
 struct efi_rest_ex_token {
-    EFI_EVENT Event;
-    EFI_STATUS Status;
-    struct efi_http_message *ResponseMessage;
+    efi_event event;
+    efi_status status;
+    struct efi_http_message *response_message;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_REST_EX_ASYNC_SEND_RECEIVE)(
-    struct efi_rest_ex_protocol *This,
-    struct efi_http_message *RequestMessage,
-    struct efi_rest_ex_token *RestExToken,
-    uintptr_t *TimeOutInMilliSeconds
+typedef efi_status (EFI_API *efi_rest_ex_async_send_receive)(
+    struct efi_rest_ex_protocol *self,
+    struct efi_http_message *request_message,
+    struct efi_rest_ex_token *rest_ex_token,
+    uintptr_t *time_out_in_milli_seconds
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REST_EX_EVENT_SERVICE)(
-    struct efi_rest_ex_protocol *This,
-    struct efi_http_message *RequestMessage,
-    struct efi_rest_ex_token *RestExToken
+typedef efi_status (EFI_API *efi_rest_ex_event_service)(
+    struct efi_rest_ex_protocol *self,
+    struct efi_http_message *request_message,
+    struct efi_rest_ex_token *rest_ex_token
 );
 
 struct efi_rest_ex_protocol {
-    EFI_REST_SEND_RECEIVE SendReceive;
-    EFI_REST_GET_TIME GetServiceTime;
-    EFI_REST_EX_GET_SERVICE GetService;
-    EFI_REST_EX_GET_MODE_DATA GetModeData;
-    EFI_REST_EX_CONFIGURE Configure;
-    EFI_REST_EX_ASYNC_SEND_RECEIVE AsyncSendReceive;
-    EFI_REST_EX_EVENT_SERVICE EventService;
+    efi_rest_send_receive send_receive;
+    efi_rest_get_time get_service_time;
+    efi_rest_ex_get_service get_service;
+    efi_rest_ex_get_mode_data get_mode_data;
+    efi_rest_ex_configure configure;
+    efi_rest_ex_async_send_receive async_send_receive;
+    efi_rest_ex_event_service event_service;
 };
 
 #define EFI_REST_JSON_STRUCTURE_PROTOCOL_GUID \
@@ -1011,63 +1015,67 @@ struct efi_rest_ex_protocol {
 
 struct efi_rest_json_structure_protocol;
 
-typedef char *EFI_REST_JSON_RESOURCE_TYPE_DATATYPE;
+typedef char *efi_rest_json_resource_type_datatype;
 
 struct efi_rest_json_resource_type_namespace {
-    char *ResourceTypeName;
-    char *MajorVersion;
-    char *MinorVersion;
-    char *ErrataVersion;
+    char *resource_type_name;
+    char *major_version;
+    char *minor_version;
+    char *errata_version;
 };
 
 struct efi_rest_json_resource_type_identifier {
-    struct efi_rest_json_resource_type_namespace Namespace;
-    EFI_REST_JSON_RESOURCE_TYPE_DATATYPE Datatype;
+#ifdef __cplusplus
+    struct efi_rest_json_resource_type_namespace namespace_;
+#else
+    struct efi_rest_json_resource_type_namespace namespace;
+#endif
+    efi_rest_json_resource_type_datatype datatype;
 };
 
 struct efi_rest_json_structure_supported;
 
 struct efi_rest_json_structure_supported {
-    struct efi_rest_json_structure_supported *Next;
-    struct efi_rest_json_resource_type_identifier JsonResourceType;
+    struct efi_rest_json_structure_supported *next;
+    struct efi_rest_json_resource_type_identifier json_resource_type;
 };
 
 struct efi_rest_json_structure_header {
-    struct efi_rest_json_resource_type_identifier JsonRsrcIdentifier;
-    void *JsonStructurePointer;
+    struct efi_rest_json_resource_type_identifier json_rsrc_identifier;
+    void *json_structure_pointer;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_REST_JSON_STRUCTURE_TO_STRUCTURE)(
-    struct efi_rest_json_structure_protocol *This,
-    struct efi_rest_json_resource_type_identifier *JsonRsrcIdentifier,
-    char *ResourceJsonText,
-    struct efi_rest_json_structure_header **JsonStructure
+typedef efi_status (EFI_API *efi_rest_json_structure_to_structure)(
+    struct efi_rest_json_structure_protocol *self,
+    struct efi_rest_json_resource_type_identifier *json_rsrc_identifier,
+    char *resource_json_text,
+    struct efi_rest_json_structure_header **json_structure
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REST_JSON_STRUCTURE_TO_JSON)(
-    struct efi_rest_json_structure_protocol *This,
-    struct efi_rest_json_structure_header *JsonStructureHeader,
-    char **ResourceJsonText
+typedef efi_status (EFI_API *efi_rest_json_structure_to_json)(
+    struct efi_rest_json_structure_protocol *self,
+    struct efi_rest_json_structure_header *json_structure_header,
+    char **resource_json_text
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REST_JSON_STRUCTURE_DESTORY_STRUCTURE)(
-    struct efi_rest_json_structure_protocol *This,
-    struct efi_rest_json_structure_header *JsonStructureHeader
+typedef efi_status (EFI_API *efi_rest_json_structure_destory_structure)(
+    struct efi_rest_json_structure_protocol *self,
+    struct efi_rest_json_structure_header *json_structure_header
 );
 
-typedef EFI_STATUS (EFI_API *EFI_REST_JSON_STRUCTURE_REGISTER)(
-    struct efi_rest_json_structure_protocol *This,
-    struct efi_rest_json_structure_supported *JsonStructureSupported,
-    EFI_REST_JSON_STRUCTURE_TO_STRUCTURE ToStructure,
-    EFI_REST_JSON_STRUCTURE_TO_JSON ToJson,
-    EFI_REST_JSON_STRUCTURE_DESTORY_STRUCTURE DestroyStructure
+typedef efi_status (EFI_API *efi_rest_json_structure_register)(
+    struct efi_rest_json_structure_protocol *self,
+    struct efi_rest_json_structure_supported *json_structure_supported,
+    efi_rest_json_structure_to_structure to_structure,
+    efi_rest_json_structure_to_json to_json,
+    efi_rest_json_structure_destory_structure destroy_structure
 );
 
 struct efi_rest_json_structure_protocol {
-    EFI_REST_JSON_STRUCTURE_REGISTER Register;
-    EFI_REST_JSON_STRUCTURE_TO_STRUCTURE ToStructure;
-    EFI_REST_JSON_STRUCTURE_TO_JSON ToJson;
-    EFI_REST_JSON_STRUCTURE_DESTORY_STRUCTURE DestoryStructure;
+    efi_rest_json_structure_register register_;
+    efi_rest_json_structure_to_structure to_structure;
+    efi_rest_json_structure_to_json to_json;
+    efi_rest_json_structure_destory_structure destory_structure;
 };
 
 #ifdef __cplusplus

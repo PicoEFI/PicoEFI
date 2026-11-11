@@ -14,29 +14,29 @@ struct efi_firmware_management_protocol;
 
 /* Printed as a flexible array, which cannot be the only member: the op-codes run on in memory. */
 struct efi_firmware_image_dep {
-    uint8_t Dependencies[1];
+    uint8_t dependencies[1];
 };
 
 /*
- * Dependencies is printed as an EFI_FMP_DEP pointer, a type defined nowhere: it points to the
+ * dependencies is printed as an EFI_FMP_DEP pointer, a type defined nowhere: it points to the
  * op-codes that struct efi_firmware_image_dep holds.
  */
 struct efi_firmware_image_descriptor {
-    uint8_t ImageIndex;
-    struct efi_guid ImageTypeId;
-    uint64_t ImageId;
-    uint16_t *ImageIdName;
-    uint32_t Version;
-    uint16_t *VersionName;
-    size_t Size;
-    uint64_t AttributesSupported;
-    uint64_t AttributesSetting;
-    uint64_t Compatibilities;
-    uint32_t LowestSupportedImageVersion;
-    uint32_t LastAttemptVersion;
-    uint32_t LastAttemptStatus;
-    uint64_t HardwareInstance;
-    struct efi_firmware_image_dep *Dependencies;
+    uint8_t image_index;
+    struct efi_guid image_type_id;
+    uint64_t image_id;
+    uint16_t *image_id_name;
+    uint32_t version;
+    uint16_t *version_name;
+    size_t size;
+    uint64_t attributes_supported;
+    uint64_t attributes_setting;
+    uint64_t compatibilities;
+    uint32_t lowest_supported_image_version;
+    uint32_t last_attempt_version;
+    uint32_t last_attempt_status;
+    uint64_t hardware_instance;
+    struct efi_firmware_image_dep *dependencies;
 };
 
 #define EFI_IMAGE_ATTRIBUTE_IMAGE_UPDATABLE 0x0000000000000001
@@ -48,52 +48,52 @@ struct efi_firmware_image_descriptor {
 
 #define EFI_IMAGE_COMPATIBILITY_CHECK_SUPPORTED 0x0000000000000001
 
-/* Printed as 3, but the descriptor above, ending with Dependencies, is the version 4 one. */
+/* Printed as 3, but the descriptor above, ending with dependencies, is the version 4 one. */
 #define EFI_FIRMWARE_IMAGE_DESCRIPTOR_VERSION 4
 
 struct efi_firmware_image_authentication {
-    uint64_t MonotonicCount;
-    struct efi_win_certificate_uefi_guid AuthInfo;
+    uint64_t monotonic_count;
+    struct efi_win_certificate_uefi_guid auth_info;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_PROTOCOL_GET_IMAGE_INFO)(
-    struct efi_firmware_management_protocol *This,
-    size_t *ImageInfoSize,
-    struct efi_firmware_image_descriptor *ImageInfo,
-    uint32_t *DescriptorVersion,
-    uint8_t *DescriptorCount,
-    size_t *DescriptorSize,
-    uint32_t *PackageVersion,
-    uint16_t **PackageVersionName
+typedef efi_status (EFI_API *efi_firmware_management_protocol_get_image_info)(
+    struct efi_firmware_management_protocol *self,
+    size_t *image_info_size,
+    struct efi_firmware_image_descriptor *image_info,
+    uint32_t *descriptor_version,
+    uint8_t *descriptor_count,
+    size_t *descriptor_size,
+    uint32_t *package_version,
+    uint16_t **package_version_name
 );
 
-typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_PROTOCOL_GET_IMAGE)(
-    struct efi_firmware_management_protocol *This,
-    uint8_t ImageIndex,
-    void *Image,
-    size_t *ImageSize
+typedef efi_status (EFI_API *efi_firmware_management_protocol_get_image)(
+    struct efi_firmware_management_protocol *self,
+    uint8_t image_index,
+    void *image,
+    size_t *image_size
 );
 
-typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_UPDATE_IMAGE_PROGRESS)(
-    uintptr_t Completion
+typedef efi_status (EFI_API *efi_firmware_management_update_image_progress)(
+    uintptr_t completion
 );
 
-typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_PROTOCOL_SET_IMAGE)(
-    struct efi_firmware_management_protocol *This,
-    uint8_t ImageIndex,
-    const void *Image,
-    size_t ImageSize,
-    const void *VendorCode,
-    EFI_FIRMWARE_MANAGEMENT_UPDATE_IMAGE_PROGRESS Progress,
-    uint16_t **AbortReason
+typedef efi_status (EFI_API *efi_firmware_management_protocol_set_image)(
+    struct efi_firmware_management_protocol *self,
+    uint8_t image_index,
+    const void *image,
+    size_t image_size,
+    const void *vendor_code,
+    efi_firmware_management_update_image_progress progress,
+    uint16_t **abort_reason
 );
 
-typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_PROTOCOL_CHECK_IMAGE)(
-    struct efi_firmware_management_protocol *This,
-    uint8_t ImageIndex,
-    const void *Image,
-    size_t ImageSize,
-    uint32_t *ImageUpdatable
+typedef efi_status (EFI_API *efi_firmware_management_protocol_check_image)(
+    struct efi_firmware_management_protocol *self,
+    uint8_t image_index,
+    const void *image,
+    size_t image_size,
+    uint32_t *image_updatable
 );
 
 #define EFI_IMAGE_UPDATABLE_VALID 0x0000000000000001
@@ -102,36 +102,36 @@ typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_PROTOCOL_CHECK_IMAGE)(
 #define EFI_IMAGE_UPDATABLE_INVALID_OLD 0x0000000000000008
 #define EFI_IMAGE_UPDATABLE_VALID_WITH_VENDOR_CODE 0x0000000000000010
 
-/* This is misprinted as a pointer to a pointer here and in SetPackageInfo(). */
-typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_PROTOCOL_GET_PACKAGE_INFO)(
-    struct efi_firmware_management_protocol *This,
-    uint32_t *PackageVersion,
-    uint16_t **PackageVersionName,
-    uint32_t *PackageVersionNameMaxLen,
-    uint64_t *AttributesSupported,
-    uint64_t *AttributesSetting
+/* self is misprinted as a pointer to a pointer here and in set_package_info(). */
+typedef efi_status (EFI_API *efi_firmware_management_protocol_get_package_info)(
+    struct efi_firmware_management_protocol *self,
+    uint32_t *package_version,
+    uint16_t **package_version_name,
+    uint32_t *package_version_name_max_len,
+    uint64_t *attributes_supported,
+    uint64_t *attributes_setting
 );
 
 #define EFI_PACKAGE_ATTRIBUTE_VERSION_UPDATABLE 0x0000000000000001
 #define EFI_PACKAGE_ATTRIBUTE_RESET_REQUIRED 0x0000000000000002
 #define EFI_PACKAGE_ATTRIBUTE_AUTHENTICATION_REQUIRED 0x0000000000000004
 
-typedef EFI_STATUS (EFI_API *EFI_FIRMWARE_MANAGEMENT_PROTOCOL_SET_PACKAGE_INFO)(
-    struct efi_firmware_management_protocol *This,
-    const void *Image,
-    size_t ImageSize,
-    const void *VendorCode,
-    uint32_t PackageVersion,
-    const uint16_t *PackageVersionName
+typedef efi_status (EFI_API *efi_firmware_management_protocol_set_package_info)(
+    struct efi_firmware_management_protocol *self,
+    const void *image,
+    size_t image_size,
+    const void *vendor_code,
+    uint32_t package_version,
+    const uint16_t *package_version_name
 );
 
 struct efi_firmware_management_protocol {
-    EFI_FIRMWARE_MANAGEMENT_PROTOCOL_GET_IMAGE_INFO GetImageInfo;
-    EFI_FIRMWARE_MANAGEMENT_PROTOCOL_GET_IMAGE GetImage;
-    EFI_FIRMWARE_MANAGEMENT_PROTOCOL_SET_IMAGE SetImage;
-    EFI_FIRMWARE_MANAGEMENT_PROTOCOL_CHECK_IMAGE CheckImage;
-    EFI_FIRMWARE_MANAGEMENT_PROTOCOL_GET_PACKAGE_INFO GetPackageInfo;
-    EFI_FIRMWARE_MANAGEMENT_PROTOCOL_SET_PACKAGE_INFO SetPackageInfo;
+    efi_firmware_management_protocol_get_image_info get_image_info;
+    efi_firmware_management_protocol_get_image get_image;
+    efi_firmware_management_protocol_set_image set_image;
+    efi_firmware_management_protocol_check_image check_image;
+    efi_firmware_management_protocol_get_package_info get_package_info;
+    efi_firmware_management_protocol_set_package_info set_package_info;
 };
 
 /* The specification gives the dependency expression op-codes values but no names. */
@@ -154,22 +154,22 @@ struct efi_firmware_management_protocol {
 #define EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID \
     {0x6dcbd5ed, 0xe82d, 0x4c44, {0xbd, 0xa1, 0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a}}
 
-/* ItemOffsetList follows: EmbeddedDriverCount + PayloadItemCount uint64_t offsets. */
+/* item_offset_list follows: embedded_driver_count + payload_item_count uint64_t offsets. */
 struct efi_firmware_management_capsule_header {
-    uint32_t Version;
-    uint16_t EmbeddedDriverCount;
-    uint16_t PayloadItemCount;
+    uint32_t version;
+    uint16_t embedded_driver_count;
+    uint16_t payload_item_count;
 } __attribute__((__packed__));
 
 struct efi_firmware_management_capsule_image_header {
-    uint32_t Version;
-    struct efi_guid UpdateImageTypeId;
-    uint8_t UpdateImageIndex;
+    uint32_t version;
+    struct efi_guid update_image_type_id;
+    uint8_t update_image_index;
     uint8_t reserved_bytes[3];
-    uint32_t UpdateImageSize;
-    uint32_t UpdateVendorCodeSize;
-    uint64_t UpdateHardwareInstance;
-    uint64_t ImageCapsuleSupport;
+    uint32_t update_image_size;
+    uint32_t update_vendor_code_size;
+    uint64_t update_hardware_instance;
+    uint64_t image_capsule_support;
 } __attribute__((__packed__));
 
 #define EFI_CAPSULE_SUPPORT_AUTHENTICATION 0x0000000000000001
@@ -178,23 +178,23 @@ struct efi_firmware_management_capsule_image_header {
 #define EFI_SYSTEM_RESOURCE_TABLE_GUID \
     {0xb122a263, 0x3661, 0x4f68, {0x99, 0x29, 0x78, 0xf8, 0xb0, 0xd6, 0x21, 0x80}}
 
-/* FwResourceCount struct efi_system_resource_entry (Entries) follow. */
+/* fw_resource_count struct efi_system_resource_entry (entries) follow. */
 struct efi_system_resource_table {
-    uint32_t FwResourceCount;
-    uint32_t FwResourceCountMax;
-    uint64_t FwResourceVersion;
+    uint32_t fw_resource_count;
+    uint32_t fw_resource_count_max;
+    uint64_t fw_resource_version;
 };
 
 #define EFI_SYSTEM_RESOURCE_TABLE_FIRMWARE_RESOURCE_VERSION 1
 
 struct efi_system_resource_entry {
-    struct efi_guid FwClass;
-    uint32_t FwType;
-    uint32_t FwVersion;
-    uint32_t LowestSupportedFwVersion;
-    uint32_t CapsuleFlags;
-    uint32_t LastAttemptVersion;
-    uint32_t LastAttemptStatus;
+    struct efi_guid fw_class;
+    uint32_t fw_type;
+    uint32_t fw_version;
+    uint32_t lowest_supported_fw_version;
+    uint32_t capsule_flags;
+    uint32_t last_attempt_version;
+    uint32_t last_attempt_status;
 };
 
 #define EFI_ESRT_FW_TYPE_UNKNOWN 0x00000000
@@ -220,24 +220,24 @@ struct efi_system_resource_entry {
 
 /*
  * __extension__: flexible array members are standard C but an extension in C++, and an array of
- * structures ending in one (ConfigDataList) is an extension in C as well.
+ * structures ending in one (config_data_list) is an extension in C as well.
  */
 __extension__ struct efi_json_capsule_header {
-    uint32_t Version;
-    uint32_t CapsuleId;
-    uint32_t PayloadLength;
-    uint8_t Payload[];
+    uint32_t version;
+    uint32_t capsule_id;
+    uint32_t payload_length;
+    uint8_t payload[];
 } __attribute__((__packed__));
 
 __extension__ struct efi_json_config_data_item {
-    uint32_t ConfigDataLength;
-    uint8_t ConfigData[];
+    uint32_t config_data_length;
+    uint8_t config_data[];
 };
 
 __extension__ struct efi_json_capsule_config_data {
-    uint32_t Version;
-    uint32_t TotalLength;
-    struct efi_json_config_data_item ConfigDataList[];
+    uint32_t version;
+    uint32_t total_length;
+    struct efi_json_config_data_item config_data_list[];
 } __attribute__((__packed__));
 
 #ifdef __cplusplus

@@ -10,20 +10,20 @@ extern "C" {
 #define EFI_TIMESTAMP_PROTOCOL_GUID \
     {0xafbfde41, 0x2e6e, 0x4262, {0xba, 0x65, 0x62, 0xb9, 0x23, 0x6e, 0x54, 0x95}}
 
-typedef uint64_t (EFI_API *EFI_TIMESTAMP_GET)(void);
+typedef uint64_t (EFI_API *efi_timestamp_get)(void);
 
 struct efi_timestamp_properties {
-    uint64_t Frequency;
-    uint64_t EndValue;
+    uint64_t frequency;
+    uint64_t end_value;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_TIMESTAMP_GET_PROPERTIES)(
-    struct efi_timestamp_properties *Properties
+typedef efi_status (EFI_API *efi_timestamp_get_properties)(
+    struct efi_timestamp_properties *properties
 );
 
 struct efi_timestamp_protocol {
-    EFI_TIMESTAMP_GET GetTimestamp;
-    EFI_TIMESTAMP_GET_PROPERTIES GetProperties;
+    efi_timestamp_get get_timestamp;
+    efi_timestamp_get_properties get_properties;
 };
 
 #define EFI_RESET_NOTIFICATION_PROTOCOL_GUID \
@@ -31,21 +31,21 @@ struct efi_timestamp_protocol {
 
 struct efi_reset_notification_protocol;
 
-/* EFI_RESET_SYSTEM is itself a pointer: ResetFunction points to the function, as described. */
-typedef EFI_STATUS (EFI_API *EFI_REGISTER_RESET_NOTIFY)(
-    struct efi_reset_notification_protocol *This,
-    EFI_RESET_SYSTEM ResetFunction
+/* efi_reset_system is itself a pointer: reset_function points to the function, as described. */
+typedef efi_status (EFI_API *efi_register_reset_notify)(
+    struct efi_reset_notification_protocol *self,
+    efi_reset_system reset_function
 );
 
-typedef EFI_STATUS (EFI_API *EFI_UNREGISTER_RESET_NOTIFY)(
-    struct efi_reset_notification_protocol *This,
-    EFI_RESET_SYSTEM ResetFunction
+typedef efi_status (EFI_API *efi_unregister_reset_notify)(
+    struct efi_reset_notification_protocol *self,
+    efi_reset_system reset_function
 );
 
-/* The structure prints UnRegisterResetNotify; the heading and text spell it as here. */
+/* The structure prints un_register_reset_notify; the heading and text spell it as here. */
 struct efi_reset_notification_protocol {
-    EFI_REGISTER_RESET_NOTIFY RegisterResetNotify;
-    EFI_UNREGISTER_RESET_NOTIFY UnregisterResetNotify;
+    efi_register_reset_notify register_reset_notify;
+    efi_unregister_reset_notify unregister_reset_notify;
 };
 
 #ifdef __cplusplus

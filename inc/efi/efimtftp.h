@@ -17,95 +17,95 @@ struct efi_mtftp4_protocol;
 struct efi_mtftp4_token;
 
 struct efi_mtftp4_config_data {
-    uint8_t UseDefaultSetting;
-    struct efi_ipv4_address StationIp;
-    struct efi_ipv4_address SubnetMask;
-    uint16_t LocalPort;
-    struct efi_ipv4_address GatewayIp;
-    struct efi_ipv4_address ServerIp;
-    uint16_t InitialServerPort;
-    uint16_t TryCount;
-    uint16_t TimeoutValue;
+    uint8_t use_default_setting;
+    struct efi_ipv4_address station_ip;
+    struct efi_ipv4_address subnet_mask;
+    uint16_t local_port;
+    struct efi_ipv4_address gateway_ip;
+    struct efi_ipv4_address server_ip;
+    uint16_t initial_server_port;
+    uint16_t try_count;
+    uint16_t timeout_value;
 };
 
 struct efi_mtftp4_mode_data {
-    struct efi_mtftp4_config_data ConfigData;
-    uint8_t SupportedOptionCount;
-    uint8_t **SupportedOptions;
-    uint8_t UnsupportedOptionCount;
-    uint8_t **UnsupportedOptions;
+    struct efi_mtftp4_config_data config_data;
+    uint8_t supported_option_count;
+    uint8_t **supported_options;
+    uint8_t unsupported_option_count;
+    uint8_t **unsupported_options;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_GET_MODE_DATA)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_mode_data *ModeData
+typedef efi_status (EFI_API *efi_mtftp4_get_mode_data)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_mode_data *mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_CONFIGURE)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_config_data *MtftpConfigData
+typedef efi_status (EFI_API *efi_mtftp4_configure)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_config_data *mtftp_config_data
 );
 
 struct efi_mtftp4_override_data {
-    struct efi_ipv4_address GatewayIp;
-    struct efi_ipv4_address ServerIp;
-    uint16_t ServerPort;
-    uint16_t TryCount;
-    uint16_t TimeoutValue;
+    struct efi_ipv4_address gateway_ip;
+    struct efi_ipv4_address server_ip;
+    uint16_t server_port;
+    uint16_t try_count;
+    uint16_t timeout_value;
 };
 
 struct efi_mtftp4_option {
-    uint8_t *OptionStr;
-    uint8_t *ValueStr;
+    uint8_t *option_str;
+    uint8_t *value_str;
 };
 
 struct efi_mtftp4_req_header {
-    uint16_t OpCode;
-    uint8_t Filename[1];
+    uint16_t op_code;
+    uint8_t filename[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp4_oack_header {
-    uint16_t OpCode;
-    uint8_t Data[1];
+    uint16_t op_code;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp4_data_header {
-    uint16_t OpCode;
-    uint16_t Block;
-    uint8_t Data[1];
+    uint16_t op_code;
+    uint16_t block;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp4_ack_header {
-    uint16_t OpCode;
-    uint16_t Block[1];
+    uint16_t op_code;
+    uint16_t block[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp4_data8_header {
-    uint16_t OpCode;
-    uint64_t Block;
-    uint8_t Data[1];
+    uint16_t op_code;
+    uint64_t block;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp4_ack8_header {
-    uint16_t OpCode;
-    uint64_t Block[1];
+    uint16_t op_code;
+    uint64_t block[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp4_error_header {
-    uint16_t OpCode;
-    uint16_t ErrorCode;
-    uint8_t ErrorMessage[1];
+    uint16_t op_code;
+    uint16_t error_code;
+    uint8_t error_message[1];
 } __attribute__((__packed__));
 
 union efi_mtftp4_packet {
-    uint16_t OpCode;
-    struct efi_mtftp4_req_header Rrq, Wrq;
-    struct efi_mtftp4_oack_header Oack;
-    struct efi_mtftp4_data_header Data;
-    struct efi_mtftp4_ack_header Ack;
-    struct efi_mtftp4_data8_header Data8;
-    struct efi_mtftp4_ack8_header Ack8;
-    struct efi_mtftp4_error_header Error;
+    uint16_t op_code;
+    struct efi_mtftp4_req_header rrq, wrq;
+    struct efi_mtftp4_oack_header oack;
+    struct efi_mtftp4_data_header data;
+    struct efi_mtftp4_ack_header ack;
+    struct efi_mtftp4_data8_header data8;
+    struct efi_mtftp4_ack8_header ack8;
+    struct efi_mtftp4_error_header error;
 } __attribute__((__packed__));
 
 #define EFI_MTFTP4_OPCODE_RRQ 1
@@ -128,86 +128,86 @@ union efi_mtftp4_packet {
 #define EFI_MTFTP4_ERRORCODE_NO_SUCH_USER 7
 #define EFI_MTFTP4_ERRORCODE_REQUEST_DENIED 8
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_GET_INFO)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_override_data *OverrideData,
-    uint8_t *Filename,
-    uint8_t *ModeStr,
-    uint8_t OptionCount,
-    struct efi_mtftp4_option *OptionList,
-    uint32_t *PacketLength,
-    union efi_mtftp4_packet **Packet
+typedef efi_status (EFI_API *efi_mtftp4_get_info)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_override_data *override_data,
+    uint8_t *filename,
+    uint8_t *mode_str,
+    uint8_t option_count,
+    struct efi_mtftp4_option *option_list,
+    uint32_t *packet_length,
+    union efi_mtftp4_packet **packet
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_PARSE_OPTIONS)(
-    struct efi_mtftp4_protocol *This,
-    uint32_t PacketLen,
-    union efi_mtftp4_packet *Packet,
-    uint32_t *OptionCount,
-    struct efi_mtftp4_option **OptionList
+typedef efi_status (EFI_API *efi_mtftp4_parse_options)(
+    struct efi_mtftp4_protocol *self,
+    uint32_t packet_len,
+    union efi_mtftp4_packet *packet,
+    uint32_t *option_count,
+    struct efi_mtftp4_option **option_list
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_CHECK_PACKET)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_token *Token,
-    uint16_t PacketLen,
-    union efi_mtftp4_packet *Packet
+typedef efi_status (EFI_API *efi_mtftp4_check_packet)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_token *token,
+    uint16_t packet_len,
+    union efi_mtftp4_packet *packet
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_TIMEOUT_CALLBACK)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_token *Token
+typedef efi_status (EFI_API *efi_mtftp4_timeout_callback)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_PACKET_NEEDED)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_token *Token,
-    uint16_t *Length,
-    void **Buffer
+typedef efi_status (EFI_API *efi_mtftp4_packet_needed)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_token *token,
+    uint16_t *length,
+    void **buffer
 );
 
 struct efi_mtftp4_token {
-    EFI_STATUS Status;
-    EFI_EVENT Event;
-    struct efi_mtftp4_override_data *OverrideData;
-    uint8_t *Filename;
-    uint8_t *ModeStr;
-    uint32_t OptionCount;
-    struct efi_mtftp4_option *OptionList;
-    uint64_t BufferSize;
-    void *Buffer;
-    void *Context;
-    EFI_MTFTP4_CHECK_PACKET CheckPacket;
-    EFI_MTFTP4_TIMEOUT_CALLBACK TimeoutCallback;
-    EFI_MTFTP4_PACKET_NEEDED PacketNeeded;
+    efi_status status;
+    efi_event event;
+    struct efi_mtftp4_override_data *override_data;
+    uint8_t *filename;
+    uint8_t *mode_str;
+    uint32_t option_count;
+    struct efi_mtftp4_option *option_list;
+    uint64_t buffer_size;
+    void *buffer;
+    void *context;
+    efi_mtftp4_check_packet check_packet;
+    efi_mtftp4_timeout_callback timeout_callback;
+    efi_mtftp4_packet_needed packet_needed;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_READ_FILE)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_token *Token
+typedef efi_status (EFI_API *efi_mtftp4_read_file)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_WRITE_FILE)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_token *Token
+typedef efi_status (EFI_API *efi_mtftp4_write_file)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_READ_DIRECTORY)(
-    struct efi_mtftp4_protocol *This,
-    struct efi_mtftp4_token *Token
+typedef efi_status (EFI_API *efi_mtftp4_read_directory)(
+    struct efi_mtftp4_protocol *self,
+    struct efi_mtftp4_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP4_POLL)(struct efi_mtftp4_protocol *This);
+typedef efi_status (EFI_API *efi_mtftp4_poll)(struct efi_mtftp4_protocol *self);
 
 struct efi_mtftp4_protocol {
-    EFI_MTFTP4_GET_MODE_DATA GetModeData;
-    EFI_MTFTP4_CONFIGURE Configure;
-    EFI_MTFTP4_GET_INFO GetInfo;
-    EFI_MTFTP4_PARSE_OPTIONS ParseOptions;
-    EFI_MTFTP4_READ_FILE ReadFile;
-    EFI_MTFTP4_WRITE_FILE WriteFile;
-    EFI_MTFTP4_READ_DIRECTORY ReadDirectory;
-    EFI_MTFTP4_POLL Poll;
+    efi_mtftp4_get_mode_data get_mode_data;
+    efi_mtftp4_configure configure;
+    efi_mtftp4_get_info get_info;
+    efi_mtftp4_parse_options parse_options;
+    efi_mtftp4_read_file read_file;
+    efi_mtftp4_write_file write_file;
+    efi_mtftp4_read_directory read_directory;
+    efi_mtftp4_poll poll;
 };
 
 #define EFI_MTFTP6_SERVICE_BINDING_PROTOCOL_GUID \
@@ -220,90 +220,90 @@ struct efi_mtftp6_protocol;
 struct efi_mtftp6_token;
 
 struct efi_mtftp6_config_data {
-    struct efi_ipv6_address StationIp;
-    uint16_t LocalPort;
-    struct efi_ipv6_address ServerIp;
-    uint16_t InitialServerPort;
-    uint16_t TryCount;
-    uint16_t TimeoutValue;
+    struct efi_ipv6_address station_ip;
+    uint16_t local_port;
+    struct efi_ipv6_address server_ip;
+    uint16_t initial_server_port;
+    uint16_t try_count;
+    uint16_t timeout_value;
 };
 
 struct efi_mtftp6_mode_data {
-    struct efi_mtftp6_config_data ConfigData;
-    uint8_t SupportedOptionCount;
-    uint8_t **SupportedOptions;
+    struct efi_mtftp6_config_data config_data;
+    uint8_t supported_option_count;
+    uint8_t **supported_options;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_GET_MODE_DATA)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_mode_data *ModeData
+typedef efi_status (EFI_API *efi_mtftp6_get_mode_data)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_mode_data *mode_data
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_CONFIGURE)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_config_data *MtftpConfigData
+typedef efi_status (EFI_API *efi_mtftp6_configure)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_config_data *mtftp_config_data
 );
 
 struct efi_mtftp6_override_data {
-    struct efi_ipv6_address ServerIp;
-    uint16_t ServerPort;
-    uint16_t TryCount;
-    uint16_t TimeoutValue;
+    struct efi_ipv6_address server_ip;
+    uint16_t server_port;
+    uint16_t try_count;
+    uint16_t timeout_value;
 };
 
 struct efi_mtftp6_option {
-    uint8_t *OptionStr;
-    uint8_t *ValueStr;
+    uint8_t *option_str;
+    uint8_t *value_str;
 };
 
 struct efi_mtftp6_req_header {
-    uint16_t OpCode;
-    uint8_t Filename[1];
+    uint16_t op_code;
+    uint8_t filename[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp6_oack_header {
-    uint16_t OpCode;
-    uint8_t Data[1];
+    uint16_t op_code;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp6_data_header {
-    uint16_t OpCode;
-    uint16_t Block;
-    uint8_t Data[1];
+    uint16_t op_code;
+    uint16_t block;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp6_ack_header {
-    uint16_t OpCode;
-    uint16_t Block[1];
+    uint16_t op_code;
+    uint16_t block[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp6_data8_header {
-    uint16_t OpCode;
-    uint64_t Block;
-    uint8_t Data[1];
+    uint16_t op_code;
+    uint64_t block;
+    uint8_t data[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp6_ack8_header {
-    uint16_t OpCode;
-    uint64_t Block[1];
+    uint16_t op_code;
+    uint64_t block[1];
 } __attribute__((__packed__));
 
 struct efi_mtftp6_error_header {
-    uint16_t OpCode;
-    uint16_t ErrorCode;
-    uint8_t ErrorMessage[1];
+    uint16_t op_code;
+    uint16_t error_code;
+    uint8_t error_message[1];
 } __attribute__((__packed__));
 
 union efi_mtftp6_packet {
-    uint16_t OpCode;
-    struct efi_mtftp6_req_header Rrq;
-    struct efi_mtftp6_req_header Wrq;
-    struct efi_mtftp6_oack_header Oack;
-    struct efi_mtftp6_data_header Data;
-    struct efi_mtftp6_ack_header Ack;
-    struct efi_mtftp6_data8_header Data8;
-    struct efi_mtftp6_ack8_header Ack8;
-    struct efi_mtftp6_error_header Error;
+    uint16_t op_code;
+    struct efi_mtftp6_req_header rrq;
+    struct efi_mtftp6_req_header wrq;
+    struct efi_mtftp6_oack_header oack;
+    struct efi_mtftp6_data_header data;
+    struct efi_mtftp6_ack_header ack;
+    struct efi_mtftp6_data8_header data8;
+    struct efi_mtftp6_ack8_header ack8;
+    struct efi_mtftp6_error_header error;
 } __attribute__((__packed__));
 
 #define EFI_MTFTP6_OPCODE_RRQ 1
@@ -328,88 +328,88 @@ union efi_mtftp6_packet {
 #define EFI_MTFTP6_ERRORCODE_NO_SUCH_USER 7
 #define EFI_MTFTP6_ERRORCODE_REQUEST_DENIED 8
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_GET_INFO)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_override_data *OverrideData,
-    uint8_t *Filename,
-    uint8_t *ModeStr,
-    uint8_t OptionCount,
-    struct efi_mtftp6_option *OptionList,
-    uint32_t *PacketLength,
-    union efi_mtftp6_packet **Packet
+typedef efi_status (EFI_API *efi_mtftp6_get_info)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_override_data *override_data,
+    uint8_t *filename,
+    uint8_t *mode_str,
+    uint8_t option_count,
+    struct efi_mtftp6_option *option_list,
+    uint32_t *packet_length,
+    union efi_mtftp6_packet **packet
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_PARSE_OPTIONS)(
-    struct efi_mtftp6_protocol *This,
-    uint32_t PacketLen,
-    union efi_mtftp6_packet *Packet,
-    uint32_t *OptionCount,
-    struct efi_mtftp6_option **OptionList
+typedef efi_status (EFI_API *efi_mtftp6_parse_options)(
+    struct efi_mtftp6_protocol *self,
+    uint32_t packet_len,
+    union efi_mtftp6_packet *packet,
+    uint32_t *option_count,
+    struct efi_mtftp6_option **option_list
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_CHECK_PACKET)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_token *Token,
-    uint16_t PacketLen,
-    union efi_mtftp6_packet *Packet
+typedef efi_status (EFI_API *efi_mtftp6_check_packet)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_token *token,
+    uint16_t packet_len,
+    union efi_mtftp6_packet *packet
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_TIMEOUT_CALLBACK)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_token *Token
+typedef efi_status (EFI_API *efi_mtftp6_timeout_callback)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_token *token
 );
 
-/* Token is the caller's token, passed by pointer as in every sibling callback; printed by value. */
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_PACKET_NEEDED)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_token *Token,
-    uint16_t *Length,
-    void **Buffer
+/* token is the caller's token, passed by pointer as in every sibling callback; printed by value. */
+typedef efi_status (EFI_API *efi_mtftp6_packet_needed)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_token *token,
+    uint16_t *length,
+    void **buffer
 );
 
-/* OverrideData and OptionList are pointers, as described and as in MTFTPv4; printed by value. */
+/* override_data and option_list are pointers, as described and as in MTFTPv4; printed by value. */
 struct efi_mtftp6_token {
-    EFI_STATUS Status;
-    EFI_EVENT Event;
-    struct efi_mtftp6_override_data *OverrideData;
-    uint8_t *Filename;
-    uint8_t *ModeStr;
-    uint32_t OptionCount;
-    struct efi_mtftp6_option *OptionList;
-    uint64_t BufferSize;
-    void *Buffer;
-    void *Context;
-    EFI_MTFTP6_CHECK_PACKET CheckPacket;
-    EFI_MTFTP6_TIMEOUT_CALLBACK TimeoutCallback;
-    EFI_MTFTP6_PACKET_NEEDED PacketNeeded;
+    efi_status status;
+    efi_event event;
+    struct efi_mtftp6_override_data *override_data;
+    uint8_t *filename;
+    uint8_t *mode_str;
+    uint32_t option_count;
+    struct efi_mtftp6_option *option_list;
+    uint64_t buffer_size;
+    void *buffer;
+    void *context;
+    efi_mtftp6_check_packet check_packet;
+    efi_mtftp6_timeout_callback timeout_callback;
+    efi_mtftp6_packet_needed packet_needed;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_READ_FILE)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_token *Token
+typedef efi_status (EFI_API *efi_mtftp6_read_file)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_WRITE_FILE)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_token *Token
+typedef efi_status (EFI_API *efi_mtftp6_write_file)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_READ_DIRECTORY)(
-    struct efi_mtftp6_protocol *This,
-    struct efi_mtftp6_token *Token
+typedef efi_status (EFI_API *efi_mtftp6_read_directory)(
+    struct efi_mtftp6_protocol *self,
+    struct efi_mtftp6_token *token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MTFTP6_POLL)(struct efi_mtftp6_protocol *This);
+typedef efi_status (EFI_API *efi_mtftp6_poll)(struct efi_mtftp6_protocol *self);
 
 struct efi_mtftp6_protocol {
-    EFI_MTFTP6_GET_MODE_DATA GetModeData;
-    EFI_MTFTP6_CONFIGURE Configure;
-    EFI_MTFTP6_GET_INFO GetInfo;
-    EFI_MTFTP6_PARSE_OPTIONS ParseOptions;
-    EFI_MTFTP6_READ_FILE ReadFile;
-    EFI_MTFTP6_WRITE_FILE WriteFile;
-    EFI_MTFTP6_READ_DIRECTORY ReadDirectory;
-    EFI_MTFTP6_POLL Poll;
+    efi_mtftp6_get_mode_data get_mode_data;
+    efi_mtftp6_configure configure;
+    efi_mtftp6_get_info get_info;
+    efi_mtftp6_parse_options parse_options;
+    efi_mtftp6_read_file read_file;
+    efi_mtftp6_write_file write_file;
+    efi_mtftp6_read_directory read_directory;
+    efi_mtftp6_poll poll;
 };
 
 #ifdef __cplusplus

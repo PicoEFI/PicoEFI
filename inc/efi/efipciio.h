@@ -28,27 +28,27 @@ struct efi_pci_root_bridge_io_protocol;
 #define EFI_PCI_WIDTH_FILL_UINT64 ((uint32_t)11)
 #define EFI_PCI_WIDTH_MAXIMUM ((uint32_t)12)
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    uint32_t Width,
-    uint64_t Address,
-    uint64_t Mask,
-    uint64_t Value,
-    uint64_t Delay,
-    uint64_t *Result
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_poll_io_mem)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    uint32_t width,
+    uint64_t address,
+    uint64_t mask,
+    uint64_t value,
+    uint64_t delay,
+    uint64_t *result
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    uint32_t Width,
-    uint64_t Address,
-    size_t Count,
-    void *Buffer
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_io_mem)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    uint32_t width,
+    uint64_t address,
+    size_t count,
+    void *buffer
 );
 
 struct efi_pci_root_bridge_io_protocol_access {
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM Read;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM Write;
+    efi_pci_root_bridge_io_protocol_io_mem read;
+    efi_pci_root_bridge_io_protocol_io_mem write;
 };
 
 #define EFI_PCI_ATTRIBUTE_ISA_MOTHERBOARD_IO 0x0001
@@ -74,72 +74,72 @@ struct efi_pci_root_bridge_io_protocol_access {
 #define EFI_PCI_OPERATION_BUS_MASTER_COMMON_BUFFER64 ((uint32_t)5)
 #define EFI_PCI_OPERATION_MAXIMUM ((uint32_t)6)
 
-/* Layout of the uint64_t Address that Pci.Read() and Pci.Write() take. */
+/* Layout of the uint64_t address that pci.read() and pci.write() take. */
 struct efi_pci_root_bridge_io_protocol_pci_address {
-    uint8_t Register;
-    uint8_t Function;
-    uint8_t Device;
-    uint8_t Bus;
-    uint32_t ExtendedRegister;
+    uint8_t register_;
+    uint8_t function;
+    uint8_t device;
+    uint8_t bus;
+    uint32_t extended_register;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    uint32_t Width,
-    uint64_t DestAddress,
-    uint64_t SrcAddress,
-    size_t Count
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_copy_mem)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    uint32_t width,
+    uint64_t dest_address,
+    uint64_t src_address,
+    size_t count
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_MAP)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    uint32_t Operation,
-    void *HostAddress,
-    size_t *NumberOfBytes,
-    EFI_PHYSICAL_ADDRESS *DeviceAddress,
-    void **Mapping
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_map)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    uint32_t operation,
+    void *host_address,
+    size_t *number_of_bytes,
+    efi_physical_address *device_address,
+    void **mapping
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_UNMAP)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    void *Mapping
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_unmap)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    void *mapping
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ALLOCATE_BUFFER)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    uint32_t Type,
-    uint32_t MemoryType,
-    size_t Pages,
-    void **HostAddress,
-    uint64_t Attributes
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_allocate_buffer)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    uint32_t type,
+    uint32_t memory_type,
+    size_t pages,
+    void **host_address,
+    uint64_t attributes
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FREE_BUFFER)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    size_t Pages,
-    void *HostAddress
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_free_buffer)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    size_t pages,
+    void *host_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FLUSH)(
-    struct efi_pci_root_bridge_io_protocol *This
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_flush)(
+    struct efi_pci_root_bridge_io_protocol *self
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GET_ATTRIBUTES)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    uint64_t *Supports,
-    uint64_t *Attributes
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_get_attributes)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    uint64_t *supports,
+    uint64_t *attributes
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_SET_ATTRIBUTES)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    uint64_t Attributes,
-    uint64_t *ResourceBase,
-    uint64_t *ResourceLength
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_set_attributes)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    uint64_t attributes,
+    uint64_t *resource_base,
+    uint64_t *resource_length
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION)(
-    struct efi_pci_root_bridge_io_protocol *This,
-    void **Resources
+typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_configuration)(
+    struct efi_pci_root_bridge_io_protocol *self,
+    void **resources
 );
 
 #define EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR_TAG 0x8A
@@ -155,40 +155,40 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION)(
 #define EFI_ACPI_MEMORY_RESOURCE_SPECIFIC_FLAG_CACHEABLE_PREFETCHABLE 0x06
 
 struct efi_acpi_address_space_descriptor {
-    uint8_t Desc;
-    uint16_t Len;
-    uint8_t ResType;
-    uint8_t GenFlag;
-    uint8_t SpecificFlag;
-    uint64_t AddrSpaceGranularity;
-    uint64_t AddrRangeMin;
-    uint64_t AddrRangeMax;
-    uint64_t AddrTranslationOffset;
-    uint64_t AddrLen;
+    uint8_t desc;
+    uint16_t len;
+    uint8_t res_type;
+    uint8_t gen_flag;
+    uint8_t specific_flag;
+    uint64_t addr_space_granularity;
+    uint64_t addr_range_min;
+    uint64_t addr_range_max;
+    uint64_t addr_translation_offset;
+    uint64_t addr_len;
 } __attribute__((__packed__));
 
 struct efi_acpi_end_tag_descriptor {
-    uint8_t Desc;
-    uint8_t Checksum;
+    uint8_t desc;
+    uint8_t checksum;
 } __attribute__((__packed__));
 
 struct efi_pci_root_bridge_io_protocol {
-    EFI_HANDLE ParentHandle;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM PollMem;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM PollIo;
-    struct efi_pci_root_bridge_io_protocol_access Mem;
-    struct efi_pci_root_bridge_io_protocol_access Io;
-    struct efi_pci_root_bridge_io_protocol_access Pci;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM CopyMem;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_MAP Map;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_UNMAP Unmap;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ALLOCATE_BUFFER AllocateBuffer;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FREE_BUFFER FreeBuffer;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FLUSH Flush;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GET_ATTRIBUTES GetAttributes;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_SET_ATTRIBUTES SetAttributes;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION Configuration;
-    uint32_t SegmentNumber;
+    efi_handle parent_handle;
+    efi_pci_root_bridge_io_protocol_poll_io_mem poll_mem;
+    efi_pci_root_bridge_io_protocol_poll_io_mem poll_io;
+    struct efi_pci_root_bridge_io_protocol_access mem;
+    struct efi_pci_root_bridge_io_protocol_access io;
+    struct efi_pci_root_bridge_io_protocol_access pci;
+    efi_pci_root_bridge_io_protocol_copy_mem copy_mem;
+    efi_pci_root_bridge_io_protocol_map map;
+    efi_pci_root_bridge_io_protocol_unmap unmap;
+    efi_pci_root_bridge_io_protocol_allocate_buffer allocate_buffer;
+    efi_pci_root_bridge_io_protocol_free_buffer free_buffer;
+    efi_pci_root_bridge_io_protocol_flush flush;
+    efi_pci_root_bridge_io_protocol_get_attributes get_attributes;
+    efi_pci_root_bridge_io_protocol_set_attributes set_attributes;
+    efi_pci_root_bridge_io_protocol_configuration configuration;
+    uint32_t segment_number;
 };
 
 #define EFI_PCI_IO_PROTOCOL_GUID \
@@ -212,42 +212,42 @@ struct efi_pci_io_protocol;
 
 #define EFI_PCI_IO_PASS_THROUGH_BAR 0xff
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_POLL_IO_MEM)(
-    struct efi_pci_io_protocol *This,
-    uint32_t Width,
-    uint8_t BarIndex,
-    uint64_t Offset,
-    uint64_t Mask,
-    uint64_t Value,
-    uint64_t Delay,
-    uint64_t *Result
+typedef efi_status (EFI_API *efi_pci_io_protocol_poll_io_mem)(
+    struct efi_pci_io_protocol *self,
+    uint32_t width,
+    uint8_t bar_index,
+    uint64_t offset,
+    uint64_t mask,
+    uint64_t value,
+    uint64_t delay,
+    uint64_t *result
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_IO_MEM)(
-    struct efi_pci_io_protocol *This,
-    uint32_t Width,
-    uint8_t BarIndex,
-    uint64_t Offset,
-    size_t Count,
-    void *Buffer
+typedef efi_status (EFI_API *efi_pci_io_protocol_io_mem)(
+    struct efi_pci_io_protocol *self,
+    uint32_t width,
+    uint8_t bar_index,
+    uint64_t offset,
+    size_t count,
+    void *buffer
 );
 
 struct efi_pci_io_protocol_access {
-    EFI_PCI_IO_PROTOCOL_IO_MEM Read;
-    EFI_PCI_IO_PROTOCOL_IO_MEM Write;
+    efi_pci_io_protocol_io_mem read;
+    efi_pci_io_protocol_io_mem write;
 };
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_CONFIG)(
-    struct efi_pci_io_protocol *This,
-    uint32_t Width,
-    uint32_t Offset,
-    size_t Count,
-    void *Buffer
+typedef efi_status (EFI_API *efi_pci_io_protocol_config)(
+    struct efi_pci_io_protocol *self,
+    uint32_t width,
+    uint32_t offset,
+    size_t count,
+    void *buffer
 );
 
 struct efi_pci_io_protocol_config_access {
-    EFI_PCI_IO_PROTOCOL_CONFIG Read;
-    EFI_PCI_IO_PROTOCOL_CONFIG Write;
+    efi_pci_io_protocol_config read;
+    efi_pci_io_protocol_config write;
 };
 
 #define EFI_PCI_IO_ATTRIBUTE_ISA_MOTHERBOARD_IO 0x0001
@@ -275,53 +275,53 @@ struct efi_pci_io_protocol_config_access {
 #define EFI_PCI_IO_OPERATION_BUS_MASTER_COMMON_BUFFER ((uint32_t)2)
 #define EFI_PCI_IO_OPERATION_MAXIMUM ((uint32_t)3)
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_COPY_MEM)(
-    struct efi_pci_io_protocol *This,
-    uint32_t Width,
-    uint8_t DestBarIndex,
-    uint64_t DestOffset,
-    uint8_t SrcBarIndex,
-    uint64_t SrcOffset,
-    size_t Count
+typedef efi_status (EFI_API *efi_pci_io_protocol_copy_mem)(
+    struct efi_pci_io_protocol *self,
+    uint32_t width,
+    uint8_t dest_bar_index,
+    uint64_t dest_offset,
+    uint8_t src_bar_index,
+    uint64_t src_offset,
+    size_t count
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_MAP)(
-    struct efi_pci_io_protocol *This,
-    uint32_t Operation,
-    void *HostAddress,
-    size_t *NumberOfBytes,
-    EFI_PHYSICAL_ADDRESS *DeviceAddress,
-    void **Mapping
+typedef efi_status (EFI_API *efi_pci_io_protocol_map)(
+    struct efi_pci_io_protocol *self,
+    uint32_t operation,
+    void *host_address,
+    size_t *number_of_bytes,
+    efi_physical_address *device_address,
+    void **mapping
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_UNMAP)(
-    struct efi_pci_io_protocol *This,
-    void *Mapping
+typedef efi_status (EFI_API *efi_pci_io_protocol_unmap)(
+    struct efi_pci_io_protocol *self,
+    void *mapping
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ALLOCATE_BUFFER)(
-    struct efi_pci_io_protocol *This,
-    uint32_t Type,
-    uint32_t MemoryType,
-    size_t Pages,
-    void **HostAddress,
-    uint64_t Attributes
+typedef efi_status (EFI_API *efi_pci_io_protocol_allocate_buffer)(
+    struct efi_pci_io_protocol *self,
+    uint32_t type,
+    uint32_t memory_type,
+    size_t pages,
+    void **host_address,
+    uint64_t attributes
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_FREE_BUFFER)(
-    struct efi_pci_io_protocol *This,
-    size_t Pages,
-    void *HostAddress
+typedef efi_status (EFI_API *efi_pci_io_protocol_free_buffer)(
+    struct efi_pci_io_protocol *self,
+    size_t pages,
+    void *host_address
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_FLUSH)(struct efi_pci_io_protocol *This);
+typedef efi_status (EFI_API *efi_pci_io_protocol_flush)(struct efi_pci_io_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_LOCATION)(
-    struct efi_pci_io_protocol *This,
-    uintptr_t *SegmentNumber,
-    uintptr_t *BusNumber,
-    uintptr_t *DeviceNumber,
-    uintptr_t *FunctionNumber
+typedef efi_status (EFI_API *efi_pci_io_protocol_get_location)(
+    struct efi_pci_io_protocol *self,
+    uintptr_t *segment_number,
+    uintptr_t *bus_number,
+    uintptr_t *device_number,
+    uintptr_t *function_number
 );
 
 #define EFI_PCI_IO_ATTRIBUTE_OPERATION_GET ((uint32_t)0)
@@ -331,46 +331,46 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_LOCATION)(
 #define EFI_PCI_IO_ATTRIBUTE_OPERATION_SUPPORTED ((uint32_t)4)
 #define EFI_PCI_IO_ATTRIBUTE_OPERATION_MAXIMUM ((uint32_t)5)
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ATTRIBUTES)(
-    struct efi_pci_io_protocol *This,
-    uint32_t Operation,
-    uint64_t Attributes,
-    uint64_t *Result
+typedef efi_status (EFI_API *efi_pci_io_protocol_attributes)(
+    struct efi_pci_io_protocol *self,
+    uint32_t operation,
+    uint64_t attributes,
+    uint64_t *result
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_BAR_ATTRIBUTES)(
-    struct efi_pci_io_protocol *This,
-    uint8_t BarIndex,
-    uint64_t *Supports,
-    void **Resources
+typedef efi_status (EFI_API *efi_pci_io_protocol_get_bar_attributes)(
+    struct efi_pci_io_protocol *self,
+    uint8_t bar_index,
+    uint64_t *supports,
+    void **resources
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_SET_BAR_ATTRIBUTES)(
-    struct efi_pci_io_protocol *This,
-    uint64_t Attributes,
-    uint8_t BarIndex,
-    uint64_t *Offset,
-    uint64_t *Length
+typedef efi_status (EFI_API *efi_pci_io_protocol_set_bar_attributes)(
+    struct efi_pci_io_protocol *self,
+    uint64_t attributes,
+    uint8_t bar_index,
+    uint64_t *offset,
+    uint64_t *length
 );
 
 struct efi_pci_io_protocol {
-    EFI_PCI_IO_PROTOCOL_POLL_IO_MEM PollMem;
-    EFI_PCI_IO_PROTOCOL_POLL_IO_MEM PollIo;
-    struct efi_pci_io_protocol_access Mem;
-    struct efi_pci_io_protocol_access Io;
-    struct efi_pci_io_protocol_config_access Pci;
-    EFI_PCI_IO_PROTOCOL_COPY_MEM CopyMem;
-    EFI_PCI_IO_PROTOCOL_MAP Map;
-    EFI_PCI_IO_PROTOCOL_UNMAP Unmap;
-    EFI_PCI_IO_PROTOCOL_ALLOCATE_BUFFER AllocateBuffer;
-    EFI_PCI_IO_PROTOCOL_FREE_BUFFER FreeBuffer;
-    EFI_PCI_IO_PROTOCOL_FLUSH Flush;
-    EFI_PCI_IO_PROTOCOL_GET_LOCATION GetLocation;
-    EFI_PCI_IO_PROTOCOL_ATTRIBUTES Attributes;
-    EFI_PCI_IO_PROTOCOL_GET_BAR_ATTRIBUTES GetBarAttributes;
-    EFI_PCI_IO_PROTOCOL_SET_BAR_ATTRIBUTES SetBarAttributes;
-    uint64_t RomSize;
-    void *RomImage;
+    efi_pci_io_protocol_poll_io_mem poll_mem;
+    efi_pci_io_protocol_poll_io_mem poll_io;
+    struct efi_pci_io_protocol_access mem;
+    struct efi_pci_io_protocol_access io;
+    struct efi_pci_io_protocol_config_access pci;
+    efi_pci_io_protocol_copy_mem copy_mem;
+    efi_pci_io_protocol_map map;
+    efi_pci_io_protocol_unmap unmap;
+    efi_pci_io_protocol_allocate_buffer allocate_buffer;
+    efi_pci_io_protocol_free_buffer free_buffer;
+    efi_pci_io_protocol_flush flush;
+    efi_pci_io_protocol_get_location get_location;
+    efi_pci_io_protocol_attributes attributes;
+    efi_pci_io_protocol_get_bar_attributes get_bar_attributes;
+    efi_pci_io_protocol_set_bar_attributes set_bar_attributes;
+    uint64_t rom_size;
+    void *rom_image;
 };
 
 #define EFI_PCI_EXPANSION_ROM_HEADER_SIGNATURE 0xAA55
@@ -383,36 +383,36 @@ struct efi_pci_io_protocol {
 #define EFI_PCI_EXPANSION_ROM_HEADER_COMPRESSED 0x0001
 
 struct efi_standard_pci_expansion_rom_header {
-    uint16_t Signature;
-    uint8_t Reserved[0x16];
-    uint16_t PcirOffset;
+    uint16_t signature;
+    uint8_t reserved[0x16];
+    uint16_t pcir_offset;
 } __attribute__((__packed__));
 
 struct efi_pci_expansion_rom_header {
-    uint16_t Signature;
-    uint16_t InitializationSize;
-    uint32_t EfiSignature;
-    uint16_t EfiSubsystem;
-    uint16_t EfiMachineType;
-    uint16_t CompressionType;
-    uint8_t Reserved[8];
-    uint16_t EfiImageHeaderOffset;
-    uint16_t PcirOffset;
+    uint16_t signature;
+    uint16_t initialization_size;
+    uint32_t efi_signature;
+    uint16_t efi_subsystem;
+    uint16_t efi_machine_type;
+    uint16_t compression_type;
+    uint8_t reserved[8];
+    uint16_t efi_image_header_offset;
+    uint16_t pcir_offset;
 } __attribute__((__packed__));
 
 struct efi_pci_data_structure {
-    uint32_t Signature;
-    uint16_t VendorId;
-    uint16_t DeviceId;
-    uint16_t Reserved0;
-    uint16_t Length;
-    uint8_t Revision;
-    uint8_t ClassCode[3];
-    uint16_t ImageLength;
-    uint16_t CodeRevision;
-    uint8_t CodeType;
-    uint8_t Indicator;
-    uint16_t Reserved1;
+    uint32_t signature;
+    uint16_t vendor_id;
+    uint16_t device_id;
+    uint16_t reserved0;
+    uint16_t length;
+    uint8_t revision;
+    uint8_t class_code[3];
+    uint16_t image_length;
+    uint16_t code_revision;
+    uint8_t code_type;
+    uint8_t indicator;
+    uint16_t reserved1;
 } __attribute__((__packed__));
 
 #ifdef __cplusplus

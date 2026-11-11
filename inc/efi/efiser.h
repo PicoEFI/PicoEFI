@@ -11,18 +11,18 @@ extern "C" {
     {0xBB25CF6F, 0xF1D4, 0x11D2, {0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd}}
 
 #define EFI_SERIAL_IO_PROTOCOL_REVISION 0x00010000
-#define EFI_SERIAL_IO_PROTOCOL_REVISION1p1 0x00010001
+#define EFI_SERIAL_IO_PROTOCOL_REVISION1P1 0x00010001
 
 struct efi_serial_io_protocol;
 
 struct efi_serial_io_mode {
-    uint32_t ControlMask;
-    uint32_t Timeout;
-    uint64_t BaudRate;
-    uint32_t ReceiveFifoDepth;
-    uint32_t DataBits;
-    uint32_t Parity;
-    uint32_t StopBits;
+    uint32_t control_mask;
+    uint32_t timeout;
+    uint64_t baud_rate;
+    uint32_t receive_fifo_depth;
+    uint32_t data_bits;
+    uint32_t parity;
+    uint32_t stop_bits;
 };
 
 #define EFI_DEFAULT_PARITY ((uint32_t)0)
@@ -37,16 +37,16 @@ struct efi_serial_io_mode {
 #define EFI_ONE_FIVE_STOP_BITS ((uint32_t)2)
 #define EFI_TWO_STOP_BITS ((uint32_t)3)
 
-typedef EFI_STATUS (EFI_API *EFI_SERIAL_RESET)(struct efi_serial_io_protocol *This);
+typedef efi_status (EFI_API *efi_serial_reset)(struct efi_serial_io_protocol *self);
 
-typedef EFI_STATUS (EFI_API *EFI_SERIAL_SET_ATTRIBUTES)(
-    struct efi_serial_io_protocol *This,
-    uint64_t BaudRate,
-    uint32_t ReceiveFifoDepth,
-    uint32_t Timeout,
-    uint32_t Parity,
-    uint8_t DataBits,
-    uint32_t StopBits
+typedef efi_status (EFI_API *efi_serial_set_attributes)(
+    struct efi_serial_io_protocol *self,
+    uint64_t baud_rate,
+    uint32_t receive_fifo_depth,
+    uint32_t timeout,
+    uint32_t parity,
+    uint8_t data_bits,
+    uint32_t stop_bits
 );
 
 #define EFI_SERIAL_CLEAR_TO_SEND 0x0010
@@ -61,39 +61,39 @@ typedef EFI_STATUS (EFI_API *EFI_SERIAL_SET_ATTRIBUTES)(
 #define EFI_SERIAL_SOFTWARE_LOOPBACK_ENABLE 0x2000
 #define EFI_SERIAL_HARDWARE_FLOW_CONTROL_ENABLE 0x4000
 
-typedef EFI_STATUS (EFI_API *EFI_SERIAL_SET_CONTROL_BITS)(
-    struct efi_serial_io_protocol *This,
-    uint32_t Control
+typedef efi_status (EFI_API *efi_serial_set_control_bits)(
+    struct efi_serial_io_protocol *self,
+    uint32_t control
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SERIAL_GET_CONTROL_BITS)(
-    struct efi_serial_io_protocol *This,
-    uint32_t *Control
+typedef efi_status (EFI_API *efi_serial_get_control_bits)(
+    struct efi_serial_io_protocol *self,
+    uint32_t *control
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SERIAL_WRITE)(
-    struct efi_serial_io_protocol *This,
-    size_t *BufferSize,
-    void *Buffer
+typedef efi_status (EFI_API *efi_serial_write)(
+    struct efi_serial_io_protocol *self,
+    size_t *buffer_size,
+    void *buffer
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SERIAL_READ)(
-    struct efi_serial_io_protocol *This,
-    size_t *BufferSize,
-    void *Buffer
+typedef efi_status (EFI_API *efi_serial_read)(
+    struct efi_serial_io_protocol *self,
+    size_t *buffer_size,
+    void *buffer
 );
 
 struct efi_serial_io_protocol {
-    uint32_t Revision;
-    EFI_SERIAL_RESET Reset;
-    EFI_SERIAL_SET_ATTRIBUTES SetAttributes;
-    EFI_SERIAL_SET_CONTROL_BITS SetControl;
-    EFI_SERIAL_GET_CONTROL_BITS GetControl;
-    EFI_SERIAL_WRITE Write;
-    EFI_SERIAL_READ Read;
-    struct efi_serial_io_mode *Mode;
-    /* Present from EFI_SERIAL_IO_PROTOCOL_REVISION1p1 on. */
-    const struct efi_guid *DeviceTypeGuid;
+    uint32_t revision;
+    efi_serial_reset reset;
+    efi_serial_set_attributes set_attributes;
+    efi_serial_set_control_bits set_control;
+    efi_serial_get_control_bits get_control;
+    efi_serial_write write;
+    efi_serial_read read;
+    struct efi_serial_io_mode *mode;
+    /* Present from EFI_SERIAL_IO_PROTOCOL_REVISION1P1 on. */
+    const struct efi_guid *device_type_guid;
 };
 
 #define EFI_SERIAL_TERMINAL_DEVICE_TYPE_GUID \

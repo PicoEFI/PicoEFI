@@ -13,28 +13,28 @@ extern "C" {
 
 struct efi_authentication_info_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_AUTHENTICATION_INFO_PROTOCOL_GET)(
-    struct efi_authentication_info_protocol *This,
-    EFI_HANDLE ControllerHandle,
-    void **Buffer
+typedef efi_status (EFI_API *efi_authentication_info_protocol_get)(
+    struct efi_authentication_info_protocol *self,
+    efi_handle controller_handle,
+    void **buffer
 );
 
 /* Printed with one more level of indirection on each parameter than its description gives. */
-typedef EFI_STATUS (EFI_API *EFI_AUTHENTICATION_INFO_PROTOCOL_SET)(
-    struct efi_authentication_info_protocol *This,
-    EFI_HANDLE ControllerHandle,
-    void *Buffer
+typedef efi_status (EFI_API *efi_authentication_info_protocol_set)(
+    struct efi_authentication_info_protocol *self,
+    efi_handle controller_handle,
+    void *buffer
 );
 
 struct efi_authentication_info_protocol {
-    EFI_AUTHENTICATION_INFO_PROTOCOL_GET Get;
-    EFI_AUTHENTICATION_INFO_PROTOCOL_SET Set;
+    efi_authentication_info_protocol_get get;
+    efi_authentication_info_protocol_set set;
 };
 
 /* Only unnamed tables in the specification; packed: nodes may start at any byte. */
 struct efi_auth_node_header {
-    struct efi_guid Guid;
-    uint16_t Length;
+    struct efi_guid guid;
+    uint16_t length;
 } __attribute__((__packed__));
 
 #define EFI_AUTHENTICATION_CHAP_RADIUS_GUID \
@@ -42,12 +42,12 @@ struct efi_auth_node_header {
 
 /* CHAP secret/name and reverse CHAP name/secret follow, each after a uint16_t length. */
 __extension__ struct efi_chap_radius_auth_node {
-    struct efi_auth_node_header Header;
-    uint8_t RadiusIpAddr[16];
-    uint16_t Reserved;
-    uint8_t NasIpAddr[16];
-    uint16_t NasSecretLength;
-    uint8_t NasSecret[];
+    struct efi_auth_node_header header;
+    uint8_t radius_ip_addr[16];
+    uint16_t reserved;
+    uint8_t nas_ip_addr[16];
+    uint16_t nas_secret_length;
+    uint8_t nas_secret[];
 } __attribute__((__packed__));
 
 #define EFI_AUTHENTICATION_CHAP_LOCAL_GUID \
@@ -58,17 +58,17 @@ __extension__ struct efi_chap_radius_auth_node {
  * length.
  */
 __extension__ struct efi_chap_local_auth_node {
-    struct efi_auth_node_header Header;
-    uint16_t Reserved;
-    uint16_t UserSecretLength;
-    uint8_t UserSecret[];
+    struct efi_auth_node_header header;
+    uint16_t reserved;
+    uint16_t user_secret_length;
+    uint8_t user_secret[];
 } __attribute__((__packed__));
 
-/* The certificate (bCertificate) follows; dwLength includes this header. */
+/* The certificate (b_certificate) follows; dw_length includes this header. */
 struct efi_win_certificate {
-    uint32_t dwLength;
-    uint16_t wRevision;
-    uint16_t wCertificateType;
+    uint32_t dw_length;
+    uint16_t w_revision;
+    uint16_t w_certificate_type;
 };
 
 #define EFI_WIN_CERT_TYPE_PKCS_SIGNED_DATA 0x0002
@@ -77,15 +77,15 @@ struct efi_win_certificate {
 
 /* The signature follows, as long as the key. */
 struct efi_win_certificate_efi_pkcs1_15 {
-    struct efi_win_certificate Hdr;
-    struct efi_guid HashAlgorithm;
+    struct efi_win_certificate hdr;
+    struct efi_guid hash_algorithm;
 };
 
-/* CertData[ANYSIZE_ARRAY] in print: one element, since other structures embed this one. */
+/* cert_data[ANYSIZE_ARRAY] in print: one element, since other structures embed this one. */
 struct efi_win_certificate_uefi_guid {
-    struct efi_win_certificate Hdr;
-    struct efi_guid CertType;
-    uint8_t CertData[1];
+    struct efi_win_certificate hdr;
+    struct efi_guid cert_type;
+    uint8_t cert_data[1];
 };
 
 #define EFI_CERT_TYPE_RSA2048_SHA256_GUID \
@@ -95,22 +95,22 @@ struct efi_win_certificate_uefi_guid {
     {0x4aafd29d, 0x68df, 0x49ee, {0x8a, 0xa9, 0x34, 0x7d, 0x37, 0x56, 0x65, 0xa7}}
 
 struct efi_cert_block_rsa_2048_sha256 {
-    struct efi_guid HashType;
-    uint8_t PublicKey[256];
-    uint8_t Signature[256];
+    struct efi_guid hash_type;
+    uint8_t public_key[256];
+    uint8_t signature[256];
 };
 
 __extension__ struct efi_signature_data {
-    struct efi_guid SignatureOwner;
-    uint8_t SignatureData[];
+    struct efi_guid signature_owner;
+    uint8_t signature_data[];
 } __attribute__((__packed__));
 
-/* SignatureHeaderSize header bytes follow, then signatures of SignatureSize bytes each. */
+/* signature_header_size header bytes follow, then signatures of signature_size bytes each. */
 struct efi_signature_list {
-    struct efi_guid SignatureType;
-    uint32_t SignatureListSize;
-    uint32_t SignatureHeaderSize;
-    uint32_t SignatureSize;
+    struct efi_guid signature_type;
+    uint32_t signature_list_size;
+    uint32_t signature_header_size;
+    uint32_t signature_size;
 } __attribute__((__packed__));
 
 #define EFI_CERT_SHA256_GUID \
@@ -144,24 +144,24 @@ struct efi_signature_list {
     {0x3bd2a492, 0x96c0, 0x4079, {0xb4, 0x20, 0xfc, 0xf9, 0x8e, 0xf1, 0x03, 0xed}}
 
 struct efi_cert_x509_sha256 {
-    EFI_SHA256_HASH ToBeSignedHash;
-    struct efi_time TimeOfRevocation;
+    efi_sha256_hash to_be_signed_hash;
+    struct efi_time time_of_revocation;
 } __attribute__((__packed__));
 
 #define EFI_CERT_X509_SHA384_GUID \
     {0x7076876e, 0x80c2, 0x4ee6, {0xaa, 0xd2, 0x28, 0xb3, 0x49, 0xa6, 0x86, 0x5b}}
 
 struct efi_cert_x509_sha384 {
-    EFI_SHA384_HASH ToBeSignedHash;
-    struct efi_time TimeOfRevocation;
+    efi_sha384_hash to_be_signed_hash;
+    struct efi_time time_of_revocation;
 } __attribute__((__packed__));
 
 #define EFI_CERT_X509_SHA512_GUID \
     {0x446dbf63, 0x2502, 0x4cda, {0xbc, 0xfa, 0x24, 0x65, 0xd2, 0xb0, 0xfe, 0x9d}}
 
 struct efi_cert_x509_sha512 {
-    EFI_SHA512_HASH ToBeSignedHash;
-    struct efi_time TimeOfRevocation;
+    efi_sha512_hash to_be_signed_hash;
+    struct efi_time time_of_revocation;
 } __attribute__((__packed__));
 
 #define EFI_CERT_SM3_GUID \
@@ -170,17 +170,17 @@ struct efi_cert_x509_sha512 {
 #define EFI_CERT_X509_SM3_GUID \
     {0x60d807e5, 0x10b4, 0x49a9, {0x93, 0x31, 0xe4, 0x4, 0x37, 0x88, 0x8d, 0x37}}
 
-typedef uint8_t EFI_SM3_HASH[32];
+typedef uint8_t efi_sm3_hash[32];
 
 struct efi_cert_x509_sm3 {
-    EFI_SM3_HASH ToBeSignedHash;
-    struct efi_time TimeOfRevocation;
+    efi_sm3_hash to_be_signed_hash;
+    struct efi_time time_of_revocation;
 } __attribute__((__packed__));
 
 #define EFI_CERT_EXTERNAL_MANAGEMENT_GUID \
     {0x452e8ced, 0xdfff, 0x4b8c, {0xae, 0x01, 0x51, 0x18, 0x86, 0x2e, 0x68, 0x2c}}
 
-typedef uint32_t EFI_IMAGE_EXECUTION_ACTION;
+typedef uint32_t efi_image_execution_action;
 
 #define EFI_IMAGE_EXECUTION_AUTHENTICATION 0x00000007
 #define EFI_IMAGE_EXECUTION_AUTH_UNTESTED 0x00000000
@@ -192,16 +192,16 @@ typedef uint32_t EFI_IMAGE_EXECUTION_ACTION;
 
 #define EFI_IMAGE_EXECUTION_INITIALIZED 0x00000008
 
-/* Name, DevicePath and Signature follow; InfoSize counts them too. */
+/* The name, device_path, and signature follow; info_size counts them too. */
 struct efi_image_execution_info {
-    EFI_IMAGE_EXECUTION_ACTION Action;
-    uint32_t InfoSize;
+    efi_image_execution_action action;
+    uint32_t info_size;
 };
 
-/* Entries vary in size (InfoSize), so only the first can be reached by indexing. */
+/* Entries vary in size (info_size), so only the first can be reached by indexing. */
 __extension__ struct efi_image_execution_info_table {
-    size_t NumberOfImages;
-    struct efi_image_execution_info InformationInfo[];
+    size_t number_of_images;
+    struct efi_image_execution_info information_info[];
 };
 
 #define EFI_IMAGE_SECURITY_DATABASE_GUID \
@@ -219,38 +219,38 @@ __extension__ struct efi_image_execution_info_table {
 
 /* Cited but no longer printed by 2.11; laid out like struct efi_firmware_image_authentication. */
 struct efi_variable_authentication {
-    uint64_t MonotonicCount;
-    struct efi_win_certificate_uefi_guid AuthInfo;
+    uint64_t monotonic_count;
+    struct efi_win_certificate_uefi_guid auth_info;
 };
 
 struct efi_variable_authentication_2 {
-    struct efi_time TimeStamp;
-    struct efi_win_certificate_uefi_guid AuthInfo;
+    struct efi_time time_stamp;
+    struct efi_win_certificate_uefi_guid auth_info;
 };
 
 #define EFI_VARIABLE_AUTHENTICATION_3_TIMESTAMP_TYPE 1
 #define EFI_VARIABLE_AUTHENTICATION_3_NONCE_TYPE 2
 
 struct efi_variable_authentication_3 {
-    uint8_t Version;
-    uint8_t Type;
-    uint32_t MetadataSize;
-    uint32_t Flags;
+    uint8_t version;
+    uint8_t type;
+    uint32_t metadata_size;
+    uint32_t flags;
 };
 
 #define EFI_VARIABLE_ENHANCED_AUTH_FLAG_UPDATE_CERT 0x00000001
 
 #define EFI_VARIABLE_AUTHENTICATION_3_CERT_ID_SHA256 1
 
-/* IdSize bytes of Id follow. */
+/* id_size bytes of id follow. */
 struct efi_variable_authentication_3_cert_id {
-    uint8_t Type;
-    uint32_t IdSize;
+    uint8_t type;
+    uint32_t id_size;
 };
 
-/* NonceSize bytes of Nonce follow, then a struct efi_win_certificate_uefi_guid. */
+/* nonce_size bytes of nonce follow, then a struct efi_win_certificate_uefi_guid. */
 struct efi_variable_authentication_3_nonce {
-    uint32_t NonceSize;
+    uint32_t nonce_size;
 };
 
 #ifdef __cplusplus

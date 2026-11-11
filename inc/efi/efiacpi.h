@@ -12,48 +12,48 @@ extern "C" {
 
 struct efi_acpi_table_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_ACPI_TABLE_INSTALL_ACPI_TABLE)(
-    struct efi_acpi_table_protocol *This,
-    void *AcpiTableBuffer,
-    size_t AcpiTableBufferSize,
-    uintptr_t *TableKey
+typedef efi_status (EFI_API *efi_acpi_table_install_acpi_table)(
+    struct efi_acpi_table_protocol *self,
+    void *acpi_table_buffer,
+    size_t acpi_table_buffer_size,
+    uintptr_t *table_key
 );
 
-typedef EFI_STATUS (EFI_API *EFI_ACPI_TABLE_UNINSTALL_ACPI_TABLE)(
-    struct efi_acpi_table_protocol *This,
-    uintptr_t TableKey
+typedef efi_status (EFI_API *efi_acpi_table_uninstall_acpi_table)(
+    struct efi_acpi_table_protocol *self,
+    uintptr_t table_key
 );
 
 struct efi_acpi_table_protocol {
-    EFI_ACPI_TABLE_INSTALL_ACPI_TABLE InstallAcpiTable;
-    EFI_ACPI_TABLE_UNINSTALL_ACPI_TABLE UninstallAcpiTable;
+    efi_acpi_table_install_acpi_table install_acpi_table;
+    efi_acpi_table_uninstall_acpi_table uninstall_acpi_table;
 };
 
 /* The specification gives these only as a table, without names. Byte-packed: 36 and 54 bytes. */
 struct efi_acpi_description_header {
-    uint32_t Signature;
-    uint32_t Length;
-    uint8_t Revision;
-    uint8_t Checksum;
-    uint8_t OemId[6];
-    uint64_t OemTableId;
-    uint32_t OemRevision;
-    uint32_t CreatorId;
-    uint32_t CreatorRevision;
+    uint32_t signature;
+    uint32_t length;
+    uint8_t revision;
+    uint8_t checksum;
+    uint8_t oem_id[6];
+    uint64_t oem_table_id;
+    uint32_t oem_revision;
+    uint32_t creator_id;
+    uint32_t creator_revision;
 } __attribute__((__packed__));
 
-/* The table's contents follow at DataOffset. */
+/* The table's contents follow at data_offset. */
 struct efi_acpi_data_table {
-    struct efi_acpi_description_header Header;
-    struct efi_guid Identifier;
-    uint16_t DataOffset;
+    struct efi_acpi_description_header header;
+    struct efi_guid identifier;
+    uint16_t data_offset;
 } __attribute__((__packed__));
 
-/* MessageLength bytes of Data follow the header; the printed ANYSIZE_ARRAY bound becomes 1. */
+/* message_length bytes of data follow the header; the printed ANYSIZE_ARRAY bound becomes 1. */
 struct efi_smm_communicate_header {
-    struct efi_guid HeaderGuid;
-    size_t MessageLength;
-    uint8_t Data[1];
+    struct efi_guid header_guid;
+    size_t message_length;
+    uint8_t data[1];
 };
 
 #ifdef __cplusplus
