@@ -5,6 +5,7 @@
 #   error "PicoEFI needs C99 or later."
 #endif
 
+#include <stddef.h>
 #include <stdint.h>
 
 #if !defined(__x86_64__) && !defined(__amd64__) && !defined(__i386__) && !defined(__aarch64__) \
@@ -50,16 +51,16 @@ typedef struct {
 } __attribute__((__aligned__(16))) efi_uint128;
 #endif
 
-typedef uintptr_t efi_status;
+typedef size_t efi_status;
 
-#define EFI_ERROR_MASK (~((uintptr_t)-1 >> 1))
+#define EFI_ERROR_MASK (~((efi_status)-1 >> 1))
 #define EFI_ERR(a) ((efi_status)(EFI_ERROR_MASK | (a)))
-#define EFI_ERR_OEM(a) ((efi_status)(~((uintptr_t)-1 >> 2) | (a)))
+#define EFI_ERR_OEM(a) ((efi_status)(~((efi_status)-1 >> 2) | (a)))
 
 typedef void *efi_handle;
 typedef void *efi_event;
 typedef uint64_t efi_lba;
-typedef uintptr_t efi_tpl;
+typedef size_t efi_tpl;
 
 struct efi_mac_address {
     uint8_t addr[32];

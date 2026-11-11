@@ -130,9 +130,9 @@ typedef efi_status (EFI_API *efi_eap_user_logoff)(struct efi_eap_management_prot
 
 struct efi_eapol_supplicant_pae_configuration {
     uint8_t valid_field_mask;
-    uintptr_t auth_period;
-    uintptr_t held_period;
-    uintptr_t start_period;
+    size_t auth_period;
+    size_t held_period;
+    size_t start_period;
     size_t max_start;
 };
 
@@ -158,8 +158,8 @@ struct efi_eapol_supplicant_pae_statistics {
     size_t eap_request_frames_received;
     size_t invalid_eapol_frames_received;
     size_t eap_length_error_frames_received;
-    uintptr_t last_eapol_frame_version;
-    uintptr_t last_eapol_frame_source;
+    size_t last_eapol_frame_version;
+    size_t last_eapol_frame_source;
 };
 
 typedef efi_status (EFI_API *efi_eap_get_supplicant_statistics)(

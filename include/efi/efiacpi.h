@@ -22,12 +22,12 @@ typedef efi_status (EFI_API *efi_acpi_table_install_acpi_table)(
     struct efi_acpi_table_protocol *self,
     void *acpi_table_buffer,
     size_t acpi_table_buffer_size,
-    uintptr_t *table_key
+    size_t *table_key
 );
 
 typedef efi_status (EFI_API *efi_acpi_table_uninstall_acpi_table)(
     struct efi_acpi_table_protocol *self,
-    uintptr_t table_key
+    size_t table_key
 );
 
 struct efi_acpi_table_protocol {

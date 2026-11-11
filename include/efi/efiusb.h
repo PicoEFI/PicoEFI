@@ -100,7 +100,7 @@ typedef efi_status (EFI_API *efi_usb2_hc_protocol_control_transfer)(
     uint32_t transfer_direction,
     void *data,
     size_t *data_length,
-    uintptr_t time_out,
+    size_t time_out,
     struct efi_usb2_hc_transaction_translator *translator,
     uint32_t *transfer_result
 );
@@ -119,7 +119,7 @@ typedef efi_status (EFI_API *efi_usb2_hc_protocol_bulk_transfer)(
     void *data[EFI_USB_MAX_BULK_BUFFER_NUM],
     size_t *data_length,
     uint8_t *data_toggle,
-    uintptr_t time_out,
+    size_t time_out,
     struct efi_usb2_hc_transaction_translator *translator,
     uint32_t *transfer_result
 );
@@ -132,7 +132,7 @@ typedef efi_status (EFI_API *efi_usb2_hc_protocol_async_interrupt_transfer)(
     size_t maximum_packet_length,
     bool is_new_transfer,
     uint8_t *data_toggle,
-    uintptr_t polling_interval,
+    size_t polling_interval,
     size_t data_length,
     struct efi_usb2_hc_transaction_translator *translator,
     efi_async_usb_transfer_callback call_back_function,
@@ -148,7 +148,7 @@ typedef efi_status (EFI_API *efi_usb2_hc_protocol_sync_interrupt_transfer)(
     void *data,
     size_t *data_length,
     uint8_t *data_toggle,
-    uintptr_t time_out,
+    size_t time_out,
     struct efi_usb2_hc_transaction_translator *translator,
     uint32_t *transfer_result
 );
@@ -274,7 +274,7 @@ typedef efi_status (EFI_API *efi_usb_io_bulk_transfer)(
     uint8_t device_endpoint,
     void *data,
     size_t *data_length,
-    uintptr_t timeout,
+    size_t timeout,
     uint32_t *status
 );
 
@@ -282,7 +282,7 @@ typedef efi_status (EFI_API *efi_usb_io_async_interrupt_transfer)(
     struct efi_usb_io_protocol *self,
     uint8_t device_endpoint,
     bool is_new_transfer,
-    uintptr_t polling_interval,
+    size_t polling_interval,
     size_t data_length,
     efi_async_usb_transfer_callback interrupt_call_back,
     void *context
@@ -293,7 +293,7 @@ typedef efi_status (EFI_API *efi_usb_io_sync_interrupt_transfer)(
     uint8_t device_endpoint,
     void *data,
     size_t *data_length,
-    uintptr_t timeout,
+    size_t timeout,
     uint32_t *status
 );
 

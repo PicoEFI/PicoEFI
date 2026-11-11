@@ -175,7 +175,7 @@ typedef efi_status (EFI_API *efi_text_set_mode)(
 
 typedef efi_status (EFI_API *efi_text_set_attribute)(
     struct efi_simple_text_output_protocol *self,
-    uintptr_t attribute
+    size_t attribute
 );
 
 #define EFI_BLACK 0x00

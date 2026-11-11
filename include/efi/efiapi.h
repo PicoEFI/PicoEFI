@@ -195,7 +195,7 @@ typedef efi_status (EFI_API *efi_free_pages)(
 typedef efi_status (EFI_API *efi_get_memory_map)(
     size_t *memory_map_size,
     struct efi_memory_descriptor *memory_map,
-    uintptr_t *map_key,
+    size_t *map_key,
     size_t *descriptor_size,
     uint32_t *descriptor_version
 );
@@ -379,17 +379,17 @@ typedef efi_status (EFI_API *efi_exit)(
 
 typedef efi_status (EFI_API *efi_exit_boot_services)(
     efi_handle image_handle,
-    uintptr_t map_key
+    size_t map_key
 );
 
 typedef efi_status (EFI_API *efi_set_watchdog_timer)(
-    uintptr_t timeout,
+    size_t timeout,
     uint64_t watchdog_code,
     size_t data_size,
     uint16_t *watchdog_data
 );
 
-typedef efi_status (EFI_API *efi_stall)(uintptr_t microseconds);
+typedef efi_status (EFI_API *efi_stall)(size_t microseconds);
 
 typedef void (EFI_API *efi_copy_mem)(
     void *destination,
@@ -490,7 +490,7 @@ typedef efi_status (EFI_API *efi_set_virtual_address_map)(
 );
 
 typedef efi_status (EFI_API *efi_convert_pointer)(
-    uintptr_t debug_disposition,
+    size_t debug_disposition,
     void **address
 );
 

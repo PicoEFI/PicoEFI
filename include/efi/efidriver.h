@@ -131,8 +131,8 @@ typedef efi_status (EFI_API *efi_driver_health_get_health_status)(
 );
 
 typedef efi_status (EFI_API *efi_driver_health_repair_notify)(
-    uintptr_t value,
-    uintptr_t limit
+    size_t value,
+    size_t limit
 );
 
 typedef efi_status (EFI_API *efi_driver_health_repair)(

@@ -581,8 +581,8 @@ typedef efi_status (EFI_API *efi_smart_card_edge_get_credential)(
 typedef efi_status (EFI_API *efi_smart_card_edge_sign_data)(
     struct efi_smart_card_edge_protocol *self,
     efi_handle scard_handle,
-    uintptr_t key_id,
-    uintptr_t key_type,
+    size_t key_id,
+    size_t key_type,
     struct efi_guid *hash_algorithm,
     struct efi_guid *padding_method,
     uint8_t *hashed_data,
@@ -598,7 +598,7 @@ typedef efi_status (EFI_API *efi_smart_card_edge_sign_data)(
 typedef efi_status (EFI_API *efi_smart_card_edge_decrypt_data)(
     struct efi_smart_card_edge_protocol *self,
     efi_handle scard_handle,
-    uintptr_t key_id,
+    size_t key_id,
     struct efi_guid *hash_algorithm,
     struct efi_guid *padding_method,
     size_t encrypted_size,
@@ -619,7 +619,7 @@ typedef efi_status (EFI_API *efi_smart_card_edge_decrypt_data)(
 typedef efi_status (EFI_API *efi_smart_card_edge_build_dh_agreement)(
     struct efi_smart_card_edge_protocol *self,
     efi_handle scard_handle,
-    uintptr_t key_id,
+    size_t key_id,
     uint8_t *data_qx,
     uint8_t *data_qy,
     uint8_t *dh_agreement

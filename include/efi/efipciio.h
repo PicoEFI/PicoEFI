@@ -322,10 +322,10 @@ typedef efi_status (EFI_API *efi_pci_io_protocol_flush)(struct efi_pci_io_protoc
 
 typedef efi_status (EFI_API *efi_pci_io_protocol_get_location)(
     struct efi_pci_io_protocol *self,
-    uintptr_t *segment_number,
-    uintptr_t *bus_number,
-    uintptr_t *device_number,
-    uintptr_t *function_number
+    size_t *segment_number,
+    size_t *bus_number,
+    size_t *device_number,
+    size_t *function_number
 );
 
 #define EFI_PCI_IO_ATTRIBUTE_OPERATION_GET ((uint32_t)0)

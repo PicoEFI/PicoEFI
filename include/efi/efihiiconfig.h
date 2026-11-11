@@ -132,7 +132,7 @@ typedef efi_status (EFI_API *efi_hii_access_route_config)(
     efi_string *progress
 );
 
-typedef uintptr_t efi_browser_action;
+typedef size_t efi_browser_action;
 
 #define EFI_BROWSER_ACTION_CHANGING 0
 #define EFI_BROWSER_ACTION_CHANGED 1
@@ -147,7 +147,7 @@ typedef uintptr_t efi_browser_action;
 #define EFI_BROWSER_ACTION_DEFAULT_HARDWARE 0x3000
 #define EFI_BROWSER_ACTION_DEFAULT_FIRMWARE 0x4000
 
-typedef uintptr_t efi_browser_action_request;
+typedef size_t efi_browser_action_request;
 
 #define EFI_BROWSER_ACTION_REQUEST_NONE 0
 #define EFI_BROWSER_ACTION_REQUEST_RESET 1

@@ -5,6 +5,7 @@
 #   error "PicoEFI needs C99 or later."
 #endif
 
+#include <stddef.h>
 #include <stdint.h>
 #include <efi/efidef.h>
 
@@ -22,7 +23,7 @@ struct efi_riscv_efi_boot_protocol;
 
 typedef efi_status (EFI_API *efi_get_boot_hartid)(
     struct efi_riscv_efi_boot_protocol *self,
-    uintptr_t *boot_hart_id
+    size_t *boot_hart_id
 );
 
 struct efi_riscv_efi_boot_protocol {

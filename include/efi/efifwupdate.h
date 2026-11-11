@@ -82,7 +82,7 @@ typedef efi_status (EFI_API *efi_firmware_management_protocol_get_image)(
 );
 
 typedef efi_status (EFI_API *efi_firmware_management_update_image_progress)(
-    uintptr_t completion
+    size_t completion
 );
 
 typedef efi_status (EFI_API *efi_firmware_management_protocol_set_image)(

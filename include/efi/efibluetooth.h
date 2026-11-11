@@ -24,14 +24,14 @@ typedef efi_status (EFI_API *efi_bluetooth_hc_send_command)(
     struct efi_bluetooth_hc_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_hc_receive_event)(
     struct efi_bluetooth_hc_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_hc_async_func_callback)(
@@ -43,7 +43,7 @@ typedef efi_status (EFI_API *efi_bluetooth_hc_async_func_callback)(
 typedef efi_status (EFI_API *efi_bluetooth_hc_async_receive_event)(
     struct efi_bluetooth_hc_protocol *self,
     bool is_new_transfer,
-    uintptr_t polling_interval,
+    size_t polling_interval,
     size_t data_length,
     efi_bluetooth_hc_async_func_callback callback,
     void *context
@@ -53,20 +53,20 @@ typedef efi_status (EFI_API *efi_bluetooth_hc_send_acl_data)(
     struct efi_bluetooth_hc_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_hc_receive_acl_data)(
     struct efi_bluetooth_hc_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_hc_async_receive_acl_data)(
     struct efi_bluetooth_hc_protocol *self,
     bool is_new_transfer,
-    uintptr_t polling_interval,
+    size_t polling_interval,
     size_t data_length,
     efi_bluetooth_hc_async_func_callback callback,
     void *context
@@ -76,20 +76,20 @@ typedef efi_status (EFI_API *efi_bluetooth_hc_send_sco_data)(
     struct efi_bluetooth_hc_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_hc_receive_sco_data)(
     struct efi_bluetooth_hc_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_hc_async_receive_sco_data)(
     struct efi_bluetooth_hc_protocol *self,
     bool is_new_transfer,
-    uintptr_t polling_interval,
+    size_t polling_interval,
     size_t data_length,
     efi_bluetooth_hc_async_func_callback callback,
     void *context
@@ -156,14 +156,14 @@ typedef efi_status (EFI_API *efi_bluetooth_io_l2cap_raw_send)(
     struct efi_bluetooth_io_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_io_l2cap_raw_receive)(
     struct efi_bluetooth_io_protocol *self,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_io_async_func_callback)(
@@ -176,7 +176,7 @@ typedef efi_status (EFI_API *efi_bluetooth_io_async_func_callback)(
 typedef efi_status (EFI_API *efi_bluetooth_io_l2cap_raw_async_receive)(
     struct efi_bluetooth_io_protocol *self,
     bool is_new_transfer,
-    uintptr_t polling_interval,
+    size_t polling_interval,
     size_t data_length,
     efi_bluetooth_io_async_func_callback callback,
     void *context
@@ -187,7 +187,7 @@ typedef efi_status (EFI_API *efi_bluetooth_io_l2cap_send)(
     efi_handle handle,
     size_t *buffer_size,
     void *buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_io_l2cap_receive)(
@@ -195,7 +195,7 @@ typedef efi_status (EFI_API *efi_bluetooth_io_l2cap_receive)(
     efi_handle handle,
     size_t *buffer_size,
     void **buffer,
-    uintptr_t timeout
+    size_t timeout
 );
 
 typedef efi_status (EFI_API *efi_bluetooth_io_channel_service_callback)(

@@ -627,7 +627,7 @@ union efi_debug_image_info {
 
 // Not in the specification: how many union efi_debug_image_info,
 // pointer-sized, fill a page.
-#define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE (EFI_PAGE_SIZE / sizeof(uintptr_t))
+#define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE (EFI_PAGE_SIZE / sizeof(size_t))
 
 struct efi_debug_image_info_table_header {
     volatile uint32_t update_status;

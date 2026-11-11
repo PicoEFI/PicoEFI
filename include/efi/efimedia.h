@@ -40,7 +40,7 @@ typedef efi_status (EFI_API *efi_tape_rewind)(struct efi_tape_io_protocol *self)
 typedef efi_status (EFI_API *efi_tape_space)(
     struct efi_tape_io_protocol *self,
     intptr_t direction,
-    uintptr_t type
+    size_t type
 );
 
 typedef efi_status (EFI_API *efi_tape_writefm)(

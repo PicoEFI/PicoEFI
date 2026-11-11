@@ -1002,7 +1002,7 @@ typedef efi_status (EFI_API *efi_rest_ex_async_send_receive)(
     struct efi_rest_ex_protocol *self,
     struct efi_http_message *request_message,
     struct efi_rest_ex_token *rest_ex_token,
-    uintptr_t *time_out_in_milli_seconds
+    size_t *time_out_in_milli_seconds
 );
 
 typedef efi_status (EFI_API *efi_rest_ex_event_service)(

@@ -75,7 +75,7 @@ typedef efi_status (EFI_API *efi_mp_services_startup_all_aps)(
     efi_ap_procedure procedure,
     bool single_thread,
     efi_event wait_event,
-    uintptr_t timeout_in_microseconds,
+    size_t timeout_in_microseconds,
     void *procedure_argument,
     size_t **failed_cpu_list
 );
@@ -85,7 +85,7 @@ typedef efi_status (EFI_API *efi_mp_services_startup_this_ap)(
     efi_ap_procedure procedure,
     size_t processor_number,
     efi_event wait_event,
-    uintptr_t timeout_in_microseconds,
+    size_t timeout_in_microseconds,
     void *procedure_argument,
     bool *finished
 );

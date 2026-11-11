@@ -77,7 +77,7 @@ struct efi_redfish_discovered_token {
     uint32_t signature;
     struct efi_redfish_discovered_list discovered_list;
     efi_event event;
-    uintptr_t timeout;
+    size_t timeout;
 };
 
 typedef efi_status (EFI_API *efi_redfish_discover_acquire_service)(

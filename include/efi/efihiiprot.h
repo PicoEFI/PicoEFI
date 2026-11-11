@@ -527,7 +527,7 @@ typedef efi_status (EFI_API *efi_hii_database_export_packs)(
     struct efi_hii_package_list_header *buffer
 );
 
-typedef uintptr_t efi_hii_database_notify_type;
+typedef size_t efi_hii_database_notify_type;
 
 #define EFI_HII_DATABASE_NOTIFY_NEW_PACK 0x00000001
 #define EFI_HII_DATABASE_NOTIFY_REMOVE_PACK 0x00000002
