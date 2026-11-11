@@ -204,10 +204,10 @@ typedef efi_status (EFI_API *efi_get_memory_map)(
 // in a get_memory_map() buffer, whose descriptors are descriptor_size bytes
 // apart.
 static inline struct efi_memory_descriptor *efi_next_memory_descriptor(
-    const void *descriptor,
+    void *descriptor,
     size_t descriptor_size
 ) {
-    return (struct efi_memory_descriptor *)((const uint8_t *)descriptor + descriptor_size);
+    return (struct efi_memory_descriptor *)((uint8_t *)descriptor + descriptor_size);
 }
 
 typedef efi_status (EFI_API *efi_allocate_pool)(

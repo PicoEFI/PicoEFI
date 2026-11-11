@@ -696,8 +696,8 @@ static inline uint16_t efi_device_path_node_length(const void *node) {
     return (uint16_t)(path->length[0] | path->length[1] << 8);
 }
 
-static inline struct efi_device_path_protocol *efi_next_device_path_node(const void *node) {
-    return (struct efi_device_path_protocol *)((const uint8_t *)node
+static inline struct efi_device_path_protocol *efi_next_device_path_node(void *node) {
+    return (struct efi_device_path_protocol *)((uint8_t *)node
                                              + efi_device_path_node_length(node));
 }
 
