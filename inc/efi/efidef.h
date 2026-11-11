@@ -64,18 +64,6 @@ typedef unsigned char EFI_BOOLEAN;
 #define EFI_CONST const
 #endif
 
-#ifndef EFI_IN
-#define EFI_IN
-#endif
-
-#ifndef EFI_OUT
-#define EFI_OUT
-#endif
-
-#ifndef EFI_OPTIONAL
-#define EFI_OPTIONAL
-#endif
-
 typedef EFI_UINTN EFI_STATUS;
 typedef EFI_VOID *EFI_HANDLE;
 typedef EFI_VOID *EFI_EVENT;

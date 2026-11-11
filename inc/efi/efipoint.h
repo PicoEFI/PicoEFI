@@ -21,8 +21,8 @@ typedef struct {
 } EFI_SIMPLE_POINTER_MODE;
 
 typedef EFI_STATUS (EFI_API *EFI_SIMPLE_POINTER_RESET)(
-    EFI_IN EFI_SIMPLE_POINTER_PROTOCOL *This,
-    EFI_IN EFI_BOOLEAN ExtendedVerification
+    EFI_SIMPLE_POINTER_PROTOCOL *This,
+    EFI_BOOLEAN ExtendedVerification
 );
 
 typedef struct {
@@ -34,8 +34,8 @@ typedef struct {
 } EFI_SIMPLE_POINTER_STATE;
 
 typedef EFI_STATUS (EFI_API *EFI_SIMPLE_POINTER_GET_STATE)(
-    EFI_IN EFI_SIMPLE_POINTER_PROTOCOL *This,
-    EFI_OUT EFI_SIMPLE_POINTER_STATE *State
+    EFI_SIMPLE_POINTER_PROTOCOL *This,
+    EFI_SIMPLE_POINTER_STATE *State
 );
 
 /* Mode is printed with a nonexistent type; its description names EFI_SIMPLE_POINTER_MODE. */
@@ -65,8 +65,8 @@ typedef struct {
 #define EFI_ABSP_SupportsPressureAsZ 0x00000002
 
 typedef EFI_STATUS (EFI_API *EFI_ABSOLUTE_POINTER_RESET)(
-    EFI_IN EFI_ABSOLUTE_POINTER_PROTOCOL *This,
-    EFI_IN EFI_BOOLEAN ExtendedVerification
+    EFI_ABSOLUTE_POINTER_PROTOCOL *This,
+    EFI_BOOLEAN ExtendedVerification
 );
 
 typedef struct {
@@ -81,8 +81,8 @@ typedef struct {
 #define EFI_ABS_AltActive 0x00000002
 
 typedef EFI_STATUS (EFI_API *EFI_ABSOLUTE_POINTER_GET_STATE)(
-    EFI_IN EFI_ABSOLUTE_POINTER_PROTOCOL *This,
-    EFI_OUT EFI_ABSOLUTE_POINTER_STATE *State
+    EFI_ABSOLUTE_POINTER_PROTOCOL *This,
+    EFI_ABSOLUTE_POINTER_STATE *State
 );
 
 struct _EFI_ABSOLUTE_POINTER_PROTOCOL {

@@ -13,9 +13,9 @@ extern "C" {
 typedef struct _EFI_MP_SERVICES_PROTOCOL EFI_MP_SERVICES_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_GET_NUMBER_OF_PROCESSORS)(
-    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
-    EFI_OUT EFI_UINTN *NumberOfProcessors,
-    EFI_OUT EFI_UINTN *NumberOfEnabledProcessors
+    EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_UINTN *NumberOfProcessors,
+    EFI_UINTN *NumberOfEnabledProcessors
 );
 
 #define EFI_PROCESSOR_AS_BSP_BIT 0x00000001
@@ -56,51 +56,51 @@ typedef struct {
  * flags.
  */
 typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_GET_PROCESSOR_INFO)(
-    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
-    EFI_IN EFI_UINTN ProcessorNumber,
-    EFI_OUT EFI_PROCESSOR_INFORMATION *ProcessorInfoBuffer
+    EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_UINTN ProcessorNumber,
+    EFI_PROCESSOR_INFORMATION *ProcessorInfoBuffer
 );
 
 #define EFI_END_OF_CPU_LIST 0xffffffff
 
-typedef EFI_VOID (EFI_API *EFI_AP_PROCEDURE)(EFI_IN EFI_VOID *ProcedureArgument);
+typedef EFI_VOID (EFI_API *EFI_AP_PROCEDURE)(EFI_VOID *ProcedureArgument);
 
 typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_STARTUP_ALL_APS)(
-    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
-    EFI_IN EFI_AP_PROCEDURE Procedure,
-    EFI_IN EFI_BOOLEAN SingleThread,
-    EFI_IN EFI_EVENT WaitEvent EFI_OPTIONAL,
-    EFI_IN EFI_UINTN TimeoutInMicroseconds,
-    EFI_IN EFI_VOID *ProcedureArgument EFI_OPTIONAL,
-    EFI_OUT EFI_UINTN **FailedCpuList EFI_OPTIONAL
+    EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_AP_PROCEDURE Procedure,
+    EFI_BOOLEAN SingleThread,
+    EFI_EVENT WaitEvent,
+    EFI_UINTN TimeoutInMicroseconds,
+    EFI_VOID *ProcedureArgument,
+    EFI_UINTN **FailedCpuList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_STARTUP_THIS_AP)(
-    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
-    EFI_IN EFI_AP_PROCEDURE Procedure,
-    EFI_IN EFI_UINTN ProcessorNumber,
-    EFI_IN EFI_EVENT WaitEvent EFI_OPTIONAL,
-    EFI_IN EFI_UINTN TimeoutInMicroseconds,
-    EFI_IN EFI_VOID *ProcedureArgument EFI_OPTIONAL,
-    EFI_OUT EFI_BOOLEAN *Finished EFI_OPTIONAL
+    EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_AP_PROCEDURE Procedure,
+    EFI_UINTN ProcessorNumber,
+    EFI_EVENT WaitEvent,
+    EFI_UINTN TimeoutInMicroseconds,
+    EFI_VOID *ProcedureArgument,
+    EFI_BOOLEAN *Finished
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_SWITCH_BSP)(
-    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
-    EFI_IN EFI_UINTN ProcessorNumber,
-    EFI_IN EFI_BOOLEAN EnableOldBSP
+    EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_UINTN ProcessorNumber,
+    EFI_BOOLEAN EnableOldBSP
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_ENABLEDISABLEAP)(
-    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
-    EFI_IN EFI_UINTN ProcessorNumber,
-    EFI_IN EFI_BOOLEAN EnableAP,
-    EFI_IN EFI_UINT32 *HealthFlag EFI_OPTIONAL
+    EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_UINTN ProcessorNumber,
+    EFI_BOOLEAN EnableAP,
+    EFI_UINT32 *HealthFlag
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MP_SERVICES_WHOAMI)(
-    EFI_IN EFI_MP_SERVICES_PROTOCOL *This,
-    EFI_OUT EFI_UINTN *ProcessorNumber
+    EFI_MP_SERVICES_PROTOCOL *This,
+    EFI_UINTN *ProcessorNumber
 );
 
 struct _EFI_MP_SERVICES_PROTOCOL {

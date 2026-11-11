@@ -18,7 +18,7 @@ typedef struct {
 } EFI_TIMESTAMP_PROPERTIES;
 
 typedef EFI_STATUS (EFI_API *EFI_TIMESTAMP_GET_PROPERTIES)(
-    EFI_OUT EFI_TIMESTAMP_PROPERTIES *Properties
+    EFI_TIMESTAMP_PROPERTIES *Properties
 );
 
 typedef struct _EFI_TIMESTAMP_PROTOCOL {
@@ -33,13 +33,13 @@ typedef struct _EFI_RESET_NOTIFICATION_PROTOCOL EFI_RESET_NOTIFICATION_PROTOCOL;
 
 /* EFI_RESET_SYSTEM is itself a pointer: ResetFunction points to the function, as described. */
 typedef EFI_STATUS (EFI_API *EFI_REGISTER_RESET_NOTIFY)(
-    EFI_IN EFI_RESET_NOTIFICATION_PROTOCOL *This,
-    EFI_IN EFI_RESET_SYSTEM ResetFunction
+    EFI_RESET_NOTIFICATION_PROTOCOL *This,
+    EFI_RESET_SYSTEM ResetFunction
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UNREGISTER_RESET_NOTIFY)(
-    EFI_IN EFI_RESET_NOTIFICATION_PROTOCOL *This,
-    EFI_IN EFI_RESET_SYSTEM ResetFunction
+    EFI_RESET_NOTIFICATION_PROTOCOL *This,
+    EFI_RESET_SYSTEM ResetFunction
 );
 
 /* The structure prints UnRegisterResetNotify; the heading and text spell it as here. */

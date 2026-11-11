@@ -13,21 +13,21 @@ extern "C" {
 typedef struct _EFI_DECOMPRESS_PROTOCOL EFI_DECOMPRESS_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_GET_INFO)(
-    EFI_IN EFI_DECOMPRESS_PROTOCOL *This,
-    EFI_IN EFI_VOID *Source,
-    EFI_IN EFI_UINT32 SourceSize,
-    EFI_OUT EFI_UINT32 *DestinationSize,
-    EFI_OUT EFI_UINT32 *ScratchSize
+    EFI_DECOMPRESS_PROTOCOL *This,
+    EFI_VOID *Source,
+    EFI_UINT32 SourceSize,
+    EFI_UINT32 *DestinationSize,
+    EFI_UINT32 *ScratchSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_DECOMPRESS)(
-    EFI_IN EFI_DECOMPRESS_PROTOCOL *This,
-    EFI_IN EFI_VOID *Source,
-    EFI_IN EFI_UINT32 SourceSize,
-    EFI_IN EFI_OUT EFI_VOID *Destination,
-    EFI_IN EFI_UINT32 DestinationSize,
-    EFI_IN EFI_OUT EFI_VOID *Scratch,
-    EFI_IN EFI_UINT32 ScratchSize
+    EFI_DECOMPRESS_PROTOCOL *This,
+    EFI_VOID *Source,
+    EFI_UINT32 SourceSize,
+    EFI_VOID *Destination,
+    EFI_UINT32 DestinationSize,
+    EFI_VOID *Scratch,
+    EFI_UINT32 ScratchSize
 );
 
 struct _EFI_DECOMPRESS_PROTOCOL {

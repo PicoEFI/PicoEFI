@@ -14,16 +14,16 @@ extern "C" {
 typedef struct _EFI_AUTHENTICATION_INFO_PROTOCOL EFI_AUTHENTICATION_INFO_PROTOCOL;
 
 typedef EFI_STATUS (EFI_API *EFI_AUTHENTICATION_INFO_PROTOCOL_GET)(
-    EFI_IN EFI_AUTHENTICATION_INFO_PROTOCOL *This,
-    EFI_IN EFI_HANDLE ControllerHandle,
-    EFI_OUT EFI_VOID **Buffer
+    EFI_AUTHENTICATION_INFO_PROTOCOL *This,
+    EFI_HANDLE ControllerHandle,
+    EFI_VOID **Buffer
 );
 
 /* Printed with one more level of indirection on each parameter than its description gives. */
 typedef EFI_STATUS (EFI_API *EFI_AUTHENTICATION_INFO_PROTOCOL_SET)(
-    EFI_IN EFI_AUTHENTICATION_INFO_PROTOCOL *This,
-    EFI_IN EFI_HANDLE ControllerHandle,
-    EFI_IN EFI_VOID *Buffer
+    EFI_AUTHENTICATION_INFO_PROTOCOL *This,
+    EFI_HANDLE ControllerHandle,
+    EFI_VOID *Buffer
 );
 
 struct _EFI_AUTHENTICATION_INFO_PROTOCOL {

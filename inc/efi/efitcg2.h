@@ -47,16 +47,16 @@ typedef struct _EFI_TCG2_BOOT_SERVICE_CAPABILITY {
 #define EFI_TCG2_BOOT_HASH_ALG_SM3_256 0x00000010
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_CAPABILITY)(
-    EFI_IN EFI_TCG2_PROTOCOL *This,
-    EFI_IN EFI_OUT EFI_TCG2_BOOT_SERVICE_CAPABILITY *ProtocolCapability
+    EFI_TCG2_PROTOCOL *This,
+    EFI_TCG2_BOOT_SERVICE_CAPABILITY *ProtocolCapability
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_EVENT_LOG)(
-    EFI_IN EFI_TCG2_PROTOCOL *This,
-    EFI_IN EFI_TCG2_EVENT_LOG_FORMAT EventLogFormat,
-    EFI_OUT EFI_PHYSICAL_ADDRESS *EventLogLocation,
-    EFI_OUT EFI_PHYSICAL_ADDRESS *EventLogLastEntry,
-    EFI_OUT EFI_BOOLEAN *EventLogTruncated
+    EFI_TCG2_PROTOCOL *This,
+    EFI_TCG2_EVENT_LOG_FORMAT EventLogFormat,
+    EFI_PHYSICAL_ADDRESS *EventLogLocation,
+    EFI_PHYSICAL_ADDRESS *EventLogLastEntry,
+    EFI_BOOLEAN *EventLogTruncated
 );
 
 typedef EFI_UINT32 EFI_TCG_EVENTTYPE;
@@ -79,35 +79,35 @@ typedef struct __attribute__((__packed__)) _EFI_TCG2_EVENT {
 #define EFI_PE_COFF_IMAGE 0x0000000000000010
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_HASH_LOG_EXTEND_EVENT)(
-    EFI_IN EFI_TCG2_PROTOCOL *This,
-    EFI_IN EFI_UINT64 Flags,
-    EFI_IN EFI_PHYSICAL_ADDRESS DataToHash,
-    EFI_IN EFI_UINT64 DataToHashLen,
-    EFI_IN EFI_TCG2_EVENT *EfiTcgEvent
+    EFI_TCG2_PROTOCOL *This,
+    EFI_UINT64 Flags,
+    EFI_PHYSICAL_ADDRESS DataToHash,
+    EFI_UINT64 DataToHashLen,
+    EFI_TCG2_EVENT *EfiTcgEvent
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_SUBMIT_COMMAND)(
-    EFI_IN EFI_TCG2_PROTOCOL *This,
-    EFI_IN EFI_UINT32 InputParameterBlockSize,
-    EFI_IN EFI_UINT8 *InputParameterBlock,
-    EFI_IN EFI_UINT32 OutputParameterBlockSize,
-    EFI_IN EFI_UINT8 *OutputParameterBlock
+    EFI_TCG2_PROTOCOL *This,
+    EFI_UINT32 InputParameterBlockSize,
+    EFI_UINT8 *InputParameterBlock,
+    EFI_UINT32 OutputParameterBlockSize,
+    EFI_UINT8 *OutputParameterBlock
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_ACTIVE_PCR_BANKS)(
-    EFI_IN EFI_TCG2_PROTOCOL *This,
-    EFI_OUT EFI_UINT32 *ActivePcrBanks
+    EFI_TCG2_PROTOCOL *This,
+    EFI_UINT32 *ActivePcrBanks
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_SET_ACTIVE_PCR_BANKS)(
-    EFI_IN EFI_TCG2_PROTOCOL *This,
-    EFI_IN EFI_UINT32 ActivePcrBanks
+    EFI_TCG2_PROTOCOL *This,
+    EFI_UINT32 ActivePcrBanks
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TCG2_GET_RESULT_OF_SET_ACTIVE_PCR_BANKS)(
-    EFI_IN EFI_TCG2_PROTOCOL *This,
-    EFI_OUT EFI_UINT32 *OperationPresent,
-    EFI_OUT EFI_UINT32 *Response
+    EFI_TCG2_PROTOCOL *This,
+    EFI_UINT32 *OperationPresent,
+    EFI_UINT32 *Response
 );
 
 struct _EFI_TCG2_PROTOCOL {

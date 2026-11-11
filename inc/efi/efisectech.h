@@ -35,33 +35,33 @@ typedef union _EFI_HASH2_OUTPUT {
 
 /* The five services are printed as plain prototypes; named as the protocol structure types them. */
 typedef EFI_STATUS (EFI_API *EFI_HASH2_GET_HASH_SIZE)(
-    EFI_IN EFI_CONST EFI_HASH2_PROTOCOL *This,
-    EFI_IN EFI_CONST EFI_GUID *HashAlgorithm,
-    EFI_OUT EFI_UINTN *HashSize
+    EFI_CONST EFI_HASH2_PROTOCOL *This,
+    EFI_CONST EFI_GUID *HashAlgorithm,
+    EFI_UINTN *HashSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_HASH2_HASH)(
-    EFI_IN EFI_CONST EFI_HASH2_PROTOCOL *This,
-    EFI_IN EFI_CONST EFI_GUID *HashAlgorithm,
-    EFI_IN EFI_CONST EFI_UINT8 *Message,
-    EFI_IN EFI_UINTN MessageSize,
-    EFI_IN EFI_OUT EFI_HASH2_OUTPUT *Hash
+    EFI_CONST EFI_HASH2_PROTOCOL *This,
+    EFI_CONST EFI_GUID *HashAlgorithm,
+    EFI_CONST EFI_UINT8 *Message,
+    EFI_UINTN MessageSize,
+    EFI_HASH2_OUTPUT *Hash
 );
 
 typedef EFI_STATUS (EFI_API *EFI_HASH2_HASH_INIT)(
-    EFI_IN EFI_CONST EFI_HASH2_PROTOCOL *This,
-    EFI_IN EFI_CONST EFI_GUID *HashAlgorithm
+    EFI_CONST EFI_HASH2_PROTOCOL *This,
+    EFI_CONST EFI_GUID *HashAlgorithm
 );
 
 typedef EFI_STATUS (EFI_API *EFI_HASH2_HASH_UPDATE)(
-    EFI_IN EFI_CONST EFI_HASH2_PROTOCOL *This,
-    EFI_IN EFI_CONST EFI_UINT8 *Message,
-    EFI_IN EFI_UINTN MessageSize
+    EFI_CONST EFI_HASH2_PROTOCOL *This,
+    EFI_CONST EFI_UINT8 *Message,
+    EFI_UINTN MessageSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_HASH2_HASH_FINAL)(
-    EFI_IN EFI_CONST EFI_HASH2_PROTOCOL *This,
-    EFI_IN EFI_OUT EFI_HASH2_OUTPUT *Hash
+    EFI_CONST EFI_HASH2_PROTOCOL *This,
+    EFI_HASH2_OUTPUT *Hash
 );
 
 struct _EFI_HASH2_PROTOCOL {
@@ -217,94 +217,94 @@ typedef struct {
     EFI_STATUS KeyAttributeStatus;
 } EFI_KMS_KEY_ATTRIBUTE;
 
-typedef EFI_STATUS (EFI_API *EFI_KMS_GET_SERVICE_STATUS)(EFI_IN EFI_KMS_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_KMS_GET_SERVICE_STATUS)(EFI_KMS_PROTOCOL *This);
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_REGISTER_CLIENT)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_CREATE_KEY)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_OUT EFI_UINT16 *KeyDescriptorCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINT16 *KeyDescriptorCount,
+    EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_GET_KEY)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_OUT EFI_UINT16 *KeyDescriptorCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINT16 *KeyDescriptorCount,
+    EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_ADD_KEY)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_OUT EFI_UINT16 *KeyDescriptorCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINT16 *KeyDescriptorCount,
+    EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_DELETE_KEY)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_OUT EFI_UINT16 *KeyDescriptorCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINT16 *KeyDescriptorCount,
+    EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_GET_KEY_ATTRIBUTES)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_UINT8 *KeyIdentifierSize,
-    EFI_IN EFI_CONST EFI_VOID *KeyIdentifier,
-    EFI_IN EFI_OUT EFI_UINT16 *KeyAttributesCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINT8 *KeyIdentifierSize,
+    EFI_CONST EFI_VOID *KeyIdentifier,
+    EFI_UINT16 *KeyAttributesCount,
+    EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 /* KeyIdentifierSize is printed as UINT *, a type that does not exist; its siblings use UINT8 *. */
 typedef EFI_STATUS (EFI_API *EFI_KMS_ADD_KEY_ATTRIBUTES)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_UINT8 *KeyIdentifierSize,
-    EFI_IN EFI_CONST EFI_VOID *KeyIdentifier,
-    EFI_IN EFI_OUT EFI_UINT16 *KeyAttributesCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINT8 *KeyIdentifierSize,
+    EFI_CONST EFI_VOID *KeyIdentifier,
+    EFI_UINT16 *KeyAttributesCount,
+    EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_DELETE_KEY_ATTRIBUTES)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_UINT8 *KeyIdentifierSize,
-    EFI_IN EFI_CONST EFI_VOID *KeyIdentifier,
-    EFI_IN EFI_OUT EFI_UINT16 *KeyAttributesCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINT8 *KeyIdentifierSize,
+    EFI_CONST EFI_VOID *KeyIdentifier,
+    EFI_UINT16 *KeyAttributesCount,
+    EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_KMS_GET_KEY_BY_ATTRIBUTES)(
-    EFI_IN EFI_KMS_PROTOCOL *This,
-    EFI_IN EFI_KMS_CLIENT_INFO *Client,
-    EFI_IN EFI_UINTN *KeyAttributeCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
-    EFI_IN EFI_OUT EFI_UINTN *KeyDescriptorCount,
-    EFI_IN EFI_OUT EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
-    EFI_IN EFI_OUT EFI_UINTN *ClientDataSize EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_VOID **ClientData EFI_OPTIONAL
+    EFI_KMS_PROTOCOL *This,
+    EFI_KMS_CLIENT_INFO *Client,
+    EFI_UINTN *KeyAttributeCount,
+    EFI_KMS_KEY_ATTRIBUTE *KeyAttributes,
+    EFI_UINTN *KeyDescriptorCount,
+    EFI_KMS_KEY_DESCRIPTOR *KeyDescriptors,
+    EFI_UINTN *ClientDataSize,
+    EFI_VOID **ClientData
 );
 
 struct _EFI_KMS_SERVICE_PROTOCOL {
@@ -349,27 +349,27 @@ typedef struct _EFI_PKCS7_VERIFY_PROTOCOL EFI_PKCS7_VERIFY_PROTOCOL;
 
 /* Printed under the member names; named as the protocol structure types the members. */
 typedef EFI_STATUS (EFI_API *EFI_PKCS7_VERIFY_BUFFER)(
-    EFI_IN EFI_PKCS7_VERIFY_PROTOCOL *This,
-    EFI_IN EFI_VOID *SignedData,
-    EFI_IN EFI_UINTN SignedDataSize,
-    EFI_IN EFI_VOID *InData EFI_OPTIONAL,
-    EFI_IN EFI_UINTN InDataSize,
-    EFI_IN EFI_SIGNATURE_LIST **AllowedDb,
-    EFI_IN EFI_SIGNATURE_LIST **RevokedDb EFI_OPTIONAL,
-    EFI_IN EFI_SIGNATURE_LIST **TimeStampDb EFI_OPTIONAL,
-    EFI_OUT EFI_VOID *Content EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_UINTN *ContentSize
+    EFI_PKCS7_VERIFY_PROTOCOL *This,
+    EFI_VOID *SignedData,
+    EFI_UINTN SignedDataSize,
+    EFI_VOID *InData,
+    EFI_UINTN InDataSize,
+    EFI_SIGNATURE_LIST **AllowedDb,
+    EFI_SIGNATURE_LIST **RevokedDb,
+    EFI_SIGNATURE_LIST **TimeStampDb,
+    EFI_VOID *Content,
+    EFI_UINTN *ContentSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PKCS7_VERIFY_SIGNATURE)(
-    EFI_IN EFI_PKCS7_VERIFY_PROTOCOL *This,
-    EFI_IN EFI_VOID *Signature,
-    EFI_IN EFI_UINTN SignatureSize,
-    EFI_IN EFI_VOID *InHash,
-    EFI_IN EFI_UINTN InHashSize,
-    EFI_IN EFI_SIGNATURE_LIST **AllowedDb,
-    EFI_IN EFI_SIGNATURE_LIST **RevokedDb EFI_OPTIONAL,
-    EFI_IN EFI_SIGNATURE_LIST **TimeStampDb EFI_OPTIONAL
+    EFI_PKCS7_VERIFY_PROTOCOL *This,
+    EFI_VOID *Signature,
+    EFI_UINTN SignatureSize,
+    EFI_VOID *InHash,
+    EFI_UINTN InHashSize,
+    EFI_SIGNATURE_LIST **AllowedDb,
+    EFI_SIGNATURE_LIST **RevokedDb,
+    EFI_SIGNATURE_LIST **TimeStampDb
 );
 
 /* The members are printed as pointers to these types, which are already function pointers. */
@@ -388,11 +388,11 @@ typedef struct _EFI_SMART_CARD_READER_PROTOCOL EFI_SMART_CARD_READER_PROTOCOL;
  * names here are the ones the protocol structure uses, in the pattern of the Edge protocol.
  */
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_CONNECT)(
-    EFI_IN EFI_SMART_CARD_READER_PROTOCOL *This,
-    EFI_IN EFI_UINT32 AccessMode,
-    EFI_IN EFI_UINT32 CardAction,
-    EFI_IN EFI_UINT32 PreferredProtocols,
-    EFI_OUT EFI_UINT32 *ActiveProtocol
+    EFI_SMART_CARD_READER_PROTOCOL *This,
+    EFI_UINT32 AccessMode,
+    EFI_UINT32 CardAction,
+    EFI_UINT32 PreferredProtocols,
+    EFI_UINT32 *ActiveProtocol
 );
 
 #define EFI_SCARD_AM_READER 0x0001
@@ -410,18 +410,18 @@ typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_CONNECT)(
 #define EFI_SCARD_PROTOCOL_RAW 0x0004
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_DISCONNECT)(
-    EFI_IN EFI_SMART_CARD_READER_PROTOCOL *This,
-    EFI_IN EFI_UINT32 CardAction
+    EFI_SMART_CARD_READER_PROTOCOL *This,
+    EFI_UINT32 CardAction
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_STATUS)(
-    EFI_IN EFI_SMART_CARD_READER_PROTOCOL *This,
-    EFI_OUT EFI_CHAR16 *ReaderName EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_UINTN *ReaderNameLength EFI_OPTIONAL,
-    EFI_OUT EFI_UINT32 *State EFI_OPTIONAL,
-    EFI_OUT EFI_UINT32 *CardProtocol EFI_OPTIONAL,
-    EFI_OUT EFI_UINT8 *Atr EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_UINTN *AtrLength EFI_OPTIONAL
+    EFI_SMART_CARD_READER_PROTOCOL *This,
+    EFI_CHAR16 *ReaderName,
+    EFI_UINTN *ReaderNameLength,
+    EFI_UINT32 *State,
+    EFI_UINT32 *CardProtocol,
+    EFI_UINT8 *Atr,
+    EFI_UINTN *AtrLength
 );
 
 #define EFI_SCARD_UNKNOWN 0x0000
@@ -430,30 +430,30 @@ typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_STATUS)(
 #define EFI_SCARD_ACTIVE 0x0003
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_TRANSMIT)(
-    EFI_IN EFI_SMART_CARD_READER_PROTOCOL *This,
-    EFI_IN EFI_UINT8 *CAPDU,
-    EFI_IN EFI_UINTN CAPDULength,
-    EFI_OUT EFI_UINT8 *RAPDU,
-    EFI_IN EFI_OUT EFI_UINTN *RAPDULength
+    EFI_SMART_CARD_READER_PROTOCOL *This,
+    EFI_UINT8 *CAPDU,
+    EFI_UINTN CAPDULength,
+    EFI_UINT8 *RAPDU,
+    EFI_UINTN *RAPDULength
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_CONTROL)(
-    EFI_IN EFI_SMART_CARD_READER_PROTOCOL *This,
-    EFI_IN EFI_UINT32 ControlCode,
-    EFI_IN EFI_UINT8 *InBuffer EFI_OPTIONAL,
-    EFI_IN EFI_UINTN InBufferLength EFI_OPTIONAL,
-    EFI_OUT EFI_UINT8 *OutBuffer EFI_OPTIONAL,
-    EFI_IN EFI_OUT EFI_UINTN *OutBufferLength EFI_OPTIONAL
+    EFI_SMART_CARD_READER_PROTOCOL *This,
+    EFI_UINT32 ControlCode,
+    EFI_UINT8 *InBuffer,
+    EFI_UINTN InBufferLength,
+    EFI_UINT8 *OutBuffer,
+    EFI_UINTN *OutBufferLength
 );
 
 #define EFI_SCARD_CTL_CODE(code) (0x42000000 + (code))
 #define EFI_CM_IOCTL_GET_FEATURE_REQUEST EFI_SCARD_CTL_CODE(3400)
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_READER_GET_ATTRIB)(
-    EFI_IN EFI_SMART_CARD_READER_PROTOCOL *This,
-    EFI_IN EFI_UINT32 Attrib,
-    EFI_OUT EFI_UINT8 *OutBuffer,
-    EFI_IN EFI_OUT EFI_UINTN *OutBufferLength
+    EFI_SMART_CARD_READER_PROTOCOL *This,
+    EFI_UINT32 Attrib,
+    EFI_UINT8 *OutBuffer,
+    EFI_UINTN *OutBufferLength
 );
 
 struct _EFI_SMART_CARD_READER_PROTOCOL {
@@ -478,69 +478,69 @@ typedef EFI_UINT8 EFI_SMART_CARD_AID[EFI_SCARD_AID_MAXSIZE];
 typedef EFI_UINT8 EFI_SMART_CARD_CSN[EFI_SCARD_CSN_SIZE];
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_GET_CONTEXT)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_OUT EFI_UINTN *NumberAidSupported,
-    EFI_IN EFI_OUT EFI_UINTN *AidTableSize EFI_OPTIONAL,
-    EFI_OUT EFI_SMART_CARD_AID *AidTable EFI_OPTIONAL,
-    EFI_OUT EFI_UINTN *NumberSCPresent,
-    EFI_IN EFI_OUT EFI_UINTN *CsnTableSize EFI_OPTIONAL,
-    EFI_OUT EFI_SMART_CARD_CSN *CsnTable EFI_OPTIONAL,
-    EFI_OUT EFI_UINT32 *VersionScEdgeProtocol EFI_OPTIONAL
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_UINTN *NumberAidSupported,
+    EFI_UINTN *AidTableSize,
+    EFI_SMART_CARD_AID *AidTable,
+    EFI_UINTN *NumberSCPresent,
+    EFI_UINTN *CsnTableSize,
+    EFI_SMART_CARD_CSN *CsnTable,
+    EFI_UINT32 *VersionScEdgeProtocol
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_CONNECT)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_OUT EFI_HANDLE *SCardHandle,
-    EFI_IN EFI_UINT8 *ScardCsn EFI_OPTIONAL,
-    EFI_OUT EFI_UINT8 *ScardAid EFI_OPTIONAL
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE *SCardHandle,
+    EFI_UINT8 *ScardCsn,
+    EFI_UINT8 *ScardAid
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_DISCONNECT)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_GET_CSN)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_OUT EFI_UINT8 Csn[EFI_SCARD_CSN_SIZE]
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_UINT8 Csn[EFI_SCARD_CSN_SIZE]
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_GET_READER_NAME)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_IN EFI_OUT EFI_UINTN *ReaderNameLength,
-    EFI_OUT EFI_CHAR16 *ReaderName EFI_OPTIONAL
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_UINTN *ReaderNameLength,
+    EFI_CHAR16 *ReaderName
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_VERIFY_PIN)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_IN EFI_INT32 PinSize,
-    EFI_IN EFI_UINT8 *PinCode,
-    EFI_OUT EFI_BOOLEAN *PinResult,
-    EFI_OUT EFI_UINT32 *RemainingAttempts EFI_OPTIONAL
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_INT32 PinSize,
+    EFI_UINT8 *PinCode,
+    EFI_BOOLEAN *PinResult,
+    EFI_UINT32 *RemainingAttempts
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_GET_PIN_REMAINING)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_OUT EFI_UINT32 *RemainingAttempts
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_UINT32 *RemainingAttempts
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_GET_DATA)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_IN EFI_GUID *DataId,
-    EFI_IN EFI_OUT EFI_UINTN *DataSize,
-    EFI_OUT EFI_VOID *Data EFI_OPTIONAL
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_GUID *DataId,
+    EFI_UINTN *DataSize,
+    EFI_VOID *Data
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_GET_CREDENTIAL)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_IN EFI_OUT EFI_UINTN *CredentialSize,
-    EFI_OUT EFI_UINT8 *CredentialList EFI_OPTIONAL
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_UINTN *CredentialSize,
+    EFI_UINT8 *CredentialList
 );
 
 #define EFI_SC_EDGE_TAG_HEADER 0x0000
@@ -570,14 +570,14 @@ typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_GET_CREDENTIAL)(
 #define EFI_SC_EDGE_ECDH_521 0x08
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_SIGN_DATA)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_IN EFI_UINTN KeyId,
-    EFI_IN EFI_UINTN KeyType,
-    EFI_IN EFI_GUID *HashAlgorithm,
-    EFI_IN EFI_GUID *PaddingMethod,
-    EFI_IN EFI_UINT8 *HashedData,
-    EFI_OUT EFI_UINT8 *SignatureData
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_UINTN KeyId,
+    EFI_UINTN KeyType,
+    EFI_GUID *HashAlgorithm,
+    EFI_GUID *PaddingMethod,
+    EFI_UINT8 *HashedData,
+    EFI_UINT8 *SignatureData
 );
 
 #define EFI_PADDING_RSASSA_PKCS1V1P5_GUID \
@@ -587,15 +587,15 @@ typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_SIGN_DATA)(
     {0x7b2349e0, 0x522d, 0x4f8e, {0xb9, 0x27, 0x69, 0xd9, 0x7c, 0x9e, 0x79, 0x5f}}
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_DECRYPT_DATA)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_IN EFI_UINTN KeyId,
-    EFI_IN EFI_GUID *HashAlgorithm,
-    EFI_IN EFI_GUID *PaddingMethod,
-    EFI_IN EFI_UINTN EncryptedSize,
-    EFI_IN EFI_UINT8 *EncryptedData,
-    EFI_IN EFI_OUT EFI_UINTN *PlaintextSize,
-    EFI_OUT EFI_UINT8 *PlaintextData
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_UINTN KeyId,
+    EFI_GUID *HashAlgorithm,
+    EFI_GUID *PaddingMethod,
+    EFI_UINTN EncryptedSize,
+    EFI_UINT8 *EncryptedData,
+    EFI_UINTN *PlaintextSize,
+    EFI_UINT8 *PlaintextData
 );
 
 #define EFI_PADDING_NONE_GUID \
@@ -608,12 +608,12 @@ typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_DECRYPT_DATA)(
     {0xc1e63ac4, 0xd0cf, 0x4ce6, {0x83, 0x5b, 0xee, 0xd0, 0xe6, 0xa8, 0xa4, 0x5b}}
 
 typedef EFI_STATUS (EFI_API *EFI_SMART_CARD_EDGE_BUILD_DH_AGREEMENT)(
-    EFI_IN EFI_SMART_CARD_EDGE_PROTOCOL *This,
-    EFI_IN EFI_HANDLE SCardHandle,
-    EFI_IN EFI_UINTN KeyId,
-    EFI_IN EFI_UINT8 *dataQx,
-    EFI_IN EFI_UINT8 *dataQy,
-    EFI_OUT EFI_UINT8 *DHAgreement
+    EFI_SMART_CARD_EDGE_PROTOCOL *This,
+    EFI_HANDLE SCardHandle,
+    EFI_UINTN KeyId,
+    EFI_UINT8 *dataQx,
+    EFI_UINT8 *dataQy,
+    EFI_UINT8 *DHAgreement
 );
 
 struct _EFI_SMART_CARD_EDGE_PROTOCOL {
