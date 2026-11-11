@@ -253,7 +253,9 @@ struct efi_bluetooth_io_protocol {
 
 struct efi_bluetooth_config_protocol;
 
-typedef efi_status (EFI_API *efi_bluetooth_config_init)(struct efi_bluetooth_config_protocol *self);
+typedef efi_status (EFI_API *efi_bluetooth_config_init)(
+    struct efi_bluetooth_config_protocol *self
+);
 
 #define EFI_BLUETOOTH_HCI_COMMAND_LOCAL_READABLE_NAME_MAX_SIZE 248
 
@@ -422,7 +424,8 @@ struct efi_bluetooth_config_protocol {
     efi_bluetooth_config_register_pin_callback register_pin_callback;
     efi_bluetooth_config_register_get_link_key_callback register_get_link_key_callback;
     efi_bluetooth_config_register_set_link_key_callback register_set_link_key_callback;
-    efi_bluetooth_config_register_connect_complete_callback register_link_connect_complete_callback;
+    efi_bluetooth_config_register_connect_complete_callback
+        register_link_connect_complete_callback;
 };
 
 #define EFI_BLUETOOTH_ATTRIBUTE_PROTOCOL_GUID \
@@ -758,7 +761,8 @@ struct efi_bluetooth_le_config_protocol {
     efi_bluetooth_le_config_send_smp_auth_data send_smp_auth_data;
     efi_bluetooth_le_config_register_smp_get_data_callback register_smp_get_data_callback;
     efi_bluetooth_le_config_register_smp_set_data_callback register_smp_set_data_callback;
-    efi_bluetooth_le_config_register_connect_complete_callback register_link_connect_complete_callback;
+    efi_bluetooth_le_config_register_connect_complete_callback
+        register_link_connect_complete_callback;
 };
 
 #ifdef __cplusplus

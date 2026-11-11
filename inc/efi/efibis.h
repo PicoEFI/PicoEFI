@@ -75,7 +75,8 @@ struct efi_bis_signature_info {
 #define EFI_BIS_GET_SIGINFO_COUNT(bis_data_ptr) \
     ((bis_data_ptr)->length / sizeof(struct efi_bis_signature_info))
 
-#define EFI_BIS_GET_SIGINFO_ARRAY(bis_data_ptr) ((struct efi_bis_signature_info *)(bis_data_ptr)->data)
+#define EFI_BIS_GET_SIGINFO_ARRAY(bis_data_ptr) \
+    ((struct efi_bis_signature_info *)(bis_data_ptr)->data)
 
 #define EFI_BIS_CERT_ID_DSA EFI_BIS_ALG_DSA
 #define EFI_BIS_CERT_ID_RSA_MD5 EFI_BIS_ALG_RSA_MD5

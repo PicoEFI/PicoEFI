@@ -109,8 +109,7 @@ struct efi_platform_driver_override_protocol {
 #define EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL_GUID \
     { 0x3bc1b285, 0x8a15, 0x4a82, { 0xaa, 0xbf, 0x4d, 0x7d, 0x13, 0xfb, 0x32, 0x65 } }
 
-struct efi_bus_specific_driver_override_protocol
-;
+struct efi_bus_specific_driver_override_protocol;
 
 typedef efi_status (EFI_API *efi_bus_specific_driver_override_get_driver)(
     struct efi_bus_specific_driver_override_protocol *self,
@@ -501,7 +500,8 @@ struct efi_file_system_volume_label {
     uint16_t volume_label[1];
 };
 
-#define EFI_SIZE_OF_EFI_FILE_SYSTEM_VOLUME_LABEL offsetof(struct efi_file_system_volume_label, volume_label)
+#define EFI_SIZE_OF_EFI_FILE_SYSTEM_VOLUME_LABEL \
+    offsetof(struct efi_file_system_volume_label, volume_label)
 
 #define EFI_DISK_IO_PROTOCOL_GUID \
     { 0xce345171, 0xba0b, 0x11d2, { 0x8e, 0x4f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b } }

@@ -117,7 +117,9 @@ typedef const uint16_t *(EFI_API *efi_shell_get_env_ex)(
     uint32_t *attributes
 );
 
-typedef struct efi_file_info *(EFI_API *efi_shell_get_file_info)(efi_shell_file_handle file_handle);
+typedef struct efi_file_info *(EFI_API *efi_shell_get_file_info)(
+    efi_shell_file_handle file_handle
+);
 
 typedef uint16_t *(EFI_API *efi_shell_get_file_path_from_device_path)(
     const struct efi_device_path_protocol *path

@@ -7,8 +7,8 @@
 
 #include <stdint.h>
 
-#if !defined(__x86_64__) && !defined(__amd64__) && !defined(__i386__) && \
-    !defined(__aarch64__) && !defined(__arm__) && !defined(__riscv) && !defined(__loongarch__)
+#if !defined(__x86_64__) && !defined(__amd64__) && !defined(__i386__) && !defined(__aarch64__) \
+ && !defined(__arm__) && !defined(__riscv) && !defined(__loongarch__)
 #   error "PicoEFI does not support the target architecture."
 #endif
 
@@ -163,11 +163,15 @@ struct efi_memory_descriptor {
 
 // UEFI aligns 64-bit fields to 8 bytes, which the IA-32 ABI does only with
 // -malign-double.
-#if (defined(__cplusplus) && __cplusplus >= 201103L) || \
-    (!defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
-static_assert(sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-double on IA-32 (32-bit x86).");
+#if (defined(__cplusplus) && __cplusplus >= 201103L) \
+ || (!defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
+static_assert(
+    sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-double on IA-32 (32-bit x86)."
+);
 #elif !defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-_Static_assert(sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-double on IA-32 (32-bit x86).");
+_Static_assert(
+    sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-double on IA-32 (32-bit x86)."
+);
 #endif
 
 #define EFI_OS_INDICATIONS_BOOT_TO_FW_UI 0x0000000000000001

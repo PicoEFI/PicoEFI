@@ -71,7 +71,9 @@ typedef efi_status (EFI_API *efi_simple_network_reset)(
     bool extended_verification
 );
 
-typedef efi_status (EFI_API *efi_simple_network_shutdown)(struct efi_simple_network_protocol *self);
+typedef efi_status (EFI_API *efi_simple_network_shutdown)(
+    struct efi_simple_network_protocol *self
+);
 
 // mcast_filter points to a list, as described; the prototype prints it by
 // value.

@@ -16,10 +16,8 @@ extern "C" {
 #define EFI_PXE_UINT64_SUPPORT 1
 
 #define EFI_PXE_BUSTYPE(a, b, c, d) \
-    ((((uint32_t)(d) & 0xff) << 24) | \
-    (((uint32_t)(c) & 0xff) << 16) | \
-    (((uint32_t)(b) & 0xff) << 8) | \
-    ((uint32_t)(a) & 0xff))
+    ((((uint32_t)(d) & 0xff) << 24) | (((uint32_t)(c) & 0xff) << 16) \
+   | (((uint32_t)(b) & 0xff) << 8) | ((uint32_t)(a) & 0xff))
 
 #define EFI_PXE_BUSTYPE_PXE EFI_PXE_BUSTYPE('!', 'P', 'X', 'E')
 
@@ -28,25 +26,17 @@ extern "C" {
 #define EFI_PXE_BUSTYPE_USB EFI_PXE_BUSTYPE('U', 'S', 'B', 'R')
 #define EFI_PXE_BUSTYPE_1394 EFI_PXE_BUSTYPE('1', '3', '9', '4')
 
-#define EFI_PXE_SWAP_UINT16(n) \
-    ((((uint16_t)(n) & 0x00ff) << 8) | \
-    (((uint16_t)(n) & 0xff00) >> 8))
+#define EFI_PXE_SWAP_UINT16(n) ((((uint16_t)(n) & 0x00ff) << 8) | (((uint16_t)(n) & 0xff00) >> 8))
 
 #define EFI_PXE_SWAP_UINT32(n) \
-    ((((uint32_t)(n) & 0x000000ff) << 24) | \
-    (((uint32_t)(n) & 0x0000ff00) << 8) | \
-    (((uint32_t)(n) & 0x00ff0000) >> 8) | \
-    (((uint32_t)(n) & 0xff000000) >> 24))
+    ((((uint32_t)(n) & 0x000000ff) << 24) | (((uint32_t)(n) & 0x0000ff00) << 8) \
+   | (((uint32_t)(n) & 0x00ff0000) >> 8) | (((uint32_t)(n) & 0xff000000) >> 24))
 
 #define EFI_PXE_SWAP_UINT64(n) \
-    ((((uint64_t)(n) & 0x00000000000000ff) << 56) | \
-    (((uint64_t)(n) & 0x000000000000ff00) << 40) | \
-    (((uint64_t)(n) & 0x0000000000ff0000) << 24) | \
-    (((uint64_t)(n) & 0x00000000ff000000) << 8) | \
-    (((uint64_t)(n) & 0x000000ff00000000) >> 8) | \
-    (((uint64_t)(n) & 0x0000ff0000000000) >> 24) | \
-    (((uint64_t)(n) & 0x00ff000000000000) >> 40) | \
-    (((uint64_t)(n) & 0xff00000000000000) >> 56))
+    ((((uint64_t)(n) & 0x00000000000000ff) << 56) | (((uint64_t)(n) & 0x000000000000ff00) << 40) \
+   | (((uint64_t)(n) & 0x0000000000ff0000) << 24) | (((uint64_t)(n) & 0x00000000ff000000) << 8) \
+   | (((uint64_t)(n) & 0x000000ff00000000) >> 8) | (((uint64_t)(n) & 0x0000ff0000000000) >> 24) \
+   | (((uint64_t)(n) & 0x00ff000000000000) >> 40) | (((uint64_t)(n) & 0xff00000000000000) >> 56))
 
 #define EFI_PXE_CPBSIZE_NOT_USED 0
 #define EFI_PXE_DBSIZE_NOT_USED 0

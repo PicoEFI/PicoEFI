@@ -46,8 +46,7 @@ struct efi_driver_diagnostics2_protocol {
 #define EFI_PLATFORM_TO_DRIVER_CONFIGURATION_PROTOCOL_GUID \
     { 0x642cd590, 0x8059, 0x4c0a, { 0xa9, 0x58, 0xc5, 0xec, 0x07, 0xd2, 0x3c, 0x4b } }
 
-struct efi_platform_to_driver_configuration_protocol
-;
+struct efi_platform_to_driver_configuration_protocol;
 
 typedef efi_status (EFI_API *efi_platform_to_driver_configuration_query)(
     struct efi_platform_to_driver_configuration_protocol *self,
