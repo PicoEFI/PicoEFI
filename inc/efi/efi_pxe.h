@@ -228,13 +228,13 @@ typedef uint8_t EFI_PXE_FRAME_TYPE;
 typedef uint32_t EFI_PXE_IPV4;
 
 /* Every PXE structure is byte packed, also those printed without the pragma. */
-typedef struct __attribute__((__packed__)) _EFI_PXE_IPV6 {
+struct efi_pxe_ipv6 {
     uint32_t num[4];
-} EFI_PXE_IPV6;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_pxe_mac_addr {
     uint8_t num[32];
-} EFI_PXE_MAC_ADDR;
+} __attribute__((__packed__));
 
 typedef uint8_t EFI_PXE_IFTYPE;
 
@@ -244,7 +244,7 @@ typedef uint8_t EFI_PXE_IFTYPE;
 
 typedef uint16_t EFI_PXE_MEDIA_PROTOCOL;
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_HW_UNDI {
+struct efi_pxe_hw_undi {
     uint32_t Signature;
     uint8_t Len;
     uint8_t Fudge;
@@ -255,7 +255,7 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_HW_UNDI {
     uint8_t IFcntExt;
     uint8_t reserved;
     uint32_t Implementation;
-} EFI_PXE_HW_UNDI;
+} __attribute__((__packed__));
 
 #define EFI_PXE_HWSTAT_STATE_MASK 0xC0000000
 #define EFI_PXE_HWSTAT_BUSY 0xC0000000
@@ -300,7 +300,7 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_HW_UNDI {
 #define EFI_PXE_HWCMD_CLEAR_PACKET_RX_INT 0x00000002
 #define EFI_PXE_HWCMD_CLEAR_CMD_COMPLETE_INT 0x00000001
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_SW_UNDI {
+struct efi_pxe_sw_undi {
     uint32_t Signature;
     uint8_t Len;
     uint8_t Fudge;
@@ -315,12 +315,12 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_SW_UNDI {
     uint8_t reserved2[3];
     uint8_t BusCnt;
     uint32_t BusType[1];
-} EFI_PXE_SW_UNDI;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) _EFI_PXE_UNDI {
-    EFI_PXE_HW_UNDI hw;
-    EFI_PXE_SW_UNDI sw;
-} EFI_PXE_UNDI;
+union efi_pxe_undi {
+    struct efi_pxe_hw_undi hw;
+    struct efi_pxe_sw_undi sw;
+} __attribute__((__packed__));
 
 #define EFI_PXE_ROMID_SIGNATURE EFI_PXE_BUSTYPE('!', 'P', 'X', 'E')
 
@@ -352,7 +352,7 @@ typedef union __attribute__((__packed__)) _EFI_PXE_UNDI {
 #define EFI_PXE_ROMID_IMP_PACKET_RX_INT_SUPPORTED 0x00000002
 #define EFI_PXE_ROMID_IMP_CMD_COMPLETE_INT_SUPPORTED 0x00000001
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CDB {
+struct efi_pxe_cdb {
     EFI_PXE_OPCODE OpCode;
     EFI_PXE_OPFLAGS OpFlags;
     uint16_t CPBsize;
@@ -363,21 +363,21 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CDB {
     EFI_PXE_STATFLAGS StatFlags;
     uint16_t IFnum;
     EFI_PXE_CONTROL Control;
-} EFI_PXE_CDB;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) _EFI_PXE_IP_ADDR {
-    EFI_PXE_IPV6 IPv6;
+union efi_pxe_ip_addr {
+    struct efi_pxe_ipv6 IPv6;
     EFI_PXE_IPV4 IPv4;
-} EFI_PXE_IP_ADDR;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) _EFI_PXE_DEVICE {
+union efi_pxe_device {
     struct __attribute__((__packed__)) {
         uint32_t BusType;
         uint16_t Bus;
         uint8_t Device;
         uint8_t Function;
     } PCI, PCC;
-} EFI_PXE_DEVICE;
+} __attribute__((__packed__));
 
 /* Bounds for the arrays printed with [n]; the CDB's CPBsize and DBsize give the length used. */
 #define EFI_MAX_PCI_CONFIG_LEN 64
@@ -386,7 +386,7 @@ typedef union __attribute__((__packed__)) _EFI_PXE_DEVICE {
 #define EFI_MAX_MCAST_ADDRESS_CNT 8
 #define EFI_MAX_XMIT_FRAGMENTS 16
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_START_31 {
+struct efi_pxe_cpb_start_31 {
     uint64_t Delay;
     uint64_t Block;
     uint64_t Virt2Phys;
@@ -395,14 +395,14 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_START_31 {
     uint64_t UnMap_Mem;
     uint64_t Sync_Mem;
     uint64_t UniqueId;
-} EFI_PXE_CPB_START_31;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_START_30 {
+struct efi_pxe_cpb_start_30 {
     uint64_t Delay;
     uint64_t Block;
     uint64_t Virt2Phys;
     uint64_t Mem_IO;
-} EFI_PXE_CPB_START_30;
+} __attribute__((__packed__));
 
 #define EFI_TO_AND_FROM_DEVICE 0
 #define EFI_FROM_DEVICE 1
@@ -414,7 +414,7 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_START_30 {
 #define EFI_PXE_MEM_READ 2
 #define EFI_PXE_MEM_WRITE 4
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_GET_INIT_INFO {
+struct efi_pxe_db_get_init_info {
     uint32_t MemoryRequired;
     uint32_t FrameDataLen;
     uint32_t LinkSpeeds[4];
@@ -430,7 +430,7 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_DB_GET_INIT_INFO {
     uint8_t IFtype;
     uint8_t SupportedDuplexModes;
     uint8_t SupportedLoopBackModes;
-} EFI_PXE_DB_GET_INIT_INFO;
+} __attribute__((__packed__));
 
 #define EFI_PXE_MAX_TXRX_UNIT_ETHER 1500
 #define EFI_PXE_HWADDR_LEN_ETHER 0x0006
@@ -442,7 +442,7 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_DB_GET_INIT_INFO {
 #define EFI_PXE_LOOPBACK_INTERNAL_SUPPORTED 1
 #define EFI_PXE_LOOPBACK_EXTERNAL_SUPPORTED 2
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_PCI_CONFIG_INFO {
+struct efi_pxe_pci_config_info {
     uint32_t BusType;
     uint16_t Bus;
     uint8_t Device;
@@ -452,9 +452,9 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_PCI_CONFIG_INFO {
         uint16_t Word[128];
         uint32_t Dword[64];
     } Config;
-} EFI_PXE_PCI_CONFIG_INFO;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_PCC_CONFIG_INFO {
+struct efi_pxe_pcc_config_info {
     uint32_t BusType;
     uint16_t Bus;
     uint8_t Device;
@@ -464,14 +464,14 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_PCC_CONFIG_INFO {
         uint16_t Word[128];
         uint32_t Dword[64];
     } Config;
-} EFI_PXE_PCC_CONFIG_INFO;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) _EFI_PXE_DB_GET_CONFIG_INFO {
-    EFI_PXE_PCI_CONFIG_INFO pci;
-    EFI_PXE_PCC_CONFIG_INFO pcc;
-} EFI_PXE_DB_GET_CONFIG_INFO;
+union efi_pxe_db_get_config_info {
+    struct efi_pxe_pci_config_info pci;
+    struct efi_pxe_pcc_config_info pcc;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_INITIALIZE {
+struct efi_pxe_cpb_initialize {
     uint64_t MemoryAddr;
     uint32_t MemoryLength;
     uint32_t LinkSpeed;
@@ -481,7 +481,7 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_INITIALIZE {
     uint16_t RxBufSize;
     uint8_t DuplexMode;
     uint8_t LoopBackMode;
-} EFI_PXE_CPB_INITIALIZE;
+} __attribute__((__packed__));
 
 #define EFI_PXE_DUPLEX_AUTO_DETECT 0x00
 #define EFI_PXE_FORCE_FULL_DUPLEX 0x01
@@ -491,36 +491,36 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_INITIALIZE {
 #define EFI_PXE_LOOPBACK_INTERNAL 1
 #define EFI_PXE_LOOPBACK_EXTERNAL 2
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_INITIALIZE {
+struct efi_pxe_db_initialize {
     uint32_t MemoryUsed;
     uint16_t TxBufCnt;
     uint16_t TxBufSize;
     uint16_t RxBufCnt;
     uint16_t RxBufSize;
-} EFI_PXE_DB_INITIALIZE;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_RECEIVE_FILTERS {
-    EFI_PXE_MAC_ADDR MCastList[EFI_MAX_MCAST_ADDRESS_CNT];
-} EFI_PXE_CPB_RECEIVE_FILTERS;
+struct efi_pxe_cpb_receive_filters {
+    struct efi_pxe_mac_addr MCastList[EFI_MAX_MCAST_ADDRESS_CNT];
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_RECEIVE_FILTERS {
-    EFI_PXE_MAC_ADDR MCastList[EFI_MAX_MCAST_ADDRESS_CNT];
-} EFI_PXE_DB_RECEIVE_FILTERS;
+struct efi_pxe_db_receive_filters {
+    struct efi_pxe_mac_addr MCastList[EFI_MAX_MCAST_ADDRESS_CNT];
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_STATION_ADDRESS {
-    EFI_PXE_MAC_ADDR StationAddr;
-} EFI_PXE_CPB_STATION_ADDRESS;
+struct efi_pxe_cpb_station_address {
+    struct efi_pxe_mac_addr StationAddr;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_STATION_ADDRESS {
-    EFI_PXE_MAC_ADDR StationAddr;
-    EFI_PXE_MAC_ADDR BroadcastAddr;
-    EFI_PXE_MAC_ADDR PermanentAddr;
-} EFI_PXE_DB_STATION_ADDRESS;
+struct efi_pxe_db_station_address {
+    struct efi_pxe_mac_addr StationAddr;
+    struct efi_pxe_mac_addr BroadcastAddr;
+    struct efi_pxe_mac_addr PermanentAddr;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_STATISTICS {
+struct efi_pxe_db_statistics {
     uint64_t Supported;
     uint64_t Data[64];
-} EFI_PXE_DB_STATISTICS;
+} __attribute__((__packed__));
 
 #define EFI_PXE_STATISTICS_RX_TOTAL_FRAMES 0x00
 #define EFI_PXE_STATISTICS_RX_GOOD_FRAMES 0x01
@@ -551,15 +551,15 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_DB_STATISTICS {
 #define EFI_PXE_STATISTICS_TX_ERROR_FRAMES 0x18
 #define EFI_PXE_STATISTICS_TX_RETRY_FRAMES 0x19
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_MCAST_IP_TO_MAC {
-    EFI_PXE_IP_ADDR IP[1];
-} EFI_PXE_CPB_MCAST_IP_TO_MAC;
+struct efi_pxe_cpb_mcast_ip_to_mac {
+    union efi_pxe_ip_addr IP[1];
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_MCAST_IP_TO_MAC {
-    EFI_PXE_MAC_ADDR MAC[1];
-} EFI_PXE_DB_MCAST_IP_TO_MAC;
+struct efi_pxe_db_mcast_ip_to_mac {
+    struct efi_pxe_mac_addr MAC[1];
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_NVDATA_SPARSE {
+struct efi_pxe_cpb_nvdata_sparse {
     struct __attribute__((__packed__)) {
         uint32_t Addr;
         union __attribute__((__packed__)) {
@@ -568,43 +568,43 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_NVDATA_SPARSE {
             uint32_t Dword;
         } Data;
     } Item[EFI_MAX_EEPROM_LEN];
-} EFI_PXE_CPB_NVDATA_SPARSE;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) _EFI_PXE_CPB_NVDATA_BULK {
+union efi_pxe_cpb_nvdata_bulk {
     uint8_t Byte[EFI_MAX_EEPROM_LEN << 2];
     uint16_t Word[EFI_MAX_EEPROM_LEN << 1];
     uint32_t Dword[EFI_MAX_EEPROM_LEN];
-} EFI_PXE_CPB_NVDATA_BULK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_NVDATA {
+struct efi_pxe_db_nvdata {
     union __attribute__((__packed__)) {
         uint8_t Byte[EFI_MAX_EEPROM_LEN << 2];
         uint16_t Word[EFI_MAX_EEPROM_LEN << 1];
         uint32_t Dword[EFI_MAX_EEPROM_LEN];
     } Data;
-} EFI_PXE_DB_NVDATA;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_GET_STATUS {
+struct efi_pxe_db_get_status {
     uint32_t RxFrameLen;
     uint32_t reserved;
     uint64_t TxBuffer[EFI_MAX_XMIT_BUFFERS];
-} EFI_PXE_DB_GET_STATUS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_FILL_HEADER {
-    EFI_PXE_MAC_ADDR SrcAddr;
-    EFI_PXE_MAC_ADDR DestAddr;
+struct efi_pxe_cpb_fill_header {
+    struct efi_pxe_mac_addr SrcAddr;
+    struct efi_pxe_mac_addr DestAddr;
     uint64_t MediaHeader;
     uint32_t PacketLen;
     uint16_t Protocol;
     uint16_t MediaHeaderLen;
-} EFI_PXE_CPB_FILL_HEADER;
+} __attribute__((__packed__));
 
 #define EFI_PXE_PROTOCOL_ETHERNET_IP 0x0800
 #define EFI_PXE_PROTOCOL_ETHERNET_ARP 0x0806
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_FILL_HEADER_FRAGMENTED {
-    EFI_PXE_MAC_ADDR SrcAddr;
-    EFI_PXE_MAC_ADDR DestAddr;
+struct efi_pxe_cpb_fill_header_fragmented {
+    struct efi_pxe_mac_addr SrcAddr;
+    struct efi_pxe_mac_addr DestAddr;
     uint32_t PacketLen;
     EFI_PXE_MEDIA_PROTOCOL Protocol;
     uint16_t MediaHeaderLen;
@@ -615,16 +615,16 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_FILL_HEADER_FRAGMENTED {
         uint32_t FragLen;
         uint32_t reserved;
     } FragDesc[EFI_MAX_XMIT_FRAGMENTS];
-} EFI_PXE_CPB_FILL_HEADER_FRAGMENTED;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_TRANSMIT {
+struct efi_pxe_cpb_transmit {
     uint64_t FrameAddr;
     uint32_t DataLen;
     uint16_t MediaheaderLen;
     uint16_t reserved;
-} EFI_PXE_CPB_TRANSMIT;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_TRANSMIT_FRAGMENTS {
+struct efi_pxe_cpb_transmit_fragments {
     uint32_t FrameLen;
     uint16_t MediaheaderLen;
     uint16_t FragCnt;
@@ -633,23 +633,23 @@ typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_TRANSMIT_FRAGMENTS {
         uint32_t FragLen;
         uint32_t reserved;
     } FragDesc[EFI_MAX_XMIT_FRAGMENTS];
-} EFI_PXE_CPB_TRANSMIT_FRAGMENTS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_CPB_RECEIVE {
+struct efi_pxe_cpb_receive {
     uint64_t BufferAddr;
     uint32_t BufferLen;
     uint32_t reserved;
-} EFI_PXE_CPB_RECEIVE;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_PXE_DB_RECEIVE {
-    EFI_PXE_MAC_ADDR SrcAddr;
-    EFI_PXE_MAC_ADDR DestAddr;
+struct efi_pxe_db_receive {
+    struct efi_pxe_mac_addr SrcAddr;
+    struct efi_pxe_mac_addr DestAddr;
     uint32_t FrameLen;
     EFI_PXE_MEDIA_PROTOCOL Protocol;
     uint16_t MediaHeaderLen;
     EFI_PXE_FRAME_TYPE Type;
     uint8_t reserved[7];
-} EFI_PXE_DB_RECEIVE;
+} __attribute__((__packed__));
 
 #ifdef __cplusplus
 }

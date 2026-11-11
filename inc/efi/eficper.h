@@ -21,7 +21,7 @@ extern "C" {
 #define EFI_ERROR_RECORD_HEADER_TIME_STAMP_VALID 0x00000002
 #define EFI_ERROR_RECORD_HEADER_PARTITION_ID_VALID 0x00000004
 
-typedef struct __attribute__((__packed__)) {
+struct efi_error_time_stamp {
     uint8_t Seconds;
     uint8_t Minutes;
     uint8_t Hours;
@@ -30,7 +30,7 @@ typedef struct __attribute__((__packed__)) {
     uint8_t Month;
     uint8_t Year;
     uint8_t Century;
-} EFI_ERROR_TIME_STAMP;
+} __attribute__((__packed__));
 
 #define EFI_ERROR_TIME_STAMP_PRECISE 0x01
 
@@ -74,8 +74,8 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_HW_ERROR_FLAGS_PREVERR 0x00000002
 #define EFI_HW_ERROR_FLAGS_SIMULATED 0x00000004
 
-/* SectionCount EFI_ERROR_SECTION_DESCRIPTOR structures follow, then the section bodies. */
-typedef struct __attribute__((__packed__)) {
+/* SectionCount struct efi_error_section_descriptor follow, then the section bodies. */
+struct efi_common_error_record_header {
     uint32_t SignatureStart;
     uint16_t Revision;
     uint32_t SignatureEnd;
@@ -83,18 +83,18 @@ typedef struct __attribute__((__packed__)) {
     uint32_t ErrorSeverity;
     uint32_t ValidationBits;
     uint32_t RecordLength;
-    EFI_ERROR_TIME_STAMP TimeStamp;
-    EFI_GUID PlatformID;
-    EFI_GUID PartitionID;
-    EFI_GUID CreatorID;
-    EFI_GUID NotificationType;
+    struct efi_error_time_stamp TimeStamp;
+    struct efi_guid PlatformID;
+    struct efi_guid PartitionID;
+    struct efi_guid CreatorID;
+    struct efi_guid NotificationType;
     uint64_t RecordID;
     uint32_t Flags;
     uint64_t PersistenceInfo;
     uint8_t Resv1[12];
-} EFI_COMMON_ERROR_RECORD_HEADER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_generic_error_status {
     uint64_t Resv1:8;
     uint64_t Type:8;
     uint64_t AddressSignal:1;
@@ -105,7 +105,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t FirstError:1;
     uint64_t OverflowNotLogged:1;
     uint64_t Resv2:41;
-} EFI_GENERIC_ERROR_STATUS;
+} __attribute__((__packed__));
 
 typedef enum {
     EfiErrorInternal = 1,
@@ -191,18 +191,18 @@ typedef enum {
 #define EFI_ERROR_SECTION_FRU_MEMORY_POISON_GUID \
     {0x5E4706C1, 0x5356, 0x48C6, {0x93, 0x0B, 0x52, 0xF2, 0x12, 0x0A, 0x44, 0x58}}
 
-typedef struct __attribute__((__packed__)) {
+struct efi_error_section_descriptor {
     uint32_t SectionOffset;
     uint32_t SectionLength;
     uint16_t Revision;
     uint8_t SecValidMask;
     uint8_t Resv1;
     uint32_t SectionFlags;
-    EFI_GUID SectionType;
-    EFI_GUID FruId;
+    struct efi_guid SectionType;
+    struct efi_guid FruId;
     uint32_t Severity;
     char FruString[20];
-} EFI_ERROR_SECTION_DESCRIPTOR;
+} __attribute__((__packed__));
 
 #define EFI_GENERIC_ERROR_PROC_TYPE_VALID 0x0000000000000001
 #define EFI_GENERIC_ERROR_PROC_ISA_VALID 0x0000000000000002
@@ -244,7 +244,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_GENERIC_ERROR_PROC_FLAGS_OVERFLOW 0x04
 #define EFI_GENERIC_ERROR_PROC_FLAGS_CORRECTED 0x08
 
-typedef struct __attribute__((__packed__)) {
+struct efi_processor_generic_error_data {
     uint64_t ValidFields;
     uint8_t Type;
     uint8_t Isa;
@@ -260,25 +260,25 @@ typedef struct __attribute__((__packed__)) {
     uint64_t RequestorId;
     uint64_t ResponderId;
     uint64_t InstructionIP;
-} EFI_PROCESSOR_GENERIC_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_IA32_X64_PROCESSOR_ERROR_APIC_ID_VALID 0x0000000000000001
 #define EFI_IA32_X64_PROCESSOR_ERROR_CPU_ID_INFO_VALID 0x0000000000000002
 
-typedef struct __attribute__((__packed__)) {
+struct efi_ia32_x64_valid_bits {
     uint64_t ApicIdValid:1;
     uint64_t CpuIdInfoValid:1;
     uint64_t ErrorInfoNum:6;
     uint64_t ContextNum:6;
     uint64_t Resv1:50;
-} EFI_IA32_X64_VALID_BITS;
+} __attribute__((__packed__));
 
 /* The error information and context structures that ValidFields counts follow. */
-typedef struct __attribute__((__packed__)) {
+struct efi_ia32_x64_processor_error_record {
     uint64_t ValidFields;
     uint64_t ApicId;
     uint8_t CpuIdInfo[48];
-} EFI_IA32_X64_PROCESSOR_ERROR_RECORD;
+} __attribute__((__packed__));
 
 #define EFI_IA32_X64_ERROR_TYPE_CACHE_CHECK_GUID \
     {0xA55701F5, 0xE3EF, 0x43de, {0xAC, 0x72, 0x24, 0x9B, 0x57, 0x3F, 0xAD, 0x2C}}
@@ -321,7 +321,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_CACHE_CHECK_OPERATION_TYPE_EVICTION 7
 #define EFI_CACHE_CHECK_OPERATION_TYPE_SNOOP 8
 
-typedef struct __attribute__((__packed__)) {
+struct efi_ia32_x64_cache_check_info {
     uint64_t ValidFields:16;
     uint64_t TransactionType:2;
     uint64_t Operation:4;
@@ -332,7 +332,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t RestartableIp:1;
     uint64_t Overflow:1;
     uint64_t Resv1:34;
-} EFI_IA32_X64_CACHE_CHECK_INFO;
+} __attribute__((__packed__));
 
 #define EFI_TLB_CHECK_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_TLB_CHECK_OPERATION_VALID 0x0002
@@ -355,7 +355,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_TLB_CHECK_OPERATION_TYPE_INST_FETCH 5
 #define EFI_TLB_CHECK_OPERATION_TYPE_PREFETCH 6
 
-typedef struct __attribute__((__packed__)) {
+struct efi_ia32_x64_tlb_check_info {
     uint64_t ValidFields:16;
     uint64_t TransactionType:2;
     uint64_t Operation:4;
@@ -366,7 +366,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t RestartableIp:1;
     uint64_t Overflow:1;
     uint64_t Resv1:34;
-} EFI_IA32_X64_TLB_CHECK_INFO;
+} __attribute__((__packed__));
 
 #define EFI_BUS_CHECK_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_BUS_CHECK_OPERATION_VALID 0x0002
@@ -402,7 +402,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_BUS_CHECK_ADDRESS_SPACE_TYPE_IO 2
 #define EFI_BUS_CHECK_ADDRESS_SPACE_TYPE_OTHER 3
 
-typedef struct __attribute__((__packed__)) {
+struct efi_ia32_x64_bus_check_info {
     uint64_t ValidFields:16;
     uint64_t TransactionType:2;
     uint64_t Operation:4;
@@ -416,7 +416,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t TimeOut:1;
     uint64_t AddressSpace:2;
     uint64_t Resv1:29;
-} EFI_IA32_X64_BUS_CHECK_INFO;
+} __attribute__((__packed__));
 
 #define EFI_MS_CHECK_ERROR_TYPE_VALID 0x0001
 #define EFI_MS_CHECK_CONTEXT_CORRUPT_VALID 0x0002
@@ -432,7 +432,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_MS_CHECK_ERROR_TYPE_FRC 4
 #define EFI_MS_CHECK_ERROR_TYPE_INTERNAL_UNCLASSIFIED 5
 
-typedef struct __attribute__((__packed__)) {
+struct efi_ia32_x64_ms_check_info {
     uint64_t ValidFields:16;
     uint64_t ErrorType:3;
     uint64_t ContextCorrupt:1;
@@ -441,25 +441,25 @@ typedef struct __attribute__((__packed__)) {
     uint64_t RestartableIp:1;
     uint64_t Overflow:1;
     uint64_t Resv1:40;
-} EFI_IA32_X64_MS_CHECK_INFO;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) {
-    EFI_IA32_X64_CACHE_CHECK_INFO CacheCheck;
-    EFI_IA32_X64_TLB_CHECK_INFO TlbCheck;
-    EFI_IA32_X64_BUS_CHECK_INFO BusCheck;
-    EFI_IA32_X64_MS_CHECK_INFO MsCheck;
+union efi_ia32_x64_check_info_item {
+    struct efi_ia32_x64_cache_check_info CacheCheck;
+    struct efi_ia32_x64_tlb_check_info TlbCheck;
+    struct efi_ia32_x64_bus_check_info BusCheck;
+    struct efi_ia32_x64_ms_check_info MsCheck;
     uint64_t Data64;
-} EFI_IA32_X64_CHECK_INFO_ITEM;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
-    EFI_GUID ErrorType;
+struct efi_ia32_x64_process_error_info {
+    struct efi_guid ErrorType;
     uint64_t ValidFields;
-    EFI_IA32_X64_CHECK_INFO_ITEM CheckInfo;
+    union efi_ia32_x64_check_info_item CheckInfo;
     uint64_t TargetId;
     uint64_t RequestorId;
     uint64_t ResponderId;
     uint64_t InstructionIP;
-} EFI_IA32_X64_PROCESS_ERROR_INFO;
+} __attribute__((__packed__));
 
 #define EFI_REG_CONTEXT_TYPE_UNCLASSIFIED 0x0000
 #define EFI_REG_CONTEXT_TYPE_MSR 0x0001
@@ -471,14 +471,14 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_REG_CONTEXT_TYPE_MEM_MAP 0x0007
 
 /* The register array follows: ArraySize bytes, zero-padded to a multiple of 16. */
-typedef struct __attribute__((__packed__)) {
+struct efi_ia32_x64_processor_context_info {
     uint16_t RegisterType;
     uint16_t ArraySize;
     uint32_t MsrAddress;
     uint64_t MmRegisterAddress;
-} EFI_IA32_X64_PROCESSOR_CONTEXT_INFO;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_context_ia32_register_state {
     uint32_t Eax;
     uint32_t Ebx;
     uint32_t Ecx;
@@ -504,10 +504,10 @@ typedef struct __attribute__((__packed__)) {
     uint32_t Idtr[2];
     uint16_t Ldtr;
     uint16_t Tr;
-} EFI_CONTEXT_IA32_REGISTER_STATE;
+} __attribute__((__packed__));
 
 /* The instruction pointer is misprinted EIP. */
-typedef struct __attribute__((__packed__)) {
+struct efi_context_x64_register_state {
     uint64_t Rax;
     uint64_t Rbx;
     uint64_t Rcx;
@@ -543,7 +543,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t Idtr[2];
     uint16_t Ldtr;
     uint16_t Tr;
-} EFI_CONTEXT_X64_REGISTER_STATE;
+} __attribute__((__packed__));
 
 #define EFI_ARM_PROC_ERROR_MPIDR_VALID 0x00000001
 #define EFI_ARM_PROC_ERROR_ERROR_AFFINITY_LVL_VALID 0x00000002
@@ -556,10 +556,10 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_ARM_PROC_ERROR_AFFINITY_LVL_3 0x03
 
 /*
- * ErrInfoNum EFI_ARM_PROCESSOR_ERROR_INFORMATION structures follow, then ContextInfoNum
- * EFI_ARM_PROCESSOR_CONTEXT_INFORMATION structures, then any vendor-specific information.
+ * ErrInfoNum struct efi_arm_processor_error_information follow, then ContextInfoNum
+ * struct efi_arm_processor_context_information, then any vendor-specific information.
  */
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_processor_error_record {
     uint32_t ValidFields;
     uint16_t ErrInfoNum;
     uint16_t ContextInfoNum;
@@ -570,7 +570,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t MIDR_EL1;
     uint32_t RunState;
     uint32_t PsciState;
-} EFI_ARM_PROCESSOR_ERROR_RECORD;
+} __attribute__((__packed__));
 
 #define EFI_ARM_PROCESSOR_ERROR_INFO_STRUCTURE_REVISION 0
 
@@ -614,7 +614,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_ARM_CACHE_ERROR_OPERATION_SNOOPED 9
 #define EFI_ARM_CACHE_ERROR_OPERATION_MANAGEMENT 10
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_cache_error_info {
     uint64_t ValidFields:16;
     uint64_t TransactionType:2;
     uint64_t Operation:4;
@@ -624,7 +624,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t PrecisePc:1;
     uint64_t RestartablePc:1;
     uint64_t Reserved:35;
-} EFI_ARM_CACHE_ERROR_INFO;
+} __attribute__((__packed__));
 
 #define EFI_ARM_TLB_ERROR_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_ARM_TLB_ERROR_OPERATION_VALID 0x0002
@@ -648,7 +648,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_ARM_TLB_ERROR_OPERATION_LOCAL_MANAGEMENT_OPERATION 7
 #define EFI_ARM_TLB_ERROR_OPERATION_EXTERNAL_MANAGEMENT_OPERATION 8
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_tlb_error_info {
     uint64_t ValidFields:16;
     uint64_t TransactionType:2;
     uint64_t Operation:4;
@@ -658,7 +658,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t PrecisePc:1;
     uint64_t RestartablePc:1;
     uint64_t Reserved:35;
-} EFI_ARM_TLB_ERROR_INFO;
+} __attribute__((__packed__));
 
 #define EFI_ARM_BUS_ERROR_TRANSACTION_TYPE_VALID 0x0001
 #define EFI_ARM_BUS_ERROR_OPERATION_VALID 0x0002
@@ -694,7 +694,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_ARM_BUS_CHECK_ADDRESS_SPACE_TYPE_INTERNAL_MEMORY 1
 #define EFI_ARM_BUS_CHECK_ADDRESS_SPACE_TYPE_DEVICE_MEMORY 3
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_bus_error_info {
     uint64_t ValidFields:16;
     uint64_t TransactionType:2;
     uint64_t Operation:4;
@@ -709,25 +709,25 @@ typedef struct __attribute__((__packed__)) {
     uint64_t MemoryAccessAttribute:9;
     uint64_t AccessMode:1;
     uint64_t Reserved:20;
-} EFI_ARM_BUS_ERROR_INFO;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) {
-    EFI_ARM_CACHE_ERROR_INFO CacheErrorInfo;
-    EFI_ARM_TLB_ERROR_INFO TlbErrorInfo;
-    EFI_ARM_BUS_ERROR_INFO BusErrorInfo;
-} EFI_ARM_ERROR_INFORMATION;
+union efi_arm_error_information {
+    struct efi_arm_cache_error_info CacheErrorInfo;
+    struct efi_arm_tlb_error_info TlbErrorInfo;
+    struct efi_arm_bus_error_info BusErrorInfo;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_processor_error_information {
     uint8_t Version;
     uint8_t Length;
     uint16_t ValidFields;
     uint8_t Type;
     uint16_t ErrorCount;
     uint8_t Flags;
-    EFI_ARM_ERROR_INFORMATION ErrorInfo;
+    union efi_arm_error_information ErrorInfo;
     uint64_t VirtualFaultAddress;
     uint64_t PhysicalFaultAddress;
-} EFI_ARM_PROCESSOR_ERROR_INFORMATION;
+} __attribute__((__packed__));
 
 #define EFI_ARM_REG_CONTEXT_TYPE_AARCH32_GPRS 0
 #define EFI_ARM_REG_CONTEXT_TYPE_AARCH32_EL1 1
@@ -740,7 +740,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_ARM_REG_CONTEXT_TYPE_MISC_SYS_REG 8
 #define EFI_ARM_REG_CONTEXT_TYPE_TTBR128 9
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch32_context_gpr {
     uint32_t R0;
     uint32_t R1;
     uint32_t R2;
@@ -757,9 +757,9 @@ typedef struct __attribute__((__packed__)) {
     uint32_t R13_SP;
     uint32_t R14_LR;
     uint32_t R15_PC;
-} EFI_ARM_AARCH32_CONTEXT_GPR;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch32_el1_context_system_registers {
     uint32_t DFAR;
     uint32_t DFSR;
     uint32_t IFAR;
@@ -784,9 +784,9 @@ typedef struct __attribute__((__packed__)) {
     uint32_t TTBR0;
     uint32_t TTBR1;
     uint32_t DACR;
-} EFI_ARM_AARCH32_EL1_CONTEXT_SYSTEM_REGISTERS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch32_el2_context_system_registers {
     uint32_t ELR_hyp;
     uint32_t HAMAIR0;
     uint32_t HAMAIR1;
@@ -803,14 +803,14 @@ typedef struct __attribute__((__packed__)) {
     uint32_t VTCR;
     uint32_t VTTBR;
     uint32_t DACR32_EL2;
-} EFI_ARM_AARCH32_EL2_CONTEXT_SYSTEM_REGISTERS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch32_secure_context_system_registers {
     uint32_t SCTLR;
     uint32_t SPSR_mon;
-} EFI_ARM_AARCH32_SECURE_CONTEXT_SYSTEM_REGISTERS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch64_context_gpr {
     uint64_t X0;
     uint64_t X1;
     uint64_t X2;
@@ -843,9 +843,9 @@ typedef struct __attribute__((__packed__)) {
     uint64_t X29;
     uint64_t X30;
     uint64_t SP;
-} EFI_ARM_AARCH64_CONTEXT_GPR;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch64_el1_context_system_registers {
     uint64_t ELR_EL1;
     uint64_t ESR_EL1;
     uint64_t FAR_EL1;
@@ -863,9 +863,9 @@ typedef struct __attribute__((__packed__)) {
     uint64_t TPIDRRO_EL0;
     uint64_t TTBR0_EL1;
     uint64_t TTBR1_EL1;
-} EFI_ARM_AARCH64_EL1_CONTEXT_SYSTEM_REGISTERS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch64_el2_context_system_registers {
     uint64_t ELR_EL2;
     uint64_t ESR_EL2;
     uint64_t FAR_EL2;
@@ -881,9 +881,9 @@ typedef struct __attribute__((__packed__)) {
     uint64_t TTBR0_EL2;
     uint64_t VTCR_EL2;
     uint64_t VTTBR_EL2;
-} EFI_ARM_AARCH64_EL2_CONTEXT_SYSTEM_REGISTERS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_aarch64_el3_context_system_registers {
     uint64_t ELR_EL3;
     uint64_t ESR_EL3;
     uint64_t FAR_EL3;
@@ -894,9 +894,9 @@ typedef struct __attribute__((__packed__)) {
     uint64_t TCR_EL3;
     uint64_t TPIDR_EL3;
     uint64_t TTBR0_EL3;
-} EFI_ARM_AARCH64_EL3_CONTEXT_SYSTEM_REGISTERS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_misc_context_system_register {
     uint16_t MRS_Op2:3;
     uint16_t MRS_CRm:4;
     uint16_t MRS_CRn:4;
@@ -904,36 +904,36 @@ typedef struct __attribute__((__packed__)) {
     uint16_t MRS_O0:1;
     uint16_t Reserved:1;
     uint64_t RegisterVal;
-} EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_ttbr128_context_system_registers {
     uint64_t TTBR0_EL1[2];
     uint64_t TTBR0_EL2[2];
     uint64_t TTBR0_EL3[2];
     uint64_t TTBR1_EL1[2];
     uint64_t TTBR1_EL2[2];
     uint64_t VTTBR_EL2[2];
-} EFI_ARM_TTBR128_CONTEXT_SYSTEM_REGISTERS;
+} __attribute__((__packed__));
 
-typedef union __attribute__((__packed__)) {
-    EFI_ARM_AARCH32_CONTEXT_GPR Type0SysRegs;
-    EFI_ARM_AARCH32_EL1_CONTEXT_SYSTEM_REGISTERS Type1SysRegs;
-    EFI_ARM_AARCH32_EL2_CONTEXT_SYSTEM_REGISTERS Type2SysRegs;
-    EFI_ARM_AARCH32_SECURE_CONTEXT_SYSTEM_REGISTERS Type3SysRegs;
-    EFI_ARM_AARCH64_CONTEXT_GPR Type4SysRegs;
-    EFI_ARM_AARCH64_EL1_CONTEXT_SYSTEM_REGISTERS Type5SysRegs;
-    EFI_ARM_AARCH64_EL2_CONTEXT_SYSTEM_REGISTERS Type6SysRegs;
-    EFI_ARM_AARCH64_EL3_CONTEXT_SYSTEM_REGISTERS Type7SysRegs;
-    EFI_ARM_MISC_CONTEXT_SYSTEM_REGISTER SysRegInfo;
-    EFI_ARM_TTBR128_CONTEXT_SYSTEM_REGISTERS Type9SysRegs;
-} EFI_CONTEXT_REGISTER_ARRAY_INFO;
+union efi_context_register_array_info {
+    struct efi_arm_aarch32_context_gpr Type0SysRegs;
+    struct efi_arm_aarch32_el1_context_system_registers Type1SysRegs;
+    struct efi_arm_aarch32_el2_context_system_registers Type2SysRegs;
+    struct efi_arm_aarch32_secure_context_system_registers Type3SysRegs;
+    struct efi_arm_aarch64_context_gpr Type4SysRegs;
+    struct efi_arm_aarch64_el1_context_system_registers Type5SysRegs;
+    struct efi_arm_aarch64_el2_context_system_registers Type6SysRegs;
+    struct efi_arm_aarch64_el3_context_system_registers Type7SysRegs;
+    struct efi_arm_misc_context_system_register SysRegInfo;
+    struct efi_arm_ttbr128_context_system_registers Type9SysRegs;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_arm_processor_context_information {
     uint16_t Version;
     uint16_t RegisterContextType;
     uint32_t RegisterArraySize;
-    EFI_CONTEXT_REGISTER_ARRAY_INFO RegisterArray;
-} EFI_ARM_PROCESSOR_CONTEXT_INFORMATION;
+    union efi_context_register_array_info RegisterArray;
+} __attribute__((__packed__));
 
 #define EFI_PLATFORM_MEMORY_ERROR_STATUS_VALID 0x0000000000000001
 #define EFI_PLATFORM_MEMORY_PHY_ADDRESS_VALID 0x0000000000000002
@@ -975,9 +975,9 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_PLATFORM_MEMORY_ERROR_SCRUB_UNCORRECTED 14
 #define EFI_PLATFORM_MEMORY_ERROR_MEMORY_MAP_EVENT 15
 
-typedef struct __attribute__((__packed__)) {
+struct efi_platform_memory_error_data {
     uint64_t ValidFields;
-    EFI_GENERIC_ERROR_STATUS ErrorStatus;
+    struct efi_generic_error_status ErrorStatus;
     uint64_t PhysicalAddress;
     uint64_t PhysicalAddressMask;
     uint16_t Node;
@@ -996,7 +996,7 @@ typedef struct __attribute__((__packed__)) {
     uint16_t RankNum;
     uint16_t CardHandle;
     uint16_t ModuleHandle;
-} EFI_PLATFORM_MEMORY_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_PLATFORM_MEMORY2_ERROR_STATUS_VALID 0x0000000000000001
 #define EFI_PLATFORM_MEMORY2_PHY_ADDRESS_VALID 0x0000000000000002
@@ -1038,9 +1038,9 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_PLATFORM_MEMORY2_ERROR_SCRUB_UNCORRECTED 14
 #define EFI_PLATFORM_MEMORY2_ERROR_MEMORY_MAP_EVENT 15
 
-typedef struct __attribute__((__packed__)) {
+struct efi_platform_memory2_error_data {
     uint64_t ValidFields;
-    EFI_GENERIC_ERROR_STATUS ErrorStatus;
+    struct efi_generic_error_status ErrorStatus;
     uint64_t PhysicalAddress;
     uint64_t PhysicalAddressMask;
     uint16_t Node;
@@ -1061,7 +1061,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t TargetId;
     uint32_t CardHandle;
     uint32_t ModuleHandle;
-} EFI_PLATFORM_MEMORY2_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_PCIE_ERROR_PORT_TYPE_VALID 0x0000000000000001
 #define EFI_PCIE_ERROR_VERSION_VALID 0x0000000000000002
@@ -1084,12 +1084,12 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_PCIE_ERROR_PORT_ROOT_INT_ENDPOINT 0x00000009
 #define EFI_PCIE_ERROR_PORT_ROOT_EVENT_COLLECTOR 0x0000000A
 
-typedef struct __attribute__((__packed__)) {
+struct efi_generic_error_pci_slot {
     uint16_t Resv1:3;
     uint16_t Number:13;
-} EFI_GENERIC_ERROR_PCI_SLOT;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_generic_error_pcie_dev_bridge_id {
     uint16_t VendorId;
     uint16_t DeviceId;
     uint8_t ClassCode[3];
@@ -1098,30 +1098,30 @@ typedef struct __attribute__((__packed__)) {
     uint16_t Segment;
     uint8_t PrimaryOrDeviceBus;
     uint8_t SecondaryBus;
-    EFI_GENERIC_ERROR_PCI_SLOT Slot;
+    struct efi_generic_error_pci_slot Slot;
     uint8_t Resv1;
-} EFI_GENERIC_ERROR_PCIE_DEV_BRIDGE_ID;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_pcie_error_data_capability {
     uint8_t PcieCap[60];
-} EFI_PCIE_ERROR_DATA_CAPABILITY;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_pcie_error_data_aer {
     uint8_t PcieAer[96];
-} EFI_PCIE_ERROR_DATA_AER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_pcie_error_data {
     uint64_t ValidFields;
     uint32_t PortType;
     uint32_t Version;
     uint32_t CommandStatus;
     uint32_t RcrbHighAddress;
-    EFI_GENERIC_ERROR_PCIE_DEV_BRIDGE_ID DevBridge;
+    struct efi_generic_error_pcie_dev_bridge_id DevBridge;
     uint64_t SerialNo;
     uint32_t BridgeControlStatus;
-    EFI_PCIE_ERROR_DATA_CAPABILITY Capability;
-    EFI_PCIE_ERROR_DATA_AER AerInfo;
-} EFI_PCIE_ERROR_DATA;
+    struct efi_pcie_error_data_capability Capability;
+    struct efi_pcie_error_data_aer AerInfo;
+} __attribute__((__packed__));
 
 #define EFI_PCI_PCIX_BUS_ERROR_STATUS_VALID 0x0000000000000001
 #define EFI_PCI_PCIX_BUS_ERROR_TYPE_VALID 0x0000000000000002
@@ -1142,9 +1142,9 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_PCI_PCIX_BUS_ERROR_ADDRESS_PARITY 0x0006
 #define EFI_PCI_PCIX_BUS_ERROR_COMMAND_PARITY 0x0007
 
-typedef struct __attribute__((__packed__)) {
+struct efi_pci_pcix_bus_error_data {
     uint64_t ValidFields;
-    EFI_GENERIC_ERROR_STATUS ErrorStatus;
+    struct efi_generic_error_status ErrorStatus;
     uint16_t Type;
     uint16_t BusId;
     uint32_t Resv2;
@@ -1154,7 +1154,7 @@ typedef struct __attribute__((__packed__)) {
     uint64_t RequestorId;
     uint64_t ResponderId;
     uint64_t TargetId;
-} EFI_PCI_PCIX_BUS_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_PCI_PCIX_DEVICE_ERROR_STATUS_VALID 0x0000000000000001
 #define EFI_PCI_PCIX_DEVICE_ERROR_ID_INFO_VALID 0x0000000000000002
@@ -1162,7 +1162,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_PCI_PCIX_DEVICE_ERROR_IO_NUM_VALID 0x0000000000000008
 #define EFI_PCI_PCIX_DEVICE_ERROR_REG_DATA_PAIR_VALID 0x0000000000000010
 
-typedef struct __attribute__((__packed__)) {
+struct efi_generic_error_pci_device_id {
     uint16_t VendorId;
     uint16_t DeviceId;
     uint8_t ClassCode[3];
@@ -1172,29 +1172,29 @@ typedef struct __attribute__((__packed__)) {
     uint8_t Segment;
     uint8_t Resv1;
     uint32_t Resv2;
-} EFI_GENERIC_ERROR_PCI_DEVICE_ID;
+} __attribute__((__packed__));
 
 /* MemoryNumber + IoNumber register address/data pairs, two uint64_t each, follow. */
-typedef struct __attribute__((__packed__)) {
+struct efi_pci_pcix_device_error_data {
     uint64_t ValidFields;
-    EFI_GENERIC_ERROR_STATUS ErrorStatus;
-    EFI_GENERIC_ERROR_PCI_DEVICE_ID IdInfo;
+    struct efi_generic_error_status ErrorStatus;
+    struct efi_generic_error_pci_device_id IdInfo;
     uint32_t MemoryNumber;
     uint32_t IoNumber;
-} EFI_PCI_PCIX_DEVICE_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_FIRMWARE_ERROR_TYPE_IPF_SAL 0x00
 #define EFI_FIRMWARE_ERROR_TYPE_SOC_TYPE1 0x01
 #define EFI_FIRMWARE_ERROR_TYPE_SOC_TYPE2 0x02
 
 /* The reserved bytes are misprinted at offset 1, over Revision: they are offsets 2 to 7. */
-typedef struct __attribute__((__packed__)) {
+struct efi_firmware_error_data {
     uint8_t ErrorType;
     uint8_t Revision;
     uint8_t Resv1[6];
     uint64_t RecordId;
-    EFI_GUID RecordIdGuid;
-} EFI_FIRMWARE_ERROR_DATA;
+    struct efi_guid RecordIdGuid;
+} __attribute__((__packed__));
 
 #define EFI_DMA_FAULT_REASON_TABLE_ENTRY_NOT_PRESENT 0x01
 #define EFI_DMA_FAULT_REASON_TABLE_ENTRY_INVALID 0x02
@@ -1217,7 +1217,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_DMA_ARCH_TYPE_VT 0x01
 #define EFI_DMA_ARCH_TYPE_IOMMU 0x02
 
-typedef struct __attribute__((__packed__)) {
+struct efi_dmar_generic_error_data {
     uint16_t RequesterId;
     uint16_t SegmentNumber;
     uint8_t FaultReason;
@@ -1226,9 +1226,9 @@ typedef struct __attribute__((__packed__)) {
     uint8_t ArchType;
     uint64_t DeviceAddr;
     uint8_t Resv1[16];
-} EFI_DMAR_GENERIC_ERROR_DATA;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_directed_io_dmar_error_data {
     uint8_t Version;
     uint8_t Revision;
     uint8_t OemId[6];
@@ -1247,9 +1247,9 @@ typedef struct __attribute__((__packed__)) {
     uint64_t PteL3;
     uint64_t PteL2;
     uint64_t PteL1;
-} EFI_DIRECTED_IO_DMAR_ERROR_DATA;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_iommu_dmar_error_data {
     uint8_t Revision;
     uint8_t Resv1[7];
     uint64_t Control;
@@ -1264,20 +1264,20 @@ typedef struct __attribute__((__packed__)) {
     uint64_t PteL3;
     uint64_t PteL2;
     uint64_t PteL1;
-} EFI_IOMMU_DMAR_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_CCIX_PER_LOG_SOURCE_ID_VALID 0x0000000000000001
 #define EFI_CCIX_PER_LOG_PORT_ID_VALID 0x0000000000000002
 #define EFI_CCIX_PER_LOG_VALID 0x0000000000000004
 
 /* The CCIX PER log follows, up to Length bytes in all. */
-typedef struct __attribute__((__packed__)) {
+struct efi_ccix_per_log_error_data {
     uint32_t Length;
     uint64_t ValidFields;
     uint8_t CcixSourceId;
     uint8_t CcixPortId;
     uint16_t Resv1;
-} EFI_CCIX_PER_LOG_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_CXL_CACHEMEM_AGENT_TYPE 0x0000000000000001
 #define EFI_CXL_CACHEMEM_AGENT_ADDRESS 0x0000000000000002
@@ -1296,7 +1296,7 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_CXL_AGENT_CXL20_DSP 6
 #define EFI_CXL_AGENT_CXL20_USP 7
 
-typedef union __attribute__((__packed__)) {
+union efi_cxl_agent_address {
     struct __attribute__((__packed__)) {
         uint64_t Function:8;
         uint64_t Device:8;
@@ -1308,9 +1308,9 @@ typedef union __attribute__((__packed__)) {
         uint32_t Low;
         uint32_t High;
     } RcrbBase;
-} EFI_CXL_AGENT_ADDRESS;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_cxl_agent_device_id {
     uint16_t VendorId;
     uint16_t DeviceId;
     uint16_t Svid;
@@ -1321,49 +1321,49 @@ typedef struct __attribute__((__packed__)) {
         uint16_t Num:13;
     } Slot;
     uint32_t Rsvd;
-} EFI_CXL_AGENT_DEVICE_ID;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_cxl_device_serial_num {
     uint32_t Lower;
     uint32_t Upper;
-} EFI_CXL_DEVICE_SERIAL_NUM;
+} __attribute__((__packed__));
 
 /* The CXL DVSEC (CxlDvsecLength bytes) follows, then the CXL error log (CxlErrorLogLength). */
-typedef struct __attribute__((__packed__)) {
+struct efi_cxl_protocol_error_data {
     uint64_t ValidFields;
     uint8_t CxlAgentType;
     uint8_t Resv1[7];
-    EFI_CXL_AGENT_ADDRESS CxlAgentAddress;
-    EFI_CXL_AGENT_DEVICE_ID DeviceId;
-    EFI_CXL_DEVICE_SERIAL_NUM DeviceSerialNumber;
+    union efi_cxl_agent_address CxlAgentAddress;
+    struct efi_cxl_agent_device_id DeviceId;
+    struct efi_cxl_device_serial_num DeviceSerialNumber;
     uint8_t CapabilityStructure[60];
     uint16_t CxlDvsecLength;
     uint16_t CxlErrorLogLength;
     uint32_t Resv2;
-} EFI_CXL_PROTOCOL_ERROR_DATA;
+} __attribute__((__packed__));
 
 #define EFI_CXL_MEM_DEVICE_ID 0x0000000000000001
 #define EFI_CXL_MEM_DEVICE_SER_NUM 0x0000000000000002
 #define EFI_CXL_MEM_COMP_ERROR_LOG 0x0000000000000004
 
-typedef struct __attribute__((__packed__)) {
+struct efi_cxl_error_pcie_dev_id {
     uint16_t VendorId;
     uint16_t DeviceId;
     uint8_t Function;
     uint8_t Device;
     uint8_t Bus;
     uint16_t Segment;
-    EFI_GENERIC_ERROR_PCI_SLOT Slot;
+    struct efi_generic_error_pci_slot Slot;
     uint8_t Resvd;
-} EFI_CXL_ERROR_PCIE_DEV_ID;
+} __attribute__((__packed__));
 
 /* The CXL component event log follows, up to Length bytes in all. */
-typedef struct __attribute__((__packed__)) {
+struct efi_cxl_component_event_log {
     uint32_t Length;
     uint64_t ValidFields;
-    EFI_CXL_ERROR_PCIE_DEV_ID CxlDeviceId;
+    struct efi_cxl_error_pcie_dev_id CxlDeviceId;
     uint64_t DeviceSerialNo;
-} EFI_CXL_COMPONENT_EVENT_LOG;
+} __attribute__((__packed__));
 
 #define EFI_FRU_MEMORY_POISON_ARCH_TYPE_VALID 0x0000000000000001
 #define EFI_FRU_MEMORY_POISON_ARCH_VALUE_VALID 0x0000000000000002
@@ -1377,8 +1377,8 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_FRU_MEMORY_POISON_HW_ID_TYPE_MCA_IPID 0
 #define EFI_FRU_MEMORY_POISON_ADDRESS_TYPE_MCA_ADDR 0
 
-/* PoisonListEntries EFI_FRU_MEMORY_POISON_DESCRIPTOR structures follow. */
-typedef struct __attribute__((__packed__)) {
+/* PoisonListEntries struct efi_fru_memory_poison_descriptor follow. */
+struct efi_fru_memory_poison_data {
     uint32_t Checksum;
     uint64_t ValidFields;
     uint32_t FruArchType;
@@ -1386,15 +1386,15 @@ typedef struct __attribute__((__packed__)) {
     uint32_t FruIdType;
     uint64_t FruIdValue;
     uint32_t PoisonListEntries;
-} EFI_FRU_MEMORY_POISON_DATA;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_fru_memory_poison_descriptor {
     uint64_t PoisonTimestamp;
     uint32_t HwIdType;
     uint64_t HwIdValue;
     uint32_t AddressType;
     uint64_t AddressValue;
-} EFI_FRU_MEMORY_POISON_DESCRIPTOR;
+} __attribute__((__packed__));
 
 #ifdef __cplusplus
 }

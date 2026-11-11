@@ -10,7 +10,7 @@ extern "C" {
 #define EFI_SCSI_IO_PROTOCOL_GUID \
     {0x932f47e6, 0x2362, 0x4002, {0x80, 0x3e, 0x3c, 0xd5, 0x4b, 0x13, 0x8f, 0x85}}
 
-typedef struct _EFI_SCSI_IO_PROTOCOL EFI_SCSI_IO_PROTOCOL;
+struct efi_scsi_io_protocol;
 
 #define EFI_SCSI_IO_TYPE_DISK 0x00
 #define EFI_SCSI_IO_TYPE_TAPE 0x01
@@ -35,7 +35,7 @@ typedef struct _EFI_SCSI_IO_PROTOCOL EFI_SCSI_IO_PROTOCOL;
 #define EFI_SCSI_IO_TYPE_RESERVED_HIGH 0x1E
 #define EFI_SCSI_IO_TYPE_UNKNOWN 0x1F
 
-typedef struct {
+struct efi_scsi_io_scsi_request_packet {
     uint64_t Timeout;
     void *InDataBuffer;
     void *OutDataBuffer;
@@ -48,7 +48,7 @@ typedef struct {
     uint8_t HostAdapterStatus;
     uint8_t TargetStatus;
     uint8_t SenseDataLength;
-} EFI_SCSI_IO_SCSI_REQUEST_PACKET;
+};
 
 #define EFI_SCSI_IO_DATA_DIRECTION_READ 0
 #define EFI_SCSI_IO_DATA_DIRECTION_WRITE 1
@@ -78,27 +78,27 @@ typedef struct {
 #define EFI_SCSI_IO_STATUS_TARGET_QUEUE_FULL 0x28
 
 typedef EFI_STATUS (EFI_API *EFI_SCSI_IO_PROTOCOL_GET_DEVICE_TYPE)(
-    EFI_SCSI_IO_PROTOCOL *This,
+    struct efi_scsi_io_protocol *This,
     uint8_t *DeviceType
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SCSI_IO_PROTOCOL_GET_DEVICE_LOCATION)(
-    EFI_SCSI_IO_PROTOCOL *This,
+    struct efi_scsi_io_protocol *This,
     uint8_t **Target,
     uint64_t *Lun
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SCSI_IO_PROTOCOL_RESET_BUS)(EFI_SCSI_IO_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_SCSI_IO_PROTOCOL_RESET_BUS)(struct efi_scsi_io_protocol *This);
 
-typedef EFI_STATUS (EFI_API *EFI_SCSI_IO_PROTOCOL_RESET_DEVICE)(EFI_SCSI_IO_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_SCSI_IO_PROTOCOL_RESET_DEVICE)(struct efi_scsi_io_protocol *This);
 
 typedef EFI_STATUS (EFI_API *EFI_SCSI_IO_PROTOCOL_EXECUTE_SCSI_COMMAND)(
-    EFI_SCSI_IO_PROTOCOL *This,
-    EFI_SCSI_IO_SCSI_REQUEST_PACKET *Packet,
+    struct efi_scsi_io_protocol *This,
+    struct efi_scsi_io_scsi_request_packet *Packet,
     EFI_EVENT Event
 );
 
-struct _EFI_SCSI_IO_PROTOCOL {
+struct efi_scsi_io_protocol {
     EFI_SCSI_IO_PROTOCOL_GET_DEVICE_TYPE GetDeviceType;
     EFI_SCSI_IO_PROTOCOL_GET_DEVICE_LOCATION GetDeviceLocation;
     EFI_SCSI_IO_PROTOCOL_RESET_BUS ResetBus;
@@ -110,20 +110,20 @@ struct _EFI_SCSI_IO_PROTOCOL {
 #define EFI_EXT_SCSI_PASS_THRU_PROTOCOL_GUID \
     {0x143b7632, 0xb81b, 0x4cb7, {0xab, 0xd3, 0xb6, 0x25, 0xa5, 0xb9, 0xbf, 0xfe}}
 
-typedef struct _EFI_EXT_SCSI_PASS_THRU_PROTOCOL EFI_EXT_SCSI_PASS_THRU_PROTOCOL;
+struct efi_ext_scsi_pass_thru_protocol;
 
-typedef struct {
+struct efi_ext_scsi_pass_thru_mode {
     uint32_t AdapterId;
     uint32_t Attributes;
     uint32_t IoAlign;
-} EFI_EXT_SCSI_PASS_THRU_MODE;
+};
 
 #define EFI_TARGET_MAX_BYTES 0x10
 #define EFI_EXT_SCSI_PASS_THRU_ATTRIBUTES_PHYSICAL 0x0001
 #define EFI_EXT_SCSI_PASS_THRU_ATTRIBUTES_LOGICAL 0x0002
 #define EFI_EXT_SCSI_PASS_THRU_ATTRIBUTES_NONBLOCKIO 0x0004
 
-typedef struct {
+struct efi_ext_scsi_pass_thru_scsi_request_packet {
     uint64_t Timeout;
     void *InDataBuffer;
     void *OutDataBuffer;
@@ -136,7 +136,7 @@ typedef struct {
     uint8_t HostAdapterStatus;
     uint8_t TargetStatus;
     uint8_t SenseDataLength;
-} EFI_EXT_SCSI_PASS_THRU_SCSI_REQUEST_PACKET;
+};
 
 #define EFI_EXT_SCSI_DATA_DIRECTION_READ 0
 #define EFI_EXT_SCSI_DATA_DIRECTION_WRITE 1
@@ -167,50 +167,50 @@ typedef struct {
 #define EFI_EXT_SCSI_STATUS_TARGET_TASK_ABORTED 0x40
 
 typedef EFI_STATUS (EFI_API *EFI_EXT_SCSI_PASS_THRU_PASSTHRU)(
-    EFI_EXT_SCSI_PASS_THRU_PROTOCOL *This,
+    struct efi_ext_scsi_pass_thru_protocol *This,
     uint8_t *Target,
     uint64_t Lun,
-    EFI_EXT_SCSI_PASS_THRU_SCSI_REQUEST_PACKET *Packet,
+    struct efi_ext_scsi_pass_thru_scsi_request_packet *Packet,
     EFI_EVENT Event
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EXT_SCSI_PASS_THRU_GET_NEXT_TARGET_LUN)(
-    EFI_EXT_SCSI_PASS_THRU_PROTOCOL *This,
+    struct efi_ext_scsi_pass_thru_protocol *This,
     uint8_t **Target,
     uint64_t *Lun
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EXT_SCSI_PASS_THRU_BUILD_DEVICE_PATH)(
-    EFI_EXT_SCSI_PASS_THRU_PROTOCOL *This,
+    struct efi_ext_scsi_pass_thru_protocol *This,
     uint8_t *Target,
     uint64_t Lun,
-    EFI_DEVICE_PATH_PROTOCOL **DevicePath
+    struct efi_device_path_protocol **DevicePath
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EXT_SCSI_PASS_THRU_GET_TARGET_LUN)(
-    EFI_EXT_SCSI_PASS_THRU_PROTOCOL *This,
-    EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    struct efi_ext_scsi_pass_thru_protocol *This,
+    struct efi_device_path_protocol *DevicePath,
     uint8_t **Target,
     uint64_t *Lun
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EXT_SCSI_PASS_THRU_RESET_CHANNEL)(
-    EFI_EXT_SCSI_PASS_THRU_PROTOCOL *This
+    struct efi_ext_scsi_pass_thru_protocol *This
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EXT_SCSI_PASS_THRU_RESET_TARGET_LUN)(
-    EFI_EXT_SCSI_PASS_THRU_PROTOCOL *This,
+    struct efi_ext_scsi_pass_thru_protocol *This,
     uint8_t *Target,
     uint64_t Lun
 );
 
 typedef EFI_STATUS (EFI_API *EFI_EXT_SCSI_PASS_THRU_GET_NEXT_TARGET)(
-    EFI_EXT_SCSI_PASS_THRU_PROTOCOL *This,
+    struct efi_ext_scsi_pass_thru_protocol *This,
     uint8_t **Target
 );
 
-struct _EFI_EXT_SCSI_PASS_THRU_PROTOCOL {
-    EFI_EXT_SCSI_PASS_THRU_MODE *Mode;
+struct efi_ext_scsi_pass_thru_protocol {
+    struct efi_ext_scsi_pass_thru_mode *Mode;
     EFI_EXT_SCSI_PASS_THRU_PASSTHRU PassThru;
     EFI_EXT_SCSI_PASS_THRU_GET_NEXT_TARGET_LUN GetNextTargetLun;
     EFI_EXT_SCSI_PASS_THRU_BUILD_DEVICE_PATH BuildDevicePath;

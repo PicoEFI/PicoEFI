@@ -12,7 +12,7 @@ extern "C" {
 
 #define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_REVISION 0x00020000
 
-typedef struct {
+struct efi_network_interface_identifier_protocol {
     uint64_t Revision;
     uint64_t Id;
     uint64_t ImageAddr;
@@ -23,7 +23,7 @@ typedef struct {
     uint8_t MinorVer;
     uint8_t Ipv6Supported;
     uint16_t IfNum;
-} EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL;
+};
 
 typedef enum {
     EfiNetworkInterfaceUndi = 1

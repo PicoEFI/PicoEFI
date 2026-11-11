@@ -13,21 +13,21 @@ extern "C" {
 #define EFI_REDFISH_DISCOVER_PROTOCOL_GUID \
     {0x5db12509, 0x4550, 0x4347, {0x96, 0xb3, 0x73, 0xc0, 0xff, 0x6e, 0x86, 0x9f}}
 
-typedef struct _EFI_REDFISH_DISCOVER_PROTOCOL EFI_REDFISH_DISCOVER_PROTOCOL;
+struct efi_redfish_discover_protocol;
 
-typedef struct {
-    EFI_MAC_ADDRESS MacAddress;
+struct efi_redfish_discover_network_interface {
+    struct efi_mac_address MacAddress;
     uint8_t IsIpv6;
-    EFI_IP_ADDRESS SubnetId;
+    union efi_ip_address SubnetId;
     uint8_t SubnetPrefixLength;
     uint16_t VlanId;
-} EFI_REDFISH_DISCOVER_NETWORK_INTERFACE;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_NETWORK_LIST)(
-    EFI_REDFISH_DISCOVER_PROTOCOL *This,
+    struct efi_redfish_discover_protocol *This,
     EFI_HANDLE ImageHandle,
     size_t *NumberOfNetworkInterfaces,
-    EFI_REDFISH_DISCOVER_NETWORK_INTERFACE **NetworkInterfaces
+    struct efi_redfish_discover_network_interface **NetworkInterfaces
 );
 
 /* The specification uses this type and lists its 32-bit flags but prints no definition for it. */
@@ -41,10 +41,10 @@ typedef uint32_t EFI_REDFISH_DISCOVER_FLAG;
 #define EFI_REDFISH_DISCOVER_VALIDATION 0x80000000
 #define EFI_REDFISH_DISCOVER_DURATION_MASK 0x0f000000
 
-typedef struct {
+struct efi_redfish_discovered_information {
     EFI_HANDLE RedfishRestExHandle;
     uint8_t IsIPv6;
-    EFI_IP_ADDRESS RedfishHostIpAddress;
+    union efi_ip_address RedfishHostIpAddress;
     uint16_t RedfishVersion;
     uint16_t *Location;
     uint16_t *Uuid;
@@ -53,47 +53,47 @@ typedef struct {
     uint16_t *Product;
     uint16_t *ProductVersion;
     uint8_t UseHttps;
-} EFI_REDFISH_DISCOVERED_INFORMATION;
+};
 
-typedef struct {
+struct efi_redfish_discovered_instance {
     EFI_STATUS Status;
-    EFI_REDFISH_DISCOVERED_INFORMATION Information;
-} EFI_REDFISH_DISCOVERED_INSTANCE;
+    struct efi_redfish_discovered_information Information;
+};
 
-typedef struct {
+struct efi_redfish_discovered_list {
     size_t NumberOfServiceFound;
-    EFI_REDFISH_DISCOVERED_INSTANCE *RedfishInstances;
-} EFI_REDFISH_DISCOVERED_LIST;
+    struct efi_redfish_discovered_instance *RedfishInstances;
+};
 
 /* The specification writes SIGNATURE_32, defined nowhere; EFI_SIGNATURE_32 packs the same way. */
 #define EFI_REDFISH_DISCOVER_TOKEN_SIGNATURE EFI_SIGNATURE_32('R', 'F', 'T', 'S')
 
-typedef struct {
+struct efi_redfish_discovered_token {
     uint32_t Signature;
-    EFI_REDFISH_DISCOVERED_LIST DiscoveredList;
+    struct efi_redfish_discovered_list DiscoveredList;
     EFI_EVENT Event;
     uintptr_t Timeout;
-} EFI_REDFISH_DISCOVERED_TOKEN;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_ACQUIRE_SERVICE)(
-    EFI_REDFISH_DISCOVER_PROTOCOL *This,
+    struct efi_redfish_discover_protocol *This,
     EFI_HANDLE ImageHandle,
-    EFI_REDFISH_DISCOVER_NETWORK_INTERFACE *TargetNetworkInterface,
+    struct efi_redfish_discover_network_interface *TargetNetworkInterface,
     EFI_REDFISH_DISCOVER_FLAG Flags,
-    EFI_REDFISH_DISCOVERED_TOKEN *Token
+    struct efi_redfish_discovered_token *Token
 );
 
 typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_ABORT_ACQUIRE)(
-    EFI_REDFISH_DISCOVER_PROTOCOL *This,
-    EFI_REDFISH_DISCOVER_NETWORK_INTERFACE *TargetNetworkInterface
+    struct efi_redfish_discover_protocol *This,
+    struct efi_redfish_discover_network_interface *TargetNetworkInterface
 );
 
 typedef EFI_STATUS (EFI_API *EFI_REDFISH_DISCOVER_RELEASE_SERVICE)(
-    EFI_REDFISH_DISCOVER_PROTOCOL *This,
-    EFI_REDFISH_DISCOVERED_LIST *List
+    struct efi_redfish_discover_protocol *This,
+    struct efi_redfish_discovered_list *List
 );
 
-struct _EFI_REDFISH_DISCOVER_PROTOCOL {
+struct efi_redfish_discover_protocol {
     EFI_REDFISH_DISCOVER_NETWORK_LIST GetNetworkInterfaceList;
     EFI_REDFISH_DISCOVER_ACQUIRE_SERVICE AcquireRedfishService;
     EFI_REDFISH_DISCOVER_ABORT_ACQUIRE AbortAcquireRedfishService;

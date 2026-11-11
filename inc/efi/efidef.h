@@ -64,33 +64,33 @@ typedef void *EFI_EVENT;
 typedef uint64_t EFI_LBA;
 typedef uintptr_t EFI_TPL;
 
-typedef struct {
+struct efi_mac_address {
     uint8_t Addr[32];
-} EFI_MAC_ADDRESS;
+};
 
-typedef struct {
+struct efi_ipv4_address {
     uint8_t Addr[4];
-} EFI_IPv4_ADDRESS;
+};
 
-typedef struct {
+struct efi_ipv6_address {
     uint8_t Addr[16];
-} EFI_IPv6_ADDRESS;
+};
 
-typedef union {
+union efi_ip_address {
     uint32_t Addr[4];
-    EFI_IPv4_ADDRESS v4;
-    EFI_IPv6_ADDRESS v6;
-} EFI_IP_ADDRESS;
+    struct efi_ipv4_address v4;
+    struct efi_ipv6_address v6;
+};
 
 /* Natural 4-byte alignment: the specification's 64-bit boundary is about buffers, not the type. */
-typedef struct {
+struct efi_guid {
     uint32_t Data1;
     uint16_t Data2;
     uint16_t Data3;
     uint8_t Data4[8];
-} EFI_GUID;
+};
 
-typedef struct {
+struct efi_time {
     uint16_t Year;
     uint8_t Month;
     uint8_t Day;
@@ -102,7 +102,7 @@ typedef struct {
     int16_t TimeZone;
     uint8_t Daylight;
     uint8_t Pad2;
-} EFI_TIME;
+};
 
 #define EFI_TIME_ADJUST_DAYLIGHT 0x01
 #define EFI_TIME_IN_DAYLIGHT 0x02
@@ -159,20 +159,20 @@ typedef enum {
 
 #define EFI_MEMORY_DESCRIPTOR_VERSION 1
 
-typedef struct {
+struct efi_memory_descriptor {
     uint32_t Type;
     EFI_PHYSICAL_ADDRESS PhysicalStart;
     EFI_VIRTUAL_ADDRESS VirtualStart;
     uint64_t NumberOfPages;
     uint64_t Attribute;
-} EFI_MEMORY_DESCRIPTOR;
+};
 
 /* UEFI aligns 64-bit fields to 8 bytes, which the IA-32 ABI does only with -malign-double. */
 #if (defined(__cplusplus) && __cplusplus >= 201103L) || \
     (!defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
-static_assert(sizeof(EFI_MEMORY_DESCRIPTOR) == 40, "Build with -malign-double on IA-32 (32-bit x86).");
+static_assert(sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-double on IA-32 (32-bit x86).");
 #elif !defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-_Static_assert(sizeof(EFI_MEMORY_DESCRIPTOR) == 40, "Build with -malign-double on IA-32 (32-bit x86).");
+_Static_assert(sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-double on IA-32 (32-bit x86).");
 #endif
 
 #define EFI_OS_INDICATIONS_BOOT_TO_FW_UI 0x0000000000000001
@@ -184,7 +184,7 @@ _Static_assert(sizeof(EFI_MEMORY_DESCRIPTOR) == 40, "Build with -malign-double o
 #define EFI_OS_INDICATIONS_START_PLATFORM_RECOVERY 0x0000000000000040
 #define EFI_OS_INDICATIONS_JSON_CONFIG_DATA_REFRESH 0x0000000000000080
 
-typedef struct {
+struct efi_managed_network_config_data {
     uint32_t ReceivedQueueTimeoutValue;
     uint32_t TransmitQueueTimeoutValue;
     uint16_t ProtocolTypeFilter;
@@ -195,7 +195,7 @@ typedef struct {
     uint8_t FlushQueuesOnReset;
     uint8_t EnableReceiveTimestamps;
     uint8_t DisableBackgroundPolling;
-} EFI_MANAGED_NETWORK_CONFIG_DATA;
+};
 
 #define EFI_PAGE_SIZE 4096
 #define EFI_PAGE_MASK 0xFFF

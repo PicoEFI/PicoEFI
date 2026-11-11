@@ -12,27 +12,27 @@ extern "C" {
 #define EFI_GPT_PART_ENTRY_MIN_SIZE 16384
 
 /* Packed: the header is 92 bytes on disk; natural alignment would pad it to 96. */
-typedef struct __attribute__((__packed__)) {
-    EFI_TABLE_HEADER Header;
+struct efi_partition_table_header {
+    struct efi_table_header Header;
     EFI_LBA MyLBA;
     EFI_LBA AlternateLBA;
     EFI_LBA FirstUsableLBA;
     EFI_LBA LastUsableLBA;
-    EFI_GUID DiskGUID;
+    struct efi_guid DiskGUID;
     EFI_LBA PartitionEntryLBA;
     uint32_t NumberOfPartitionEntries;
     uint32_t SizeOfPartitionEntry;
     uint32_t PartitionEntryArrayCRC32;
-} EFI_PARTITION_TABLE_HEADER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
-    EFI_GUID PartitionTypeGUID;
-    EFI_GUID UniquePartitionGUID;
+struct efi_partition_entry {
+    struct efi_guid PartitionTypeGUID;
+    struct efi_guid UniquePartitionGUID;
     EFI_LBA StartingLBA;
     EFI_LBA EndingLBA;
     uint64_t Attributes;
     uint16_t PartitionName[36];
-} EFI_PARTITION_ENTRY;
+} __attribute__((__packed__));
 
 #define EFI_PART_TYPE_UNUSED_GUID \
     {0x00000000, 0x0000, 0x0000, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}}

@@ -10,12 +10,12 @@ extern "C" {
 #define EFI_SIMPLE_TEXT_INPUT_PROTOCOL_GUID \
     {0x387477c1, 0x69c7, 0x11d2, {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
 
-typedef struct _EFI_SIMPLE_TEXT_INPUT_PROTOCOL EFI_SIMPLE_TEXT_INPUT_PROTOCOL;
+struct efi_simple_text_input_protocol;
 
-typedef struct {
+struct efi_input_key {
     uint16_t ScanCode;
     uint16_t UnicodeChar;
-} EFI_INPUT_KEY;
+};
 
 /* The specification lists these control characters and scan codes without names. */
 #define EFI_CHAR_NULL 0x0000
@@ -50,16 +50,16 @@ typedef struct {
 #define EFI_SCAN_ESC 0x0017
 
 typedef EFI_STATUS (EFI_API *EFI_INPUT_RESET)(
-    EFI_SIMPLE_TEXT_INPUT_PROTOCOL *This,
+    struct efi_simple_text_input_protocol *This,
     bool ExtendedVerification
 );
 
 typedef EFI_STATUS (EFI_API *EFI_INPUT_READ_KEY)(
-    EFI_SIMPLE_TEXT_INPUT_PROTOCOL *This,
-    EFI_INPUT_KEY *Key
+    struct efi_simple_text_input_protocol *This,
+    struct efi_input_key *Key
 );
 
-struct _EFI_SIMPLE_TEXT_INPUT_PROTOCOL {
+struct efi_simple_text_input_protocol {
     EFI_INPUT_RESET Reset;
     EFI_INPUT_READ_KEY ReadKeyStroke;
     EFI_EVENT WaitForKey;
@@ -68,24 +68,24 @@ struct _EFI_SIMPLE_TEXT_INPUT_PROTOCOL {
 #define EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL_GUID \
     {0x387477c2, 0x69c7, 0x11d2, {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
 
-typedef struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL;
+struct efi_simple_text_output_protocol;
 
-typedef struct {
+struct efi_simple_text_output_mode {
     int32_t MaxMode;
     int32_t Mode;
     int32_t Attribute;
     int32_t CursorColumn;
     int32_t CursorRow;
     uint8_t CursorVisible;
-} EFI_SIMPLE_TEXT_OUTPUT_MODE;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_RESET)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     bool ExtendedVerification
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_STRING)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     uint16_t *String
 );
 
@@ -149,24 +149,24 @@ typedef EFI_STATUS (EFI_API *EFI_TEXT_STRING)(
 #define EFI_ARROW_DOWN 0x2193
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_TEST_STRING)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     uint16_t *String
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_QUERY_MODE)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     size_t ModeNumber,
     size_t *Columns,
     size_t *Rows
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_MODE)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     size_t ModeNumber
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_ATTRIBUTE)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     uintptr_t Attribute
 );
 
@@ -200,20 +200,20 @@ typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_ATTRIBUTE)(
 /* Printed commented out (a misprint). Background is EFI_BLACK ... EFI_LIGHTGRAY. */
 #define EFI_TEXT_ATTR(Foreground, Background) ((Foreground) | ((Background) << 4))
 
-typedef EFI_STATUS (EFI_API *EFI_TEXT_CLEAR_SCREEN)(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_TEXT_CLEAR_SCREEN)(struct efi_simple_text_output_protocol *This);
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_SET_CURSOR_POSITION)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     size_t Column,
     size_t Row
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TEXT_ENABLE_CURSOR)(
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
+    struct efi_simple_text_output_protocol *This,
     bool Visible
 );
 
-struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL {
+struct efi_simple_text_output_protocol {
     EFI_TEXT_RESET Reset;
     EFI_TEXT_STRING OutputString;
     EFI_TEXT_TEST_STRING TestString;
@@ -223,7 +223,7 @@ struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL {
     EFI_TEXT_CLEAR_SCREEN ClearScreen;
     EFI_TEXT_SET_CURSOR_POSITION SetCursorPosition;
     EFI_TEXT_ENABLE_CURSOR EnableCursor;
-    EFI_SIMPLE_TEXT_OUTPUT_MODE *Mode;
+    struct efi_simple_text_output_mode *Mode;
 };
 
 #ifdef __cplusplus

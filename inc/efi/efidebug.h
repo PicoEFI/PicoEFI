@@ -10,7 +10,7 @@ extern "C" {
 #define EFI_DEBUG_SUPPORT_PROTOCOL_GUID \
     {0x2755590C, 0x6F3C, 0x42FA, {0x9E, 0xA4, 0xA3, 0xBA, 0x54, 0x3C, 0xDA, 0x25}}
 
-typedef struct _EFI_DEBUG_SUPPORT_PROTOCOL EFI_DEBUG_SUPPORT_PROTOCOL;
+struct efi_debug_support_protocol;
 
 /* Printed as IMAGE_FILE_MACHINE_* names that nothing defines; these are their values. */
 typedef enum {
@@ -28,18 +28,18 @@ typedef enum {
 } EFI_INSTRUCTION_SET_ARCHITECTURE;
 
 typedef EFI_STATUS (EFI_API *EFI_GET_MAXIMUM_PROCESSOR_INDEX)(
-    EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    struct efi_debug_support_protocol *This,
     size_t *MaxProcessorIndex
 );
 
-typedef struct {
+struct efi_system_context_ebc {
     uint64_t R0, R1, R2, R3, R4, R5, R6, R7;
     uint64_t Flags;
     uint64_t ControlFlags;
     uint64_t Ip;
-} EFI_SYSTEM_CONTEXT_EBC;
+};
 
-typedef struct {
+struct efi_system_context_riscv32 {
     uint32_t Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
     uint32_t S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
     uint32_t S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
@@ -49,9 +49,9 @@ typedef struct {
     EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
     EFI_UINT128 Fs2, Fs3, Fs4, Fs5, Fs6, Fs7, Fs8, Fs9, Fs10, Fs11;
     EFI_UINT128 Ft8, Ft9, Ft10, Ft11;
-} EFI_SYSTEM_CONTEXT_RISCV32;
+};
 
-typedef struct {
+struct efi_system_context_riscv64 {
     uint64_t Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
     uint64_t S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
     uint64_t S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
@@ -61,9 +61,9 @@ typedef struct {
     EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
     EFI_UINT128 Fs2, Fs3, Fs4, Fs5, Fs6, Fs7, Fs8, Fs9, Fs10, Fs11;
     EFI_UINT128 Ft8, Ft9, Ft10, Ft11;
-} EFI_SYSTEM_CONTEXT_RISCV64;
+};
 
-typedef struct {
+struct efi_system_context_riscv128 {
     EFI_UINT128 Zero, Ra, Sp, Gp, Tp, T0, T1, T2;
     EFI_UINT128 S0FP, S1, A0, A1, A2, A3, A4, A5, A6, A7;
     EFI_UINT128 S2, S3, S4, S5, S6, S7, S8, S9, S10, S11;
@@ -73,9 +73,9 @@ typedef struct {
     EFI_UINT128 Fs0, Fs1, Fa0, Fa1, Fa2, Fa3, Fa4, Fa5, Fa6, Fa7;
     EFI_UINT128 Fs2, Fs3, Fs4, Fs5, Fs6, Fs7, Fs8, Fs9, Fs10, Fs11;
     EFI_UINT128 Ft8, Ft9, Ft10, Ft11;
-} EFI_SYSTEM_CONTEXT_RISCV128;
+};
 
-typedef struct {
+struct efi_fx_save_state_ia32 {
     uint16_t Fcw;
     uint16_t Fsw;
     uint16_t Ftw;
@@ -103,11 +103,11 @@ typedef struct {
     uint8_t Xmm6[16];
     uint8_t Xmm7[16];
     uint8_t Reserved11[14 * 16];
-} EFI_FX_SAVE_STATE_IA32;
+};
 
-typedef struct {
+struct efi_system_context_ia32 {
     uint32_t ExceptionData;
-    EFI_FX_SAVE_STATE_IA32 FxSaveState;
+    struct efi_fx_save_state_ia32 FxSaveState;
     uint32_t Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
     uint32_t Cr0, Cr1, Cr2, Cr3, Cr4;
     uint32_t Eflags;
@@ -116,9 +116,9 @@ typedef struct {
     uint32_t Eip;
     uint32_t Gs, Fs, Es, Ds, Cs, Ss;
     uint32_t Edi, Esi, Ebp, Esp, Ebx, Edx, Ecx, Eax;
-} EFI_SYSTEM_CONTEXT_IA32;
+};
 
-typedef struct {
+struct efi_fx_save_state_x64 {
     uint16_t Fcw;
     uint16_t Fsw;
     uint16_t Ftw;
@@ -143,11 +143,11 @@ typedef struct {
     uint8_t Xmm6[16];
     uint8_t Xmm7[16];
     uint8_t Reserved11[14 * 16];
-} EFI_FX_SAVE_STATE_X64;
+};
 
-typedef struct {
+struct efi_system_context_x64 {
     uint64_t ExceptionData;
-    EFI_FX_SAVE_STATE_X64 FxSaveState;
+    struct efi_fx_save_state_x64 FxSaveState;
     uint64_t Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
     uint64_t Cr0, Cr1, Cr2, Cr3, Cr4, Cr8;
     uint64_t Rflags;
@@ -157,9 +157,9 @@ typedef struct {
     uint64_t Gs, Fs, Es, Ds, Cs, Ss;
     uint64_t Rdi, Rsi, Rbp, Rsp, Rbx, Rdx, Rcx, Rax;
     uint64_t R8, R9, R10, R11, R12, R13, R14, R15;
-} EFI_SYSTEM_CONTEXT_X64;
+};
 
-typedef struct {
+struct efi_system_context_ipf {
     uint64_t Reserved;
 
     uint64_t R1, R2, R3, R4, R5, R6, R7, R8, R9, R10,
@@ -195,10 +195,10 @@ typedef struct {
     uint64_t Ibr0, Ibr1, Ibr2, Ibr3, Ibr4, Ibr5, Ibr6, Ibr7;
 
     uint64_t IntNat;
-} EFI_SYSTEM_CONTEXT_IPF;
+};
 
 /* IFAR, the instruction fault address paired with IFSR, is missing from the print. */
-typedef struct {
+struct efi_system_context_arm {
     uint32_t R0;
     uint32_t R1;
     uint32_t R2;
@@ -220,9 +220,9 @@ typedef struct {
     uint32_t DFAR;
     uint32_t IFSR;
     uint32_t IFAR;
-} EFI_SYSTEM_CONTEXT_ARM;
+};
 
-typedef struct {
+struct efi_system_context_aarch64 {
     uint64_t X0;
     uint64_t X1;
     uint64_t X2;
@@ -294,9 +294,9 @@ typedef struct {
     uint64_t FPSR;
     uint64_t ESR;
     uint64_t FAR;
-} EFI_SYSTEM_CONTEXT_AARCH64;
+};
 
-typedef struct {
+struct efi_system_context_loongarch64 {
     uint64_t R0;
     uint64_t R1;
     uint64_t R2;
@@ -339,26 +339,26 @@ typedef struct {
     uint64_t ERA;
     uint64_t BADV;
     uint64_t BADI;
-} EFI_SYSTEM_CONTEXT_LOONGARCH64;
+};
 
 /* SystemContextRiscV128 and SystemContextLoongArch64 are misprinted Riscv128 and LongArch64. */
-typedef union {
-    EFI_SYSTEM_CONTEXT_EBC *SystemContextEbc;
-    EFI_SYSTEM_CONTEXT_IA32 *SystemContextIa32;
-    EFI_SYSTEM_CONTEXT_X64 *SystemContextX64;
-    EFI_SYSTEM_CONTEXT_IPF *SystemContextIpf;
-    EFI_SYSTEM_CONTEXT_ARM *SystemContextArm;
-    EFI_SYSTEM_CONTEXT_AARCH64 *SystemContextAArch64;
-    EFI_SYSTEM_CONTEXT_RISCV32 *SystemContextRiscV32;
-    EFI_SYSTEM_CONTEXT_RISCV64 *SystemContextRiscV64;
-    EFI_SYSTEM_CONTEXT_RISCV128 *SystemContextRiscV128;
-    EFI_SYSTEM_CONTEXT_LOONGARCH64 *SystemContextLoongArch64;
-} EFI_SYSTEM_CONTEXT;
+union efi_system_context {
+    struct efi_system_context_ebc *SystemContextEbc;
+    struct efi_system_context_ia32 *SystemContextIa32;
+    struct efi_system_context_x64 *SystemContextX64;
+    struct efi_system_context_ipf *SystemContextIpf;
+    struct efi_system_context_arm *SystemContextArm;
+    struct efi_system_context_aarch64 *SystemContextAArch64;
+    struct efi_system_context_riscv32 *SystemContextRiscV32;
+    struct efi_system_context_riscv64 *SystemContextRiscV64;
+    struct efi_system_context_riscv128 *SystemContextRiscV128;
+    struct efi_system_context_loongarch64 *SystemContextLoongArch64;
+};
 
-typedef void (EFI_API *EFI_PERIODIC_CALLBACK)(EFI_SYSTEM_CONTEXT SystemContext);
+typedef void (EFI_API *EFI_PERIODIC_CALLBACK)(union efi_system_context SystemContext);
 
 typedef EFI_STATUS (EFI_API *EFI_REGISTER_PERIODIC_CALLBACK)(
-    EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    struct efi_debug_support_protocol *This,
     size_t ProcessorIndex,
     EFI_PERIODIC_CALLBACK PeriodicCallback
 );
@@ -367,7 +367,7 @@ typedef intptr_t EFI_EXCEPTION_TYPE;
 
 typedef void (EFI_API *EFI_EXCEPTION_CALLBACK)(
     EFI_EXCEPTION_TYPE ExceptionType,
-    EFI_SYSTEM_CONTEXT SystemContext
+    union efi_system_context SystemContext
 );
 
 #define EFI_EXCEPT_EBC_UNDEFINED 0
@@ -540,20 +540,20 @@ typedef void (EFI_API *EFI_EXCEPTION_CALLBACK)(
 
 /* Printed as REGISTER_EXCEPTION_CALLBACK; the protocol structure uses this name. */
 typedef EFI_STATUS (EFI_API *EFI_REGISTER_EXCEPTION_CALLBACK)(
-    EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    struct efi_debug_support_protocol *This,
     size_t ProcessorIndex,
     EFI_EXCEPTION_CALLBACK ExceptionCallback,
     EFI_EXCEPTION_TYPE ExceptionType
 );
 
 typedef EFI_STATUS (EFI_API *EFI_INVALIDATE_INSTRUCTION_CACHE)(
-    EFI_DEBUG_SUPPORT_PROTOCOL *This,
+    struct efi_debug_support_protocol *This,
     size_t ProcessorIndex,
     void *Start,
     uint64_t Length
 );
 
-struct _EFI_DEBUG_SUPPORT_PROTOCOL {
+struct efi_debug_support_protocol {
     EFI_INSTRUCTION_SET_ARCHITECTURE Isa;
     EFI_GET_MAXIMUM_PROCESSOR_INDEX GetMaximumProcessorIndex;
     EFI_REGISTER_PERIODIC_CALLBACK RegisterPeriodicCallback;
@@ -564,27 +564,27 @@ struct _EFI_DEBUG_SUPPORT_PROTOCOL {
 #define EFI_DEBUGPORT_PROTOCOL_GUID \
     {0xEBA4E8D2, 0x3858, 0x41EC, {0xA2, 0x81, 0x26, 0x47, 0xBA, 0x96, 0x60, 0xD0}}
 
-typedef struct _EFI_DEBUGPORT_PROTOCOL EFI_DEBUGPORT_PROTOCOL;
+struct efi_debugport_protocol;
 
-typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_RESET)(EFI_DEBUGPORT_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_RESET)(struct efi_debugport_protocol *This);
 
 typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_WRITE)(
-    EFI_DEBUGPORT_PROTOCOL *This,
+    struct efi_debugport_protocol *This,
     uint32_t Timeout,
     size_t *BufferSize,
     void *Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_READ)(
-    EFI_DEBUGPORT_PROTOCOL *This,
+    struct efi_debugport_protocol *This,
     uint32_t Timeout,
     size_t *BufferSize,
     void *Buffer
 );
 
-typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_POLL)(EFI_DEBUGPORT_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_DEBUGPORT_POLL)(struct efi_debugport_protocol *This);
 
-struct _EFI_DEBUGPORT_PROTOCOL {
+struct efi_debugport_protocol {
     EFI_DEBUGPORT_RESET Reset;
     EFI_DEBUGPORT_WRITE Write;
     EFI_DEBUGPORT_READ Read;
@@ -596,11 +596,11 @@ struct _EFI_DEBUGPORT_PROTOCOL {
 #define EFI_DEBUGPORT_VARIABLE_NAME L"DEBUGPORT"
 #define EFI_DEBUGPORT_VARIABLE_GUID EFI_DEBUGPORT_PROTOCOL_GUID
 
-typedef struct _EFI_SYSTEM_TABLE_POINTER {
+struct efi_system_table_pointer {
     uint64_t Signature;
     EFI_PHYSICAL_ADDRESS EfiSystemTableBase;
     uint32_t Crc32;
-} EFI_SYSTEM_TABLE_POINTER;
+};
 
 #define EFI_DEBUG_IMAGE_INFO_TABLE_GUID \
     {0x49152E77, 0x1ADA, 0x4764, {0xB7, 0xA2, 0x7A, 0xFE, 0xFE, 0xD9, 0x5E, 0x8B}}
@@ -610,25 +610,25 @@ typedef struct _EFI_SYSTEM_TABLE_POINTER {
 
 #define EFI_DEBUG_IMAGE_INFO_TYPE_NORMAL 0x01
 
-typedef struct {
+struct efi_debug_image_info_normal {
     uint32_t ImageInfoType;
-    EFI_LOADED_IMAGE_PROTOCOL *LoadedImageProtocolInstance;
+    struct efi_loaded_image_protocol *LoadedImageProtocolInstance;
     EFI_HANDLE ImageHandle;
-} EFI_DEBUG_IMAGE_INFO_NORMAL;
+};
 
-typedef union {
+union efi_debug_image_info {
     uint32_t *ImageInfoType;
-    EFI_DEBUG_IMAGE_INFO_NORMAL *NormalImage;
-} EFI_DEBUG_IMAGE_INFO;
+    struct efi_debug_image_info_normal *NormalImage;
+};
 
-/* Not in the specification: how many EFI_DEBUG_IMAGE_INFO entries, pointer-sized, fill a page. */
+/* Not in the specification: how many union efi_debug_image_info, pointer-sized, fill a page. */
 #define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE (EFI_PAGE_SIZE / sizeof(uintptr_t))
 
-typedef struct {
+struct efi_debug_image_info_table_header {
     volatile uint32_t UpdateStatus;
     uint32_t TableSize;
-    EFI_DEBUG_IMAGE_INFO *EfiDebugImageInfoTable;
-} EFI_DEBUG_IMAGE_INFO_TABLE_HEADER;
+    union efi_debug_image_info *EfiDebugImageInfoTable;
+};
 
 #ifdef __cplusplus
 }

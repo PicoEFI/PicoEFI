@@ -13,14 +13,14 @@ extern "C" {
 #define EFI_RISCV_EFI_BOOT_PROTOCOL_REVISION 0x00010000
 #define EFI_RISCV_EFI_BOOT_PROTOCOL_LATEST_VERSION EFI_RISCV_EFI_BOOT_PROTOCOL_REVISION
 
-typedef struct _EFI_RISCV_EFI_BOOT_PROTOCOL EFI_RISCV_EFI_BOOT_PROTOCOL;
+struct efi_riscv_efi_boot_protocol;
 
 typedef EFI_STATUS (EFI_API *EFI_GET_BOOT_HARTID)(
-    EFI_RISCV_EFI_BOOT_PROTOCOL *This,
+    struct efi_riscv_efi_boot_protocol *This,
     uintptr_t *BootHartId
 );
 
-struct _EFI_RISCV_EFI_BOOT_PROTOCOL {
+struct efi_riscv_efi_boot_protocol {
     uint64_t Revision;
     EFI_GET_BOOT_HARTID GetBootHartId;
 };

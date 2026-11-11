@@ -30,10 +30,10 @@ typedef uint16_t EFI_DEFAULT_ID;
 #define EFI_HII_DEFAULT_CLASS_FIRMWARE_END 0xffff
 
 /* The package data (Data[]) follows: each package's own header starts with this one. */
-typedef struct __attribute__((__packed__)) {
+struct efi_hii_package_header {
     uint32_t Length:24;
     uint32_t Type:8;
-} EFI_HII_PACKAGE_HEADER;
+} __attribute__((__packed__));
 
 #define EFI_HII_PACKAGE_TYPE_ALL 0x00
 #define EFI_HII_PACKAGE_TYPE_GUID 0x01
@@ -49,42 +49,42 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_HII_PACKAGE_TYPE_SYSTEM_BEGIN 0xE0
 #define EFI_HII_PACKAGE_TYPE_SYSTEM_END 0xFF
 
-typedef struct __attribute__((__packed__)) {
-    EFI_GUID PackageListGuid;
+struct efi_hii_package_list_header {
+    struct efi_guid PackageListGuid;
     uint32_t PackageLength;
-} EFI_HII_PACKAGE_LIST_HEADER;
+} __attribute__((__packed__));
 
-typedef EFI_HII_PACKAGE_LIST_HEADER *EFI_HII_PACKAGE_LIST_PROTOCOL;
+typedef struct efi_hii_package_list_header *EFI_HII_PACKAGE_LIST_PROTOCOL;
 
 #define EFI_GLYPH_NON_SPACING 0x01
 #define EFI_GLYPH_WIDE 0x02
 #define EFI_GLYPH_HEIGHT 19
 #define EFI_GLYPH_WIDTH 8
 
-typedef struct __attribute__((__packed__)) {
+struct efi_narrow_glyph {
     uint16_t UnicodeWeight;
     uint8_t Attributes;
     uint8_t GlyphCol1[EFI_GLYPH_HEIGHT];
-} EFI_NARROW_GLYPH;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_wide_glyph {
     uint16_t UnicodeWeight;
     uint8_t Attributes;
     uint8_t GlyphCol1[EFI_GLYPH_HEIGHT];
     uint8_t GlyphCol2[EFI_GLYPH_HEIGHT];
     uint8_t Pad[3];
-} EFI_WIDE_GLYPH;
+} __attribute__((__packed__));
 
 /*
  * __extension__ on structures ending in a flexible array member: standard C, an extension in C++.
- * The EFI_WIDE_GLYPH WideGlyphs[] follow the narrow glyphs.
+ * The struct efi_wide_glyph WideGlyphs[] follow the narrow glyphs.
  */
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIMPLE_FONT_PACKAGE_HDR {
-    EFI_HII_PACKAGE_HEADER Header;
+__extension__ struct efi_hii_simple_font_package_hdr {
+    struct efi_hii_package_header Header;
     uint16_t NumberOfNarrowGlyphs;
     uint16_t NumberOfWideGlyphs;
-    EFI_NARROW_GLYPH NarrowGlyphs[];
-} EFI_HII_SIMPLE_FONT_PACKAGE_HDR;
+    struct efi_narrow_glyph NarrowGlyphs[];
+} __attribute__((__packed__));
 
 typedef uint32_t EFI_HII_FONT_STYLE;
 
@@ -97,27 +97,27 @@ typedef uint32_t EFI_HII_FONT_STYLE;
 #define EFI_HII_FONT_STYLE_UNDERLINE 0x00080000
 #define EFI_HII_FONT_STYLE_DBL_UNDER 0x00100000
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GLYPH_INFO {
+struct efi_hii_glyph_info {
     uint16_t Width;
     uint16_t Height;
     int16_t OffsetX;
     int16_t OffsetY;
     int16_t AdvanceX;
-} EFI_HII_GLYPH_INFO;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_FONT_PACKAGE_HDR {
-    EFI_HII_PACKAGE_HEADER Header;
+__extension__ struct efi_hii_font_package_hdr {
+    struct efi_hii_package_header Header;
     uint32_t HdrSize;
     uint32_t GlyphBlockOffset;
-    EFI_HII_GLYPH_INFO Cell;
+    struct efi_hii_glyph_info Cell;
     EFI_HII_FONT_STYLE FontStyle;
     uint16_t FontFamily[];
-} EFI_HII_FONT_PACKAGE_HDR;
+} __attribute__((__packed__));
 
 /* The block body (BlockBody[]) follows: each glyph block starts with this header. */
-typedef struct __attribute__((__packed__)) _EFI_HII_GLYPH_BLOCK {
+struct efi_hii_glyph_block {
     uint8_t BlockType;
-} EFI_HII_GLYPH_BLOCK;
+} __attribute__((__packed__));
 
 #define EFI_HII_GIBT_END 0x00
 #define EFI_HII_GIBT_GLYPH 0x10
@@ -133,78 +133,78 @@ typedef struct __attribute__((__packed__)) _EFI_HII_GLYPH_BLOCK {
 #define EFI_HII_GIBT_EXT2 0x31
 #define EFI_HII_GIBT_EXT4 0x32
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_DEFAULTS_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
-    EFI_HII_GLYPH_INFO Cell;
-} EFI_HII_GIBT_DEFAULTS_BLOCK;
+struct efi_hii_gibt_defaults_block {
+    struct efi_hii_glyph_block Header;
+    struct efi_hii_glyph_info Cell;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_DUPLICATE_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+struct efi_hii_gibt_duplicate_block {
+    struct efi_hii_glyph_block Header;
     uint16_t CharValue;
-} EFI_HII_GIBT_DUPLICATE_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_GLYPH_GIBT_END_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
-} EFI_GLYPH_GIBT_END_BLOCK;
+struct efi_glyph_gibt_end_block {
+    struct efi_hii_glyph_block Header;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_EXT1_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+struct efi_hii_gibt_ext1_block {
+    struct efi_hii_glyph_block Header;
     uint8_t BlockType2;
     uint8_t Length;
-} EFI_HII_GIBT_EXT1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_EXT2_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+struct efi_hii_gibt_ext2_block {
+    struct efi_hii_glyph_block Header;
     uint8_t BlockType2;
     uint16_t Length;
-} EFI_HII_GIBT_EXT2_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_EXT4_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+struct efi_hii_gibt_ext4_block {
+    struct efi_hii_glyph_block Header;
     uint8_t BlockType2;
     uint32_t Length;
-} EFI_HII_GIBT_EXT4_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_GLYPH_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
-    EFI_HII_GLYPH_INFO Cell;
+struct efi_hii_gibt_glyph_block {
+    struct efi_hii_glyph_block Header;
+    struct efi_hii_glyph_info Cell;
     uint8_t BitmapData[1];
-} EFI_HII_GIBT_GLYPH_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_GLYPHS_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
-    EFI_HII_GLYPH_INFO Cell;
+struct efi_hii_gibt_glyphs_block {
+    struct efi_hii_glyph_block Header;
+    struct efi_hii_glyph_info Cell;
     uint16_t Count;
     uint8_t BitmapData[1];
-} EFI_HII_GIBT_GLYPHS_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_GLYPH_DEFAULT_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+__extension__ struct efi_hii_gibt_glyph_default_block {
+    struct efi_hii_glyph_block Header;
     uint8_t BitmapData[];
-} EFI_HII_GIBT_GLYPH_DEFAULT_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_GLYPHS_DEFAULT_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+__extension__ struct efi_hii_gibt_glyphs_default_block {
+    struct efi_hii_glyph_block Header;
     uint16_t Count;
     uint8_t BitmapData[];
-} EFI_HII_GIBT_GLYPHS_DEFAULT_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_SKIP2_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+struct efi_hii_gibt_skip2_block {
+    struct efi_hii_glyph_block Header;
     uint16_t SkipCount;
-} EFI_HII_GIBT_SKIP2_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_SKIP1_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
+struct efi_hii_gibt_skip1_block {
+    struct efi_hii_glyph_block Header;
     uint8_t SkipCount;
-} EFI_HII_GIBT_SKIP1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_VARIABILITY_BLOCK {
-    EFI_HII_GLYPH_BLOCK Header;
-    EFI_HII_GLYPH_INFO Cell;
+struct efi_hii_gibt_variability_block {
+    struct efi_hii_glyph_block Header;
+    struct efi_hii_glyph_info Cell;
     uint8_t GlyphPackInBits;
     uint8_t BitmapData[1];
-} EFI_HII_GIBT_VARIABILITY_BLOCK;
+} __attribute__((__packed__));
 
 /* Named without values: GlyphPackInBits is the number of bits per pixel. */
 #define EFI_GIBT_VARIABILITY_BLOCK_1_BIT 1
@@ -215,32 +215,32 @@ typedef struct __attribute__((__packed__)) _EFI_HII_GIBT_VARIABILITY_BLOCK {
 #define EFI_GIBT_VARIABILITY_BLOCK_24_BIT 24
 #define EFI_GIBT_VARIABILITY_BLOCK_32_BIT 32
 
-/* EFI_DEVICE_PATH_PROTOCOL DevicePath[] follows (printed commented out). */
-typedef struct __attribute__((__packed__)) _EFI_HII_DEVICE_PATH_PACKAGE {
-    EFI_HII_PACKAGE_HEADER Header;
-} EFI_HII_DEVICE_PATH_PACKAGE;
+/* struct efi_device_path_protocol DevicePath[] follows (printed commented out). */
+struct efi_hii_device_path_package {
+    struct efi_hii_package_header Header;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_GUID_PACKAGE_HDR {
-    EFI_HII_PACKAGE_HEADER Header;
-    EFI_GUID Guid;
-} EFI_HII_GUID_PACKAGE_HDR;
+struct efi_hii_guid_package_hdr {
+    struct efi_hii_package_header Header;
+    struct efi_guid Guid;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_STRING_PACKAGE_HDR {
-    EFI_HII_PACKAGE_HEADER Header;
+__extension__ struct efi_hii_string_package_hdr {
+    struct efi_hii_package_header Header;
     uint32_t HdrSize;
     uint32_t StringInfoOffset;
     uint16_t LanguageWindow[16];
     EFI_STRING_ID LanguageName;
     char Language[];
-} EFI_HII_STRING_PACKAGE_HDR;
+} __attribute__((__packed__));
 
 #define EFI_UEFI_CONFIG_LANG "x-UEFI"
 #define EFI_UEFI_CONFIG_LANG_2 "x-i-UEFI"
 
 /* The block body (BlockBody[]) follows: each string block starts with this header. */
-typedef struct __attribute__((__packed__)) {
+struct efi_hii_string_block {
     uint8_t BlockType;
-} EFI_HII_STRING_BLOCK;
+} __attribute__((__packed__));
 
 #define EFI_HII_SIBT_END 0x00
 #define EFI_HII_SIBT_STRING_SCSU 0x10
@@ -259,109 +259,109 @@ typedef struct __attribute__((__packed__)) {
 #define EFI_HII_SIBT_EXT4 0x32
 #define EFI_HII_SIBT_FONT 0x40
 
-typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_DUPLICATE_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+struct efi_hii_sibt_duplicate_block {
+    struct efi_hii_string_block Header;
     EFI_STRING_ID StringId;
-} EFI_HII_SIBT_DUPLICATE_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_END_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
-} EFI_HII_SIBT_END_BLOCK;
+struct efi_hii_sibt_end_block {
+    struct efi_hii_string_block Header;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_EXT1_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+struct efi_hii_sibt_ext1_block {
+    struct efi_hii_string_block Header;
     uint8_t BlockType2;
     uint8_t Length;
-} EFI_HII_SIBT_EXT1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_EXT2_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+struct efi_hii_sibt_ext2_block {
+    struct efi_hii_string_block Header;
     uint8_t BlockType2;
     uint16_t Length;
-} EFI_HII_SIBT_EXT2_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_EXT4_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+struct efi_hii_sibt_ext4_block {
+    struct efi_hii_string_block Header;
     uint8_t BlockType2;
     uint32_t Length;
-} EFI_HII_SIBT_EXT4_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_FONT_BLOCK {
-    EFI_HII_SIBT_EXT2_BLOCK Header;
+__extension__ struct efi_hii_sibt_font_block {
+    struct efi_hii_sibt_ext2_block Header;
     uint8_t FontId;
     uint16_t FontSize;
     EFI_HII_FONT_STYLE FontStyle;
     uint16_t FontName[];
-} EFI_HII_SIBT_FONT_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_SKIP1_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+struct efi_hii_sibt_skip1_block {
+    struct efi_hii_string_block Header;
     uint8_t SkipCount;
-} EFI_HII_SIBT_SKIP1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_SKIP2_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+struct efi_hii_sibt_skip2_block {
+    struct efi_hii_string_block Header;
     uint16_t SkipCount;
-} EFI_HII_SIBT_SKIP2_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRING_SCSU_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_string_scsu_block {
+    struct efi_hii_string_block Header;
     uint8_t StringText[];
-} EFI_HII_SIBT_STRING_SCSU_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRING_SCSU_FONT_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_string_scsu_font_block {
+    struct efi_hii_string_block Header;
     uint8_t FontIdentifier;
     uint8_t StringText[];
-} EFI_HII_SIBT_STRING_SCSU_FONT_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRINGS_SCSU_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_strings_scsu_block {
+    struct efi_hii_string_block Header;
     uint16_t StringCount;
     uint8_t StringText[];
-} EFI_HII_SIBT_STRINGS_SCSU_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRINGS_SCSU_FONT_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_strings_scsu_font_block {
+    struct efi_hii_string_block Header;
     uint8_t FontIdentifier;
     uint16_t StringCount;
     uint8_t StringText[];
-} EFI_HII_SIBT_STRINGS_SCSU_FONT_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRING_UCS2_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_string_ucs2_block {
+    struct efi_hii_string_block Header;
     uint16_t StringText[];
-} EFI_HII_SIBT_STRING_UCS2_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRING_UCS2_FONT_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_string_ucs2_font_block {
+    struct efi_hii_string_block Header;
     uint8_t FontIdentifier;
     uint16_t StringText[];
-} EFI_HII_SIBT_STRING_UCS2_FONT_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRINGS_UCS2_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_strings_ucs2_block {
+    struct efi_hii_string_block Header;
     uint16_t StringCount;
     uint16_t StringText[];
-} EFI_HII_SIBT_STRINGS_UCS2_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_SIBT_STRINGS_UCS2_FONT_BLOCK {
-    EFI_HII_STRING_BLOCK Header;
+__extension__ struct efi_hii_sibt_strings_ucs2_font_block {
+    struct efi_hii_string_block Header;
     uint8_t FontIdentifier;
     uint16_t StringCount;
     uint16_t StringText[];
-} EFI_HII_SIBT_STRINGS_UCS2_FONT_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IMAGE_PACKAGE_HDR {
-    EFI_HII_PACKAGE_HEADER Header;
+struct efi_hii_image_package_hdr {
+    struct efi_hii_package_header Header;
     uint32_t ImageInfoOffset;
     uint32_t PaletteInfoOffset;
-} EFI_HII_IMAGE_PACKAGE_HDR;
+} __attribute__((__packed__));
 
 /* The block body (BlockBody[]) follows: each image block starts with this header. */
-typedef struct __attribute__((__packed__)) _EFI_HII_IMAGE_BLOCK {
+struct efi_hii_image_block {
     uint8_t BlockType;
-} EFI_HII_IMAGE_BLOCK;
+} __attribute__((__packed__));
 
 #define EFI_HII_IIBT_END 0x00
 #define EFI_HII_IIBT_IMAGE_1BIT 0x10
@@ -381,159 +381,159 @@ typedef struct __attribute__((__packed__)) _EFI_HII_IMAGE_BLOCK {
 #define EFI_HII_IIBT_EXT2 0x31
 #define EFI_HII_IIBT_EXT4 0x32
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_END_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
-} EFI_HII_IIBT_END_BLOCK;
+struct efi_hii_iibt_end_block {
+    struct efi_hii_image_block Header;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_EXT1_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_ext1_block {
+    struct efi_hii_image_block Header;
     uint8_t BlockType2;
     uint8_t Length;
-} EFI_HII_IIBT_EXT1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_EXT2_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_ext2_block {
+    struct efi_hii_image_block Header;
     uint8_t BlockType2;
     uint16_t Length;
-} EFI_HII_IIBT_EXT2_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_EXT4_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_ext4_block {
+    struct efi_hii_image_block Header;
     uint8_t BlockType2;
     uint32_t Length;
-} EFI_HII_IIBT_EXT4_BLOCK;
+} __attribute__((__packed__));
 
 /* The image bases end in a one-element array, as firmware lays them out: the blocks embed them. */
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_1BIT_BASE {
+struct efi_hii_iibt_image_1bit_base {
     uint16_t Width;
     uint16_t Height;
     uint8_t Data[1];
-} EFI_HII_IIBT_IMAGE_1BIT_BASE;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_1BIT_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_image_1bit_block {
+    struct efi_hii_image_block Header;
     uint8_t PaletteIndex;
-    EFI_HII_IIBT_IMAGE_1BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_1BIT_BLOCK;
+    struct efi_hii_iibt_image_1bit_base Bitmap;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_1BIT_TRANS_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_image_1bit_trans_block {
+    struct efi_hii_image_block Header;
     uint8_t PaletteIndex;
-    EFI_HII_IIBT_IMAGE_1BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_1BIT_TRANS_BLOCK;
+    struct efi_hii_iibt_image_1bit_base Bitmap;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_RGB_PIXEL {
+struct efi_hii_rgb_pixel {
     uint8_t b;
     uint8_t g;
     uint8_t r;
-} EFI_HII_RGB_PIXEL;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_24BIT_BASE {
+struct efi_hii_iibt_image_24bit_base {
     uint16_t Width;
     uint16_t Height;
-    EFI_HII_RGB_PIXEL Bitmap[1];
-} EFI_HII_IIBT_IMAGE_24BIT_BASE;
+    struct efi_hii_rgb_pixel Bitmap[1];
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_24BIT_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
-    EFI_HII_IIBT_IMAGE_24BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_24BIT_BLOCK;
+struct efi_hii_iibt_image_24bit_block {
+    struct efi_hii_image_block Header;
+    struct efi_hii_iibt_image_24bit_base Bitmap;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) EFI_HII_IIBT_IMAGE_24BIT_TRANS_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
-    EFI_HII_IIBT_IMAGE_24BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_24BIT_TRANS_BLOCK;
+struct efi_hii_iibt_image_24bit_trans_block {
+    struct efi_hii_image_block Header;
+    struct efi_hii_iibt_image_24bit_base Bitmap;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_4BIT_BASE {
-    uint16_t Width;
-    uint16_t Height;
-    uint8_t Data[1];
-} EFI_HII_IIBT_IMAGE_4BIT_BASE;
-
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_4BIT_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
-    uint8_t PaletteIndex;
-    EFI_HII_IIBT_IMAGE_4BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_4BIT_BLOCK;
-
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_4BIT_TRANS_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
-    uint8_t PaletteIndex;
-    EFI_HII_IIBT_IMAGE_4BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_4BIT_TRANS_BLOCK;
-
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_8BIT_BASE {
+struct efi_hii_iibt_image_4bit_base {
     uint16_t Width;
     uint16_t Height;
     uint8_t Data[1];
-} EFI_HII_IIBT_IMAGE_8BIT_BASE;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_8BIT_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_image_4bit_block {
+    struct efi_hii_image_block Header;
     uint8_t PaletteIndex;
-    EFI_HII_IIBT_IMAGE_8BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_8BIT_BLOCK;
+    struct efi_hii_iibt_image_4bit_base Bitmap;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_IMAGE_8BIT_TRANS_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_image_4bit_trans_block {
+    struct efi_hii_image_block Header;
     uint8_t PaletteIndex;
-    EFI_HII_IIBT_IMAGE_8BIT_BASE Bitmap;
-} EFI_HII_IIBT_IMAGE_8BIT_TRANS_BLOCK;
+    struct efi_hii_iibt_image_4bit_base Bitmap;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_DUPLICATE_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_image_8bit_base {
+    uint16_t Width;
+    uint16_t Height;
+    uint8_t Data[1];
+} __attribute__((__packed__));
+
+struct efi_hii_iibt_image_8bit_block {
+    struct efi_hii_image_block Header;
+    uint8_t PaletteIndex;
+    struct efi_hii_iibt_image_8bit_base Bitmap;
+} __attribute__((__packed__));
+
+struct efi_hii_iibt_image_8bit_trans_block {
+    struct efi_hii_image_block Header;
+    uint8_t PaletteIndex;
+    struct efi_hii_iibt_image_8bit_base Bitmap;
+} __attribute__((__packed__));
+
+struct efi_hii_iibt_duplicate_block {
+    struct efi_hii_image_block Header;
     EFI_IMAGE_ID ImageId;
-} EFI_HII_IIBT_DUPLICATE_BLOCK;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_JPEG_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+__extension__ struct efi_hii_iibt_jpeg_block {
+    struct efi_hii_image_block Header;
     uint32_t Size;
     uint8_t Data[];
-} EFI_HII_IIBT_JPEG_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_SKIP1_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_skip1_block {
+    struct efi_hii_image_block Header;
     uint8_t SkipCount;
-} EFI_HII_IIBT_SKIP1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_SKIP2_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_skip2_block {
+    struct efi_hii_image_block Header;
     uint16_t SkipCount;
-} EFI_HII_IIBT_SKIP2_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IIBT_PNG_BLOCK {
-    EFI_HII_IMAGE_BLOCK Header;
+struct efi_hii_iibt_png_block {
+    struct efi_hii_image_block Header;
     uint32_t Size;
     uint8_t Data[1];
-} EFI_HII_IIBT_PNG_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_IMAGE_PALETTE_INFO_HEADER {
+struct efi_hii_image_palette_info_header {
     uint16_t PaletteCount;
-} EFI_HII_IMAGE_PALETTE_INFO_HEADER;
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_IMAGE_PALETTE_INFO {
+__extension__ struct efi_hii_image_palette_info {
     uint16_t PaletteSize;
-    EFI_HII_RGB_PIXEL PaletteValue[];
-} EFI_HII_IMAGE_PALETTE_INFO;
+    struct efi_hii_rgb_pixel PaletteValue[];
+} __attribute__((__packed__));
 
 /* The op-codes follow the package header (printed commented out as OpCodeHeader). */
-typedef struct __attribute__((__packed__)) _EFI_HII_FORM_PACKAGE_HDR {
-    EFI_HII_PACKAGE_HEADER Header;
-} EFI_HII_FORM_PACKAGE_HDR;
+struct efi_hii_form_package_hdr {
+    struct efi_hii_package_header Header;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_OP_HEADER {
+struct efi_ifr_op_header {
     uint8_t OpCode;
     uint8_t Length:7;
     uint8_t Scope:1;
-} EFI_IFR_OP_HEADER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_STATEMENT_HEADER {
+struct efi_ifr_statement_header {
     EFI_STRING_ID Prompt;
     EFI_STRING_ID Help;
-} EFI_IFR_STATEMENT_HEADER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_HEADER {
-    EFI_IFR_STATEMENT_HEADER Header;
+struct efi_ifr_question_header {
+    struct efi_ifr_statement_header Header;
     EFI_QUESTION_ID QuestionId;
     EFI_VARSTORE_ID VarStoreId;
     union __attribute__((__packed__)) {
@@ -541,7 +541,7 @@ typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_HEADER {
         uint16_t VarOffset;
     } VarStoreInfo;
     uint8_t Flags;
-} EFI_IFR_QUESTION_HEADER;
+} __attribute__((__packed__));
 
 #define EFI_IFR_FLAG_READ_ONLY 0x01
 #define EFI_IFR_FLAG_CALLBACK 0x04
@@ -550,40 +550,40 @@ typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_HEADER {
 #define EFI_IFR_FLAG_RECONNECT_REQUIRED 0x40
 #define EFI_IFR_FLAG_OPTIONS_ONLY 0x80
 
-typedef struct __attribute__((__packed__)) {
+struct efi_hii_time {
     uint8_t Hour;
     uint8_t Minute;
     uint8_t Second;
-} EFI_HII_TIME;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_hii_date {
     uint16_t Year;
     uint8_t Month;
     uint8_t Day;
-} EFI_HII_DATE;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_hii_ref {
     EFI_QUESTION_ID QuestionId;
     EFI_FORM_ID FormId;
-    EFI_GUID FormSetGuid;
+    struct efi_guid FormSetGuid;
     EFI_STRING_ID DevicePath;
-} EFI_HII_REF;
+} __attribute__((__packed__));
 
 /* An EFI_IFR_TYPE_BUFFER value is a byte array (buffer[], printed commented out). */
-typedef union __attribute__((__packed__)) {
+union efi_ifr_type_value {
     uint8_t u8;
     uint16_t u16;
     uint32_t u32;
     uint64_t u64;
     uint8_t b;
-    EFI_HII_TIME time;
-    EFI_HII_DATE date;
+    struct efi_hii_time time;
+    struct efi_hii_date date;
     EFI_STRING_ID string;
-    EFI_HII_REF ref;
-} EFI_IFR_TYPE_VALUE;
+    struct efi_hii_ref ref;
+} __attribute__((__packed__));
 
-/* Printed inline in EFI_IFR_NUMERIC and EFI_IFR_ONE_OF; named at file scope for both. */
-typedef union __attribute__((__packed__)) {
+/* Printed inline in struct efi_ifr_numeric and struct efi_ifr_one_of; named at file scope for both. */
+union efi_minmaxstep_data {
     struct __attribute__((__packed__)) {
         uint8_t MinValue;
         uint8_t MaxValue;
@@ -604,88 +604,88 @@ typedef union __attribute__((__packed__)) {
         uint64_t MaxValue;
         uint64_t Step;
     } u64;
-} EFI_MINMAXSTEP_DATA;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ACTION_OP 0x0C
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ACTION {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_action {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     EFI_STRING_ID QuestionConfig;
-} EFI_IFR_ACTION;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ACTION_1 {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
-} EFI_IFR_ACTION_1;
+struct efi_ifr_action_1 {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ANIMATION_OP 0x1F
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ANIMATION {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_animation {
+    struct efi_ifr_op_header Header;
     EFI_ANIMATION_ID Id;
-} EFI_IFR_ANIMATION;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ADD_OP 0x3a
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ADD {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_ADD;
+struct efi_ifr_add {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_AND_OP 0x15
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_AND {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_AND;
+struct efi_ifr_and {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_BITWISE_AND_OP 0x35
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_BITWISE_AND {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_BITWISE_AND;
+struct efi_ifr_bitwise_and {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_BITWISE_NOT_OP 0x37
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_BITWISE_NOT {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_BITWISE_NOT;
+struct efi_ifr_bitwise_not {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_BITWISE_OR_OP 0x36
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_BITWISE_OR {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_BITWISE_OR;
+struct efi_ifr_bitwise_or {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_CATENATE_OP 0x5e
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_CATENATE {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_CATENATE;
+struct efi_ifr_catenate {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_CHECKBOX_OP 0x06
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_CHECKBOX {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_checkbox {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint8_t Flags;
-} EFI_IFR_CHECKBOX;
+} __attribute__((__packed__));
 
 #define EFI_IFR_CHECKBOX_DEFAULT 0x01
 #define EFI_IFR_CHECKBOX_DEFAULT_MFG 0x02
 
 #define EFI_IFR_CONDITIONAL_OP 0x50
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_CONDITIONAL {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_CONDITIONAL;
+struct efi_ifr_conditional {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_DATE_OP 0x1A
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_DATE {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_date {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint8_t Flags;
-} EFI_IFR_DATE;
+} __attribute__((__packed__));
 
 #define EFI_QF_DATE_YEAR_SUPPRESS 0x01
 #define EFI_QF_DATE_MONTH_SUPPRESS 0x02
@@ -698,272 +698,272 @@ typedef struct __attribute__((__packed__)) _EFI_IFR_DATE {
 
 #define EFI_IFR_DEFAULT_OP 0x5b
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_DEFAULT {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_default {
+    struct efi_ifr_op_header Header;
     uint16_t DefaultId;
     uint8_t Type;
-    EFI_IFR_TYPE_VALUE Value;
-} EFI_IFR_DEFAULT;
+    union efi_ifr_type_value Value;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_DEFAULT_2 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_default_2 {
+    struct efi_ifr_op_header Header;
     uint16_t DefaultId;
     uint8_t Type;
-} EFI_IFR_DEFAULT_2;
+} __attribute__((__packed__));
 
 #define EFI_IFR_DEFAULTSTORE_OP 0x5c
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_DEFAULTSTORE {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_defaultstore {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID DefaultName;
     uint16_t DefaultId;
-} EFI_IFR_DEFAULTSTORE;
+} __attribute__((__packed__));
 
 #define EFI_IFR_DISABLE_IF_OP 0x1e
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_DISABLE_IF {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_DISABLE_IF;
+struct efi_ifr_disable_if {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_DIVIDE_OP 0x3d
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_DIVIDE {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_DIVIDE;
+struct efi_ifr_divide {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_DUP_OP 0x57
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_DUP {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_DUP;
+struct efi_ifr_dup {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_END_OP 0x29
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_END {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_END;
+struct efi_ifr_end {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_EQUAL_OP 0x2f
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_EQUAL {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_EQUAL;
+struct efi_ifr_equal {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_EQ_ID_ID_OP 0x13
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_EQ_ID_ID {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_eq_id_id {
+    struct efi_ifr_op_header Header;
     EFI_QUESTION_ID QuestionId1;
     EFI_QUESTION_ID QuestionId2;
-} EFI_IFR_EQ_ID_ID;
+} __attribute__((__packed__));
 
 #define EFI_IFR_EQ_ID_VAL_LIST_OP 0x14
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_EQ_ID_VAL_LIST {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_eq_id_val_list {
+    struct efi_ifr_op_header Header;
     EFI_QUESTION_ID QuestionId;
     uint16_t ListLength;
     uint16_t ValueList[1];
-} EFI_IFR_EQ_ID_VAL_LIST;
+} __attribute__((__packed__));
 
 #define EFI_IFR_EQ_ID_VAL_OP 0x12
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_EQ_ID_VAL {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_eq_id_val {
+    struct efi_ifr_op_header Header;
     EFI_QUESTION_ID QuestionId;
     uint16_t Value;
-} EFI_IFR_EQ_ID_VAL;
+} __attribute__((__packed__));
 
 #define EFI_IFR_FALSE_OP 0x47
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_FALSE {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_FALSE;
+struct efi_ifr_false {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_FIND_OP 0x4c
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_FIND {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_find {
+    struct efi_ifr_op_header Header;
     uint8_t Format;
-} EFI_IFR_FIND;
+} __attribute__((__packed__));
 
 #define EFI_IFR_FF_CASE_SENSITIVE 0x00
 #define EFI_IFR_FF_CASE_INSENSITIVE 0x01
 
 #define EFI_IFR_FORM_OP 0x01
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_FORM {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_form {
+    struct efi_ifr_op_header Header;
     EFI_FORM_ID FormId;
     EFI_STRING_ID FormTitle;
-} EFI_IFR_FORM;
+} __attribute__((__packed__));
 
 #define EFI_IFR_FORM_MAP_OP 0x5D
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_FORM_MAP_METHOD {
+struct efi_ifr_form_map_method {
     EFI_STRING_ID MethodTitle;
-    EFI_GUID MethodIdentifier;
-} EFI_IFR_FORM_MAP_METHOD;
+    struct efi_guid MethodIdentifier;
+} __attribute__((__packed__));
 
-/* EFI_IFR_FORM_MAP_METHOD Methods[] follows (printed commented out). */
-typedef struct __attribute__((__packed__)) _EFI_IFR_FORM_MAP {
-    EFI_IFR_OP_HEADER Header;
+/* struct efi_ifr_form_map_method Methods[] follows (printed commented out). */
+struct efi_ifr_form_map {
+    struct efi_ifr_op_header Header;
     EFI_FORM_ID FormId;
-} EFI_IFR_FORM_MAP;
+} __attribute__((__packed__));
 
 #define EFI_HII_STANDARD_FORM_GUID \
     {0x3bd2f4ec, 0xe524, 0x46e4, {0xa9, 0xd8, 0x51, 0x01, 0x17, 0x42, 0x55, 0x62}}
 
 #define EFI_IFR_FORM_SET_OP 0x0E
 
-/* Flags bits 0:1 count the EFI_GUID ClassGuid[] that follows (printed commented out). */
-typedef struct __attribute__((__packed__)) _EFI_IFR_FORM_SET {
-    EFI_IFR_OP_HEADER Header;
-    EFI_GUID Guid;
+/* Flags bits 0:1 count the struct efi_guid ClassGuid[] that follows (printed commented out). */
+struct efi_ifr_form_set {
+    struct efi_ifr_op_header Header;
+    struct efi_guid Guid;
     EFI_STRING_ID FormSetTitle;
     EFI_STRING_ID Help;
     uint8_t Flags;
-} EFI_IFR_FORM_SET;
+} __attribute__((__packed__));
 
 #define EFI_IFR_GET_OP 0x2B
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_GET {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_get {
+    struct efi_ifr_op_header Header;
     EFI_VARSTORE_ID VarStoreId;
     union __attribute__((__packed__)) {
         EFI_STRING_ID VarName;
         uint16_t VarOffset;
     } VarStoreInfo;
     uint8_t VarStoreType;
-} EFI_IFR_GET;
+} __attribute__((__packed__));
 
 #define EFI_IFR_GRAY_OUT_IF_OP 0x19
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_GRAY_OUT_IF {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_GRAY_OUT_IF;
+struct efi_ifr_gray_out_if {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_GREATER_EQUAL_OP 0x32
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_GREATER_EQUAL {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_GREATER_EQUAL;
+struct efi_ifr_greater_equal {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_GREATER_THAN_OP 0x31
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_GREATER_THAN {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_GREATER_THAN;
+struct efi_ifr_greater_than {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_GUID_OP 0x5F
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_GUID {
-    EFI_IFR_OP_HEADER Header;
-    EFI_GUID Guid;
-} EFI_IFR_GUID;
+struct efi_ifr_guid {
+    struct efi_ifr_op_header Header;
+    struct efi_guid Guid;
+} __attribute__((__packed__));
 
 #define EFI_IFR_IMAGE_OP 0x04
 
-/* The printed structure lost the EFI_IFR_OP_HEADER that every op-code starts with. */
-typedef struct __attribute__((__packed__)) _EFI_IFR_IMAGE {
-    EFI_IFR_OP_HEADER Header;
+/* The printed structure lost the struct efi_ifr_op_header that every op-code starts with. */
+struct efi_ifr_image {
+    struct efi_ifr_op_header Header;
     EFI_IMAGE_ID Id;
-} EFI_IFR_IMAGE;
+} __attribute__((__packed__));
 
 #define EFI_IFR_INCONSISTENT_IF_OP 0x011
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_INCONSISTENT_IF {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_inconsistent_if {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID Error;
-} EFI_IFR_INCONSISTENT_IF;
+} __attribute__((__packed__));
 
 #define EFI_IFR_LENGTH_OP 0x56
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_LENGTH {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_LENGTH;
+struct efi_ifr_length {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_LESS_EQUAL_OP 0x34
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_LESS_EQUAL {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_LESS_EQUAL;
+struct efi_ifr_less_equal {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_LESS_THAN_OP 0x33
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_LESS_THAN {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_LESS_THAN;
+struct efi_ifr_less_than {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_LOCKED_OP 0x0B
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_LOCKED {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_LOCKED;
+struct efi_ifr_locked {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_MAP_OP 0x22
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_MAP {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_MAP;
+struct efi_ifr_map {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_MATCH_OP 0x2a
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_MATCH {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_MATCH;
+struct efi_ifr_match {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_MID_OP 0x4b
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_MID {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_MID;
+struct efi_ifr_mid {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_MODAL_TAG_OP 0x61
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_MODAL_TAG {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_MODAL_TAG;
+struct efi_ifr_modal_tag {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_MODULO_OP 0x3e
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_MODULO {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_MODULO;
+struct efi_ifr_modulo {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_MULTIPLY_OP 0x3c
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_MULTIPLY {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_MULTIPLY;
+struct efi_ifr_multiply {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_NOT_OP 0x17
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_NOT {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_NOT;
+struct efi_ifr_not {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_NOT_EQUAL_OP 0x30
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_NOT_EQUAL {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_NOT_EQUAL;
+struct efi_ifr_not_equal {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_NO_SUBMIT_IF_OP 0x10
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_NO_SUBMIT_IF {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_no_submit_if {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID Error;
-} EFI_IFR_NO_SUBMIT_IF;
+} __attribute__((__packed__));
 
 #define EFI_IFR_NUMERIC_OP 0x07
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_NUMERIC {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_numeric {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint8_t Flags;
-    EFI_MINMAXSTEP_DATA data;
-} EFI_IFR_NUMERIC;
+    union efi_minmaxstep_data data;
+} __attribute__((__packed__));
 
 #define EFI_IFR_NUMERIC_SIZE 0x03
 #define EFI_IFR_NUMERIC_SIZE_1 0x00
@@ -978,34 +978,34 @@ typedef struct __attribute__((__packed__)) _EFI_IFR_NUMERIC {
 
 #define EFI_IFR_ONE_OP 0x53
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ONE {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_ONE;
+struct efi_ifr_one {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ONES_OP 0x54
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ONES {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_ONES;
+struct efi_ifr_ones {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ONE_OF_OP 0x05
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ONE_OF {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_one_of {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint8_t Flags;
-    EFI_MINMAXSTEP_DATA data;
-} EFI_IFR_ONE_OF;
+    union efi_minmaxstep_data data;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ONE_OF_OPTION_OP 0x09
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ONE_OF_OPTION {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_one_of_option {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID Option;
     uint8_t Flags;
     uint8_t Type;
-    EFI_IFR_TYPE_VALUE Value;
-} EFI_IFR_ONE_OF_OPTION;
+    union efi_ifr_type_value Value;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TYPE_NUM_SIZE_8 0x00
 #define EFI_IFR_TYPE_NUM_SIZE_16 0x01
@@ -1026,249 +1026,249 @@ typedef struct __attribute__((__packed__)) _EFI_IFR_ONE_OF_OPTION {
 
 #define EFI_IFR_OR_OP 0x16
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_OR {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_OR;
+struct efi_ifr_or {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ORDERED_LIST_OP 0x23
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ORDERED_LIST {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_ordered_list {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint8_t MaxContainers;
     uint8_t Flags;
-} EFI_IFR_ORDERED_LIST;
+} __attribute__((__packed__));
 
 #define EFI_IFR_UNIQUE_SET 0x01
 #define EFI_IFR_NO_EMPTY_SET 0x02
 
 #define EFI_IFR_PASSWORD_OP 0x08
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_PASSWORD {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_password {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint16_t MinSize;
     uint16_t MaxSize;
-} EFI_IFR_PASSWORD;
+} __attribute__((__packed__));
 
 #define EFI_IFR_QUESTION_REF1_OP 0x40
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_REF1 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_question_ref1 {
+    struct efi_ifr_op_header Header;
     EFI_QUESTION_ID QuestionId;
-} EFI_IFR_QUESTION_REF1;
+} __attribute__((__packed__));
 
 #define EFI_IFR_QUESTION_REF2_OP 0x41
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_REF2 {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_QUESTION_REF2;
+struct efi_ifr_question_ref2 {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_QUESTION_REF3_OP 0x51
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_REF3 {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_QUESTION_REF3;
+struct efi_ifr_question_ref3 {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_REF3_2 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_question_ref3_2 {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID DevicePath;
-} EFI_IFR_QUESTION_REF3_2;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_QUESTION_REF3_3 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_question_ref3_3 {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID DevicePath;
-    EFI_GUID Guid;
-} EFI_IFR_QUESTION_REF3_3;
+    struct efi_guid Guid;
+} __attribute__((__packed__));
 
 #define EFI_IFR_READ_OP 0x2D
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_READ {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_READ;
+struct efi_ifr_read {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_REF_OP 0x0F
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_REF {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_ref {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     EFI_FORM_ID FormId;
-} EFI_IFR_REF;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_REF2 {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_ref2 {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     EFI_FORM_ID FormId;
     EFI_QUESTION_ID QuestionId;
-} EFI_IFR_REF2;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_REF3 {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_ref3 {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     EFI_FORM_ID FormId;
     EFI_QUESTION_ID QuestionId;
-    EFI_GUID FormSetId;
-} EFI_IFR_REF3;
+    struct efi_guid FormSetId;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_REF4 {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_ref4 {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     EFI_FORM_ID FormId;
     EFI_QUESTION_ID QuestionId;
-    EFI_GUID FormSetId;
+    struct efi_guid FormSetId;
     EFI_STRING_ID DevicePath;
-} EFI_IFR_REF4;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_REF5 {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
-} EFI_IFR_REF5;
+struct efi_ifr_ref5 {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
+} __attribute__((__packed__));
 
 #define EFI_IFR_REFRESH_OP 0x1d
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_REFRESH {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_refresh {
+    struct efi_ifr_op_header Header;
     uint8_t RefreshInterval;
-} EFI_IFR_REFRESH;
+} __attribute__((__packed__));
 
 #define EFI_IFR_REFRESH_ID_OP 0x62
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_REFRESH_ID {
-    EFI_IFR_OP_HEADER Header;
-    EFI_GUID RefreshEventGroupId;
-} EFI_IFR_REFRESH_ID;
+struct efi_ifr_refresh_id {
+    struct efi_ifr_op_header Header;
+    struct efi_guid RefreshEventGroupId;
+} __attribute__((__packed__));
 
 #define EFI_IFR_RESET_BUTTON_OP 0x0d
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_RESET_BUTTON {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_STATEMENT_HEADER Statement;
+struct efi_ifr_reset_button {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_statement_header Statement;
     EFI_DEFAULT_ID DefaultId;
-} EFI_IFR_RESET_BUTTON;
+} __attribute__((__packed__));
 
 #define EFI_IFR_RULE_OP 0x18
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_RULE {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_rule {
+    struct efi_ifr_op_header Header;
     uint8_t RuleId;
-} EFI_IFR_RULE;
+} __attribute__((__packed__));
 
 #define EFI_IFR_RULE_REF_OP 0x3f
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_RULE_REF {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_rule_ref {
+    struct efi_ifr_op_header Header;
     uint8_t RuleId;
-} EFI_IFR_RULE_REF;
+} __attribute__((__packed__));
 
 #define EFI_IFR_SECURITY_OP 0x60
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SECURITY {
-    EFI_IFR_OP_HEADER Header;
-    EFI_GUID Permissions;
-} EFI_IFR_SECURITY;
+struct efi_ifr_security {
+    struct efi_ifr_op_header Header;
+    struct efi_guid Permissions;
+} __attribute__((__packed__));
 
 #define EFI_IFR_SET_OP 0x2C
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SET {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_set {
+    struct efi_ifr_op_header Header;
     EFI_VARSTORE_ID VarStoreId;
     union __attribute__((__packed__)) {
         EFI_STRING_ID VarName;
         uint16_t VarOffset;
     } VarStoreInfo;
     uint8_t VarStoreType;
-} EFI_IFR_SET;
+} __attribute__((__packed__));
 
 #define EFI_IFR_SHIFT_LEFT_OP 0x38
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SHIFT_LEFT {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_SHIFT_LEFT;
+struct efi_ifr_shift_left {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_SHIFT_RIGHT_OP 0x39
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SHIFT_RIGHT {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_SHIFT_RIGHT;
+struct efi_ifr_shift_right {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_SPAN_OP 0x59
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SPAN {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_span {
+    struct efi_ifr_op_header Header;
     uint8_t Flags;
-} EFI_IFR_SPAN;
+} __attribute__((__packed__));
 
 #define EFI_IFR_FLAGS_FIRST_MATCHING 0x00
 #define EFI_IFR_FLAGS_FIRST_NON_MATCHING 0x01
 
 #define EFI_IFR_STRING_OP 0x1C
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_STRING {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_string {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint8_t MinSize;
     uint8_t MaxSize;
     uint8_t Flags;
-} EFI_IFR_STRING;
+} __attribute__((__packed__));
 
 #define EFI_IFR_STRING_MULTI_LINE 0x01
 
 #define EFI_IFR_STRING_REF1_OP 0x4e
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_STRING_REF1 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_string_ref1 {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID StringId;
-} EFI_IFR_STRING_REF1;
+} __attribute__((__packed__));
 
 #define EFI_IFR_STRING_REF2_OP 0x4f
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_STRING_REF2 {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_STRING_REF2;
+struct efi_ifr_string_ref2 {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_SUBTITLE_OP 0x02
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SUBTITLE {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_STATEMENT_HEADER Statement;
+struct efi_ifr_subtitle {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_statement_header Statement;
     uint8_t Flags;
-} EFI_IFR_SUBTITLE;
+} __attribute__((__packed__));
 
 #define EFI_IFR_FLAGS_HORIZONTAL 0x01
 
 #define EFI_IFR_SUBTRACT_OP 0x3b
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SUBTRACT {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_SUBTRACT;
+struct efi_ifr_subtract {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_SUPPRESS_IF_OP 0x0a
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_SUPPRESS_IF {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_SUPPRESS_IF;
+struct efi_ifr_suppress_if {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TEXT_OP 0x03
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TEXT {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_STATEMENT_HEADER Statement;
+struct efi_ifr_text {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_statement_header Statement;
     EFI_STRING_ID TextTwo;
-} EFI_IFR_TEXT;
+} __attribute__((__packed__));
 
 #define EFI_IFR_THIS_OP 0x58
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_THIS {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_THIS;
+struct efi_ifr_this {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TIME_OP 0x1b
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TIME {
-    EFI_IFR_OP_HEADER Header;
-    EFI_IFR_QUESTION_HEADER Question;
+struct efi_ifr_time {
+    struct efi_ifr_op_header Header;
+    struct efi_ifr_question_header Question;
     uint8_t Flags;
-} EFI_IFR_TIME;
+} __attribute__((__packed__));
 
 #define EFI_QF_TIME_HOUR_SUPPRESS 0x01
 #define EFI_QF_TIME_MINUTE_SUPPRESS 0x02
@@ -1281,171 +1281,171 @@ typedef struct __attribute__((__packed__)) _EFI_IFR_TIME {
 
 #define EFI_IFR_TOKEN_OP 0x4d
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TOKEN {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_TOKEN;
+struct efi_ifr_token {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TO_BOOLEAN_OP 0x4A
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TO_BOOLEAN {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_TO_BOOLEAN;
+struct efi_ifr_to_boolean {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TO_LOWER_OP 0x20
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TO_LOWER {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_TO_LOWER;
+struct efi_ifr_to_lower {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TO_STRING_OP 0x49
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TO_STRING {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_to_string {
+    struct efi_ifr_op_header Header;
     uint8_t Format;
-} EFI_IFR_TO_STRING;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TO_UINT_OP 0x48
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TO_UINT {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_TO_UINT;
+struct efi_ifr_to_uint {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TO_UPPER_OP 0x21
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TO_UPPER {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_TO_UPPER;
+struct efi_ifr_to_upper {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_TRUE_OP 0x46
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_TRUE {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_TRUE;
+struct efi_ifr_true {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_UINT8_OP 0x42
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_UINT8 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_uint8 {
+    struct efi_ifr_op_header Header;
     uint8_t Value;
-} EFI_IFR_UINT8;
+} __attribute__((__packed__));
 
 #define EFI_IFR_UINT16_OP 0x43
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_UINT16 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_uint16 {
+    struct efi_ifr_op_header Header;
     uint16_t Value;
-} EFI_IFR_UINT16;
+} __attribute__((__packed__));
 
 #define EFI_IFR_UINT32_OP 0x44
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_UINT32 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_uint32 {
+    struct efi_ifr_op_header Header;
     uint32_t Value;
-} EFI_IFR_UINT32;
+} __attribute__((__packed__));
 
 #define EFI_IFR_UINT64_OP 0x45
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_UINT64 {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_uint64 {
+    struct efi_ifr_op_header Header;
     uint64_t Value;
-} EFI_IFR_UINT64;
+} __attribute__((__packed__));
 
 #define EFI_IFR_UNDEFINED_OP 0x55
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_UNDEFINED {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_UNDEFINED;
+struct efi_ifr_undefined {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_VALUE_OP 0x5a
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_VALUE {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_VALUE;
+struct efi_ifr_value {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_VARSTORE_OP 0x24
 
 /* The null-terminated ASCII Name follows Size (printed commented out). */
-typedef struct __attribute__((__packed__)) {
-    EFI_IFR_OP_HEADER Header;
-    EFI_GUID Guid;
+struct efi_ifr_varstore {
+    struct efi_ifr_op_header Header;
+    struct efi_guid Guid;
     EFI_VARSTORE_ID VarStoreId;
     uint16_t Size;
-} EFI_IFR_VARSTORE;
+} __attribute__((__packed__));
 
 #define EFI_IFR_VARSTORE_NAME_VALUE_OP 0x25
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_VARSTORE_NAME_VALUE {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_varstore_name_value {
+    struct efi_ifr_op_header Header;
     EFI_VARSTORE_ID VarStoreId;
-    EFI_GUID Guid;
-} EFI_IFR_VARSTORE_NAME_VALUE;
+    struct efi_guid Guid;
+} __attribute__((__packed__));
 
 #define EFI_IFR_VARSTORE_EFI_OP 0x26
 
 /* The null-terminated ASCII Name follows Size (printed commented out). */
-typedef struct __attribute__((__packed__)) _EFI_IFR_VARSTORE_EFI {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_varstore_efi {
+    struct efi_ifr_op_header Header;
     EFI_VARSTORE_ID VarStoreId;
-    EFI_GUID Guid;
+    struct efi_guid Guid;
     uint32_t Attributes;
     uint16_t Size;
-} EFI_IFR_VARSTORE_EFI;
+} __attribute__((__packed__));
 
 #define EFI_IFR_VARSTORE_DEVICE_OP 0x27
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_VARSTORE_DEVICE {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_varstore_device {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID DevicePath;
-} EFI_IFR_VARSTORE_DEVICE;
+} __attribute__((__packed__));
 
 #define EFI_IFR_VERSION_OP 0x28
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_VERSION {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_VERSION;
+struct efi_ifr_version {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_WRITE_OP 0x2E
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_WRITE {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_WRITE;
+struct efi_ifr_write {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_ZERO_OP 0x52
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_ZERO {
-    EFI_IFR_OP_HEADER Header;
-} EFI_IFR_ZERO;
+struct efi_ifr_zero {
+    struct efi_ifr_op_header Header;
+} __attribute__((__packed__));
 
 #define EFI_IFR_WARNING_IF_OP 0x063
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_WARNING_IF {
-    EFI_IFR_OP_HEADER Header;
+struct efi_ifr_warning_if {
+    struct efi_ifr_op_header Header;
     EFI_STRING_ID Warning;
     uint8_t TimeOut;
-} EFI_IFR_WARNING_IF;
+} __attribute__((__packed__));
 
 #define EFI_IFR_MATCH2_OP 0x64
 
-typedef struct __attribute__((__packed__)) _EFI_IFR_MATCH2 {
-    EFI_IFR_OP_HEADER Header;
-    EFI_GUID SyntaxType;
-} EFI_IFR_MATCH2;
+struct efi_ifr_match2 {
+    struct efi_ifr_op_header Header;
+    struct efi_guid SyntaxType;
+} __attribute__((__packed__));
 
-/* EFI_HII_KEYBOARD_LAYOUT Layout[] follows (printed commented out). */
-typedef struct __attribute__((__packed__)) {
-    EFI_HII_PACKAGE_HEADER Header;
+/* struct efi_hii_keyboard_layout Layout[] follows (printed commented out). */
+struct efi_hii_keyboard_package_hdr {
+    struct efi_hii_package_header Header;
     uint16_t LayoutCount;
-} EFI_HII_KEYBOARD_PACKAGE_HDR;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_ANIMATION_PACKAGE_HDR {
-    EFI_HII_PACKAGE_HEADER Header;
+struct efi_hii_animation_package_hdr {
+    struct efi_hii_package_header Header;
     uint32_t AnimationInfoOffset;
-} EFI_HII_ANIMATION_PACKAGE_HDR;
+} __attribute__((__packed__));
 
 /* The block body follows BlockType (printed commented out). */
-typedef struct __attribute__((__packed__)) _EFI_HII_ANIMATION_BLOCK {
+struct efi_hii_animation_block {
     uint8_t BlockType;
-} EFI_HII_ANIMATION_BLOCK;
+} __attribute__((__packed__));
 
 #define EFI_HII_AIBT_END 0x00
 #define EFI_HII_AIBT_OVERLAY_IMAGES 0x10
@@ -1461,96 +1461,96 @@ typedef struct __attribute__((__packed__)) _EFI_HII_ANIMATION_BLOCK {
 #define EFI_HII_AIBT_EXT2 0x31
 #define EFI_HII_AIBT_EXT4 0x32
 
-typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_EXT1_BLOCK {
-    EFI_HII_ANIMATION_BLOCK Header;
+struct efi_hii_aibt_ext1_block {
+    struct efi_hii_animation_block Header;
     uint8_t BlockType2;
     uint8_t Length;
-} EFI_HII_AIBT_EXT1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_EXT2_BLOCK {
-    EFI_HII_ANIMATION_BLOCK Header;
+struct efi_hii_aibt_ext2_block {
+    struct efi_hii_animation_block Header;
     uint8_t BlockType2;
     uint16_t Length;
-} EFI_HII_AIBT_EXT2_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_EXT4_BLOCK {
-    EFI_HII_ANIMATION_BLOCK Header;
+struct efi_hii_aibt_ext4_block {
+    struct efi_hii_animation_block Header;
     uint8_t BlockType2;
     uint32_t Length;
-} EFI_HII_AIBT_EXT4_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_ANIMATION_CELL {
+struct efi_hii_animation_cell {
     uint16_t OffsetX;
     uint16_t OffsetY;
     EFI_IMAGE_ID ImageId;
     uint16_t Delay;
-} EFI_HII_ANIMATION_CELL;
+} __attribute__((__packed__));
 
 /*
- * The animation block bodies carry no header: either an EFI_HII_ANIMATION_BLOCK or an
- * EFI_HII_AIBT_EXTx_BLOCK precedes them.
+ * The animation block bodies carry no header: either a struct efi_hii_animation_block or a
+ * struct efi_hii_aibt_ext*_block precedes them.
  */
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_OVERLAY_IMAGES_BLOCK {
+__extension__ struct efi_hii_aibt_overlay_images_block {
     EFI_IMAGE_ID DftImageId;
     uint16_t Width;
     uint16_t Height;
     uint16_t CellCount;
-    EFI_HII_ANIMATION_CELL AnimationCell[];
-} EFI_HII_AIBT_OVERLAY_IMAGES_BLOCK;
+    struct efi_hii_animation_cell AnimationCell[];
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_CLEAR_IMAGES_BLOCK {
+__extension__ struct efi_hii_aibt_clear_images_block {
     EFI_IMAGE_ID DftImageId;
     uint16_t Width;
     uint16_t Height;
     uint16_t CellCount;
-    EFI_HII_RGB_PIXEL BackgndColor;
-    EFI_HII_ANIMATION_CELL AnimationCell[];
-} EFI_HII_AIBT_CLEAR_IMAGES_BLOCK;
+    struct efi_hii_rgb_pixel BackgndColor;
+    struct efi_hii_animation_cell AnimationCell[];
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_RESTORE_SCRN_BLOCK {
+__extension__ struct efi_hii_aibt_restore_scrn_block {
     EFI_IMAGE_ID DftImageId;
     uint16_t Width;
     uint16_t Height;
     uint16_t CellCount;
-    EFI_HII_ANIMATION_CELL AnimationCell[];
-} EFI_HII_AIBT_RESTORE_SCRN_BLOCK;
+    struct efi_hii_animation_cell AnimationCell[];
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_OVERLAY_IMAGES_LOOP_BLOCK {
+__extension__ struct efi_hii_aibt_overlay_images_loop_block {
     EFI_IMAGE_ID DftImageId;
     uint16_t Width;
     uint16_t Height;
     uint16_t CellCount;
-    EFI_HII_ANIMATION_CELL AnimationCell[];
-} EFI_HII_AIBT_OVERLAY_IMAGES_LOOP_BLOCK;
+    struct efi_hii_animation_cell AnimationCell[];
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_CLEAR_IMAGES_LOOP_BLOCK {
+__extension__ struct efi_hii_aibt_clear_images_loop_block {
     EFI_IMAGE_ID DftImageId;
     uint16_t Width;
     uint16_t Height;
     uint16_t CellCount;
-    EFI_HII_RGB_PIXEL BackgndColor;
-    EFI_HII_ANIMATION_CELL AnimationCell[];
-} EFI_HII_AIBT_CLEAR_IMAGES_LOOP_BLOCK;
+    struct efi_hii_rgb_pixel BackgndColor;
+    struct efi_hii_animation_cell AnimationCell[];
+} __attribute__((__packed__));
 
-__extension__ typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_RESTORE_SCRN_LOOP_BLOCK {
+__extension__ struct efi_hii_aibt_restore_scrn_loop_block {
     EFI_IMAGE_ID DftImageId;
     uint16_t Width;
     uint16_t Height;
     uint16_t CellCount;
-    EFI_HII_ANIMATION_CELL AnimationCell[];
-} EFI_HII_AIBT_RESTORE_SCRN_LOOP_BLOCK;
+    struct efi_hii_animation_cell AnimationCell[];
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_DUPLICATE_BLOCK {
+struct efi_hii_aibt_duplicate_block {
     EFI_ANIMATION_ID AnimationId;
-} EFI_HII_AIBT_DUPLICATE_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_SKIP1_BLOCK {
+struct efi_hii_aibt_skip1_block {
     uint8_t SkipCount;
-} EFI_HII_AIBT_SKIP1_BLOCK;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) _EFI_HII_AIBT_SKIP2_BLOCK {
+struct efi_hii_aibt_skip2_block {
     uint16_t SkipCount;
-} EFI_HII_AIBT_SKIP2_BLOCK;
+} __attribute__((__packed__));
 
 #ifdef __cplusplus
 }

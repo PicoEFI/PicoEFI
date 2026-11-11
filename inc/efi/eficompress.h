@@ -10,10 +10,10 @@ extern "C" {
 #define EFI_DECOMPRESS_PROTOCOL_GUID \
     {0xd8117cfe, 0x94a6, 0x11d4, {0x9a, 0x3a, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}}
 
-typedef struct _EFI_DECOMPRESS_PROTOCOL EFI_DECOMPRESS_PROTOCOL;
+struct efi_decompress_protocol;
 
 typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_GET_INFO)(
-    EFI_DECOMPRESS_PROTOCOL *This,
+    struct efi_decompress_protocol *This,
     void *Source,
     uint32_t SourceSize,
     uint32_t *DestinationSize,
@@ -21,7 +21,7 @@ typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_GET_INFO)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_DECOMPRESS)(
-    EFI_DECOMPRESS_PROTOCOL *This,
+    struct efi_decompress_protocol *This,
     void *Source,
     uint32_t SourceSize,
     void *Destination,
@@ -30,7 +30,7 @@ typedef EFI_STATUS (EFI_API *EFI_DECOMPRESS_DECOMPRESS)(
     uint32_t ScratchSize
 );
 
-struct _EFI_DECOMPRESS_PROTOCOL {
+struct efi_decompress_protocol {
     EFI_DECOMPRESS_GET_INFO GetInfo;
     EFI_DECOMPRESS_DECOMPRESS Decompress;
 };

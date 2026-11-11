@@ -10,22 +10,22 @@ extern "C" {
 #define EFI_CC_MEASUREMENT_PROTOCOL_GUID \
     {0x96751a3d, 0x72f4, 0x41a6, {0xa7, 0x94, 0xed, 0x5d, 0xe, 0x67, 0xae, 0x6b}}
 
-typedef struct _EFI_CC_MEASUREMENT_PROTOCOL EFI_CC_MEASUREMENT_PROTOCOL;
+struct efi_cc_measurement_protocol;
 
-typedef struct {
+struct efi_cc_version {
     uint8_t Major;
     uint8_t Minor;
-} EFI_CC_VERSION;
+};
 
 typedef uint32_t EFI_CC_EVENT_LOG_BITMAP;
 typedef uint32_t EFI_CC_EVENT_ALGORITHM_BITMAP;
 
 #define EFI_CC_BOOT_HASH_ALG_SHA384 0x00000004
 
-typedef struct {
+struct efi_cc_type {
     uint8_t Type;
     uint8_t SubType;
-} EFI_CC_TYPE;
+};
 
 #define EFI_CC_TYPE_NONE 0
 /* Not listed by UEFI 2.11: the value the ACPI CC event log table gives AMD SEV. */
@@ -33,18 +33,18 @@ typedef struct {
 #define EFI_CC_TYPE_INTEL_TDX 2
 #define EFI_CC_TYPE_RISCV_APTEE 3
 
-typedef struct {
+struct efi_cc_boot_service_capability {
     uint8_t Size;
-    EFI_CC_VERSION StructureVersion;
-    EFI_CC_VERSION ProtocolVersion;
+    struct efi_cc_version StructureVersion;
+    struct efi_cc_version ProtocolVersion;
     EFI_CC_EVENT_ALGORITHM_BITMAP HashAlgorithmBitmap;
     EFI_CC_EVENT_LOG_BITMAP SupportedEventLogs;
-    EFI_CC_TYPE CcType;
-} EFI_CC_BOOT_SERVICE_CAPABILITY;
+    struct efi_cc_type CcType;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_CC_GET_CAPABILITY)(
-    EFI_CC_MEASUREMENT_PROTOCOL *This,
-    EFI_CC_BOOT_SERVICE_CAPABILITY *ProtocolCapability
+    struct efi_cc_measurement_protocol *This,
+    struct efi_cc_boot_service_capability *ProtocolCapability
 );
 
 typedef uint32_t EFI_CC_EVENT_LOG_FORMAT;
@@ -52,7 +52,7 @@ typedef uint32_t EFI_CC_EVENT_LOG_FORMAT;
 #define EFI_CC_EVENT_LOG_FORMAT_TCG_2 0x00000002
 
 typedef EFI_STATUS (EFI_API *EFI_CC_GET_EVENT_LOG)(
-    EFI_CC_MEASUREMENT_PROTOCOL *This,
+    struct efi_cc_measurement_protocol *This,
     EFI_CC_EVENT_LOG_FORMAT EventLogFormat,
     EFI_PHYSICAL_ADDRESS *EventLogLocation,
     EFI_PHYSICAL_ADDRESS *EventLogLastEntry,
@@ -67,38 +67,38 @@ typedef uint32_t EFI_CC_MR_INDEX;
 /* Not named by the specification: the value HeaderVersion must hold. */
 #define EFI_CC_EVENT_HEADER_VERSION 1
 
-typedef struct __attribute__((__packed__)) {
+struct efi_cc_event_header {
     uint32_t HeaderSize;
     uint16_t HeaderVersion;
     EFI_CC_MR_INDEX MrIndex;
     uint32_t EventType;
-} EFI_CC_EVENT_HEADER;
+} __attribute__((__packed__));
 
 /* Event is variable-length: Size covers the whole record. */
-typedef struct __attribute__((__packed__)) {
+struct efi_cc_event {
     uint32_t Size;
-    EFI_CC_EVENT_HEADER Header;
+    struct efi_cc_event_header Header;
     uint8_t Event[1];
-} EFI_CC_EVENT;
+} __attribute__((__packed__));
 
 /* Printed as a second EFI_CC_GET_EVENT_LOG; named as the protocol structure types it. */
 typedef EFI_STATUS (EFI_API *EFI_CC_HASH_LOG_EXTEND_EVENT)(
-    EFI_CC_MEASUREMENT_PROTOCOL *This,
+    struct efi_cc_measurement_protocol *This,
     uint64_t Flags,
     EFI_PHYSICAL_ADDRESS DataToHash,
     uint64_t DataToHashLen,
-    EFI_CC_EVENT *EfiCcEvent
+    struct efi_cc_event *EfiCcEvent
 );
 
 typedef uint32_t EFI_TCG_PCRINDEX;
 
 typedef EFI_STATUS (EFI_API *EFI_CC_MAP_PCR_TO_MR_INDEX)(
-    EFI_CC_MEASUREMENT_PROTOCOL *This,
+    struct efi_cc_measurement_protocol *This,
     EFI_TCG_PCRINDEX PcrIndex,
     EFI_CC_MR_INDEX *MrIndex
 );
 
-struct _EFI_CC_MEASUREMENT_PROTOCOL {
+struct efi_cc_measurement_protocol {
     EFI_CC_GET_CAPABILITY GetCapability;
     EFI_CC_GET_EVENT_LOG GetEventLog;
     EFI_CC_HASH_LOG_EXTEND_EVENT HashLogExtendEvent;
@@ -109,10 +109,10 @@ struct _EFI_CC_MEASUREMENT_PROTOCOL {
     {0xdd4a4648, 0x2de7, 0x4665, {0x96, 0x4d, 0x21, 0xd9, 0xef, 0x5f, 0xb4, 0x46}}
 
 /* NumberOfEvents serialised CC_EVENT records follow; they have no C layout (TCG digest lists). */
-typedef struct {
+struct efi_cc_final_events_table {
     uint64_t Version;
     uint64_t NumberOfEvents;
-} EFI_CC_FINAL_EVENTS_TABLE;
+};
 
 #ifdef __cplusplus
 }

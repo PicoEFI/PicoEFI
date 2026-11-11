@@ -15,19 +15,19 @@ extern "C" {
 
 typedef void *EFI_SHELL_FILE_HANDLE;
 
-typedef struct _EFI_LIST_ENTRY {
-    struct _EFI_LIST_ENTRY *Flink;
-    struct _EFI_LIST_ENTRY *Blink;
-} EFI_LIST_ENTRY;
+struct efi_list_entry {
+    struct efi_list_entry *Flink;
+    struct efi_list_entry *Blink;
+};
 
-typedef struct {
-    EFI_LIST_ENTRY Link;
+struct efi_shell_file_info {
+    struct efi_list_entry Link;
     EFI_STATUS Status;
     const uint16_t *FullName;
     const uint16_t *FileName;
     EFI_SHELL_FILE_HANDLE Handle;
-    EFI_FILE_INFO *Info;
-} EFI_SHELL_FILE_INFO;
+    struct efi_file_info *Info;
+};
 
 typedef uint32_t EFI_DEVICE_NAME_FLAGS;
 
@@ -64,17 +64,17 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_EXECUTE)(
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_FIND_FILES)(
     const uint16_t *FilePattern,
-    EFI_SHELL_FILE_INFO **FileList
+    struct efi_shell_file_info **FileList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_FIND_FILES_IN_DIR)(
     EFI_SHELL_FILE_HANDLE FileDirHandle,
-    EFI_SHELL_FILE_INFO **FileList
+    struct efi_shell_file_info **FileList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_FLUSH_FILE)(EFI_SHELL_FILE_HANDLE FileHandle);
 
-typedef EFI_STATUS (EFI_API *EFI_SHELL_FREE_FILE_LIST)(EFI_SHELL_FILE_INFO **FileList);
+typedef EFI_STATUS (EFI_API *EFI_SHELL_FREE_FILE_LIST)(struct efi_shell_file_info **FileList);
 
 typedef const uint16_t *(EFI_API *EFI_SHELL_GET_ALIAS)(
     const uint16_t *Alias,
@@ -92,11 +92,11 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_DEVICE_NAME)(
     uint16_t **BestDeviceName
 );
 
-typedef const EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_SHELL_GET_DEVICE_PATH_FROM_MAP)(
+typedef const struct efi_device_path_protocol *(EFI_API *EFI_SHELL_GET_DEVICE_PATH_FROM_MAP)(
     const uint16_t *Mapping
 );
 
-typedef EFI_DEVICE_PATH_PROTOCOL *(EFI_API *EFI_SHELL_GET_DEVICE_PATH_FROM_FILE_PATH)(
+typedef struct efi_device_path_protocol *(EFI_API *EFI_SHELL_GET_DEVICE_PATH_FROM_FILE_PATH)(
     const uint16_t *Path
 );
 
@@ -107,10 +107,10 @@ typedef const uint16_t *(EFI_API *EFI_SHELL_GET_ENV_EX)(
     uint32_t *Attributes
 );
 
-typedef EFI_FILE_INFO *(EFI_API *EFI_SHELL_GET_FILE_INFO)(EFI_SHELL_FILE_HANDLE FileHandle);
+typedef struct efi_file_info *(EFI_API *EFI_SHELL_GET_FILE_INFO)(EFI_SHELL_FILE_HANDLE FileHandle);
 
 typedef uint16_t *(EFI_API *EFI_SHELL_GET_FILE_PATH_FROM_DEVICE_PATH)(
-    const EFI_DEVICE_PATH_PROTOCOL *Path
+    const struct efi_device_path_protocol *Path
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_FILE_POSITION)(
@@ -125,11 +125,11 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_FILE_SIZE)(
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_GUID_FROM_NAME)(
     const uint16_t *GuidName,
-    EFI_GUID *Guid
+    struct efi_guid *Guid
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_GUID_NAME)(
-    const EFI_GUID *Guid,
+    const struct efi_guid *Guid,
     const uint16_t **GuidName
 );
 
@@ -140,7 +140,7 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_GET_HELP_TEXT)(
 );
 
 typedef const uint16_t *(EFI_API *EFI_SHELL_GET_MAP_FROM_DEVICE_PATH)(
-    EFI_DEVICE_PATH_PROTOCOL **DevicePath
+    struct efi_device_path_protocol **DevicePath
 );
 
 typedef bool (EFI_API *EFI_SHELL_GET_PAGE_BREAK)(void);
@@ -156,11 +156,11 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_OPEN_FILE_BY_NAME)(
 typedef EFI_STATUS (EFI_API *EFI_SHELL_OPEN_FILE_LIST)(
     uint16_t *Path,
     uint64_t OpenMode,
-    EFI_SHELL_FILE_INFO **FileList
+    struct efi_shell_file_info **FileList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_OPEN_ROOT)(
-    EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    struct efi_device_path_protocol *DevicePath,
     EFI_SHELL_FILE_HANDLE *FileHandle
 );
 
@@ -176,12 +176,12 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_READ_FILE)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_REGISTER_GUID_NAME)(
-    const EFI_GUID *Guid,
+    const struct efi_guid *Guid,
     const uint16_t *GuidName
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_REMOVE_DUP_IN_FILE_LIST)(
-    EFI_SHELL_FILE_INFO **FileList
+    struct efi_shell_file_info **FileList
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_ALIAS)(
@@ -204,7 +204,7 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_ENV)(
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_FILE_INFO)(
     EFI_SHELL_FILE_HANDLE FileHandle,
-    const EFI_FILE_INFO *FileInfo
+    const struct efi_file_info *FileInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_FILE_POSITION)(
@@ -213,7 +213,7 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_FILE_POSITION)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_SET_MAP)(
-    const EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    const struct efi_device_path_protocol *DevicePath,
     const uint16_t *Mapping
 );
 
@@ -223,7 +223,7 @@ typedef EFI_STATUS (EFI_API *EFI_SHELL_WRITE_FILE)(
     void *Buffer
 );
 
-typedef struct _EFI_SHELL_PROTOCOL {
+struct efi_shell_protocol {
     EFI_SHELL_EXECUTE Execute;
     EFI_SHELL_GET_ENV GetEnv;
     EFI_SHELL_SET_ENV SetEnv;
@@ -277,37 +277,37 @@ typedef struct _EFI_SHELL_PROTOCOL {
     EFI_SHELL_GET_GUID_NAME GetGuidName;
     EFI_SHELL_GET_GUID_FROM_NAME GetGuidFromName;
     EFI_SHELL_GET_ENV_EX GetEnvEx;
-} EFI_SHELL_PROTOCOL;
+};
 
 #define EFI_SHELL_PARAMETERS_PROTOCOL_GUID \
     {0x752f3136, 0x4e16, 0x4fdc, {0xa2, 0x2a, 0xe5, 0xf4, 0x68, 0x12, 0xf4, 0xca}}
 
-typedef struct _EFI_SHELL_PARAMETERS_PROTOCOL {
+struct efi_shell_parameters_protocol {
     uint16_t **Argv;
     size_t Argc;
     EFI_SHELL_FILE_HANDLE StdIn;
     EFI_SHELL_FILE_HANDLE StdOut;
     EFI_SHELL_FILE_HANDLE StdErr;
-} EFI_SHELL_PARAMETERS_PROTOCOL;
+};
 
 #define EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL_GUID \
     {0x3c7200e9, 0x5f, 0x4ea4, {0x87, 0xde, 0xa3, 0xdf, 0xac, 0x8a, 0x27, 0xc3}}
 
-typedef struct _EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL;
+struct efi_shell_dynamic_command_protocol;
 
 typedef EFI_STATUS (EFI_API *EFI_SHELL_COMMAND_HANDLER)(
-    EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL *This,
-    EFI_SYSTEM_TABLE *SystemTable,
-    EFI_SHELL_PARAMETERS_PROTOCOL *ShellParameters,
-    EFI_SHELL_PROTOCOL *Shell
+    struct efi_shell_dynamic_command_protocol *This,
+    struct efi_system_table *SystemTable,
+    struct efi_shell_parameters_protocol *ShellParameters,
+    struct efi_shell_protocol *Shell
 );
 
 typedef uint16_t *(EFI_API *EFI_SHELL_COMMAND_GETHELP)(
-    EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL *This,
+    struct efi_shell_dynamic_command_protocol *This,
     const char *Language
 );
 
-struct _EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL {
+struct efi_shell_dynamic_command_protocol {
     const uint16_t *CommandName;
     EFI_SHELL_COMMAND_HANDLER Handler;
     EFI_SHELL_COMMAND_GETHELP GetHelp;

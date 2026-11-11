@@ -12,38 +12,38 @@ extern "C" {
 
 typedef uint64_t (EFI_API *EFI_TIMESTAMP_GET)(void);
 
-typedef struct {
+struct efi_timestamp_properties {
     uint64_t Frequency;
     uint64_t EndValue;
-} EFI_TIMESTAMP_PROPERTIES;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_TIMESTAMP_GET_PROPERTIES)(
-    EFI_TIMESTAMP_PROPERTIES *Properties
+    struct efi_timestamp_properties *Properties
 );
 
-typedef struct _EFI_TIMESTAMP_PROTOCOL {
+struct efi_timestamp_protocol {
     EFI_TIMESTAMP_GET GetTimestamp;
     EFI_TIMESTAMP_GET_PROPERTIES GetProperties;
-} EFI_TIMESTAMP_PROTOCOL;
+};
 
 #define EFI_RESET_NOTIFICATION_PROTOCOL_GUID \
     {0x9da34ae0, 0xeaf9, 0x4bbf, {0x8e, 0xc3, 0xfd, 0x60, 0x22, 0x6c, 0x44, 0xbe}}
 
-typedef struct _EFI_RESET_NOTIFICATION_PROTOCOL EFI_RESET_NOTIFICATION_PROTOCOL;
+struct efi_reset_notification_protocol;
 
 /* EFI_RESET_SYSTEM is itself a pointer: ResetFunction points to the function, as described. */
 typedef EFI_STATUS (EFI_API *EFI_REGISTER_RESET_NOTIFY)(
-    EFI_RESET_NOTIFICATION_PROTOCOL *This,
+    struct efi_reset_notification_protocol *This,
     EFI_RESET_SYSTEM ResetFunction
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UNREGISTER_RESET_NOTIFY)(
-    EFI_RESET_NOTIFICATION_PROTOCOL *This,
+    struct efi_reset_notification_protocol *This,
     EFI_RESET_SYSTEM ResetFunction
 );
 
 /* The structure prints UnRegisterResetNotify; the heading and text spell it as here. */
-struct _EFI_RESET_NOTIFICATION_PROTOCOL {
+struct efi_reset_notification_protocol {
     EFI_REGISTER_RESET_NOTIFY RegisterResetNotify;
     EFI_UNREGISTER_RESET_NOTIFY UnregisterResetNotify;
 };

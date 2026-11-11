@@ -10,32 +10,32 @@ extern "C" {
 #define EFI_REGULAR_EXPRESSION_PROTOCOL_GUID \
     {0xB3F79D9A, 0x436C, 0xDC11, {0xB0, 0x52, 0xCD, 0x85, 0xDF, 0x52, 0x4C, 0xE6}}
 
-typedef struct _EFI_REGULAR_EXPRESSION_PROTOCOL EFI_REGULAR_EXPRESSION_PROTOCOL;
+struct efi_regular_expression_protocol;
 
-typedef EFI_GUID EFI_REGEX_SYNTAX_TYPE;
+typedef struct efi_guid EFI_REGEX_SYNTAX_TYPE;
 
-typedef struct {
+struct efi_regex_capture {
     const uint16_t *CapturePtr;
     size_t Length;
-} EFI_REGEX_CAPTURE;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_REGULAR_EXPRESSION_MATCH)(
-    EFI_REGULAR_EXPRESSION_PROTOCOL *This,
+    struct efi_regular_expression_protocol *This,
     uint16_t *String,
     uint16_t *Pattern,
     EFI_REGEX_SYNTAX_TYPE *SyntaxType,
     bool *Result,
-    EFI_REGEX_CAPTURE **Captures,
+    struct efi_regex_capture **Captures,
     size_t *CapturesCount
 );
 
 typedef EFI_STATUS (EFI_API *EFI_REGULAR_EXPRESSION_GET_INFO)(
-    EFI_REGULAR_EXPRESSION_PROTOCOL *This,
+    struct efi_regular_expression_protocol *This,
     size_t *RegExSyntaxTypeListSize,
     EFI_REGEX_SYNTAX_TYPE *RegExSyntaxTypeList
 );
 
-struct _EFI_REGULAR_EXPRESSION_PROTOCOL {
+struct efi_regular_expression_protocol {
     EFI_REGULAR_EXPRESSION_MATCH MatchString;
     EFI_REGULAR_EXPRESSION_GET_INFO GetInfo;
 };

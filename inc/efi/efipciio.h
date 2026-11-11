@@ -12,7 +12,7 @@ extern "C" {
 #define EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID \
     {0x2F707EBB, 0x4A1A, 0x11d4, {0x9A, 0x38, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D}}
 
-typedef struct _EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL;
+struct efi_pci_root_bridge_io_protocol;
 
 typedef enum {
     EfiPciWidthUint8,
@@ -31,7 +31,7 @@ typedef enum {
 } EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH;
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
     uint64_t Address,
     uint64_t Mask,
@@ -41,17 +41,17 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
     uint64_t Address,
     size_t Count,
     void *Buffer
 );
 
-typedef struct {
+struct efi_pci_root_bridge_io_protocol_access {
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM Read;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_IO_MEM Write;
-} EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ACCESS;
+};
 
 #define EFI_PCI_ATTRIBUTE_ISA_MOTHERBOARD_IO 0x0001
 #define EFI_PCI_ATTRIBUTE_ISA_IO 0x0002
@@ -79,16 +79,16 @@ typedef enum {
 } EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_OPERATION;
 
 /* Layout of the uint64_t Address that Pci.Read() and Pci.Write() take. */
-typedef struct {
+struct efi_pci_root_bridge_io_protocol_pci_address {
     uint8_t Register;
     uint8_t Function;
     uint8_t Device;
     uint8_t Bus;
     uint32_t ExtendedRegister;
-} EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_PCI_ADDRESS;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_WIDTH Width,
     uint64_t DestAddress,
     uint64_t SrcAddress,
@@ -96,7 +96,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_MAP)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_OPERATION Operation,
     void *HostAddress,
     size_t *NumberOfBytes,
@@ -105,12 +105,12 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_MAP)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_UNMAP)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     void *Mapping
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ALLOCATE_BUFFER)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     EFI_ALLOCATE_TYPE Type,
     EFI_MEMORY_TYPE MemoryType,
     size_t Pages,
@@ -119,30 +119,30 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ALLOCATE_BUFFER)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FREE_BUFFER)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     size_t Pages,
     void *HostAddress
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_FLUSH)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This
+    struct efi_pci_root_bridge_io_protocol *This
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GET_ATTRIBUTES)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     uint64_t *Supports,
     uint64_t *Attributes
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_SET_ATTRIBUTES)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     uint64_t Attributes,
     uint64_t *ResourceBase,
     uint64_t *ResourceLength
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION)(
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL *This,
+    struct efi_pci_root_bridge_io_protocol *This,
     void **Resources
 );
 
@@ -158,7 +158,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_CONFIGURATION)(
 #define EFI_ACPI_MEMORY_RESOURCE_SPECIFIC_FLAG_CACHEABLE_WRITE_COMBINING 0x04
 #define EFI_ACPI_MEMORY_RESOURCE_SPECIFIC_FLAG_CACHEABLE_PREFETCHABLE 0x06
 
-typedef struct __attribute__((__packed__)) {
+struct efi_acpi_address_space_descriptor {
     uint8_t Desc;
     uint16_t Len;
     uint8_t ResType;
@@ -169,20 +169,20 @@ typedef struct __attribute__((__packed__)) {
     uint64_t AddrRangeMax;
     uint64_t AddrTranslationOffset;
     uint64_t AddrLen;
-} EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_acpi_end_tag_descriptor {
     uint8_t Desc;
     uint8_t Checksum;
-} EFI_ACPI_END_TAG_DESCRIPTOR;
+} __attribute__((__packed__));
 
-struct _EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL {
+struct efi_pci_root_bridge_io_protocol {
     EFI_HANDLE ParentHandle;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM PollMem;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_POLL_IO_MEM PollIo;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ACCESS Mem;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ACCESS Io;
-    EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_ACCESS Pci;
+    struct efi_pci_root_bridge_io_protocol_access Mem;
+    struct efi_pci_root_bridge_io_protocol_access Io;
+    struct efi_pci_root_bridge_io_protocol_access Pci;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_COPY_MEM CopyMem;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_MAP Map;
     EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_UNMAP Unmap;
@@ -198,7 +198,7 @@ struct _EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL {
 #define EFI_PCI_IO_PROTOCOL_GUID \
     {0x4cf5b200, 0x68b8, 0x4ca5, {0x9e, 0xec, 0xb2, 0x3e, 0x3f, 0x50, 0x02, 0x9a}}
 
-typedef struct _EFI_PCI_IO_PROTOCOL EFI_PCI_IO_PROTOCOL;
+struct efi_pci_io_protocol;
 
 typedef enum {
     EfiPciIoWidthUint8,
@@ -219,7 +219,7 @@ typedef enum {
 #define EFI_PCI_IO_PASS_THROUGH_BAR 0xff
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_POLL_IO_MEM)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
     uint8_t BarIndex,
     uint64_t Offset,
@@ -230,7 +230,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_POLL_IO_MEM)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_IO_MEM)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
     uint8_t BarIndex,
     uint64_t Offset,
@@ -238,23 +238,23 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_IO_MEM)(
     void *Buffer
 );
 
-typedef struct {
+struct efi_pci_io_protocol_access {
     EFI_PCI_IO_PROTOCOL_IO_MEM Read;
     EFI_PCI_IO_PROTOCOL_IO_MEM Write;
-} EFI_PCI_IO_PROTOCOL_ACCESS;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_CONFIG)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
     uint32_t Offset,
     size_t Count,
     void *Buffer
 );
 
-typedef struct {
+struct efi_pci_io_protocol_config_access {
     EFI_PCI_IO_PROTOCOL_CONFIG Read;
     EFI_PCI_IO_PROTOCOL_CONFIG Write;
-} EFI_PCI_IO_PROTOCOL_CONFIG_ACCESS;
+};
 
 #define EFI_PCI_IO_ATTRIBUTE_ISA_MOTHERBOARD_IO 0x0001
 #define EFI_PCI_IO_ATTRIBUTE_ISA_IO 0x0002
@@ -284,7 +284,7 @@ typedef enum {
 } EFI_PCI_IO_PROTOCOL_OPERATION;
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_COPY_MEM)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     EFI_PCI_IO_PROTOCOL_WIDTH Width,
     uint8_t DestBarIndex,
     uint64_t DestOffset,
@@ -294,7 +294,7 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_COPY_MEM)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_MAP)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     EFI_PCI_IO_PROTOCOL_OPERATION Operation,
     void *HostAddress,
     size_t *NumberOfBytes,
@@ -303,12 +303,12 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_MAP)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_UNMAP)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     void *Mapping
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ALLOCATE_BUFFER)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     EFI_ALLOCATE_TYPE Type,
     EFI_MEMORY_TYPE MemoryType,
     size_t Pages,
@@ -317,15 +317,15 @@ typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ALLOCATE_BUFFER)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_FREE_BUFFER)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     size_t Pages,
     void *HostAddress
 );
 
-typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_FLUSH)(EFI_PCI_IO_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_FLUSH)(struct efi_pci_io_protocol *This);
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_LOCATION)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     uintptr_t *SegmentNumber,
     uintptr_t *BusNumber,
     uintptr_t *DeviceNumber,
@@ -342,33 +342,33 @@ typedef enum {
 } EFI_PCI_IO_PROTOCOL_ATTRIBUTE_OPERATION;
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_ATTRIBUTES)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     EFI_PCI_IO_PROTOCOL_ATTRIBUTE_OPERATION Operation,
     uint64_t Attributes,
     uint64_t *Result
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_GET_BAR_ATTRIBUTES)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     uint8_t BarIndex,
     uint64_t *Supports,
     void **Resources
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PCI_IO_PROTOCOL_SET_BAR_ATTRIBUTES)(
-    EFI_PCI_IO_PROTOCOL *This,
+    struct efi_pci_io_protocol *This,
     uint64_t Attributes,
     uint8_t BarIndex,
     uint64_t *Offset,
     uint64_t *Length
 );
 
-struct _EFI_PCI_IO_PROTOCOL {
+struct efi_pci_io_protocol {
     EFI_PCI_IO_PROTOCOL_POLL_IO_MEM PollMem;
     EFI_PCI_IO_PROTOCOL_POLL_IO_MEM PollIo;
-    EFI_PCI_IO_PROTOCOL_ACCESS Mem;
-    EFI_PCI_IO_PROTOCOL_ACCESS Io;
-    EFI_PCI_IO_PROTOCOL_CONFIG_ACCESS Pci;
+    struct efi_pci_io_protocol_access Mem;
+    struct efi_pci_io_protocol_access Io;
+    struct efi_pci_io_protocol_config_access Pci;
     EFI_PCI_IO_PROTOCOL_COPY_MEM CopyMem;
     EFI_PCI_IO_PROTOCOL_MAP Map;
     EFI_PCI_IO_PROTOCOL_UNMAP Unmap;
@@ -392,13 +392,13 @@ struct _EFI_PCI_IO_PROTOCOL {
 
 #define EFI_PCI_EXPANSION_ROM_HEADER_COMPRESSED 0x0001
 
-typedef struct __attribute__((__packed__)) {
+struct efi_standard_pci_expansion_rom_header {
     uint16_t Signature;
     uint8_t Reserved[0x16];
     uint16_t PcirOffset;
-} EFI_STANDARD_PCI_EXPANSION_ROM_HEADER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_pci_expansion_rom_header {
     uint16_t Signature;
     uint16_t InitializationSize;
     uint32_t EfiSignature;
@@ -408,9 +408,9 @@ typedef struct __attribute__((__packed__)) {
     uint8_t Reserved[8];
     uint16_t EfiImageHeaderOffset;
     uint16_t PcirOffset;
-} EFI_PCI_EXPANSION_ROM_HEADER;
+} __attribute__((__packed__));
 
-typedef struct __attribute__((__packed__)) {
+struct efi_pci_data_structure {
     uint32_t Signature;
     uint16_t VendorId;
     uint16_t DeviceId;
@@ -423,7 +423,7 @@ typedef struct __attribute__((__packed__)) {
     uint8_t CodeType;
     uint8_t Indicator;
     uint16_t Reserved1;
-} EFI_PCI_DATA_STRUCTURE;
+} __attribute__((__packed__));
 
 #ifdef __cplusplus
 }

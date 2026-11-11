@@ -77,20 +77,20 @@ extern "C" {
 #define EFI_IMAGE_REL_EBC_SECREL 0x0004
 #endif
 
-typedef struct _EFI_SYSTEM_TABLE EFI_SYSTEM_TABLE;
+struct efi_system_table;
 
 typedef EFI_STATUS (EFI_API *EFI_IMAGE_ENTRY_POINT)(
     EFI_HANDLE ImageHandle,
-    EFI_SYSTEM_TABLE *SystemTable
+    struct efi_system_table *SystemTable
 );
 
-typedef struct {
+struct efi_table_header {
     uint64_t Signature;
     uint32_t Revision;
     uint32_t HeaderSize;
     uint32_t CRC32;
     uint32_t Reserved;
-} EFI_TABLE_HEADER;
+};
 
 #define EFI_EVT_TIMER 0x80000000
 #define EFI_EVT_RUNTIME 0x40000000
@@ -118,7 +118,7 @@ typedef EFI_STATUS (EFI_API *EFI_CREATE_EVENT_EX)(
     EFI_TPL NotifyTpl,
     EFI_EVENT_NOTIFY NotifyFunction,
     const void *NotifyContext,
-    const EFI_GUID *EventGroup,
+    const struct efi_guid *EventGroup,
     EFI_EVENT *Event
 );
 
@@ -190,14 +190,14 @@ typedef EFI_STATUS (EFI_API *EFI_FREE_PAGES)(
 
 typedef EFI_STATUS (EFI_API *EFI_GET_MEMORY_MAP)(
     size_t *MemoryMapSize,
-    EFI_MEMORY_DESCRIPTOR *MemoryMap,
+    struct efi_memory_descriptor *MemoryMap,
     uintptr_t *MapKey,
     size_t *DescriptorSize,
     uint32_t *DescriptorVersion
 );
 
 /* Not in the specification: the descriptor after Ptr in a GetMemoryMap() buffer. */
-#define EfiNextMemoryDescriptor(Ptr, Size) ((EFI_MEMORY_DESCRIPTOR *)((uint8_t *)(Ptr) + (Size)))
+#define EfiNextMemoryDescriptor(Ptr, Size) ((struct efi_memory_descriptor *)((uint8_t *)(Ptr) + (Size)))
 
 typedef EFI_STATUS (EFI_API *EFI_ALLOCATE_POOL)(
     EFI_MEMORY_TYPE PoolType,
@@ -213,26 +213,26 @@ typedef enum {
 
 typedef EFI_STATUS (EFI_API *EFI_INSTALL_PROTOCOL_INTERFACE)(
     EFI_HANDLE *Handle,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     EFI_INTERFACE_TYPE InterfaceType,
     void *Interface
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UNINSTALL_PROTOCOL_INTERFACE)(
     EFI_HANDLE Handle,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     void *Interface
 );
 
 typedef EFI_STATUS (EFI_API *EFI_REINSTALL_PROTOCOL_INTERFACE)(
     EFI_HANDLE Handle,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     void *OldInterface,
     void *NewInterface
 );
 
 typedef EFI_STATUS (EFI_API *EFI_REGISTER_PROTOCOL_NOTIFY)(
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     EFI_EVENT Event,
     void **Registration
 );
@@ -245,7 +245,7 @@ typedef enum {
 
 typedef EFI_STATUS (EFI_API *EFI_LOCATE_HANDLE)(
     EFI_LOCATE_SEARCH_TYPE SearchType,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     void *SearchKey,
     size_t *BufferSize,
     EFI_HANDLE *Buffer
@@ -253,19 +253,19 @@ typedef EFI_STATUS (EFI_API *EFI_LOCATE_HANDLE)(
 
 typedef EFI_STATUS (EFI_API *EFI_HANDLE_PROTOCOL)(
     EFI_HANDLE Handle,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     void **Interface
 );
 
 typedef EFI_STATUS (EFI_API *EFI_LOCATE_DEVICE_PATH)(
-    EFI_GUID *Protocol,
-    EFI_DEVICE_PATH_PROTOCOL **DevicePath,
+    struct efi_guid *Protocol,
+    struct efi_device_path_protocol **DevicePath,
     EFI_HANDLE *Device
 );
 
 typedef EFI_STATUS (EFI_API *EFI_OPEN_PROTOCOL)(
     EFI_HANDLE Handle,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     void **Interface,
     EFI_HANDLE AgentHandle,
     EFI_HANDLE ControllerHandle,
@@ -281,29 +281,29 @@ typedef EFI_STATUS (EFI_API *EFI_OPEN_PROTOCOL)(
 
 typedef EFI_STATUS (EFI_API *EFI_CLOSE_PROTOCOL)(
     EFI_HANDLE Handle,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     EFI_HANDLE AgentHandle,
     EFI_HANDLE ControllerHandle
 );
 
-typedef struct {
+struct efi_open_protocol_information_entry {
     EFI_HANDLE AgentHandle;
     EFI_HANDLE ControllerHandle;
     uint32_t Attributes;
     uint32_t OpenCount;
-} EFI_OPEN_PROTOCOL_INFORMATION_ENTRY;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_OPEN_PROTOCOL_INFORMATION)(
     EFI_HANDLE Handle,
-    EFI_GUID *Protocol,
-    EFI_OPEN_PROTOCOL_INFORMATION_ENTRY **EntryBuffer,
+    struct efi_guid *Protocol,
+    struct efi_open_protocol_information_entry **EntryBuffer,
     size_t *EntryCount
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CONNECT_CONTROLLER)(
     EFI_HANDLE ControllerHandle,
     EFI_HANDLE *DriverImageHandle,
-    EFI_DEVICE_PATH_PROTOCOL *RemainingDevicePath,
+    struct efi_device_path_protocol *RemainingDevicePath,
     bool Recursive
 );
 
@@ -315,20 +315,20 @@ typedef EFI_STATUS (EFI_API *EFI_DISCONNECT_CONTROLLER)(
 
 typedef EFI_STATUS (EFI_API *EFI_PROTOCOLS_PER_HANDLE)(
     EFI_HANDLE Handle,
-    EFI_GUID ***ProtocolBuffer,
+    struct efi_guid ***ProtocolBuffer,
     size_t *ProtocolBufferCount
 );
 
 typedef EFI_STATUS (EFI_API *EFI_LOCATE_HANDLE_BUFFER)(
     EFI_LOCATE_SEARCH_TYPE SearchType,
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     void *SearchKey,
     size_t *NoHandles,
     EFI_HANDLE **Buffer
 );
 
 typedef EFI_STATUS (EFI_API *EFI_LOCATE_PROTOCOL)(
-    EFI_GUID *Protocol,
+    struct efi_guid *Protocol,
     void *Registration,
     void **Interface
 );
@@ -346,7 +346,7 @@ typedef EFI_STATUS (EFI_API *EFI_UNINSTALL_MULTIPLE_PROTOCOL_INTERFACES)(
 typedef EFI_STATUS (EFI_API *EFI_IMAGE_LOAD)(
     bool BootPolicy,
     EFI_HANDLE ParentImageHandle,
-    EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    struct efi_device_path_protocol *DevicePath,
     void *SourceBuffer,
     size_t SourceSize,
     EFI_HANDLE *ImageHandle
@@ -399,7 +399,7 @@ typedef void (EFI_API *EFI_SET_MEM)(
 typedef EFI_STATUS (EFI_API *EFI_GET_NEXT_MONOTONIC_COUNT)(uint64_t *Count);
 
 typedef EFI_STATUS (EFI_API *EFI_INSTALL_CONFIGURATION_TABLE)(
-    EFI_GUID *Guid,
+    struct efi_guid *Guid,
     void *Table
 );
 
@@ -417,10 +417,10 @@ typedef EFI_STATUS (EFI_API *EFI_CALCULATE_CRC32)(
 #define EFI_VARIABLE_APPEND_WRITE 0x00000040
 #define EFI_VARIABLE_ENHANCED_AUTHENTICATED_ACCESS 0x00000080
 
-/* The runtime services are printed as plain function types; named as in EFI_RUNTIME_SERVICES. */
+/* The runtime services are printed as plain function types; named as in struct efi_runtime_services. */
 typedef EFI_STATUS (EFI_API *EFI_GET_VARIABLE)(
     uint16_t *VariableName,
-    EFI_GUID *VendorGuid,
+    struct efi_guid *VendorGuid,
     uint32_t *Attributes,
     size_t *DataSize,
     void *Data
@@ -429,12 +429,12 @@ typedef EFI_STATUS (EFI_API *EFI_GET_VARIABLE)(
 typedef EFI_STATUS (EFI_API *EFI_GET_NEXT_VARIABLE_NAME)(
     size_t *VariableNameSize,
     uint16_t *VariableName,
-    EFI_GUID *VendorGuid
+    struct efi_guid *VendorGuid
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SET_VARIABLE)(
     uint16_t *VariableName,
-    EFI_GUID *VendorGuid,
+    struct efi_guid *VendorGuid,
     uint32_t Attributes,
     size_t DataSize,
     void *Data
@@ -450,35 +450,35 @@ typedef EFI_STATUS (EFI_API *EFI_QUERY_VARIABLE_INFO)(
 #define EFI_HARDWARE_ERROR_VARIABLE \
     {0x414E6BDD, 0xE47B, 0x47cc, {0xB2, 0x44, 0xBB, 0x61, 0x02, 0x0C, 0xF5, 0x16}}
 
-typedef struct {
+struct efi_time_capabilities {
     uint32_t Resolution;
     uint32_t Accuracy;
     uint8_t SetsToZero;
-} EFI_TIME_CAPABILITIES;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_GET_TIME)(
-    EFI_TIME *Time,
-    EFI_TIME_CAPABILITIES *Capabilities
+    struct efi_time *Time,
+    struct efi_time_capabilities *Capabilities
 );
 
-typedef EFI_STATUS (EFI_API *EFI_SET_TIME)(EFI_TIME *Time);
+typedef EFI_STATUS (EFI_API *EFI_SET_TIME)(struct efi_time *Time);
 
 typedef EFI_STATUS (EFI_API *EFI_GET_WAKEUP_TIME)(
     bool *Enabled,
     bool *Pending,
-    EFI_TIME *Time
+    struct efi_time *Time
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SET_WAKEUP_TIME)(
     bool Enable,
-    EFI_TIME *Time
+    struct efi_time *Time
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SET_VIRTUAL_ADDRESS_MAP)(
     size_t MemoryMapSize,
     size_t DescriptorSize,
     uint32_t DescriptorVersion,
-    EFI_MEMORY_DESCRIPTOR *VirtualMap
+    struct efi_memory_descriptor *VirtualMap
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CONVERT_POINTER)(
@@ -504,32 +504,32 @@ typedef void (EFI_API *EFI_RESET_SYSTEM)(
 
 typedef EFI_STATUS (EFI_API *EFI_GET_NEXT_HIGH_MONO_COUNT)(uint32_t *HighCount);
 
-typedef struct {
+struct efi_capsule_block_descriptor {
     uint64_t Length;
     union {
         EFI_PHYSICAL_ADDRESS DataBlock;
         EFI_PHYSICAL_ADDRESS ContinuationPointer;
     } Union;
-} EFI_CAPSULE_BLOCK_DESCRIPTOR;
+};
 
-typedef struct {
-    EFI_GUID CapsuleGuid;
+struct efi_capsule_header {
+    struct efi_guid CapsuleGuid;
     uint32_t HeaderSize;
     uint32_t Flags;
     uint32_t CapsuleImageSize;
-} EFI_CAPSULE_HEADER;
+};
 
 #define EFI_CAPSULE_FLAGS_PERSIST_ACROSS_RESET 0x00010000
 #define EFI_CAPSULE_FLAGS_POPULATE_SYSTEM_TABLE 0x00020000
 #define EFI_CAPSULE_FLAGS_INITIATE_RESET 0x00040000
 
-typedef struct {
+struct efi_capsule_table {
     uint32_t CapsuleArrayNumber;
     void *CapsulePtr[1];
-} EFI_CAPSULE_TABLE;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_UPDATE_CAPSULE)(
-    EFI_CAPSULE_HEADER **CapsuleHeaderArray,
+    struct efi_capsule_header **CapsuleHeaderArray,
     size_t CapsuleCount,
     EFI_PHYSICAL_ADDRESS ScatterGatherList
 );
@@ -537,25 +537,25 @@ typedef EFI_STATUS (EFI_API *EFI_UPDATE_CAPSULE)(
 #define EFI_MEMORY_RANGE_CAPSULE_GUID \
     {0xde9f0ec, 0x88b6, 0x428f, {0x97, 0x7a, 0x25, 0x8f, 0x1d, 0xe, 0x5e, 0x72}}
 
-typedef struct {
+struct efi_memory_range {
     EFI_PHYSICAL_ADDRESS Address;
     uint64_t Length;
-} EFI_MEMORY_RANGE;
+};
 
-__extension__ typedef struct {
-    EFI_CAPSULE_HEADER Header;
+__extension__ struct efi_memory_range_capsule {
+    struct efi_capsule_header Header;
     uint32_t OsRequestedMemoryType;
     uint64_t NumberOfMemoryRanges;
-    EFI_MEMORY_RANGE MemoryRanges[];
-} EFI_MEMORY_RANGE_CAPSULE;
+    struct efi_memory_range MemoryRanges[];
+};
 
-typedef struct {
+struct efi_memory_range_capsule_result {
     uint64_t FirmwareMemoryRequirement;
     uint64_t NumberOfMemoryRanges;
-} EFI_MEMORY_RANGE_CAPSULE_RESULT;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_QUERY_CAPSULE_CAPABILITIES)(
-    EFI_CAPSULE_HEADER **CapsuleHeaderArray,
+    struct efi_capsule_header **CapsuleHeaderArray,
     size_t CapsuleCount,
     uint64_t *MaximumCapsuleSize,
     EFI_RESET_TYPE *ResetType
@@ -564,28 +564,28 @@ typedef EFI_STATUS (EFI_API *EFI_QUERY_CAPSULE_CAPABILITIES)(
 #define EFI_CAPSULE_REPORT_GUID \
     {0x39b68c46, 0xf7fb, 0x441b, {0xb6, 0xec, 0x16, 0xb0, 0xf6, 0x98, 0x21, 0xf3}}
 
-typedef struct {
+struct efi_capsule_result_variable_header {
     uint32_t VariableTotalSize;
     uint32_t Reserved;
-    EFI_GUID CapsuleGuid;
-    EFI_TIME CapsuleProcessed;
+    struct efi_guid CapsuleGuid;
+    struct efi_time CapsuleProcessed;
     EFI_STATUS CapsuleStatus;
-} EFI_CAPSULE_RESULT_VARIABLE_HEADER;
+};
 
 /* The uint16_t strings CapsuleFileName and CapsuleTarget follow, each null-terminated. */
-typedef struct {
+struct efi_capsule_result_variable_fmp {
     uint16_t Version;
     uint8_t PayloadIndex;
     uint8_t UpdateImageIndex;
-    EFI_GUID UpdateImageTypeId;
-} EFI_CAPSULE_RESULT_VARIABLE_FMP;
+    struct efi_guid UpdateImageTypeId;
+};
 
-__extension__ typedef struct {
+__extension__ struct efi_capsule_result_variable_json {
     uint32_t Version;
     uint32_t CapsuleId;
     uint32_t RespLength;
     uint8_t Resp[];
-} EFI_CAPSULE_RESULT_VARIABLE_JSON;
+};
 
 /* Printed as 0xF000000, which is outside the specification-reserved range it belongs to. */
 #define EFI_REDFISH_DEFINED_JSON_SCHEMA 0xF0000000
@@ -615,8 +615,8 @@ __extension__ typedef struct {
  * LoadImage and InstallMultipleProtocolInterfaces are misprinted as EFI_IMAGE_UNLOAD and
  * EFI_UNINSTALL_MULTIPLE_PROTOCOL_INTERFACES.
  */
-typedef struct {
-    EFI_TABLE_HEADER Hdr;
+struct efi_boot_services {
+    struct efi_table_header Hdr;
 
     EFI_RAISE_TPL RaiseTPL;
     EFI_RESTORE_TPL RestoreTPL;
@@ -672,13 +672,13 @@ typedef struct {
     EFI_COPY_MEM CopyMem;
     EFI_SET_MEM SetMem;
     EFI_CREATE_EVENT_EX CreateEventEx;
-} EFI_BOOT_SERVICES;
+};
 
 #define EFI_RUNTIME_SERVICES_SIGNATURE 0x56524553544e5552
 #define EFI_RUNTIME_SERVICES_REVISION EFI_SPECIFICATION_VERSION
 
-typedef struct {
-    EFI_TABLE_HEADER Hdr;
+struct efi_runtime_services {
+    struct efi_table_header Hdr;
 
     EFI_GET_TIME GetTime;
     EFI_SET_TIME SetTime;
@@ -699,27 +699,27 @@ typedef struct {
     EFI_QUERY_CAPSULE_CAPABILITIES QueryCapsuleCapabilities;
 
     EFI_QUERY_VARIABLE_INFO QueryVariableInfo;
-} EFI_RUNTIME_SERVICES;
+};
 
-typedef struct {
-    EFI_GUID VendorGuid;
+struct efi_configuration_table {
+    struct efi_guid VendorGuid;
     void *VendorTable;
-} EFI_CONFIGURATION_TABLE;
+};
 
-struct _EFI_SYSTEM_TABLE {
-    EFI_TABLE_HEADER Hdr;
+struct efi_system_table {
+    struct efi_table_header Hdr;
     uint16_t *FirmwareVendor;
     uint32_t FirmwareRevision;
     EFI_HANDLE ConsoleInHandle;
-    EFI_SIMPLE_TEXT_INPUT_PROTOCOL *ConIn;
+    struct efi_simple_text_input_protocol *ConIn;
     EFI_HANDLE ConsoleOutHandle;
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *ConOut;
+    struct efi_simple_text_output_protocol *ConOut;
     EFI_HANDLE StandardErrorHandle;
-    EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *StdErr;
-    EFI_RUNTIME_SERVICES *RuntimeServices;
-    EFI_BOOT_SERVICES *BootServices;
+    struct efi_simple_text_output_protocol *StdErr;
+    struct efi_runtime_services *RuntimeServices;
+    struct efi_boot_services *BootServices;
     size_t NumberOfTableEntries;
-    EFI_CONFIGURATION_TABLE *ConfigurationTable;
+    struct efi_configuration_table *ConfigurationTable;
 };
 
 #define EFI_ACPI_TABLE_GUID \
@@ -757,11 +757,11 @@ struct _EFI_SYSTEM_TABLE {
 #define EFI_RT_PROPERTIES_TABLE_GUID \
     {0xeb66918a, 0x7eef, 0x402a, {0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9}}
 
-typedef struct {
+struct efi_rt_properties_table {
     uint16_t Version;
     uint16_t Length;
     uint32_t RuntimeServicesSupported;
-} EFI_RT_PROPERTIES_TABLE;
+};
 
 #define EFI_RT_PROPERTIES_TABLE_VERSION 0x1
 
@@ -784,12 +784,12 @@ typedef struct {
     {0xdcfa911d, 0x26eb, 0x469f, {0xa2, 0x20, 0x38, 0xb7, 0xdc, 0x46, 0x12, 0x20}}
 
 /* Version 2 is current. NumberOfEntries descriptors follow, DescriptorSize bytes apart. */
-typedef struct {
+struct efi_memory_attributes_table {
     uint32_t Version;
     uint32_t NumberOfEntries;
     uint32_t DescriptorSize;
     uint32_t Flags;
-} EFI_MEMORY_ATTRIBUTES_TABLE;
+};
 
 #define EFI_MEMORY_ATTRIBUTES_FLAGS_RT_FORWARD_CONTROL_FLOW_GUARD 0x1
 
@@ -797,10 +797,10 @@ typedef struct {
     {0x36122546, 0xf7e7, 0x4c8f, {0xbd, 0x9b, 0xeb, 0x85, 0x25, 0xb5, 0x0c, 0x0b}}
 
 /* NumberOfProfiles EFI_GUIDs (ConformanceProfiles) follow. */
-typedef struct {
+struct efi_conformance_profiles_table {
     uint16_t Version;
     uint16_t NumberOfProfiles;
-} EFI_CONFORMANCE_PROFILES_TABLE;
+};
 
 #define EFI_CONFORMANCE_PROFILES_TABLE_VERSION 0x1
 
@@ -842,7 +842,7 @@ typedef enum {
     EfiGcdMaxAllocateType
 } EFI_GCD_ALLOCATE_TYPE;
 
-typedef struct {
+struct efi_gcd_memory_space_descriptor {
     EFI_PHYSICAL_ADDRESS BaseAddress;
     uint64_t Length;
     uint64_t Capabilities;
@@ -850,15 +850,15 @@ typedef struct {
     EFI_GCD_MEMORY_TYPE GcdMemoryType;
     EFI_HANDLE ImageHandle;
     EFI_HANDLE DeviceHandle;
-} EFI_GCD_MEMORY_SPACE_DESCRIPTOR;
+};
 
-typedef struct {
+struct efi_gcd_io_space_descriptor {
     EFI_PHYSICAL_ADDRESS BaseAddress;
     uint64_t Length;
     EFI_GCD_IO_TYPE GcdIoType;
     EFI_HANDLE ImageHandle;
     EFI_HANDLE DeviceHandle;
-} EFI_GCD_IO_SPACE_DESCRIPTOR;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_ADD_MEMORY_SPACE)(
     EFI_GCD_MEMORY_TYPE GcdMemoryType,
@@ -889,7 +889,7 @@ typedef EFI_STATUS (EFI_API *EFI_REMOVE_MEMORY_SPACE)(
 
 typedef EFI_STATUS (EFI_API *EFI_GET_MEMORY_SPACE_DESCRIPTOR)(
     EFI_PHYSICAL_ADDRESS BaseAddress,
-    EFI_GCD_MEMORY_SPACE_DESCRIPTOR *Descriptor
+    struct efi_gcd_memory_space_descriptor *Descriptor
 );
 
 typedef EFI_STATUS (EFI_API *EFI_SET_MEMORY_SPACE_ATTRIBUTES)(
@@ -906,7 +906,7 @@ typedef EFI_STATUS (EFI_API *EFI_SET_MEMORY_SPACE_CAPABILITIES)(
 
 typedef EFI_STATUS (EFI_API *EFI_GET_MEMORY_SPACE_MAP)(
     size_t *NumberOfDescriptors,
-    EFI_GCD_MEMORY_SPACE_DESCRIPTOR **MemorySpaceMap
+    struct efi_gcd_memory_space_descriptor **MemorySpaceMap
 );
 
 typedef EFI_STATUS (EFI_API *EFI_ADD_IO_SPACE)(
@@ -937,24 +937,24 @@ typedef EFI_STATUS (EFI_API *EFI_REMOVE_IO_SPACE)(
 
 typedef EFI_STATUS (EFI_API *EFI_GET_IO_SPACE_DESCRIPTOR)(
     EFI_PHYSICAL_ADDRESS BaseAddress,
-    EFI_GCD_IO_SPACE_DESCRIPTOR *Descriptor
+    struct efi_gcd_io_space_descriptor *Descriptor
 );
 
 typedef EFI_STATUS (EFI_API *EFI_GET_IO_SPACE_MAP)(
     size_t *NumberOfDescriptors,
-    EFI_GCD_IO_SPACE_DESCRIPTOR **IoSpaceMap
+    struct efi_gcd_io_space_descriptor **IoSpaceMap
 );
 
 typedef EFI_STATUS (EFI_API *EFI_DISPATCH)(void);
 
 typedef EFI_STATUS (EFI_API *EFI_SCHEDULE)(
     EFI_HANDLE FirmwareVolumeHandle,
-    const EFI_GUID *FileName
+    const struct efi_guid *FileName
 );
 
 typedef EFI_STATUS (EFI_API *EFI_TRUST)(
     EFI_HANDLE FirmwareVolumeHandle,
-    const EFI_GUID *FileName
+    const struct efi_guid *FileName
 );
 
 typedef EFI_STATUS (EFI_API *EFI_PROCESS_FIRMWARE_VOLUME)(
@@ -963,8 +963,8 @@ typedef EFI_STATUS (EFI_API *EFI_PROCESS_FIRMWARE_VOLUME)(
     EFI_HANDLE *FirmwareVolumeHandle
 );
 
-typedef struct {
-    EFI_TABLE_HEADER Hdr;
+struct efi_dxe_services {
+    struct efi_table_header Hdr;
 
     EFI_ADD_MEMORY_SPACE AddMemorySpace;
     EFI_ALLOCATE_MEMORY_SPACE AllocateMemorySpace;
@@ -987,7 +987,7 @@ typedef struct {
     EFI_PROCESS_FIRMWARE_VOLUME ProcessFirmwareVolume;
 
     EFI_SET_MEMORY_SPACE_CAPABILITIES SetMemorySpaceCapabilities;
-} EFI_DXE_SERVICES;
+};
 
 #ifdef __cplusplus
 }

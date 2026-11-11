@@ -15,9 +15,9 @@ extern "C" {
 #define EFI_UDP4_PROTOCOL_GUID \
     {0x3ad9df29, 0x4501, 0x478d, {0xb1, 0xf8, 0x7f, 0x7f, 0xe7, 0x0e, 0x50, 0xf3}}
 
-typedef struct _EFI_UDP4_PROTOCOL EFI_UDP4_PROTOCOL;
+struct efi_udp4_protocol;
 
-typedef struct {
+struct efi_udp4_config_data {
     uint8_t AcceptBroadcast;
     uint8_t AcceptPromiscuous;
     uint8_t AcceptAnyPort;
@@ -28,96 +28,96 @@ typedef struct {
     uint32_t ReceiveTimeout;
     uint32_t TransmitTimeout;
     uint8_t UseDefaultAddress;
-    EFI_IPv4_ADDRESS StationAddress;
-    EFI_IPv4_ADDRESS SubnetMask;
+    struct efi_ipv4_address StationAddress;
+    struct efi_ipv4_address SubnetMask;
     uint16_t StationPort;
-    EFI_IPv4_ADDRESS RemoteAddress;
+    struct efi_ipv4_address RemoteAddress;
     uint16_t RemotePort;
-} EFI_UDP4_CONFIG_DATA;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_GET_MODE_DATA)(
-    EFI_UDP4_PROTOCOL *This,
-    EFI_UDP4_CONFIG_DATA *Udp4ConfigData,
-    EFI_IP4_MODE_DATA *Ip4ModeData,
-    EFI_MANAGED_NETWORK_CONFIG_DATA *MnpConfigData,
-    EFI_SIMPLE_NETWORK_MODE *SnpModeData
+    struct efi_udp4_protocol *This,
+    struct efi_udp4_config_data *Udp4ConfigData,
+    struct efi_ip4_mode_data *Ip4ModeData,
+    struct efi_managed_network_config_data *MnpConfigData,
+    struct efi_simple_network_mode *SnpModeData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_CONFIGURE)(
-    EFI_UDP4_PROTOCOL *This,
-    EFI_UDP4_CONFIG_DATA *UdpConfigData
+    struct efi_udp4_protocol *This,
+    struct efi_udp4_config_data *UdpConfigData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_GROUPS)(
-    EFI_UDP4_PROTOCOL *This,
+    struct efi_udp4_protocol *This,
     bool JoinFlag,
-    EFI_IPv4_ADDRESS *MulticastAddress
+    struct efi_ipv4_address *MulticastAddress
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_ROUTES)(
-    EFI_UDP4_PROTOCOL *This,
+    struct efi_udp4_protocol *This,
     bool DeleteRoute,
-    EFI_IPv4_ADDRESS *SubnetAddress,
-    EFI_IPv4_ADDRESS *SubnetMask,
-    EFI_IPv4_ADDRESS *GatewayAddress
+    struct efi_ipv4_address *SubnetAddress,
+    struct efi_ipv4_address *SubnetMask,
+    struct efi_ipv4_address *GatewayAddress
 );
 
-typedef struct {
-    EFI_IPv4_ADDRESS SourceAddress;
+struct efi_udp4_session_data {
+    struct efi_ipv4_address SourceAddress;
     uint16_t SourcePort;
-    EFI_IPv4_ADDRESS DestinationAddress;
+    struct efi_ipv4_address DestinationAddress;
     uint16_t DestinationPort;
-} EFI_UDP4_SESSION_DATA;
+};
 
-typedef struct {
+struct efi_udp4_fragment_data {
     uint32_t FragmentLength;
     void *FragmentBuffer;
-} EFI_UDP4_FRAGMENT_DATA;
+};
 
-typedef struct {
-    EFI_TIME TimeStamp;
+struct efi_udp4_receive_data {
+    struct efi_time TimeStamp;
     EFI_EVENT RecycleSignal;
-    EFI_UDP4_SESSION_DATA UdpSession;
+    struct efi_udp4_session_data UdpSession;
     uint32_t DataLength;
     uint32_t FragmentCount;
-    EFI_UDP4_FRAGMENT_DATA FragmentTable[1];
-} EFI_UDP4_RECEIVE_DATA;
+    struct efi_udp4_fragment_data FragmentTable[1];
+};
 
-typedef struct {
-    EFI_UDP4_SESSION_DATA *UdpSessionData;
-    EFI_IPv4_ADDRESS *GatewayAddress;
+struct efi_udp4_transmit_data {
+    struct efi_udp4_session_data *UdpSessionData;
+    struct efi_ipv4_address *GatewayAddress;
     uint32_t DataLength;
     uint32_t FragmentCount;
-    EFI_UDP4_FRAGMENT_DATA FragmentTable[1];
-} EFI_UDP4_TRANSMIT_DATA;
+    struct efi_udp4_fragment_data FragmentTable[1];
+};
 
-typedef struct {
+struct efi_udp4_completion_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     union {
-        EFI_UDP4_RECEIVE_DATA *RxData;
-        EFI_UDP4_TRANSMIT_DATA *TxData;
+        struct efi_udp4_receive_data *RxData;
+        struct efi_udp4_transmit_data *TxData;
     } Packet;
-} EFI_UDP4_COMPLETION_TOKEN;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_TRANSMIT)(
-    EFI_UDP4_PROTOCOL *This,
-    EFI_UDP4_COMPLETION_TOKEN *Token
+    struct efi_udp4_protocol *This,
+    struct efi_udp4_completion_token *Token
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_RECEIVE)(
-    EFI_UDP4_PROTOCOL *This,
-    EFI_UDP4_COMPLETION_TOKEN *Token
+    struct efi_udp4_protocol *This,
+    struct efi_udp4_completion_token *Token
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP4_CANCEL)(
-    EFI_UDP4_PROTOCOL *This,
-    EFI_UDP4_COMPLETION_TOKEN *Token
+    struct efi_udp4_protocol *This,
+    struct efi_udp4_completion_token *Token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_UDP4_POLL)(EFI_UDP4_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_UDP4_POLL)(struct efi_udp4_protocol *This);
 
-struct _EFI_UDP4_PROTOCOL {
+struct efi_udp4_protocol {
     EFI_UDP4_GET_MODE_DATA GetModeData;
     EFI_UDP4_CONFIGURE Configure;
     EFI_UDP4_GROUPS Groups;
@@ -134,9 +134,9 @@ struct _EFI_UDP4_PROTOCOL {
 #define EFI_UDP6_PROTOCOL_GUID \
     {0x4f948815, 0xb4b9, 0x43cb, {0x8a, 0x33, 0x90, 0xe0, 0x60, 0xb3, 0x49, 0x55}}
 
-typedef struct _EFI_UDP6_PROTOCOL EFI_UDP6_PROTOCOL;
+struct efi_udp6_protocol;
 
-typedef struct {
+struct efi_udp6_config_data {
     uint8_t AcceptPromiscuous;
     uint8_t AcceptAnyPort;
     uint8_t AllowDuplicatePort;
@@ -144,86 +144,86 @@ typedef struct {
     uint8_t HopLimit;
     uint32_t ReceiveTimeout;
     uint32_t TransmitTimeout;
-    EFI_IPv6_ADDRESS StationAddress;
+    struct efi_ipv6_address StationAddress;
     uint16_t StationPort;
-    EFI_IPv6_ADDRESS RemoteAddress;
+    struct efi_ipv6_address RemoteAddress;
     uint16_t RemotePort;
-} EFI_UDP6_CONFIG_DATA;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_GET_MODE_DATA)(
-    EFI_UDP6_PROTOCOL *This,
-    EFI_UDP6_CONFIG_DATA *Udp6ConfigData,
-    EFI_IP6_MODE_DATA *Ip6ModeData,
-    EFI_MANAGED_NETWORK_CONFIG_DATA *MnpConfigData,
-    EFI_SIMPLE_NETWORK_MODE *SnpModeData
+    struct efi_udp6_protocol *This,
+    struct efi_udp6_config_data *Udp6ConfigData,
+    struct efi_ip6_mode_data *Ip6ModeData,
+    struct efi_managed_network_config_data *MnpConfigData,
+    struct efi_simple_network_mode *SnpModeData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_CONFIGURE)(
-    EFI_UDP6_PROTOCOL *This,
-    EFI_UDP6_CONFIG_DATA *UdpConfigData
+    struct efi_udp6_protocol *This,
+    struct efi_udp6_config_data *UdpConfigData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_GROUPS)(
-    EFI_UDP6_PROTOCOL *This,
+    struct efi_udp6_protocol *This,
     bool JoinFlag,
-    EFI_IPv6_ADDRESS *MulticastAddress
+    struct efi_ipv6_address *MulticastAddress
 );
 
-typedef struct {
-    EFI_IPv6_ADDRESS SourceAddress;
+struct efi_udp6_session_data {
+    struct efi_ipv6_address SourceAddress;
     uint16_t SourcePort;
-    EFI_IPv6_ADDRESS DestinationAddress;
+    struct efi_ipv6_address DestinationAddress;
     uint16_t DestinationPort;
-} EFI_UDP6_SESSION_DATA;
+};
 
-typedef struct {
+struct efi_udp6_fragment_data {
     uint32_t FragmentLength;
     void *FragmentBuffer;
-} EFI_UDP6_FRAGMENT_DATA;
+};
 
-typedef struct {
-    EFI_TIME TimeStamp;
+struct efi_udp6_receive_data {
+    struct efi_time TimeStamp;
     EFI_EVENT RecycleSignal;
-    EFI_UDP6_SESSION_DATA UdpSession;
+    struct efi_udp6_session_data UdpSession;
     uint32_t DataLength;
     uint32_t FragmentCount;
-    EFI_UDP6_FRAGMENT_DATA FragmentTable[1];
-} EFI_UDP6_RECEIVE_DATA;
+    struct efi_udp6_fragment_data FragmentTable[1];
+};
 
-typedef struct {
-    EFI_UDP6_SESSION_DATA *UdpSessionData;
+struct efi_udp6_transmit_data {
+    struct efi_udp6_session_data *UdpSessionData;
     uint32_t DataLength;
     uint32_t FragmentCount;
-    EFI_UDP6_FRAGMENT_DATA FragmentTable[1];
-} EFI_UDP6_TRANSMIT_DATA;
+    struct efi_udp6_fragment_data FragmentTable[1];
+};
 
-typedef struct {
+struct efi_udp6_completion_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     union {
-        EFI_UDP6_RECEIVE_DATA *RxData;
-        EFI_UDP6_TRANSMIT_DATA *TxData;
+        struct efi_udp6_receive_data *RxData;
+        struct efi_udp6_transmit_data *TxData;
     } Packet;
-} EFI_UDP6_COMPLETION_TOKEN;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_TRANSMIT)(
-    EFI_UDP6_PROTOCOL *This,
-    EFI_UDP6_COMPLETION_TOKEN *Token
+    struct efi_udp6_protocol *This,
+    struct efi_udp6_completion_token *Token
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_RECEIVE)(
-    EFI_UDP6_PROTOCOL *This,
-    EFI_UDP6_COMPLETION_TOKEN *Token
+    struct efi_udp6_protocol *This,
+    struct efi_udp6_completion_token *Token
 );
 
 typedef EFI_STATUS (EFI_API *EFI_UDP6_CANCEL)(
-    EFI_UDP6_PROTOCOL *This,
-    EFI_UDP6_COMPLETION_TOKEN *Token
+    struct efi_udp6_protocol *This,
+    struct efi_udp6_completion_token *Token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_UDP6_POLL)(EFI_UDP6_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_UDP6_POLL)(struct efi_udp6_protocol *This);
 
-struct _EFI_UDP6_PROTOCOL {
+struct efi_udp6_protocol {
     EFI_UDP6_GET_MODE_DATA GetModeData;
     EFI_UDP6_CONFIGURE Configure;
     EFI_UDP6_GROUPS Groups;

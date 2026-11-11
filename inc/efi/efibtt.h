@@ -17,10 +17,10 @@ extern "C" {
 #define EFI_BTT_INFO_BLOCK_MAJOR_VERSION 2
 #define EFI_BTT_INFO_BLOCK_MINOR_VERSION 0
 
-typedef struct _EFI_BTT_INFO_BLOCK {
+struct efi_btt_info_block {
     char Sig[EFI_BTT_INFO_BLOCK_SIG_LEN];
-    EFI_GUID Uuid;
-    EFI_GUID ParentUuid;
+    struct efi_guid Uuid;
+    struct efi_guid ParentUuid;
     uint32_t Flags;
     uint16_t Major;
     uint16_t Minor;
@@ -37,17 +37,17 @@ typedef struct _EFI_BTT_INFO_BLOCK {
     uint64_t InfoOff;
     char Unused[EFI_BTT_INFO_UNUSED_LEN];
     uint64_t Checksum;
-} EFI_BTT_INFO_BLOCK;
+};
 
-typedef struct _EFI_BTT_MAP_ENTRY {
+struct efi_btt_map_entry {
     uint32_t PostMapLba : 30;
     uint32_t Error : 1;
     uint32_t Zero : 1;
-} EFI_BTT_MAP_ENTRY;
+};
 
 #define EFI_BTT_FLOG_ENTRY_ALIGNMENT 64
 
-typedef struct _EFI_BTT_FLOG {
+struct efi_btt_flog {
     uint32_t Lba0;
     uint32_t OldMap0;
     uint32_t NewMap0;
@@ -56,7 +56,7 @@ typedef struct _EFI_BTT_FLOG {
     uint32_t OldMap1;
     uint32_t NewMap1;
     uint32_t Seq1;
-} EFI_BTT_FLOG;
+};
 
 #define EFI_BTT_ABSTRACTION_GUID \
     {0x18633bfc, 0x1735, 0x4217, {0x8a, 0xc9, 0x17, 0x23, 0x92, 0x82, 0xd3, 0xf8}}

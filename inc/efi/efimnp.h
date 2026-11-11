@@ -13,34 +13,34 @@ extern "C" {
 #define EFI_MANAGED_NETWORK_PROTOCOL_GUID \
     {0x7ab33a91, 0xace5, 0x4326, {0xb5, 0x72, 0xe7, 0xee, 0x33, 0xd3, 0x9f, 0x16}}
 
-typedef struct _EFI_MANAGED_NETWORK_PROTOCOL EFI_MANAGED_NETWORK_PROTOCOL;
+struct efi_managed_network_protocol;
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_GET_MODE_DATA)(
-    EFI_MANAGED_NETWORK_PROTOCOL *This,
-    EFI_MANAGED_NETWORK_CONFIG_DATA *MnpConfigData,
-    EFI_SIMPLE_NETWORK_MODE *SnpModeData
+    struct efi_managed_network_protocol *This,
+    struct efi_managed_network_config_data *MnpConfigData,
+    struct efi_simple_network_mode *SnpModeData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_CONFIGURE)(
-    EFI_MANAGED_NETWORK_PROTOCOL *This,
-    EFI_MANAGED_NETWORK_CONFIG_DATA *MnpConfigData
+    struct efi_managed_network_protocol *This,
+    struct efi_managed_network_config_data *MnpConfigData
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_MCAST_IP_TO_MAC)(
-    EFI_MANAGED_NETWORK_PROTOCOL *This,
+    struct efi_managed_network_protocol *This,
     bool Ipv6Flag,
-    EFI_IP_ADDRESS *IpAddress,
-    EFI_MAC_ADDRESS *MacAddress
+    union efi_ip_address *IpAddress,
+    struct efi_mac_address *MacAddress
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_GROUPS)(
-    EFI_MANAGED_NETWORK_PROTOCOL *This,
+    struct efi_managed_network_protocol *This,
     bool JoinFlag,
-    EFI_MAC_ADDRESS *MacAddress
+    struct efi_mac_address *MacAddress
 );
 
-typedef struct {
-    EFI_TIME Timestamp;
+struct efi_managed_network_receive_data {
+    struct efi_time Timestamp;
     EFI_EVENT RecycleEvent;
     uint32_t PacketLength;
     uint32_t HeaderLength;
@@ -54,50 +54,50 @@ typedef struct {
     void *SourceAddress;
     void *MediaHeader;
     void *PacketData;
-} EFI_MANAGED_NETWORK_RECEIVE_DATA;
+};
 
-typedef struct {
+struct efi_managed_network_fragment_data {
     uint32_t FragmentLength;
     void *FragmentBuffer;
-} EFI_MANAGED_NETWORK_FRAGMENT_DATA;
+};
 
-typedef struct {
-    EFI_MAC_ADDRESS *DestinationAddress;
-    EFI_MAC_ADDRESS *SourceAddress;
+struct efi_managed_network_transmit_data {
+    struct efi_mac_address *DestinationAddress;
+    struct efi_mac_address *SourceAddress;
     uint16_t ProtocolType;
     uint32_t DataLength;
     uint16_t HeaderLength;
     uint16_t FragmentCount;
-    EFI_MANAGED_NETWORK_FRAGMENT_DATA FragmentTable[1];
-} EFI_MANAGED_NETWORK_TRANSMIT_DATA;
+    struct efi_managed_network_fragment_data FragmentTable[1];
+};
 
-typedef struct {
+struct efi_managed_network_completion_token {
     EFI_EVENT Event;
     EFI_STATUS Status;
     union {
-        EFI_MANAGED_NETWORK_RECEIVE_DATA *RxData;
-        EFI_MANAGED_NETWORK_TRANSMIT_DATA *TxData;
+        struct efi_managed_network_receive_data *RxData;
+        struct efi_managed_network_transmit_data *TxData;
     } Packet;
-} EFI_MANAGED_NETWORK_COMPLETION_TOKEN;
+};
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_TRANSMIT)(
-    EFI_MANAGED_NETWORK_PROTOCOL *This,
-    EFI_MANAGED_NETWORK_COMPLETION_TOKEN *Token
+    struct efi_managed_network_protocol *This,
+    struct efi_managed_network_completion_token *Token
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_RECEIVE)(
-    EFI_MANAGED_NETWORK_PROTOCOL *This,
-    EFI_MANAGED_NETWORK_COMPLETION_TOKEN *Token
+    struct efi_managed_network_protocol *This,
+    struct efi_managed_network_completion_token *Token
 );
 
 typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_CANCEL)(
-    EFI_MANAGED_NETWORK_PROTOCOL *This,
-    EFI_MANAGED_NETWORK_COMPLETION_TOKEN *Token
+    struct efi_managed_network_protocol *This,
+    struct efi_managed_network_completion_token *Token
 );
 
-typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_POLL)(EFI_MANAGED_NETWORK_PROTOCOL *This);
+typedef EFI_STATUS (EFI_API *EFI_MANAGED_NETWORK_POLL)(struct efi_managed_network_protocol *This);
 
-struct _EFI_MANAGED_NETWORK_PROTOCOL {
+struct efi_managed_network_protocol {
     EFI_MANAGED_NETWORK_GET_MODE_DATA GetModeData;
     EFI_MANAGED_NETWORK_CONFIGURE Configure;
     EFI_MANAGED_NETWORK_MCAST_IP_TO_MAC McastIpToMac;

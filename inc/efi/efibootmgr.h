@@ -8,10 +8,10 @@ extern "C" {
 #endif
 
 /* Byte-packed variable data: Description, FilePathList and OptionalData follow. */
-typedef struct __attribute__((__packed__)) _EFI_LOAD_OPTION {
+struct efi_load_option {
     uint32_t Attributes;
     uint16_t FilePathListLength;
-} EFI_LOAD_OPTION;
+} __attribute__((__packed__));
 
 #define EFI_LOAD_OPTION_ACTIVE 0x00000001
 #define EFI_LOAD_OPTION_FORCE_RECONNECT 0x00000002
@@ -26,7 +26,7 @@ typedef struct __attribute__((__packed__)) _EFI_LOAD_OPTION {
 #define EFI_BOOT_OPTION_SUPPORT_SYSPREP 0x00000010
 #define EFI_BOOT_OPTION_SUPPORT_COUNT 0x00000300
 
-typedef union __attribute__((__packed__)) {
+union efi_boot_key_data {
     struct __attribute__((__packed__)) {
         uint32_t Revision : 8;
         uint32_t ShiftPressed : 1;
@@ -39,31 +39,31 @@ typedef union __attribute__((__packed__)) {
         uint32_t InputKeyCount : 2;
     } Options;
     uint32_t PackedValue;
-} EFI_BOOT_KEY_DATA;
+} __attribute__((__packed__));
 
 /* Variable data: KeyData.Options.InputKeyCount EFI_INPUT_KEYs (Keys) follow at byte offset 10. */
-typedef struct __attribute__((__packed__)) _EFI_KEY_OPTION {
-    EFI_BOOT_KEY_DATA KeyData;
+struct efi_key_option {
+    union efi_boot_key_data KeyData;
     uint32_t BootOptionCrc;
     uint16_t BootOption;
-} EFI_KEY_OPTION;
+} __attribute__((__packed__));
 
 #define EFI_BOOT_MANAGER_POLICY_PROTOCOL_GUID \
     {0xFEDF8E0C, 0xE147, 0x11E3, {0x99, 0x03, 0xB8, 0xE8, 0x56, 0x2C, 0xBA, 0xFA}}
 
 #define EFI_BOOT_MANAGER_POLICY_PROTOCOL_REVISION 0x00010000
 
-typedef struct _EFI_BOOT_MANAGER_POLICY_PROTOCOL EFI_BOOT_MANAGER_POLICY_PROTOCOL;
+struct efi_boot_manager_policy_protocol;
 
 typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_PATH)(
-    EFI_BOOT_MANAGER_POLICY_PROTOCOL *This,
-    EFI_DEVICE_PATH_PROTOCOL *DevicePath,
+    struct efi_boot_manager_policy_protocol *This,
+    struct efi_device_path_protocol *DevicePath,
     bool Recursive
 );
 
 typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS)(
-    EFI_BOOT_MANAGER_POLICY_PROTOCOL *This,
-    EFI_GUID *Class
+    struct efi_boot_manager_policy_protocol *This,
+    struct efi_guid *Class
 );
 
 #define EFI_BOOT_MANAGER_POLICY_CONSOLE_GUID \
@@ -78,7 +78,7 @@ typedef EFI_STATUS (EFI_API *EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS)(
 #define EFI_BOOT_MANAGER_POLICY_CONNECT_ALL_GUID \
     {0x113B2126, 0xFC8A, 0x11E3, {0xBD, 0x6C, 0xB8, 0xE8, 0x56, 0x2C, 0xBA, 0xFA}}
 
-struct _EFI_BOOT_MANAGER_POLICY_PROTOCOL {
+struct efi_boot_manager_policy_protocol {
     uint64_t Revision;
     EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_PATH ConnectDevicePath;
     EFI_BOOT_MANAGER_POLICY_CONNECT_DEVICE_CLASS ConnectDeviceClass;

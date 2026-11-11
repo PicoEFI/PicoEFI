@@ -10,7 +10,7 @@ extern "C" {
 #define EFI_USER_MANAGER_PROTOCOL_GUID \
     {0x6fd5b00c, 0xd426, 0x4283, {0x98, 0x87, 0x6c, 0xf5, 0xcf, 0x1c, 0xb1, 0xfe}}
 
-typedef struct _EFI_USER_MANAGER_PROTOCOL EFI_USER_MANAGER_PROTOCOL;
+struct efi_user_manager_protocol;
 
 typedef void *EFI_USER_PROFILE_HANDLE;
 
@@ -29,39 +29,39 @@ typedef uint16_t EFI_USER_INFO_ATTRIBS;
 #define EFI_USER_INFO_PROTECTED 0x0030
 #define EFI_USER_INFO_EXCLUSIVE 0x0080
 
-typedef struct {
-    EFI_GUID Credential;
+struct efi_user_info {
+    struct efi_guid Credential;
     uint8_t InfoType;
     uint8_t Reserved1;
     EFI_USER_INFO_ATTRIBS InfoAttribs;
     uint32_t InfoSize;
-} EFI_USER_INFO;
+};
 
 typedef uint8_t EFI_USER_INFO_IDENTIFIER[16];
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_CREATE)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE *User
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_DELETE)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE User
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_GET_NEXT)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE *User
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_CURRENT)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE *CurrentUser
 );
 
 /* Its prototype prints EFI_USER_IDENTIFY; the protocol structure uses this name. */
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_IDENTIFY)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE *User
 );
 
@@ -69,47 +69,47 @@ typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_IDENTIFY)(
     {0xbaf1e6de, 0x209e, 0x4adb, {0x8d, 0x96, 0xfd, 0x8b, 0x71, 0xf3, 0xf6, 0x83}}
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_FIND)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE *User,
     EFI_USER_INFO_HANDLE *UserInfo,
-    const EFI_USER_INFO *Info,
+    const struct efi_user_info *Info,
     size_t InfoSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_NOTIFY)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_HANDLE Changed
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_GET_INFO)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE User,
     EFI_USER_INFO_HANDLE UserInfo,
-    EFI_USER_INFO *Info,
+    struct efi_user_info *Info,
     size_t *InfoSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_SET_INFO)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE User,
     EFI_USER_INFO_HANDLE *UserInfo,
-    const EFI_USER_INFO *Info,
+    const struct efi_user_info *Info,
     size_t InfoSize
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_DELETE_INFO)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE User,
     EFI_USER_INFO_HANDLE UserInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_USER_PROFILE_GET_NEXT_INFO)(
-    const EFI_USER_MANAGER_PROTOCOL *This,
+    const struct efi_user_manager_protocol *This,
     EFI_USER_PROFILE_HANDLE User,
     EFI_USER_INFO_HANDLE *UserInfo
 );
 
-struct _EFI_USER_MANAGER_PROTOCOL {
+struct efi_user_manager_protocol {
     EFI_USER_PROFILE_CREATE Create;
     EFI_USER_PROFILE_DELETE Delete;
     EFI_USER_PROFILE_GET_NEXT GetNext;
@@ -126,7 +126,7 @@ struct _EFI_USER_MANAGER_PROTOCOL {
 #define EFI_USER_CREDENTIAL2_PROTOCOL_GUID \
     {0xe98adb03, 0xb8b9, 0x4af8, {0xba, 0x20, 0x26, 0xe9, 0x11, 0x4c, 0xbc, 0xe5}}
 
-typedef struct _EFI_USER_CREDENTIAL2_PROTOCOL EFI_USER_CREDENTIAL2_PROTOCOL;
+struct efi_user_credential2_protocol;
 
 #define EFI_USER_CREDENTIAL_CLASS_UNKNOWN \
     {0x5cf32e68, 0x7660, 0x449b, {0x80, 0xe6, 0x7e, 0xa3, 0x6e, 0x3, 0xf6, 0xa8}}
@@ -152,19 +152,19 @@ typedef uint64_t EFI_CREDENTIAL_CAPABILITIES;
 
 /* Its prototype prints EFI_CREDENTIAL2_ENROLL; the protocol structure uses this name. */
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_ENROLL)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_USER_PROFILE_HANDLE User
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_FORM)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_HII_HANDLE *Hii,
-    EFI_GUID *FormSetId,
+    struct efi_guid *FormSetId,
     EFI_FORM_ID *FormId
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_TILE)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     size_t *Width,
     size_t *Height,
     EFI_HII_HANDLE *Hii,
@@ -172,13 +172,13 @@ typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_TILE)(
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_TITLE)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_HII_HANDLE *Hii,
     EFI_STRING_ID *String
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_USER)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_USER_PROFILE_HANDLE User,
     EFI_USER_INFO_IDENTIFIER *Identifier
 );
@@ -189,40 +189,40 @@ typedef uint32_t EFI_CREDENTIAL_LOGON_FLAGS;
 #define EFI_CREDENTIAL_LOGON_FLAG_DEFAULT 0x00000002
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_SELECT)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_CREDENTIAL_LOGON_FLAGS *AutoLogon
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_DESELECT)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This
+    const struct efi_user_credential2_protocol *This
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_DEFAULT)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_CREDENTIAL_LOGON_FLAGS *AutoLogon
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_GET_INFO)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_USER_INFO_HANDLE UserInfo,
-    EFI_USER_INFO *Info,
+    struct efi_user_info *Info,
     size_t *InfoSize
 );
 
 /* Its prototype prints EFI_USER_CREDENTIAL_GET_NEXT_INFO; the protocol structure uses this name. */
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_GET_NEXT_INFO)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_USER_INFO_HANDLE *UserInfo
 );
 
 typedef EFI_STATUS (EFI_API *EFI_CREDENTIAL_DELETE)(
-    const EFI_USER_CREDENTIAL2_PROTOCOL *This,
+    const struct efi_user_credential2_protocol *This,
     EFI_USER_PROFILE_HANDLE User
 );
 
-struct _EFI_USER_CREDENTIAL2_PROTOCOL {
-    EFI_GUID Identifier;
-    EFI_GUID Type;
+struct efi_user_credential2_protocol {
+    struct efi_guid Identifier;
+    struct efi_guid Type;
     EFI_CREDENTIAL_ENROLL Enroll;
     EFI_CREDENTIAL_FORM Form;
     EFI_CREDENTIAL_TILE Tile;
@@ -240,18 +240,18 @@ struct _EFI_USER_CREDENTIAL2_PROTOCOL {
 #define EFI_DEFERRED_IMAGE_LOAD_PROTOCOL_GUID \
     {0x15853d7c, 0x3ddf, 0x43e0, {0xa1, 0xcb, 0xeb, 0xf8, 0x5b, 0x8f, 0x87, 0x2c}}
 
-typedef struct _EFI_DEFERRED_IMAGE_LOAD_PROTOCOL EFI_DEFERRED_IMAGE_LOAD_PROTOCOL;
+struct efi_deferred_image_load_protocol;
 
 typedef EFI_STATUS (EFI_API *EFI_DEFERRED_IMAGE_INFO)(
-    EFI_DEFERRED_IMAGE_LOAD_PROTOCOL *This,
+    struct efi_deferred_image_load_protocol *This,
     size_t ImageIndex,
-    EFI_DEVICE_PATH_PROTOCOL **ImageDevicePath,
+    struct efi_device_path_protocol **ImageDevicePath,
     void **Image,
     size_t *ImageSize,
     bool *BootOption
 );
 
-struct _EFI_DEFERRED_IMAGE_LOAD_PROTOCOL {
+struct efi_deferred_image_load_protocol {
     EFI_DEFERRED_IMAGE_INFO GetImageInfo;
 };
 
@@ -260,12 +260,12 @@ struct _EFI_DEFERRED_IMAGE_LOAD_PROTOCOL {
 
 #define EFI_USER_INFO_ACCESS_POLICY_RECORD 0x0E
 
-typedef struct {
+struct efi_user_info_access_control {
     uint32_t Type;
     uint32_t Size;
-} EFI_USER_INFO_ACCESS_CONTROL;
+};
 
-typedef EFI_USER_INFO_ACCESS_CONTROL EFI_USER_INFO_ACCESS_POLICY;
+typedef struct efi_user_info_access_control EFI_USER_INFO_ACCESS_POLICY;
 
 #define EFI_USER_INFO_ACCESS_FORBID_LOAD 0x00000001
 #define EFI_USER_INFO_ACCESS_PERMIT_LOAD 0x00000002
@@ -300,22 +300,22 @@ typedef uint32_t EFI_USER_INFO_ACCESS_BOOT_ORDER_HDR;
 typedef void *EFI_USER_INFO_CBEFF;
 
 #define EFI_USER_INFO_CREATE_DATE_RECORD 0x02
-typedef EFI_TIME EFI_USER_INFO_CREATE_DATE;
+typedef struct efi_time EFI_USER_INFO_CREATE_DATE;
 
 #define EFI_USER_INFO_CREDENTIAL_PROVIDER_RECORD 0x08
-typedef EFI_GUID EFI_USER_INFO_CREDENTIAL_PROVIDER;
+typedef struct efi_guid EFI_USER_INFO_CREDENTIAL_PROVIDER;
 
 #define EFI_USER_INFO_CREDENTIAL_PROVIDER_NAME_RECORD 0x09
 typedef uint16_t *EFI_USER_INFO_CREDENTIAL_PROVIDER_NAME;
 
 #define EFI_USER_INFO_CREDENTIAL_TYPE_RECORD 0x06
-typedef EFI_GUID EFI_USER_INFO_CREDENTIAL_TYPE;
+typedef struct efi_guid EFI_USER_INFO_CREDENTIAL_TYPE;
 
 #define EFI_USER_INFO_CREDENTIAL_TYPE_NAME_RECORD 0x07
 typedef uint16_t *EFI_USER_INFO_CREDENTIAL_TYPE_NAME;
 
 #define EFI_USER_INFO_GUID_RECORD 0xFF
-typedef EFI_GUID EFI_USER_INFO_GUID;
+typedef struct efi_guid EFI_USER_INFO_GUID;
 
 #define EFI_USER_INFO_FAR_RECORD 0x0C
 typedef uint8_t EFI_USER_INFO_FAR;
@@ -324,10 +324,10 @@ typedef uint8_t EFI_USER_INFO_FAR;
 
 #define EFI_USER_INFO_IDENTITY_POLICY_RECORD 0x0F
 
-typedef struct {
+struct efi_user_info_identity_policy {
     uint32_t Type;
     uint32_t Length;
-} EFI_USER_INFO_IDENTITY_POLICY;
+};
 
 #define EFI_USER_INFO_IDENTITY_FALSE 0x00
 #define EFI_USER_INFO_IDENTITY_TRUE 0x01
@@ -346,15 +346,15 @@ typedef uint16_t *EFI_USER_INFO_NAME;
 typedef uint8_t EFI_USER_INFO_RETRY;
 
 #define EFI_USER_INFO_USAGE_DATE_RECORD 0x03
-typedef EFI_TIME EFI_USER_INFO_USAGE_DATE;
+typedef struct efi_time EFI_USER_INFO_USAGE_DATE;
 
 /* Printed without _RECORD, which would clash with the type; the table of record types has it. */
 #define EFI_USER_INFO_USAGE_COUNT_RECORD 0x04
 typedef uint64_t EFI_USER_INFO_USAGE_COUNT;
 
-typedef struct {
+struct efi_user_info_table {
     uint64_t Size;
-} EFI_USER_INFO_TABLE;
+};
 
 #ifdef __cplusplus
 }
