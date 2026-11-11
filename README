@@ -8,8 +8,8 @@ It provides the EFI headers, and, for each supported architecture, the entry
 stub, self-relocator, and linker script needed to build an EFI application as a
 position-independent ELF executable that is then converted into a PE image.
 
-Supported architectures: x86-64, IA-32, AArch64, 32-bit Arm, 64-bit RISC-V,
-32-bit RISC-V, 64-bit LoongArch, and 32-bit LoongArch.
+Supported architectures: x86-64, IA-32 (32-bit x86), AArch64, 32-bit Arm,
+64-bit RISC-V, 32-bit RISC-V, 64-bit LoongArch, and 32-bit LoongArch.
 
 On IA-32, programs must be built with -malign-double: UEFI aligns 64-bit fields
 to 8 bytes, which the IA-32 ABI does only with that flag. The headers check for
