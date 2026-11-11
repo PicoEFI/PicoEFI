@@ -73,7 +73,8 @@ typedef efi_status (EFI_API *efi_simple_network_reset)(
 
 typedef efi_status (EFI_API *efi_simple_network_shutdown)(struct efi_simple_network_protocol *self);
 
-/* mcast_filter points to a list, as described; the prototype prints it by value. */
+// mcast_filter points to a list, as described; the prototype prints it by
+// value.
 typedef efi_status (EFI_API *efi_simple_network_receive_filters)(
     struct efi_simple_network_protocol *self,
     uint32_t enable,

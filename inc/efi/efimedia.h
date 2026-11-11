@@ -167,7 +167,8 @@ typedef efi_status (EFI_API *efi_block_io_crypto_get_configuration)(
     struct efi_block_io_crypto_response_configuration_entry *configuration_table
 );
 
-/* Named as the prototypes name them; the protocol structure prints ..._DEVICE_EXTENDED. */
+// Named as the prototypes name them; the protocol structure prints
+// ..._DEVICE_EXTENDED.
 typedef efi_status (EFI_API *efi_block_io_crypto_read_extended)(
     struct efi_block_io_crypto_protocol *self,
     uint32_t media_id,
@@ -218,7 +219,8 @@ struct efi_erase_block_token {
     efi_status transaction_status;
 };
 
-/* self is the erase protocol, as described; the prototype prints struct efi_block_io_protocol. */
+// self is the erase protocol, as described; the prototype prints struct
+// efi_block_io_protocol.
 typedef efi_status (EFI_API *efi_block_erase)(
     struct efi_erase_block_protocol *self,
     uint32_t media_id,
@@ -354,7 +356,8 @@ typedef efi_status (EFI_API *efi_ata_pass_thru_get_device)(
     uint16_t *port_multiplier_port
 );
 
-/* port is the port number, as described and as reset_device takes it; printed as a pointer. */
+// port is the port number, as described and as reset_device takes it; printed
+// as a pointer.
 typedef efi_status (EFI_API *efi_ata_pass_thru_reset_port)(
     struct efi_ata_pass_thru_protocol *self,
     uint16_t port
@@ -467,7 +470,8 @@ struct efi_nvm_express_completion {
     uint32_t dw3;
 };
 
-/* metadata_buffer as the text and metadata_length spell it (the structure prints meta_data_buffer). */
+// metadata_buffer as the text and metadata_length spell it (the structure
+// prints meta_data_buffer).
 struct efi_nvm_express_pass_thru_command_packet {
     uint64_t command_timeout;
     void *transfer_buffer;
@@ -617,7 +621,7 @@ struct efi_ram_disk_protocol {
 #define EFI_PARTITION_INFO_PROTOCOL_GUID \
     {0x8cf2f62c, 0xbc9b, 0x4821, {0x80, 0x8d, 0xec, 0x9e, 0xc4, 0x21, 0xa1, 0xa0}}
 
-/* The value printed (not 0x00010000), which is what firmware puts in revision. */
+// The value printed (not 0x00010000), which is what firmware puts in revision.
 #define EFI_PARTITION_INFO_PROTOCOL_REVISION 0x0001000
 #define EFI_PARTITION_TYPE_OTHER 0x00
 #define EFI_PARTITION_TYPE_MBR 0x01
@@ -686,7 +690,8 @@ __extension__ struct efi_nvdimm_label_index_block {
 
 #define EFI_NVDIMM_LABEL_NAME_LEN 64
 
-/* flag bits 0x4 and 0x8 are reserved; the text's EFI_NVDIMM_LABEL_FLAGS_UPDATING has no value. */
+// flag bits 0x4 and 0x8 are reserved; the text's
+// EFI_NVDIMM_LABEL_FLAGS_UPDATING has no value.
 #define EFI_NVDIMM_LABEL_FLAGS_ROLABEL 0x00000001
 #define EFI_NVDIMM_LABEL_FLAGS_LOCAL 0x00000002
 #define EFI_NVDIMM_LABEL_FLAGS_SPACOOKIE_BOUND 0x00000010
@@ -720,7 +725,8 @@ struct efi_nvdimm_label_set_cookie_map {
     uint8_t reserved[31];
 };
 
-/* One mapping entry per NVDIMM in the interleave set (the printed bound is not a constant). */
+// One mapping entry per NVDIMM in the interleave set (the printed bound is not
+// a constant).
 struct efi_nvdimm_label_set_cookie_info {
     struct efi_nvdimm_label_set_cookie_map mapping[1];
 };
@@ -730,7 +736,8 @@ struct efi_nvdimm_label_set_cookie_info {
 
 struct efi_ufs_device_config_protocol;
 
-/* descriptor points to the caller's buffer, as described; the prototype prints it by value. */
+// descriptor points to the caller's buffer, as described; the prototype prints
+// it by value.
 typedef efi_status (EFI_API *efi_ufs_device_config_rw_descriptor)(
     struct efi_ufs_device_config_protocol *self,
     bool read,

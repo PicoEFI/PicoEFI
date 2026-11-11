@@ -16,7 +16,8 @@
 extern "C" {
 #endif
 
-/* Each defined only if not yet defined: a PE/COFF header of the program's may come first. */
+// Each defined only if not yet defined: a PE/COFF header of the program's may
+// come first.
 #ifndef EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION
 #   define EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION 10
 #endif
@@ -98,7 +99,8 @@ struct efi_table_header {
 
 #define EFI_EVT_TIMER 0x80000000
 #define EFI_EVT_RUNTIME 0x40000000
-/* Named without a value by the specification; EFI_EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE implies it. */
+// Named without a value by the specification;
+// EFI_EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE implies it.
 #define EFI_EVT_RUNTIME_CONTEXT 0x20000000
 
 #define EFI_EVT_NOTIFY_WAIT 0x00000100
@@ -198,10 +200,9 @@ typedef efi_status (EFI_API *efi_get_memory_map)(
     uint32_t *descriptor_version
 );
 
-/*
- * Not in the specification: the descriptor that follows the one at descriptor in a
- * get_memory_map() buffer, whose descriptors are descriptor_size bytes apart.
- */
+// Not in the specification: the descriptor that follows the one at descriptor
+// in a get_memory_map() buffer, whose descriptors are descriptor_size bytes
+// apart.
 static inline struct efi_memory_descriptor *efi_next_memory_descriptor(
     const void *descriptor,
     size_t descriptor_size
@@ -423,7 +424,8 @@ typedef efi_status (EFI_API *efi_calculate_crc32)(
 #define EFI_VARIABLE_APPEND_WRITE 0x00000040
 #define EFI_VARIABLE_ENHANCED_AUTHENTICATED_ACCESS 0x00000080
 
-/* The runtime services are printed as plain function types; named as in struct efi_runtime_services. */
+// The runtime services are printed as plain function types; named as in struct
+// efi_runtime_services.
 typedef efi_status (EFI_API *efi_get_variable)(
     uint16_t *variable_name,
     struct efi_guid *vendor_guid,
@@ -576,7 +578,8 @@ struct efi_capsule_result_variable_header {
     efi_status capsule_status;
 };
 
-/* The uint16_t strings capsule_file_name and capsule_target follow, each null-terminated. */
+// The uint16_t strings capsule_file_name and capsule_target follow, each
+// null-terminated.
 struct efi_capsule_result_variable_fmp {
     uint16_t version;
     uint8_t payload_index;
@@ -591,7 +594,8 @@ __extension__ struct efi_capsule_result_variable_json {
     uint8_t resp[];
 };
 
-/* Printed as 0xF000000, which is outside the specification-reserved range it belongs to. */
+// Printed as 0xF000000, which is outside the specification-reserved range it
+// belongs to.
 #define EFI_REDFISH_DEFINED_JSON_SCHEMA 0xF0000000
 
 #define EFI_SYSTEM_TABLE_SIGNATURE 0x5453595320494249
@@ -615,10 +619,8 @@ __extension__ struct efi_capsule_result_variable_json {
 #define EFI_BOOT_SERVICES_SIGNATURE 0x56524553544f4f42
 #define EFI_BOOT_SERVICES_REVISION EFI_SPECIFICATION_VERSION
 
-/*
- * load_image and install_multiple_protocol_interfaces are misprinted as efi_image_unload and
- * efi_uninstall_multiple_protocol_interfaces.
- */
+// load_image and install_multiple_protocol_interfaces are misprinted as
+// efi_image_unload and efi_uninstall_multiple_protocol_interfaces.
 struct efi_boot_services {
     struct efi_table_header hdr;
 
@@ -787,7 +789,8 @@ struct efi_rt_properties_table {
 #define EFI_MEMORY_ATTRIBUTES_TABLE_GUID \
     {0xdcfa911d, 0x26eb, 0x469f, {0xa2, 0x20, 0x38, 0xb7, 0xdc, 0x46, 0x12, 0x20}}
 
-/* Version 2 is current. number_of_entries descriptors follow, descriptor_size bytes apart. */
+// Version 2 is current. number_of_entries descriptors follow, descriptor_size
+// bytes apart.
 struct efi_memory_attributes_table {
     uint32_t version;
     uint32_t number_of_entries;
@@ -800,7 +803,7 @@ struct efi_memory_attributes_table {
 #define EFI_CONFORMANCE_PROFILES_TABLE_GUID \
     {0x36122546, 0xf7e7, 0x4c8f, {0xbd, 0x9b, 0xeb, 0x85, 0x25, 0xb5, 0x0c, 0x0b}}
 
-/* number_of_profiles struct efi_guid (conformance_profiles) follow. */
+// number_of_profiles struct efi_guid (conformance_profiles) follow.
 struct efi_conformance_profiles_table {
     uint16_t version;
     uint16_t number_of_profiles;

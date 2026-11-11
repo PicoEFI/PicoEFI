@@ -35,7 +35,8 @@ struct efi_acpi_table_protocol {
     efi_acpi_table_uninstall_acpi_table uninstall_acpi_table;
 };
 
-/* The specification gives these only as a table, without names. Byte-packed: 36 and 54 bytes. */
+// The specification gives these only as a table, without names. Byte-packed:
+// 36 and 54 bytes.
 struct efi_acpi_description_header {
     uint32_t signature;
     uint32_t length;
@@ -48,14 +49,15 @@ struct efi_acpi_description_header {
     uint32_t creator_revision;
 } __attribute__((__packed__));
 
-/* The table's contents follow at data_offset. */
+// The table's contents follow at data_offset.
 struct efi_acpi_data_table {
     struct efi_acpi_description_header header;
     struct efi_guid identifier;
     uint16_t data_offset;
 } __attribute__((__packed__));
 
-/* message_length bytes of data follow the header; the printed ANYSIZE_ARRAY bound becomes 1. */
+// message_length bytes of data follow the header; the printed ANYSIZE_ARRAY
+// bound becomes 1.
 struct efi_smm_communicate_header {
     struct efi_guid header_guid;
     size_t message_length;

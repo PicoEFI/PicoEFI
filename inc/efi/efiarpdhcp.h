@@ -884,7 +884,8 @@ typedef efi_status (EFI_API *efi_http_utils_build)(
     void **new_message
 );
 
-/* self is the utilities protocol, as described; the prototype prints struct efi_http_protocol. */
+// self is the utilities protocol, as described; the prototype prints struct
+// efi_http_protocol.
 typedef efi_status (EFI_API *efi_http_utils_parse)(
     struct efi_http_utilities_protocol *self,
     char *http_message,
@@ -903,7 +904,8 @@ struct efi_http_utilities_protocol {
 
 struct efi_rest_protocol;
 
-/* Shared by struct efi_rest_ex_protocol, whose section reprints it with a struct efi_rest_ex_protocol *self. */
+// Shared by struct efi_rest_ex_protocol, whose section reprints it with a
+// struct efi_rest_ex_protocol *self.
 typedef efi_status (EFI_API *efi_rest_send_receive)(
     struct efi_rest_protocol *self,
     struct efi_http_message *request_message,

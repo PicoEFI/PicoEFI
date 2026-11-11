@@ -19,15 +19,14 @@ extern "C" {
 
 struct efi_firmware_management_protocol;
 
-/* Printed as a flexible array, which cannot be the only member: the op-codes run on in memory. */
+// Printed as a flexible array, which cannot be the only member: the op-codes
+// run on in memory.
 struct efi_firmware_image_dep {
     uint8_t dependencies[1];
 };
 
-/*
- * dependencies is printed as an EFI_FMP_DEP pointer, a type defined nowhere: it points to the
- * op-codes that struct efi_firmware_image_dep holds.
- */
+// dependencies is printed as an EFI_FMP_DEP pointer, a type defined nowhere:
+// it points to the op-codes that struct efi_firmware_image_dep holds.
 struct efi_firmware_image_descriptor {
     uint8_t image_index;
     struct efi_guid image_type_id;
@@ -55,7 +54,8 @@ struct efi_firmware_image_descriptor {
 
 #define EFI_IMAGE_COMPATIBILITY_CHECK_SUPPORTED 0x0000000000000001
 
-/* Printed as 3, but the descriptor above, ending with dependencies, is the version 4 one. */
+// Printed as 3, but the descriptor above, ending with dependencies, is the
+// version 4 one.
 #define EFI_FIRMWARE_IMAGE_DESCRIPTOR_VERSION 4
 
 struct efi_firmware_image_authentication {
@@ -109,7 +109,7 @@ typedef efi_status (EFI_API *efi_firmware_management_protocol_check_image)(
 #define EFI_IMAGE_UPDATABLE_INVALID_OLD 0x0000000000000008
 #define EFI_IMAGE_UPDATABLE_VALID_WITH_VENDOR_CODE 0x0000000000000010
 
-/* self is misprinted as a pointer to a pointer here and in set_package_info(). */
+// self is misprinted as a pointer to a pointer here and in set_package_info().
 typedef efi_status (EFI_API *efi_firmware_management_protocol_get_package_info)(
     struct efi_firmware_management_protocol *self,
     uint32_t *package_version,
@@ -141,7 +141,8 @@ struct efi_firmware_management_protocol {
     efi_firmware_management_protocol_set_package_info set_package_info;
 };
 
-/* The specification gives the dependency expression op-codes values but no names. */
+// The specification gives the dependency expression op-codes values but no
+// names.
 #define EFI_FMP_DEP_PUSH_GUID 0x00
 #define EFI_FMP_DEP_PUSH_VERSION 0x01
 #define EFI_FMP_DEP_VERSION_STR 0x02
@@ -161,7 +162,8 @@ struct efi_firmware_management_protocol {
 #define EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID \
     {0x6dcbd5ed, 0xe82d, 0x4c44, {0xbd, 0xa1, 0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a}}
 
-/* item_offset_list follows: embedded_driver_count + payload_item_count uint64_t offsets. */
+// item_offset_list follows: embedded_driver_count + payload_item_count
+// uint64_t offsets.
 struct efi_firmware_management_capsule_header {
     uint32_t version;
     uint16_t embedded_driver_count;
@@ -185,7 +187,7 @@ struct efi_firmware_management_capsule_image_header {
 #define EFI_SYSTEM_RESOURCE_TABLE_GUID \
     {0xb122a263, 0x3661, 0x4f68, {0x99, 0x29, 0x78, 0xf8, 0xb0, 0xd6, 0x21, 0x80}}
 
-/* fw_resource_count struct efi_system_resource_entry (entries) follow. */
+// fw_resource_count struct efi_system_resource_entry (entries) follow.
 struct efi_system_resource_table {
     uint32_t fw_resource_count;
     uint32_t fw_resource_count_max;
@@ -225,10 +227,9 @@ struct efi_system_resource_entry {
 #define EFI_JSON_CAPSULE_ID_GUID \
     {0x67d6f4cd, 0xd6b8, 0x4573, {0xbf, 0x4a, 0xde, 0x5e, 0x25, 0x2d, 0x61, 0xae}}
 
-/*
- * __extension__: flexible array members are standard C but an extension in C++, and an array of
- * structures ending in one (config_data_list) is an extension in C as well.
- */
+// __extension__: flexible array members are standard C but an extension in
+// C++, and an array of structures ending in one (config_data_list) is an
+// extension in C as well.
 __extension__ struct efi_json_capsule_header {
     uint32_t version;
     uint32_t capsule_id;

@@ -68,7 +68,8 @@ typedef efi_status (EFI_API *efi_user_profile_current)(
     efi_user_profile_handle *current_user
 );
 
-/* Its prototype prints EFI_USER_IDENTIFY; the protocol structure uses this name. */
+// Its prototype prints EFI_USER_IDENTIFY; the protocol structure uses this
+// name.
 typedef efi_status (EFI_API *efi_user_profile_identify)(
     const struct efi_user_manager_protocol *self,
     efi_user_profile_handle *user
@@ -163,7 +164,8 @@ typedef uint64_t efi_credential_capabilities;
 
 #define EFI_CREDENTIAL_CAPABILITIES_ENROLL 0x0000000000000001
 
-/* Its prototype prints EFI_CREDENTIAL2_ENROLL; the protocol structure uses this name. */
+// Its prototype prints EFI_CREDENTIAL2_ENROLL; the protocol structure uses
+// this name.
 typedef efi_status (EFI_API *efi_credential_enroll)(
     const struct efi_user_credential2_protocol *self,
     efi_user_profile_handle user
@@ -222,7 +224,8 @@ typedef efi_status (EFI_API *efi_credential_get_info)(
     size_t *info_size
 );
 
-/* Its prototype prints EFI_USER_CREDENTIAL_GET_NEXT_INFO; the protocol structure uses this name. */
+// Its prototype prints EFI_USER_CREDENTIAL_GET_NEXT_INFO; the protocol
+// structure uses this name.
 typedef efi_status (EFI_API *efi_credential_get_next_info)(
     const struct efi_user_credential2_protocol *self,
     efi_user_info_handle *user_info
@@ -272,7 +275,7 @@ struct efi_deferred_image_load_protocol {
     efi_deferred_image_info get_image_info;
 };
 
-/* Named only in the table of record types. */
+// Named only in the table of record types.
 #define EFI_USER_INFO_EMPTY_RECORD 0x00
 
 #define EFI_USER_INFO_ACCESS_POLICY_RECORD 0x0E
@@ -365,7 +368,8 @@ typedef uint8_t efi_user_info_retry;
 #define EFI_USER_INFO_USAGE_DATE_RECORD 0x03
 typedef struct efi_time efi_user_info_usage_date;
 
-/* Printed without _RECORD, as the usage count type's name; the table of record types has it. */
+// Printed without _RECORD, as the usage count type's name; the table of record
+// types has it.
 #define EFI_USER_INFO_USAGE_COUNT_RECORD 0x04
 typedef uint64_t efi_user_info_usage_count;
 

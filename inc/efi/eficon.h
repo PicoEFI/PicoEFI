@@ -24,7 +24,8 @@ struct efi_input_key {
     uint16_t unicode_char;
 };
 
-/* The specification lists these control characters and scan codes without names. */
+// The specification lists these control characters and scan codes without
+// names.
 #define EFI_CHAR_NULL 0x0000
 #define EFI_CHAR_BACKSPACE 0x0008
 #define EFI_CHAR_TAB 0x0009
@@ -204,7 +205,8 @@ typedef efi_status (EFI_API *efi_text_set_attribute)(
 #define EFI_BACKGROUND_BROWN 0x60
 #define EFI_BACKGROUND_LIGHTGRAY 0x70
 
-/* Printed commented out (a misprint). background is EFI_BLACK ... EFI_LIGHTGRAY. */
+// Printed commented out (a misprint). background is EFI_BLACK ...
+// EFI_LIGHTGRAY.
 #define EFI_TEXT_ATTR(foreground, background) ((foreground) | ((background) << 4))
 
 typedef efi_status (EFI_API *efi_text_clear_screen)(struct efi_simple_text_output_protocol *self);

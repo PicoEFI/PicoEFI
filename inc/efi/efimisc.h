@@ -37,7 +37,8 @@ struct efi_timestamp_protocol {
 
 struct efi_reset_notification_protocol;
 
-/* efi_reset_system is itself a pointer: reset_function points to the function, as described. */
+// efi_reset_system is itself a pointer: reset_function points to the function,
+// as described.
 typedef efi_status (EFI_API *efi_register_reset_notify)(
     struct efi_reset_notification_protocol *self,
     efi_reset_system reset_function
@@ -48,7 +49,8 @@ typedef efi_status (EFI_API *efi_unregister_reset_notify)(
     efi_reset_system reset_function
 );
 
-/* The structure prints un_register_reset_notify; the heading and text spell it as here. */
+// The structure prints un_register_reset_notify; the heading and text spell it
+// as here.
 struct efi_reset_notification_protocol {
     efi_register_reset_notify register_reset_notify;
     efi_unregister_reset_notify unregister_reset_notify;

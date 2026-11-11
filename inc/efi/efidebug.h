@@ -19,7 +19,8 @@ extern "C" {
 
 struct efi_debug_support_protocol;
 
-/* Printed as IMAGE_FILE_MACHINE_* names that nothing defines; these are their values. */
+// Printed as IMAGE_FILE_MACHINE_* names that nothing defines; these are their
+// values.
 #define EFI_ISA_IA32 ((uint32_t)0x014C)
 #define EFI_ISA_X64 ((uint32_t)0x8664)
 #define EFI_ISA_IPF ((uint32_t)0x0200)
@@ -202,7 +203,8 @@ struct efi_system_context_ipf {
     uint64_t int_nat;
 };
 
-/* IFAR, the instruction fault address paired with IFSR, is missing from the print. */
+// IFAR, the instruction fault address paired with IFSR, is missing from the
+// print.
 struct efi_system_context_arm {
     uint32_t r0;
     uint32_t r1;
@@ -346,7 +348,7 @@ struct efi_system_context_loongarch64 {
     uint64_t badi;
 };
 
-/* system_context_loongarch64 is misprinted system_context_long_arch64. */
+// system_context_loongarch64 is misprinted system_context_long_arch64.
 union efi_system_context {
     struct efi_system_context_ebc *system_context_ebc;
     struct efi_system_context_ia32 *system_context_ia32;
@@ -387,7 +389,8 @@ typedef void (EFI_API *efi_exception_callback)(
 #define EFI_EXCEPT_EBC_BAD_BREAK 9
 #define EFI_EXCEPT_EBC_SINGLE_STEP 10
 
-/* Not in the specification: the highest EBC exception type, like EFI_MAX_ARM_EXCEPTION. */
+// Not in the specification: the highest EBC exception type, like
+// EFI_MAX_ARM_EXCEPTION.
 #define EFI_MAX_EBC_EXCEPTION EFI_EXCEPT_EBC_SINGLE_STEP
 
 #define EFI_EXCEPT_IA32_DIVIDE_ERROR 0
@@ -543,7 +546,8 @@ typedef void (EFI_API *efi_exception_callback)(
 
 #define EFI_MAX_LOONGARCH_INTERRUPT 16
 
-/* Printed as REGISTER_EXCEPTION_CALLBACK; the protocol structure uses this name. */
+// Printed as REGISTER_EXCEPTION_CALLBACK; the protocol structure uses this
+// name.
 typedef efi_status (EFI_API *efi_register_exception_callback)(
     struct efi_debug_support_protocol *self,
     size_t processor_index,
@@ -626,7 +630,8 @@ union efi_debug_image_info {
     struct efi_debug_image_info_normal *normal_image;
 };
 
-/* Not in the specification: how many union efi_debug_image_info, pointer-sized, fill a page. */
+// Not in the specification: how many union efi_debug_image_info,
+// pointer-sized, fill a page.
 #define EFI_DEBUG_IMAGE_INFO_INITIAL_SIZE (EFI_PAGE_SIZE / sizeof(uintptr_t))
 
 struct efi_debug_image_info_table_header {

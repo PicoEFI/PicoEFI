@@ -41,7 +41,7 @@ struct efi_shell_file_info {
 
 typedef uint32_t efi_device_name_flags;
 
-/* The prototype of get_device_name() spells the flags type this way. */
+// The prototype of get_device_name() spells the flags type this way.
 typedef efi_device_name_flags efi_shell_device_name_flags;
 
 #define EFI_DEVICE_NAME_USE_COMPONENT_NAME 0x00000001
@@ -282,7 +282,7 @@ struct efi_shell_protocol {
 
     uint32_t major_version;
     uint32_t minor_version;
-    /* The last four members exist from version 2.1 on. */
+    // The last four members exist from version 2.1 on.
     efi_shell_register_guid_name register_guid_name;
     efi_shell_get_guid_name get_guid_name;
     efi_shell_get_guid_from_name get_guid_from_name;

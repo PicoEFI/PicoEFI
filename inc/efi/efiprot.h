@@ -231,7 +231,7 @@ struct efi_graphics_output_blt_pixel {
     uint8_t reserved;
 };
 
-/* Not in the specification: a pixel together with its 32-bit value. */
+// Not in the specification: a pixel together with its 32-bit value.
 union efi_graphics_output_blt_pixel_union {
     struct efi_graphics_output_blt_pixel pixel;
     uint32_t raw;
@@ -284,7 +284,8 @@ struct efi_edid_active_protocol {
 
 struct efi_edid_override_protocol;
 
-/* child_handle points to the handle: the specification keeps this historical typing on purpose. */
+// child_handle points to the handle: the specification keeps this historical
+// typing on purpose.
 typedef efi_status (EFI_API *efi_edid_override_protocol_get_edid)(
     struct efi_edid_override_protocol *self,
     efi_handle *child_handle,
@@ -454,7 +455,7 @@ struct efi_file_protocol {
     efi_file_get_info get_info;
     efi_file_set_info set_info;
     efi_file_flush flush;
-    /* The Ex services exist from EFI_FILE_PROTOCOL_REVISION2 on. */
+    // The Ex services exist from EFI_FILE_PROTOCOL_REVISION2 on.
     efi_file_open_ex open_ex;
     efi_file_read_ex read_ex;
     efi_file_write_ex write_ex;
@@ -464,7 +465,8 @@ struct efi_file_protocol {
 #define EFI_FILE_INFO_ID \
     {0x09576e92, 0x6d3f, 0x11d2, {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
 
-/* Name arrays have one element, as in firmware ([] in print); SIZE_OF_* is the fixed part. */
+// Name arrays have one element, as in firmware ([] in print); SIZE_OF_* is the
+// fixed part.
 struct efi_file_info {
     uint64_t size;
     uint64_t file_size;
@@ -594,10 +596,10 @@ struct efi_block_io_media {
     uint32_t block_size;
     uint32_t io_align;
     efi_lba last_block;
-    /* Valid from EFI_BLOCK_IO_PROTOCOL_REVISION2 on. */
+    // Valid from EFI_BLOCK_IO_PROTOCOL_REVISION2 on.
     efi_lba lowest_aligned_lba;
     uint32_t logical_blocks_per_physical_block;
-    /* Valid from EFI_BLOCK_IO_PROTOCOL_REVISION3 on. */
+    // Valid from EFI_BLOCK_IO_PROTOCOL_REVISION3 on.
     uint32_t optimal_transfer_length_granularity;
 };
 
@@ -730,7 +732,7 @@ struct efi_unicode_collation_protocol {
     char *supported_languages;
 };
 
-/* Not in the specification: the byte order mark that starts a UCS-2 text file. */
+// Not in the specification: the byte order mark that starts a UCS-2 text file.
 #define EFI_UNICODE_BYTE_ORDER_MARK ((uint16_t)0xFEFF)
 
 #define EFI_EBC_PROTOCOL_GUID \
@@ -755,7 +757,8 @@ typedef efi_status (EFI_API *efi_ebc_icache_flush)(
     uint64_t length
 );
 
-/* The prototype prints **self and *flush; the descriptions want one level less. */
+// The prototype prints **self and *flush; the descriptions want one level
+// less.
 typedef efi_status (EFI_API *efi_ebc_register_icache_flush)(
     struct efi_ebc_protocol *self,
     efi_ebc_icache_flush flush
@@ -797,7 +800,8 @@ union efi_hash_output {
     efi_sha512_hash *sha512_hash;
 };
 
-/* get_hash_size() and hash() are printed as plain prototypes; named as the protocol types them. */
+// get_hash_size() and hash() are printed as plain prototypes; named as the
+// protocol types them.
 typedef efi_status (EFI_API *efi_hash_get_hash_size)(
     const struct efi_hash_protocol *self,
     const struct efi_guid *hash_algorithm,
@@ -824,7 +828,8 @@ struct efi_hash_protocol {
 #define EFI_HASH_ALGORITHM_SHA256_NOPAD_GUID \
     {0x8628752a, 0x6cb7, 0x4814, {0x96, 0xfc, 0x24, 0xa8, 0x15, 0xac, 0x22, 0x26}}
 
-/* The Hash2 algorithms: efisectech.h takes them from here rather than defining them again. */
+// The Hash2 algorithms: efisectech.h takes them from here rather than defining
+// them again.
 #define EFI_HASH_ALGORITHM_SHA1_GUID \
     {0x2ae9d80f, 0x3fb2, 0x4095, {0xb7, 0xb1, 0xe9, 0x31, 0x57, 0xb9, 0x46, 0xb6}}
 

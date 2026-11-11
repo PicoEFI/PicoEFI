@@ -28,7 +28,8 @@ struct efi_scsi_io_protocol;
 #define EFI_SCSI_IO_TYPE_OPTICAL 0x07
 #define EFI_SCSI_IO_TYPE_MEDIUMCHANGER 0x08
 #define EFI_SCSI_IO_TYPE_COMMUNICATION 0x09
-/* MFI_ (not EFI_) is the specification's own, consistent spelling for 0x0A to 0x11. */
+// MFI_ (not EFI_) is the specification's own, consistent spelling for 0x0A to
+// 0x11.
 #define EFI_MFI_SCSI_IO_TYPE_A 0x0A
 #define EFI_MFI_SCSI_IO_TYPE_B 0x0B
 #define EFI_MFI_SCSI_IO_TYPE_RAID 0x0C

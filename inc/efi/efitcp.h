@@ -51,7 +51,8 @@ struct efi_tcp4_option {
     uint8_t enable_path_mtu_discovery;
 };
 
-/* control_option may be NULL, as described (and a pointer in TCPv6); printed by value. */
+// control_option may be NULL, as described (and a pointer in TCPv6); printed
+// by value.
 struct efi_tcp4_config_data {
     uint8_t type_of_service;
     uint8_t time_to_live;

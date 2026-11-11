@@ -26,7 +26,8 @@ struct efi_pxe_base_code_protocol;
 
 typedef uint16_t efi_pxe_base_code_udp_port;
 
-/* Not packed: firmware lays these out naturally, though the specification says byte-packed. */
+// Not packed: firmware lays these out naturally, though the specification says
+// byte-packed.
 struct efi_pxe_base_code_dhcpv4_packet {
     uint8_t bootp_opcode;
     uint8_t bootp_hw_type;
@@ -62,7 +63,7 @@ union efi_pxe_base_code_packet {
     struct efi_pxe_base_code_dhcpv6_packet dhcpv6;
 };
 
-/* data ends at offset 502; natural alignment makes the size 504. */
+// data ends at offset 502; natural alignment makes the size 504.
 struct efi_pxe_base_code_icmp_error {
     uint8_t type;
     uint8_t code;
@@ -196,7 +197,7 @@ struct efi_pxe_base_code_srvlist {
     union efi_ip_address ip_addr;
 };
 
-/* srv_list holds ip_cnt entries (printed srv_list[ip_cnt]). */
+// srv_list holds ip_cnt entries (printed srv_list[ip_cnt]).
 struct efi_pxe_base_code_discover_info {
     uint8_t use_mcast;
     uint8_t use_bcast;

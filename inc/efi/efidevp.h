@@ -80,7 +80,8 @@ struct efi_bmc_device_path {
     uint8_t base_address[8];
 } __attribute__((__packed__));
 
-/* The shift is done in uint32_t so that product numbers from 0x8000 up do not overflow. */
+// The shift is done in uint32_t so that product numbers from 0x8000 up do not
+// overflow.
 #define EFI_PNP_ID(id) ((uint32_t)(((uint32_t)(id) << 16) | 0x41D0))
 #define EFI_EISA_PNP_ID(id) EFI_PNP_ID(id)
 
@@ -99,7 +100,7 @@ struct efi_acpi_hid_device_path {
 
 #define EFI_ACPI_EXTENDED_DP 0x02
 
-/* hid_str starts _HIDSTR; _UIDSTR and _CIDSTR follow it. */
+// hid_str starts _HIDSTR; _UIDSTR and _CIDSTR follow it.
 struct efi_acpi_extended_hid_device_path {
     struct efi_device_path_protocol header;
     uint32_t hid;
@@ -329,7 +330,8 @@ struct efi_sas_device_path {
 
 #define EFI_MSG_SASEX_DP 0x16
 
-/* length 24: the offsets and length the specification prints for this node disagree. */
+// length 24: the offsets and length the specification prints for this node
+// disagree.
 struct efi_sasex_device_path {
     struct efi_device_path_protocol header;
     uint8_t sas_address[8];
@@ -447,7 +449,8 @@ struct efi_rest_service_device_path {
     uint8_t access_mode;
 } __attribute__((__packed__));
 
-/* length 22 + n: the specification prints 21 + n but puts the vendor data at offset 22. */
+// length 22 + n: the specification prints 21 + n but puts the vendor data at
+// offset 22.
 __extension__ struct efi_rest_vendor_service_device_path {
     struct efi_rest_service_device_path rest_service_device_path;
     struct efi_guid rest_service_guid;
@@ -456,7 +459,8 @@ __extension__ struct efi_rest_vendor_service_device_path {
 
 #define EFI_MSG_NVME_OF_NAMESPACE_DP 0x22
 
-/* length 21 + n: the specification prints 20 + n but puts subsystem_nqn at offset 21. */
+// length 21 + n: the specification prints 20 + n but puts subsystem_nqn at
+// offset 21.
 __extension__ struct efi_nvme_of_namespace_device_path {
     struct efi_device_path_protocol header;
     uint8_t namespace_id_type;
@@ -811,7 +815,7 @@ typedef struct efi_device_path_protocol *(EFI_API *efi_device_path_from_text_pat
     const uint16_t *text_device_path
 );
 
-/* The specification's structure body misspells both member names ("Devic"). */
+// The specification's structure body misspells both member names ("Devic").
 struct efi_device_path_from_text_protocol {
     efi_device_path_from_text_node convert_text_to_device_node;
     efi_device_path_from_text_path convert_text_to_device_path;

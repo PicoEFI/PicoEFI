@@ -115,7 +115,7 @@ struct efi_bluetooth_hc_protocol {
 
 struct efi_bluetooth_io_protocol;
 
-/* Byte-packed as firmware lays it out: the 3-byte Bluetooth Class of Device. */
+// Byte-packed as firmware lays it out: the 3-byte Bluetooth Class of Device.
 struct efi_bluetooth_class_of_device {
     uint8_t minor;
     uint16_t major;
@@ -283,7 +283,8 @@ typedef efi_status (EFI_API *efi_bluetooth_config_connect)(
     struct efi_bluetooth_address *bd_addr
 );
 
-/* reason is a value, as described and as in the LE protocol; it is printed uint8_t *reason. */
+// reason is a value, as described and as in the LE protocol; it is printed
+// uint8_t *reason.
 typedef efi_status (EFI_API *efi_bluetooth_config_disconnect)(
     struct efi_bluetooth_config_protocol *self,
     struct efi_bluetooth_address *bd_addr,
@@ -342,7 +343,8 @@ typedef efi_status (EFI_API *efi_bluetooth_config_get_remote_data)(
 #define EFI_BLUETOOTH_CALLBACK_TYPE_PIN_CODE_REQUEST ((uint32_t)3)
 #define EFI_BLUETOOTH_CALLBACK_TYPE_MAX ((uint32_t)4)
 
-/* Each parameter is printed with a leaked emphasis asterisk; these are the described types. */
+// Each parameter is printed with a leaked emphasis asterisk; these are the
+// described types.
 typedef efi_status (EFI_API *efi_bluetooth_config_register_pin_callback_function)(
     struct efi_bluetooth_config_protocol *self,
     void *context,
@@ -353,7 +355,8 @@ typedef efi_status (EFI_API *efi_bluetooth_config_register_pin_callback_function
     size_t *output_buffer_size
 );
 
-/* callback is taken by value, like its siblings'; it is printed as a pointer to the function pointer type. */
+// callback is taken by value, like its siblings'; it is printed as a pointer
+// to the function pointer type.
 typedef efi_status (EFI_API *efi_bluetooth_config_register_pin_callback)(
     struct efi_bluetooth_config_protocol *self,
     efi_bluetooth_config_register_pin_callback_function callback,
@@ -380,7 +383,8 @@ typedef efi_status (EFI_API *efi_bluetooth_config_register_set_link_key_callback
     uint8_t link_key[EFI_BLUETOOTH_HCI_LINK_KEY_SIZE]
 );
 
-/* callback is taken by value, like its siblings'; it is printed as a pointer to the function pointer type. */
+// callback is taken by value, like its siblings'; it is printed as a pointer
+// to the function pointer type.
 typedef efi_status (EFI_API *efi_bluetooth_config_register_set_link_key_callback)(
     struct efi_bluetooth_config_protocol *self,
     efi_bluetooth_config_register_set_link_key_callback_function callback,
@@ -465,7 +469,8 @@ typedef efi_status (EFI_API *efi_bluetooth_attribute_register_for_server_notific
     void *context
 );
 
-/* Byte-packed, as firmware lays out these attribute types; the print shows no packing. */
+// Byte-packed, as firmware lays out these attribute types; the print shows no
+// packing.
 struct efi_bluetooth_uuid {
     uint8_t length;
     union __attribute__((__packed__)) {

@@ -17,7 +17,8 @@ extern "C" {
 #define EFI_PTAB_HEADER_ID 0x5452415020494645
 #define EFI_GPT_PART_ENTRY_MIN_SIZE 16384
 
-/* Packed: the header is 92 bytes on disk; natural alignment would pad it to 96. */
+// Packed: the header is 92 bytes on disk; natural alignment would pad it to
+// 96.
 struct efi_partition_table_header {
     struct efi_table_header header;
     efi_lba my_lba;

@@ -16,16 +16,16 @@
 #   if defined(__x86_64__) || defined(__amd64__)
 #       define EFI_API __attribute__((__ms_abi__))
 #   elif defined(__i386__)
-/*
- * Plain cdecl, whatever -mrtd or -mregparm the rest of the program uses. regparm(0) comes first:
- * Clang 9 crashes on the other order when a macro supplies it.
- */
+// Plain cdecl, whatever -mrtd or -mregparm the rest of the program uses.
+// regparm(0) comes first: Clang 9 crashes on the other order when a macro
+// supplies it.
 #       define EFI_API __attribute__((__regparm__(0), __cdecl__))
 #   elif defined(__arm__)
-/* Base standard: floating-point values go in core registers, whatever the program's float ABI. */
+// Base standard: floating-point values go in core registers, whatever the
+// program's float ABI.
 #       define EFI_API __attribute__((__pcs__("aapcs")))
 #   else
-/* The platform's standard calling convention is the UEFI one. */
+// The platform's standard calling convention is the UEFI one.
 #       define EFI_API
 #   endif
 #endif
@@ -38,7 +38,7 @@ extern "C" {
 __extension__ typedef __int128 efi_int128;
 __extension__ typedef unsigned __int128 efi_uint128;
 #else
-/* No 128-bit integer type on 32-bit targets. */
+// No 128-bit integer type on 32-bit targets.
 typedef struct __attribute__((__aligned__(16))) {
     uint64_t lo;
     uint64_t hi;
@@ -79,7 +79,8 @@ union efi_ip_address {
     struct efi_ipv6_address v6;
 };
 
-/* Natural 4-byte alignment: the specification's 64-bit boundary is about buffers, not the type. */
+// Natural 4-byte alignment: the specification's 64-bit boundary is about
+// buffers, not the type.
 struct efi_guid {
     uint32_t data1;
     uint16_t data2;
@@ -160,7 +161,8 @@ struct efi_memory_descriptor {
     uint64_t attribute;
 };
 
-/* UEFI aligns 64-bit fields to 8 bytes, which the IA-32 ABI does only with -malign-double. */
+// UEFI aligns 64-bit fields to 8 bytes, which the IA-32 ABI does only with
+// -malign-double.
 #if (defined(__cplusplus) && __cplusplus >= 201103L) || \
     (!defined(__cplusplus) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L)
 static_assert(sizeof(struct efi_memory_descriptor) == 40, "Build with -malign-double on IA-32 (32-bit x86).");
@@ -194,7 +196,7 @@ struct efi_managed_network_config_data {
 #define EFI_PAGE_MASK 0xFFF
 #define EFI_PAGE_SHIFT 12
 
-/* Rounds up without computing a + EFI_PAGE_MASK, which could overflow. */
+// Rounds up without computing a + EFI_PAGE_MASK, which could overflow.
 #define EFI_SIZE_TO_PAGES(a) (((a) >> EFI_PAGE_SHIFT) + (((a) & EFI_PAGE_MASK) ? 1 : 0))
 
 #define EFI_SIGNATURE_16(A, B) ((uint16_t)((uint8_t)(A) | ((uint8_t)(B) << 8)))

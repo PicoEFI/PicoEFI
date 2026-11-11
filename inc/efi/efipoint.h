@@ -44,7 +44,8 @@ typedef efi_status (EFI_API *efi_simple_pointer_get_state)(
     struct efi_simple_pointer_state *state
 );
 
-/* mode is printed with a nonexistent type; its description names struct efi_simple_pointer_mode. */
+// mode is printed with a nonexistent type; its description names struct
+// efi_simple_pointer_mode.
 struct efi_simple_pointer_protocol {
     efi_simple_pointer_reset reset;
     efi_simple_pointer_get_state get_state;
@@ -82,7 +83,8 @@ struct efi_absolute_pointer_state {
     uint32_t active_buttons;
 };
 
-/* EFI_ABS_ALT_ACTIVE (not EFI_ABSP_) is the specification's own, consistent spelling. */
+// EFI_ABS_ALT_ACTIVE (not EFI_ABSP_) is the specification's own, consistent
+// spelling.
 #define EFI_ABSP_TOUCH_ACTIVE 0x00000001
 #define EFI_ABS_ALT_ACTIVE 0x00000002
 

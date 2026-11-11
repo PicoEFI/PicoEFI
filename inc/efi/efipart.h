@@ -30,7 +30,8 @@ struct efi_mbr_partition_record {
     uint8_t size_in_lba[4];
 } __attribute__((__packed__));
 
-/* boot_strap_code is 440 bytes, as the C definition and the field offsets require. */
+// boot_strap_code is 440 bytes, as the C definition and the field offsets
+// require.
 struct efi_master_boot_record {
     uint8_t boot_strap_code[440];
     uint8_t unique_mbr_signature[4];

@@ -40,7 +40,8 @@ struct efi_hii_row_info {
     size_t baseline_offset;
 };
 
-/* font_name has one element, as firmware lays it out: struct efi_font_display_info embeds this. */
+// font_name has one element, as firmware lays it out: struct
+// efi_font_display_info embeds this.
 struct efi_font_info {
     efi_hii_font_style font_style;
     uint16_t font_size;
@@ -162,7 +163,8 @@ typedef efi_status (EFI_API *efi_hii_string_id_to_image_ex)(
     size_t *column_info_array
 );
 
-/* baseline is printed by value, but the parameters are get_glyph()'s, which returns it. */
+// baseline is printed by value, but the parameters are get_glyph()'s, which
+// returns it.
 typedef efi_status (EFI_API *efi_hii_get_glyph_ex)(
     const struct efi_hii_font_ex_protocol *self,
     uint16_t char_,
@@ -433,10 +435,9 @@ struct efi_hii_image_decoder_other_info {
     uint16_t image_extenion[1];
 };
 
-/*
- * image_info is printed as EFI_HII_IMAGE_DECODER_IMAGE_INFO, which is defined nowhere; every image
- * information structure starts with struct efi_hii_image_decoder_image_info_header.
- */
+// image_info is printed as EFI_HII_IMAGE_DECODER_IMAGE_INFO, which is defined
+// nowhere; every image information structure starts with struct
+// efi_hii_image_decoder_image_info_header.
 typedef efi_status (EFI_API *efi_hii_image_decoder_get_image_info)(
     const struct efi_hii_image_decoder_protocol *self,
     void *image,
@@ -481,7 +482,8 @@ typedef efi_status (EFI_API *efi_hii_generate_glyph_image)(
     bool transparent
 );
 
-/* The member types are printed EFI_GENERATE_GLYPH and EFI_GENERATE_IMAGE, defined nowhere. */
+// The member types are printed EFI_GENERATE_GLYPH and EFI_GENERATE_IMAGE,
+// defined nowhere.
 struct efi_hii_font_glyph_generator_protocol {
     efi_hii_generate_glyph generate_glyph;
     efi_hii_generate_glyph_image generate_glyph_image;
@@ -690,7 +692,8 @@ struct efi_key_descriptor {
 #define EFI_AFFECTED_BY_CAPS_LOCK 0x0002
 #define EFI_AFFECTED_BY_NUM_LOCK 0x0004
 
-/* __extension__: a flexible array member is standard C but an extension in C++. */
+// __extension__: a flexible array member is standard C but an extension in
+// C++.
 __extension__ struct efi_hii_keyboard_layout {
     uint16_t layout_length;
     struct efi_guid guid;
@@ -699,7 +702,8 @@ __extension__ struct efi_hii_keyboard_layout {
     struct efi_key_descriptor descriptors[];
 } __attribute__((__packed__));
 
-/* The fixed part: each EFI_DESCRIPTION_STRING that follows starts with a variable-length array. */
+// The fixed part: each EFI_DESCRIPTION_STRING that follows starts with a
+// variable-length array.
 struct efi_description_string_bundle {
     uint16_t description_count;
 } __attribute__((__packed__));

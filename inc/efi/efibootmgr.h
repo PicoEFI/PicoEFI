@@ -14,7 +14,8 @@
 extern "C" {
 #endif
 
-/* Byte-packed variable data: description, file_path_list, and optional_data follow. */
+// Byte-packed variable data: description, file_path_list, and optional_data
+// follow.
 struct efi_load_option {
     uint32_t attributes;
     uint16_t file_path_list_length;
@@ -49,10 +50,9 @@ union efi_boot_key_data {
 #define EFI_BOOT_KEY_DATA_INPUT_KEY_COUNT_SHIFT 30
 #define EFI_BOOT_KEY_DATA_INPUT_KEY_COUNT_MASK 0xc0000000
 
-/*
- * Variable data: the struct efi_input_key keys, as many as key_data.options counts under
- * EFI_BOOT_KEY_DATA_INPUT_KEY_COUNT_MASK, follow at byte offset 10.
- */
+// Variable data: the struct efi_input_key keys, as many as key_data.options
+// counts under EFI_BOOT_KEY_DATA_INPUT_KEY_COUNT_MASK, follow at byte offset
+// 10.
 struct efi_key_option {
     union efi_boot_key_data key_data;
     uint32_t boot_option_crc;

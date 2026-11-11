@@ -34,7 +34,8 @@ struct efi_cc_type {
 };
 
 #define EFI_CC_TYPE_NONE 0
-/* Not listed by UEFI 2.11: the value the ACPI CC event log table gives AMD SEV. */
+// Not listed by UEFI 2.11: the value the ACPI CC event log table gives AMD
+// SEV.
 #define EFI_CC_TYPE_AMD_SEV 1
 #define EFI_CC_TYPE_INTEL_TDX 2
 #define EFI_CC_TYPE_RISCV_APTEE 3
@@ -70,7 +71,7 @@ typedef efi_status (EFI_API *efi_cc_get_event_log)(
 
 typedef uint32_t efi_cc_mr_index;
 
-/* Not named by the specification: the value header_version must hold. */
+// Not named by the specification: the value header_version must hold.
 #define EFI_CC_EVENT_HEADER_VERSION 1
 
 struct efi_cc_event_header {
@@ -80,14 +81,15 @@ struct efi_cc_event_header {
     uint32_t event_type;
 } __attribute__((__packed__));
 
-/* event is variable-length: size covers the whole record. */
+// event is variable-length: size covers the whole record.
 struct efi_cc_event {
     uint32_t size;
     struct efi_cc_event_header header;
     uint8_t event[1];
 } __attribute__((__packed__));
 
-/* Printed as a second efi_cc_get_event_log; named as the protocol structure types it. */
+// Printed as a second efi_cc_get_event_log; named as the protocol structure
+// types it.
 typedef efi_status (EFI_API *efi_cc_hash_log_extend_event)(
     struct efi_cc_measurement_protocol *self,
     uint64_t flags,
@@ -114,7 +116,8 @@ struct efi_cc_measurement_protocol {
 #define EFI_CC_FINAL_EVENTS_TABLE_GUID \
     {0xdd4a4648, 0x2de7, 0x4665, {0x96, 0x4d, 0x21, 0xd9, 0xef, 0x5f, 0xb4, 0x46}}
 
-/* number_of_events serialised CC_EVENT records follow; they have no C layout (TCG digest lists). */
+// number_of_events serialised CC_EVENT records follow; they have no C layout
+// (TCG digest lists).
 struct efi_cc_final_events_table {
     uint64_t version;
     uint64_t number_of_events;

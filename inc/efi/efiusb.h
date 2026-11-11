@@ -105,7 +105,8 @@ typedef efi_status (EFI_API *efi_usb2_hc_protocol_control_transfer)(
     uint32_t *transfer_result
 );
 
-/* The specification refers to this value but never prints it; it is the one firmware uses. */
+// The specification refers to this value but never prints it; it is the one
+// firmware uses.
 #define EFI_USB_MAX_BULK_BUFFER_NUM 10
 
 typedef efi_status (EFI_API *efi_usb2_hc_protocol_bulk_transfer)(
@@ -233,7 +234,8 @@ typedef efi_status (EFI_API *efi_usb2_hc_protocol_clear_roothub_port_feature)(
     uint32_t port_feature
 );
 
-/* The specification's structure body types sync_interrupt_transfer as the asynchronous call. */
+// The specification's structure body types sync_interrupt_transfer as the
+// asynchronous call.
 struct efi_usb2_hc_protocol {
     efi_usb2_hc_protocol_get_capability get_capability;
     efi_usb2_hc_protocol_reset reset;
@@ -397,7 +399,8 @@ typedef efi_status (EFI_API *efi_usb_io_get_supported_languages)(
 
 typedef efi_status (EFI_API *efi_usb_io_port_reset)(struct efi_usb_io_protocol *self);
 
-/* The specification's structure body misspells the type of usb_sync_interrupt_transfer. */
+// The specification's structure body misspells the type of
+// usb_sync_interrupt_transfer.
 struct efi_usb_io_protocol {
     efi_usb_io_control_transfer usb_control_transfer;
     efi_usb_io_bulk_transfer usb_bulk_transfer;
@@ -452,7 +455,8 @@ typedef efi_status (EFI_API *efi_usbfn_io_configure_enable_endpoints)(
     struct efi_usb_device_info *device_info
 );
 
-/* No isochronous (0x01) or interrupt (0x03) type: the protocol supports neither. */
+// No isochronous (0x01) or interrupt (0x03) type: the protocol supports
+// neither.
 #define EFI_USB_ENDPOINT_CONTROL ((uint32_t)0x00)
 #define EFI_USB_ENDPOINT_BULK ((uint32_t)0x02)
 
@@ -584,7 +588,8 @@ typedef efi_status (EFI_API *efi_usbfn_io_stop_controller)(struct efi_usbfn_io_p
 #define EFI_USB_POLICY_ZERO_LENGTH_TERMINATION_SUPPORT ((uint32_t)2)
 #define EFI_USB_POLICY_ZERO_LENGTH_TERMINATION ((uint32_t)3)
 
-/* Named as the protocol structure names them; the prototypes print these two without _IO. */
+// Named as the protocol structure names them; the prototypes print these two
+// without _IO.
 typedef efi_status (EFI_API *efi_usbfn_io_set_endpoint_policy)(
     struct efi_usbfn_io_protocol *self,
     uint8_t endpoint_index,

@@ -14,7 +14,8 @@
 extern "C" {
 #endif
 
-/* Printed without the 2, a name that belongs to the EFI 1.10 Driver Diagnostics protocol's GUID. */
+// Printed without the 2, a name that belongs to the EFI 1.10 Driver
+// Diagnostics protocol's GUID.
 #define EFI_DRIVER_DIAGNOSTICS2_PROTOCOL_GUID \
     {0x4d330321, 0x025f, 0x4aac, {0x90, 0xd8, 0x5e, 0xd9, 0x00, 0x17, 0x3b, 0x63}}
 
@@ -188,7 +189,8 @@ struct efi_adapter_info_media_state {
 #define EFI_ADAPTER_INFO_NETWORK_BOOT_GUID \
     {0x1FBD2960, 0x4130, 0x41E5, {0x94, 0xAC, 0xD2, 0xCF, 0x03, 0x7F, 0xB3, 0x7C}}
 
-/* The first member is misprinted issci_ipv4_boot_capablity in the structure only. */
+// The first member is misprinted issci_ipv4_boot_capablity in the structure
+// only.
 struct efi_adapter_info_network_boot {
     uint8_t iscsi_ipv4_boot_capablity;
     uint8_t iscsi_ipv6_boot_capablity;

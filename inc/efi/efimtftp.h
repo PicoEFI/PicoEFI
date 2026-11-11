@@ -314,12 +314,14 @@ union efi_mtftp6_packet {
 #define EFI_MTFTP6_OPCODE_RRQ 1
 #define EFI_MTFTP6_OPCODE_WRQ 2
 #define EFI_MTFTP6_OPCODE_DATA 3
-/* TFTP's ACK, as in MTFTPv4; the specification prints 6, which is EFI_MTFTP6_OPCODE_OACK. */
+// TFTP's ACK, as in MTFTPv4; the specification prints 6, which is
+// EFI_MTFTP6_OPCODE_OACK.
 #define EFI_MTFTP6_OPCODE_ACK 4
 #define EFI_MTFTP6_OPCODE_ERROR 5
 #define EFI_MTFTP6_OPCODE_OACK 6
 #define EFI_MTFTP6_OPCODE_DIR 7
-/* Named as the MTFTPv6 tables name them; the opcode list prints the MTFTPv4 names. */
+// Named as the MTFTPv6 tables name them; the opcode list prints the MTFTPv4
+// names.
 #define EFI_MTFTP6_OPCODE_DATA8 8
 #define EFI_MTFTP6_OPCODE_ACK8 9
 
@@ -364,7 +366,8 @@ typedef efi_status (EFI_API *efi_mtftp6_timeout_callback)(
     struct efi_mtftp6_token *token
 );
 
-/* token is the caller's token, passed by pointer as in every sibling callback; printed by value. */
+// token is the caller's token, passed by pointer as in every sibling callback;
+// printed by value.
 typedef efi_status (EFI_API *efi_mtftp6_packet_needed)(
     struct efi_mtftp6_protocol *self,
     struct efi_mtftp6_token *token,
@@ -372,7 +375,8 @@ typedef efi_status (EFI_API *efi_mtftp6_packet_needed)(
     void **buffer
 );
 
-/* override_data and option_list are pointers, as described and as in MTFTPv4; printed by value. */
+// override_data and option_list are pointers, as described and as in MTFTPv4;
+// printed by value.
 struct efi_mtftp6_token {
     efi_status status;
     efi_event event;

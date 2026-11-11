@@ -191,7 +191,8 @@ typedef efi_status (EFI_API *efi_eap_get_key)(
     uint8_t *emsk_size
 );
 
-/* The specification prints the members before get_key as "Same as EFI_EAP_MANAGEMENT_PROTOCOL". */
+// The specification prints "Same as EFI_EAP_MANAGEMENT_PROTOCOL" for the
+// members before get_key.
 struct efi_eap_management2_protocol {
     efi_eap_get_system_configuration get_system_configuration;
     efi_eap_set_system_configuration set_system_configuration;
@@ -338,7 +339,8 @@ struct efi_80211_element_country {
     union efi_80211_country_triplet country_triplet[1];
 };
 
-/* The rest of the RSN element (suite lists, capabilities, PMKIDs) follows; it varies in length. */
+// The rest of the RSN element (suite lists, capabilities, PMKIDs) follows; it
+// varies in length.
 struct efi_80211_element_data_rsn {
     uint16_t version;
     uint32_t group_data_cipher_suite;
@@ -354,7 +356,8 @@ struct efi_80211_element_ext_cap {
     uint8_t capabilities[1];
 };
 
-/* bss_id is a value, as in every other structure here; printed with a stray asterisk. */
+// bss_id is a value, as in every other structure here; printed with a stray
+// asterisk.
 struct efi_80211_bss_description {
     struct efi_80211_mac_address bss_id;
     uint8_t *ss_id;
@@ -431,7 +434,8 @@ struct efi_80211_element_supp_channel {
     struct efi_80211_element_supp_channel_tuple subband[1];
 };
 
-/* ext_cap_element is a pointer: the description allows NULL (printed by value). */
+// ext_cap_element is a pointer: the description allows NULL (printed by
+// value).
 struct efi_80211_associate_data {
     struct efi_80211_mac_address bss_id;
     uint16_t capability_info;
@@ -469,7 +473,7 @@ struct efi_80211_associate_result {
     uint8_t *vendor_specific_info;
 };
 
-/* data and result are pointers, as described (printed by value). */
+// data and result are pointers, as described (printed by value).
 struct efi_80211_associate_data_token {
     efi_event event;
     efi_status status;
@@ -541,7 +545,8 @@ struct efi_80211_authenticate_result {
     uint8_t *vendor_specific_info;
 };
 
-/* result is a pointer to a buffer the caller frees, as described (printed by value). */
+// result is a pointer to a buffer the caller frees, as described (printed by
+// value).
 struct efi_80211_authenticate_data_token {
     efi_event event;
     efi_status status;

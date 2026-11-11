@@ -78,7 +78,7 @@ struct efi_pci_root_bridge_io_protocol_access {
 #define EFI_PCI_OPERATION_BUS_MASTER_COMMON_BUFFER64 ((uint32_t)5)
 #define EFI_PCI_OPERATION_MAXIMUM ((uint32_t)6)
 
-/* Layout of the uint64_t address that pci.read() and pci.write() take. */
+// Layout of the uint64_t address that pci.read() and pci.write() take.
 struct efi_pci_root_bridge_io_protocol_pci_address {
     uint8_t register_;
     uint8_t function;

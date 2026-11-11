@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-/* Every supported target is little-endian and has a 64-bit integer type. */
+// Every supported target is little-endian and has a 64-bit integer type.
 #define EFI_PXE_INTEL_ORDER 1
 #define EFI_PXE_UINT64_SUPPORT 1
 
@@ -231,7 +231,7 @@ typedef uint8_t efi_pxe_frame_type;
 
 typedef uint32_t efi_pxe_ipv4;
 
-/* Every PXE structure is byte packed, also those printed without the pragma. */
+// Every PXE structure is byte packed, also those printed without the pragma.
 struct efi_pxe_ipv6 {
     uint32_t num[4];
 } __attribute__((__packed__));
@@ -383,7 +383,8 @@ union efi_pxe_device {
     } pci, pcc;
 } __attribute__((__packed__));
 
-/* Bounds for the arrays printed with [n]; the CDB's cpb_size and db_size give the length used. */
+// Bounds for the arrays printed with [n]; the CDB's cpb_size and db_size give
+// the length used.
 #define EFI_MAX_PCI_CONFIG_LEN 64
 #define EFI_MAX_EEPROM_LEN 128
 #define EFI_MAX_XMIT_BUFFERS 32
@@ -412,7 +413,7 @@ struct efi_pxe_cpb_start_30 {
 #define EFI_FROM_DEVICE 1
 #define EFI_TO_DEVICE 2
 
-/* mem_io() access types, which the specification cites but never defines. */
+// mem_io() access types, which the specification cites but never defines.
 #define EFI_PXE_IO_READ 0
 #define EFI_PXE_IO_WRITE 1
 #define EFI_PXE_MEM_READ 2

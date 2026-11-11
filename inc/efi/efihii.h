@@ -34,7 +34,8 @@ typedef uint16_t efi_default_id;
 #define EFI_HII_DEFAULT_CLASS_FIRMWARE_BEGIN 0xc000
 #define EFI_HII_DEFAULT_CLASS_FIRMWARE_END 0xffff
 
-/* The package data (data[]) follows: each package's own header starts with this one. */
+// The package data (data[]) follows: each package's own header starts with
+// this one.
 struct efi_hii_package_header {
     uint32_t header;
 } __attribute__((__packed__));
@@ -84,10 +85,9 @@ struct efi_wide_glyph {
     uint8_t pad[3];
 } __attribute__((__packed__));
 
-/*
- * __extension__ on structures ending in a flexible array member: standard C, an extension in C++.
- * The struct efi_wide_glyph wide_glyphs[] follow the narrow glyphs.
- */
+// __extension__ on structures ending in a flexible array member: standard C,
+// an extension in C++. The struct efi_wide_glyph wide_glyphs[] follow the
+// narrow glyphs.
 __extension__ struct efi_hii_simple_font_package_hdr {
     struct efi_hii_package_header header;
     uint16_t number_of_narrow_glyphs;
@@ -123,7 +123,8 @@ __extension__ struct efi_hii_font_package_hdr {
     uint16_t font_family[];
 } __attribute__((__packed__));
 
-/* The block body (block_body[]) follows: each glyph block starts with this header. */
+// The block body (block_body[]) follows: each glyph block starts with this
+// header.
 struct efi_hii_glyph_block {
     uint8_t block_type;
 } __attribute__((__packed__));
@@ -215,7 +216,7 @@ struct efi_hii_gibt_variability_block {
     uint8_t bitmap_data[1];
 } __attribute__((__packed__));
 
-/* Named without values: glyph_pack_in_bits is the number of bits per pixel. */
+// Named without values: glyph_pack_in_bits is the number of bits per pixel.
 #define EFI_GIBT_VARIABILITY_BLOCK_1_BIT 1
 #define EFI_GIBT_VARIABILITY_BLOCK_2_BIT 2
 #define EFI_GIBT_VARIABILITY_BLOCK_4_BIT 4
@@ -224,7 +225,8 @@ struct efi_hii_gibt_variability_block {
 #define EFI_GIBT_VARIABILITY_BLOCK_24_BIT 24
 #define EFI_GIBT_VARIABILITY_BLOCK_32_BIT 32
 
-/* struct efi_device_path_protocol device_path[] follows (printed commented out). */
+// struct efi_device_path_protocol device_path[] follows (printed commented
+// out).
 struct efi_hii_device_path_package {
     struct efi_hii_package_header header;
 } __attribute__((__packed__));
@@ -246,7 +248,8 @@ __extension__ struct efi_hii_string_package_hdr {
 #define EFI_UEFI_CONFIG_LANG "x-UEFI"
 #define EFI_UEFI_CONFIG_LANG_2 "x-i-UEFI"
 
-/* The block body (block_body[]) follows: each string block starts with this header. */
+// The block body (block_body[]) follows: each string block starts with this
+// header.
 struct efi_hii_string_block {
     uint8_t block_type;
 } __attribute__((__packed__));
@@ -367,7 +370,8 @@ struct efi_hii_image_package_hdr {
     uint32_t palette_info_offset;
 } __attribute__((__packed__));
 
-/* The block body (block_body[]) follows: each image block starts with this header. */
+// The block body (block_body[]) follows: each image block starts with this
+// header.
 struct efi_hii_image_block {
     uint8_t block_type;
 } __attribute__((__packed__));
@@ -412,7 +416,8 @@ struct efi_hii_iibt_ext4_block {
     uint32_t length;
 } __attribute__((__packed__));
 
-/* The image bases end in a one-element array, as firmware lays them out: the blocks embed them. */
+// The image bases end in a one-element array, as firmware lays them out: the
+// blocks embed them.
 struct efi_hii_iibt_image_1bit_base {
     uint16_t width;
     uint16_t height;
@@ -525,7 +530,8 @@ __extension__ struct efi_hii_image_palette_info {
     struct efi_hii_rgb_pixel palette_value[];
 } __attribute__((__packed__));
 
-/* The op-codes follow the package header (printed commented out as op_code_header). */
+// The op-codes follow the package header (printed commented out as
+// op_code_header).
 struct efi_hii_form_package_hdr {
     struct efi_hii_package_header header;
 } __attribute__((__packed__));
@@ -581,7 +587,8 @@ struct efi_hii_ref {
     efi_string_id device_path;
 } __attribute__((__packed__));
 
-/* An EFI_IFR_TYPE_BUFFER value is a byte array (buffer[], printed commented out). */
+// An EFI_IFR_TYPE_BUFFER value is a byte array (buffer[], printed commented
+// out).
 union efi_ifr_type_value {
     uint8_t u8;
     uint16_t u16;
@@ -594,7 +601,8 @@ union efi_ifr_type_value {
     struct efi_hii_ref ref;
 } __attribute__((__packed__));
 
-/* Printed inline in struct efi_ifr_numeric and struct efi_ifr_one_of; named at file scope for both. */
+// Printed inline in struct efi_ifr_numeric and struct efi_ifr_one_of; named at
+// file scope for both.
 union efi_minmaxstep_data {
     struct __attribute__((__packed__)) {
         uint8_t min_value;
@@ -817,7 +825,7 @@ struct efi_ifr_form_map_method {
     struct efi_guid method_identifier;
 } __attribute__((__packed__));
 
-/* struct efi_ifr_form_map_method methods[] follows (printed commented out). */
+// struct efi_ifr_form_map_method methods[] follows (printed commented out).
 struct efi_ifr_form_map {
     struct efi_ifr_op_header header;
     efi_form_id form_id;
@@ -828,7 +836,8 @@ struct efi_ifr_form_map {
 
 #define EFI_IFR_FORM_SET_OP 0x0E
 
-/* flags bits 0:1 count the struct efi_guid class_guid[] that follows (printed commented out). */
+// flags bits 0:1 count the struct efi_guid class_guid[] that follows (printed
+// commented out).
 struct efi_ifr_form_set {
     struct efi_ifr_op_header header;
     struct efi_guid guid;
@@ -876,7 +885,8 @@ struct efi_ifr_guid {
 
 #define EFI_IFR_IMAGE_OP 0x04
 
-/* The printed structure lost the struct efi_ifr_op_header that every op-code starts with. */
+// The printed structure lost the struct efi_ifr_op_header that every op-code
+// starts with.
 struct efi_ifr_image {
     struct efi_ifr_op_header header;
     efi_image_id id;
@@ -1376,7 +1386,7 @@ struct efi_ifr_value {
 
 #define EFI_IFR_VARSTORE_OP 0x24
 
-/* The null-terminated ASCII name follows size (printed commented out). */
+// The null-terminated ASCII name follows size (printed commented out).
 struct efi_ifr_varstore {
     struct efi_ifr_op_header header;
     struct efi_guid guid;
@@ -1394,7 +1404,7 @@ struct efi_ifr_varstore_name_value {
 
 #define EFI_IFR_VARSTORE_EFI_OP 0x26
 
-/* The null-terminated ASCII name follows size (printed commented out). */
+// The null-terminated ASCII name follows size (printed commented out).
 struct efi_ifr_varstore_efi {
     struct efi_ifr_op_header header;
     efi_varstore_id var_store_id;
@@ -1443,7 +1453,7 @@ struct efi_ifr_match2 {
     struct efi_guid syntax_type;
 } __attribute__((__packed__));
 
-/* struct efi_hii_keyboard_layout layout[] follows (printed commented out). */
+// struct efi_hii_keyboard_layout layout[] follows (printed commented out).
 struct efi_hii_keyboard_package_hdr {
     struct efi_hii_package_header header;
     uint16_t layout_count;
@@ -1454,7 +1464,7 @@ struct efi_hii_animation_package_hdr {
     uint32_t animation_info_offset;
 } __attribute__((__packed__));
 
-/* The block body follows block_type (printed commented out). */
+// The block body follows block_type (printed commented out).
 struct efi_hii_animation_block {
     uint8_t block_type;
 } __attribute__((__packed__));
@@ -1498,10 +1508,8 @@ struct efi_hii_animation_cell {
     uint16_t delay;
 } __attribute__((__packed__));
 
-/*
- * The animation block bodies carry no header: either a struct efi_hii_animation_block or a
- * struct efi_hii_aibt_ext*_block precedes them.
- */
+// The animation block bodies carry no header: either a struct
+// efi_hii_animation_block or a struct efi_hii_aibt_ext*_block precedes them.
 __extension__ struct efi_hii_aibt_overlay_images_block {
     efi_image_id dft_image_id;
     uint16_t width;

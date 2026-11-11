@@ -31,7 +31,7 @@ struct efi_tcg2_version {
     uint8_t minor;
 };
 
-/* Explicitly not packed, unlike the document's other structures: 36 bytes. */
+// Explicitly not packed, unlike the document's other structures: 36 bytes.
 struct efi_tcg2_boot_service_capability {
     uint8_t size;
     struct efi_tcg2_version structure_version;
@@ -74,7 +74,8 @@ struct efi_tcg2_event_header {
     efi_tcg_eventtype event_type;
 } __attribute__((__packed__));
 
-/* event is printed as []; it is variable-length, and size covers the whole record. */
+// event is printed as []; it is variable-length, and size covers the whole
+// record.
 struct efi_tcg2_event {
     uint32_t size;
     struct efi_tcg2_event_header header;
@@ -129,7 +130,8 @@ struct efi_tcg2_protocol {
 #define EFI_TCG2_FINAL_EVENTS_TABLE_GUID \
     {0x1e2ed096, 0x30e2, 0x4254, {0xbd, 0x89, 0x86, 0x3b, 0xbe, 0xf8, 0x23, 0x25}}
 
-/* Natural alignment; event starts number_of_events serialised TCG_PCR_EVENT2 records. */
+// Natural alignment; event starts number_of_events serialised TCG_PCR_EVENT2
+// records.
 struct efi_tcg2_final_events_table {
     uint64_t version;
     uint64_t number_of_events;

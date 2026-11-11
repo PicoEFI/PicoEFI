@@ -2,19 +2,18 @@
 #include <stdint.h>
 #include "../elf.h"
 
-/* EFI_LOAD_ERROR, the status _start returns to the firmware unchanged, as it does 0 (success). */
+// EFI_LOAD_ERROR, the status _start returns to the firmware unchanged, as it
+// does 0 (success).
 #define LOAD_ERROR (~(UINTPTR_MAX >> 1) | 1)
 
-/*
- * A relocation target need not be aligned (a pointer in a packed structure), and not every
- * processor can store a word at an unaligned address. It may hold an object of any type, hence
- * __may_alias__.
- */
+// A relocation target need not be aligned (a pointer in a packed structure),
+// and not every processor can store a word at an unaligned address. It may
+// hold an object of any type, hence __may_alias__.
 struct unaligned_addr {
     uint64_t value;
 } __attribute__((__packed__, __may_alias__));
 
-/* The convention _start calls this with, whatever the user's compiler flags. */
+// The convention _start calls this with, whatever the user's compiler flags.
 uintptr_t picoefi_relocate(
     uintptr_t image_base,
     const struct elf64_dyn *dynamic,
@@ -22,11 +21,10 @@ uintptr_t picoefi_relocate(
     uintptr_t data_end
 );
 
-/*
- * This runs before the image is relocated, so it depends on no relocated value: no function
- * pointers, no initialised pointers, no calls, and no tables, which compilers make for a switch
- * or for a chain of comparisons of one value.
- */
+// This runs before the image is relocated, so it depends on no relocated
+// value: no function pointers, no initialised pointers, no calls, and no
+// tables, which compilers make for a switch or for a chain of comparisons of
+// one value.
 uintptr_t picoefi_relocate(
     uintptr_t image_base,
     const struct elf64_dyn *dynamic,
@@ -52,7 +50,8 @@ uintptr_t picoefi_relocate(
     uint64_t other_offset;
     uint64_t last = 0;
 
-    /* _start passes the bounds of the data, which is all that relocations may change. */
+    // _start passes the bounds of the data, which is all that relocations may
+    // change.
     if (data_start < image_base || data_end < data_start || (uintptr_t)dynamic < data_start ||
             (uintptr_t)dynamic > data_end ||
             ((uintptr_t)dynamic & (__alignof__(struct elf64_dyn) - 1)) != 0) {
@@ -62,10 +61,11 @@ uintptr_t picoefi_relocate(
     data_hi = data_end - image_base;
 
     for (;; dynamic++) {
-        /* Read anew by every test, so that the tests cannot become a jump table. */
+        // Read anew by every test, so that the tests cannot become a jump
+        // table.
         volatile int64_t tag;
 
-        /* DT_NULL must come before the data ends. */
+        // DT_NULL must come before the data ends.
         if (data_end - (uintptr_t)dynamic < sizeof(struct elf64_dyn)) {
             return LOAD_ERROR;
         }
@@ -97,12 +97,14 @@ uintptr_t picoefi_relocate(
                 tag != DT_FLAGS && tag != DT_FLAGS_1 && tag != DT_INIT && tag != DT_FINI &&
                 tag != DT_INIT_ARRAY && tag != DT_INIT_ARRAYSZ && tag != DT_FINI_ARRAY &&
                 tag != DT_FINI_ARRAYSZ && tag != DT_PREINIT_ARRAY && tag != DT_PREINIT_ARRAYSZ) {
-            /* Any other tag, or a table given twice, may mean relocations not applied here. */
+            // Any other tag, or a table given twice, may mean relocations not
+            // applied here.
             return LOAD_ERROR;
         }
     }
 
-    /* Either table may be left out, but not in part, and must lie aligned before the data. */
+    // Either table may be left out, but not in part, and must lie aligned
+    // before the data.
     if (has_table != has_size || has_table != has_entry_size ||
             (has_table && (entry_size != sizeof(struct elf64_rela) || size > data_lo ||
             table > data_lo - size ||
@@ -116,7 +118,8 @@ uintptr_t picoefi_relocate(
         return LOAD_ERROR;
     }
 
-    /* Every entry is checked before any is applied, so that a refused image is left as it was. */
+    // Every entry is checked before any is applied, so that a refused image is
+    // left as it was.
     if (has_table) {
         next = data_lo;
         for (offset = 0; size - offset >= entry_size; offset += entry_size) {
@@ -126,23 +129,24 @@ uintptr_t picoefi_relocate(
             if (type == R_AARCH64_NONE) {
                 continue;
             }
-            /* Relative only, each in the data and after the last, as linkers sort them. */
+            // Relative only, each in the data and after the last, as linkers
+            // sort them.
             if (type != R_AARCH64_RELATIVE || ELF64_R_SYM(entry->r_info) != 0 ||
                     entry->r_offset < next || entry->r_offset > data_hi - sizeof(uint64_t)) {
                 return LOAD_ERROR;
             }
             next = entry->r_offset + sizeof(uint64_t);
         }
-        /* A partial last entry, found without a division, which may be a library call. */
+        // A partial last entry, found without a division, which may be a
+        // library call.
         if (offset != size) {
             return LOAD_ERROR;
         }
     }
-    /*
-     * An even RELR entry is the address of a word to relocate, and an odd one is a bitmap of the
-     * words after the last that an entry covered, bit n standing for the nth. Nor may a word
-     * overlap the other table's, which is walked alongside.
-     */
+    // An even RELR entry is the address of a word to relocate, and an odd one
+    // is a bitmap of the words after the last that an entry covered, bit n
+    // standing for the nth. Nor may a word overlap the other table's, which is
+    // walked alongside.
     if (has_relr_table) {
         next = data_lo;
         other_offset = 0;
@@ -156,7 +160,8 @@ uintptr_t picoefi_relocate(
                 bits = 1;
                 last = entry;
             } else {
-                /* A bitmap carries on from an address in the data, so it cannot come first. */
+                // A bitmap carries on from an address in the data, so it
+                // cannot come first.
                 if (offset == 0 || last >= data_hi) {
                     return LOAD_ERROR;
                 }

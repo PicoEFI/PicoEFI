@@ -25,7 +25,8 @@ typedef efi_status (EFI_API *efi_authentication_info_protocol_get)(
     void **buffer
 );
 
-/* Printed with one more level of indirection on each parameter than its description gives. */
+// Printed with one more level of indirection on each parameter than its
+// description gives.
 typedef efi_status (EFI_API *efi_authentication_info_protocol_set)(
     struct efi_authentication_info_protocol *self,
     efi_handle controller_handle,
@@ -37,7 +38,8 @@ struct efi_authentication_info_protocol {
     efi_authentication_info_protocol_set set;
 };
 
-/* Only unnamed tables in the specification; packed: nodes may start at any byte. */
+// Only unnamed tables in the specification; packed: nodes may start at any
+// byte.
 struct efi_auth_node_header {
     struct efi_guid guid;
     uint16_t length;
@@ -46,7 +48,8 @@ struct efi_auth_node_header {
 #define EFI_AUTHENTICATION_CHAP_RADIUS_GUID \
     {0xd6062b50, 0x15ca, 0x11da, {0x92, 0x19, 0x00, 0x10, 0x83, 0xff, 0xca, 0x4d}}
 
-/* CHAP secret/name and reverse CHAP name/secret follow, each after a uint16_t length. */
+// CHAP secret/name and reverse CHAP name/secret follow, each after a uint16_t
+// length.
 __extension__ struct efi_chap_radius_auth_node {
     struct efi_auth_node_header header;
     uint8_t radius_ip_addr[16];
@@ -59,10 +62,8 @@ __extension__ struct efi_chap_radius_auth_node {
 #define EFI_AUTHENTICATION_CHAP_LOCAL_GUID \
     {0xc280c73e, 0x15ca, 0x11da, {0xb0, 0xca, 0x00, 0x10, 0x83, 0xff, 0xca, 0x4d}}
 
-/*
- * User name, CHAP secret/name, and reverse CHAP name/secret follow, each after a uint16_t
- * length.
- */
+// User name, CHAP secret/name, and reverse CHAP name/secret follow, each after
+// a uint16_t length.
 __extension__ struct efi_chap_local_auth_node {
     struct efi_auth_node_header header;
     uint16_t reserved;
@@ -70,7 +71,7 @@ __extension__ struct efi_chap_local_auth_node {
     uint8_t user_secret[];
 } __attribute__((__packed__));
 
-/* The certificate (b_certificate) follows; dw_length includes this header. */
+// The certificate (b_certificate) follows; dw_length includes this header.
 struct efi_win_certificate {
     uint32_t dw_length;
     uint16_t w_revision;
@@ -81,13 +82,14 @@ struct efi_win_certificate {
 #define EFI_WIN_CERT_TYPE_EFI_PKCS115 0x0EF0
 #define EFI_WIN_CERT_TYPE_EFI_GUID 0x0EF1
 
-/* The signature follows, as long as the key. */
+// The signature follows, as long as the key.
 struct efi_win_certificate_efi_pkcs1_15 {
     struct efi_win_certificate hdr;
     struct efi_guid hash_algorithm;
 };
 
-/* cert_data[ANYSIZE_ARRAY] in print: one element, since other structures embed this one. */
+// cert_data[ANYSIZE_ARRAY] in print: one element, since other structures embed
+// this one.
 struct efi_win_certificate_uefi_guid {
     struct efi_win_certificate hdr;
     struct efi_guid cert_type;
@@ -111,7 +113,8 @@ __extension__ struct efi_signature_data {
     uint8_t signature_data[];
 } __attribute__((__packed__));
 
-/* signature_header_size header bytes follow, then signatures of signature_size bytes each. */
+// signature_header_size header bytes follow, then signatures of signature_size
+// bytes each.
 struct efi_signature_list {
     struct efi_guid signature_type;
     uint32_t signature_list_size;
@@ -198,13 +201,14 @@ typedef uint32_t efi_image_execution_action;
 
 #define EFI_IMAGE_EXECUTION_INITIALIZED 0x00000008
 
-/* The name, device_path, and signature follow; info_size counts them too. */
+// The name, device_path, and signature follow; info_size counts them too.
 struct efi_image_execution_info {
     efi_image_execution_action action;
     uint32_t info_size;
 };
 
-/* Entries vary in size (info_size), so only the first can be reached by indexing. */
+// Entries vary in size (info_size), so only the first can be reached by
+// indexing.
 __extension__ struct efi_image_execution_info_table {
     size_t number_of_images;
     struct efi_image_execution_info information_info[];
@@ -223,7 +227,8 @@ __extension__ struct efi_image_execution_info_table {
 
 #define EFI_DEVICE_SECURITY_DATABASE L"devdb"
 
-/* Cited but no longer printed by 2.11; laid out like struct efi_firmware_image_authentication. */
+// Cited but no longer printed by 2.11; laid out like struct
+// efi_firmware_image_authentication.
 struct efi_variable_authentication {
     uint64_t monotonic_count;
     struct efi_win_certificate_uefi_guid auth_info;
@@ -248,13 +253,14 @@ struct efi_variable_authentication_3 {
 
 #define EFI_VARIABLE_AUTHENTICATION_3_CERT_ID_SHA256 1
 
-/* id_size bytes of id follow. */
+// id_size bytes of id follow.
 struct efi_variable_authentication_3_cert_id {
     uint8_t type;
     uint32_t id_size;
 };
 
-/* nonce_size bytes of nonce follow, then a struct efi_win_certificate_uefi_guid. */
+// nonce_size bytes of nonce follow, then a struct
+// efi_win_certificate_uefi_guid.
 struct efi_variable_authentication_3_nonce {
     uint32_t nonce_size;
 };

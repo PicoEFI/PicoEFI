@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-/* The specification lists these scan codes without names. */
+// The specification lists these scan codes without names.
 #define EFI_SCAN_PAUSE 0x0048
 #define EFI_SCAN_F13 0x0068
 #define EFI_SCAN_F14 0x0069

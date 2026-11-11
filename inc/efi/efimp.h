@@ -35,7 +35,7 @@ struct efi_cpu_physical_location {
     uint32_t thread;
 };
 
-/* Bit 24, printed as BIT24, a macro the specification does not define. */
+// Bit 24, printed as BIT24, a macro the specification does not define.
 #define EFI_CPU_V2_EXTENDED_TOPOLOGY 0x01000000
 
 struct efi_cpu_physical_location2 {
@@ -58,10 +58,8 @@ struct efi_processor_information {
     union efi_extended_processor_information extended_information;
 };
 
-/*
- * processor_number is printed as a pointer; it is a number, which EFI_CPU_V2_EXTENDED_TOPOLOGY
- * flags.
- */
+// processor_number is printed as a pointer; it is a number, which
+// EFI_CPU_V2_EXTENDED_TOPOLOGY flags.
 typedef efi_status (EFI_API *efi_mp_services_get_processor_info)(
     struct efi_mp_services_protocol *self,
     size_t processor_number,

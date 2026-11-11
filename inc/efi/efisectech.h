@@ -39,7 +39,8 @@ union efi_hash2_output {
     efi_sha512_hash2 sha512_hash;
 };
 
-/* The five services are printed as plain prototypes; named as the protocol structure types them. */
+// The five services are printed as plain prototypes; named as the protocol
+// structure types them.
 typedef efi_status (EFI_API *efi_hash2_get_hash_size)(
     const struct efi_hash2_protocol *self,
     const struct efi_guid *hash_algorithm,
@@ -132,7 +133,7 @@ struct efi_kms_format_generic_dynamic {
 #define EFI_KMS_FORMAT_MDC2_128_GUID \
     {0xf7ad60f8, 0xefa8, 0x44a3, {0x91, 0x13, 0x23, 0x1f, 0x39, 0x9e, 0xb4, 0xc7}}
 
-/* Printed with the inner brace one byte late. */
+// Printed with the inner brace one byte late.
 #define EFI_KMS_FORMAT_MD4_128_GUID \
     {0xd1c17aa1, 0xcac5, 0x400f, {0xbe, 0x17, 0xe2, 0xa2, 0xae, 0x06, 0x67, 0x7c}}
 
@@ -279,7 +280,8 @@ typedef efi_status (EFI_API *efi_kms_get_key_attributes)(
     void **client_data
 );
 
-/* key_identifier_size is printed as UINT *, a type that does not exist; its siblings use uint8_t *. */
+// key_identifier_size is printed as UINT *, a type that does not exist; its
+// siblings use uint8_t *.
 typedef efi_status (EFI_API *efi_kms_add_key_attributes)(
     struct efi_kms_protocol *self,
     struct efi_kms_client_info *client,
@@ -353,7 +355,8 @@ struct efi_kms_protocol {
 
 struct efi_pkcs7_verify_protocol;
 
-/* Printed under the member names; named as the protocol structure types the members. */
+// Printed under the member names; named as the protocol structure types the
+// members.
 typedef efi_status (EFI_API *efi_pkcs7_verify_buffer)(
     struct efi_pkcs7_verify_protocol *self,
     void *signed_data,
@@ -378,7 +381,8 @@ typedef efi_status (EFI_API *efi_pkcs7_verify_signature)(
     struct efi_signature_list **time_stamp_db
 );
 
-/* The members are printed as pointers to these types, which are already function pointers. */
+// The members are printed as pointers to these types, which are already
+// function pointers.
 struct efi_pkcs7_verify_protocol {
     efi_pkcs7_verify_buffer verify_buffer;
     efi_pkcs7_verify_signature verify_signature;
@@ -389,10 +393,9 @@ struct efi_pkcs7_verify_protocol {
 
 struct efi_smart_card_reader_protocol;
 
-/*
- * The prototypes print these names with _PROTOCOL_ inserted (..._READER_PROTOCOL_CONNECT); the
- * names here are the ones the protocol structure uses, in the pattern of the Edge protocol.
- */
+// The prototypes print these names with _PROTOCOL_ inserted
+// (..._READER_PROTOCOL_CONNECT); the names here are the ones the protocol
+// structure uses, in the pattern of the Edge protocol.
 typedef efi_status (EFI_API *efi_smart_card_reader_connect)(
     struct efi_smart_card_reader_protocol *self,
     uint32_t access_mode,

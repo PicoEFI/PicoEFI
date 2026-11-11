@@ -246,7 +246,8 @@ struct efi_ipsec_process_policy {
     uint8_t enc_algo_id;
 };
 
-/* name holds a null-terminated ASCII string, as described; printed as an array of pointers. */
+// name holds a null-terminated ASCII string, as described; printed as an array
+// of pointers.
 struct efi_ipsec_spd_data {
     uint8_t name[EFI_MAX_PEERID_LEN];
     uint32_t package_flag;
@@ -571,7 +572,8 @@ typedef uint32_t efi_tls_verify_host_flag;
 #define EFI_TLS_VERIFY_FLAG_SINGLE_LABEL_SUBDOMAINS 0x10
 #define EFI_TLS_VERIFY_FLAG_NEVER_CHECK_SUBJECT 0x20
 
-/* Packed as firmware lays it out, although the specification prints no packing. */
+// Packed as firmware lays it out, although the specification prints no
+// packing.
 struct efi_tls_verify_host {
     efi_tls_verify_host_flag flags;
     char *host_name;
@@ -582,7 +584,7 @@ struct efi_tls_random {
     uint8_t random_bytes[28];
 };
 
-/* The 48-byte master secret of RFC 5246; printed as an array of 48 pointers. */
+// The 48-byte master secret of RFC 5246; printed as an array of 48 pointers.
 struct efi_tls_master_secret {
     uint8_t data[48];
 };

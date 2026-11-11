@@ -21,7 +21,8 @@ extern "C" {
 
 struct efi_config_keyword_handler_protocol;
 
-/* Named as the protocol structure names them; the prototypes print EFI_KEYWORD_HANDLER_*. */
+// Named as the protocol structure names them; the prototypes print
+// EFI_KEYWORD_HANDLER_*.
 typedef efi_status (EFI_API *efi_config_keyword_handler_set_data)(
     struct efi_config_keyword_handler_protocol *self,
     const efi_string keyword_string,
@@ -83,10 +84,9 @@ typedef efi_status (EFI_API *efi_hii_block_to_config)(
     efi_string *progress
 );
 
-/*
- * Printed with config_resp as a pointer to an efi_string and block as const: config_resp is
- * described as the string itself, and the function writes the block.
- */
+// Printed with config_resp as a pointer to an efi_string and block as const:
+// config_resp is described as the string itself, and the function writes the
+// block.
 typedef efi_status (EFI_API *efi_hii_config_to_block)(
     const struct efi_hii_config_routing_protocol *self,
     const efi_string config_resp,

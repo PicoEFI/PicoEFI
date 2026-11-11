@@ -79,7 +79,8 @@ struct efi_error_time_stamp {
 #define EFI_HW_ERROR_FLAGS_PREVERR 0x00000002
 #define EFI_HW_ERROR_FLAGS_SIMULATED 0x00000004
 
-/* section_count struct efi_error_section_descriptor follow, then the section bodies. */
+// section_count struct efi_error_section_descriptor follow, then the section
+// bodies.
 struct efi_common_error_record_header {
     uint32_t signature_start;
     uint16_t revision;
@@ -152,7 +153,8 @@ struct efi_generic_error_status {
 #define EFI_ERROR_SECTION_PROCESSOR_SPECIFIC_IA32X64_GUID \
     {0xDC3EA0B0, 0xA144, 0x4797, {0xB9, 0x5B, 0x53, 0xFA, 0x24, 0x2B, 0x6E, 0x1D}}
 
-/* Misprinted with nine trailing bytes; this is the SAL processor device error section GUID. */
+// Misprinted with nine trailing bytes; this is the SAL processor device error
+// section GUID.
 #define EFI_ERROR_SECTION_PROCESSOR_SPECIFIC_IPF_GUID \
     {0xe429faf1, 0x3cb7, 0x11d4, {0xbc, 0xa7, 0x00, 0x80, 0xc7, 0x3c, 0x88, 0x81}}
 
@@ -280,7 +282,8 @@ struct efi_ia32_x64_valid_bits {
 #define EFI_IA32_X64_VALID_BITS_CONTEXT_NUM_SHIFT 8
 #define EFI_IA32_X64_VALID_BITS_CONTEXT_NUM_MASK 0x0000000000003f00
 
-/* The error information and context structures that valid_fields counts follow. */
+// The error information and context structures that valid_fields counts
+// follow.
 struct efi_ia32_x64_processor_error_record {
     uint64_t valid_fields;
     uint64_t apic_id;
@@ -497,7 +500,8 @@ struct efi_ia32_x64_process_error_info {
 #define EFI_REG_CONTEXT_TYPE_DR_X64 0x0006
 #define EFI_REG_CONTEXT_TYPE_MEM_MAP 0x0007
 
-/* The register array follows: array_size bytes, zero-padded to a multiple of 16. */
+// The register array follows: array_size bytes, zero-padded to a multiple of
+// 16.
 struct efi_ia32_x64_processor_context_info {
     uint16_t register_type;
     uint16_t array_size;
@@ -533,7 +537,7 @@ struct efi_context_ia32_register_state {
     uint16_t tr;
 } __attribute__((__packed__));
 
-/* The instruction pointer is misprinted EIP. */
+// The instruction pointer is misprinted EIP.
 struct efi_context_x64_register_state {
     uint64_t rax;
     uint64_t rbx;
@@ -582,10 +586,9 @@ struct efi_context_x64_register_state {
 #define EFI_ARM_PROC_ERROR_AFFINITY_LVL_2 0x02
 #define EFI_ARM_PROC_ERROR_AFFINITY_LVL_3 0x03
 
-/*
- * err_info_num struct efi_arm_processor_error_information follow, then context_info_num
- * struct efi_arm_processor_context_information, then any vendor-specific information.
- */
+// err_info_num struct efi_arm_processor_error_information follow, then
+// context_info_num struct efi_arm_processor_context_information, then any
+// vendor-specific information.
 struct efi_arm_processor_error_record {
     uint32_t valid_fields;
     uint16_t err_info_num;
@@ -1226,7 +1229,8 @@ struct efi_generic_error_pci_device_id {
     uint32_t resv2;
 } __attribute__((__packed__));
 
-/* memory_number + io_number register address/data pairs, two uint64_t each, follow. */
+// memory_number + io_number register address/data pairs, two uint64_t each,
+// follow.
 struct efi_pci_pcix_device_error_data {
     uint64_t valid_fields;
     struct efi_generic_error_status error_status;
@@ -1239,7 +1243,8 @@ struct efi_pci_pcix_device_error_data {
 #define EFI_FIRMWARE_ERROR_TYPE_SOC_TYPE1 0x01
 #define EFI_FIRMWARE_ERROR_TYPE_SOC_TYPE2 0x02
 
-/* The reserved bytes are misprinted at offset 1, over revision: they are offsets 2 to 7. */
+// The reserved bytes are misprinted at offset 1, over revision: they are
+// offsets 2 to 7.
 struct efi_firmware_error_data {
     uint8_t error_type;
     uint8_t revision;
@@ -1322,7 +1327,7 @@ struct efi_iommu_dmar_error_data {
 #define EFI_CCIX_PER_LOG_PORT_ID_VALID 0x0000000000000002
 #define EFI_CCIX_PER_LOG_VALID 0x0000000000000004
 
-/* The CCIX PER log follows, up to length bytes in all. */
+// The CCIX PER log follows, up to length bytes in all.
 struct efi_ccix_per_log_error_data {
     uint32_t length;
     uint64_t valid_fields;
@@ -1383,7 +1388,8 @@ struct efi_cxl_device_serial_num {
     uint32_t upper;
 } __attribute__((__packed__));
 
-/* The CXL DVSEC (cxl_dvsec_length bytes) follows, then the CXL error log (cxl_error_log_length). */
+// The CXL DVSEC (cxl_dvsec_length bytes) follows, then the CXL error log
+// (cxl_error_log_length).
 struct efi_cxl_protocol_error_data {
     uint64_t valid_fields;
     uint8_t cxl_agent_type;
@@ -1412,7 +1418,7 @@ struct efi_cxl_error_pcie_dev_id {
     uint8_t resvd;
 } __attribute__((__packed__));
 
-/* The CXL component event log follows, up to length bytes in all. */
+// The CXL component event log follows, up to length bytes in all.
 struct efi_cxl_component_event_log {
     uint32_t length;
     uint64_t valid_fields;
@@ -1432,7 +1438,7 @@ struct efi_cxl_component_event_log {
 #define EFI_FRU_MEMORY_POISON_HW_ID_TYPE_MCA_IPID 0
 #define EFI_FRU_MEMORY_POISON_ADDRESS_TYPE_MCA_ADDR 0
 
-/* poison_list_entries struct efi_fru_memory_poison_descriptor follow. */
+// poison_list_entries struct efi_fru_memory_poison_descriptor follow.
 struct efi_fru_memory_poison_data {
     uint32_t checksum;
     uint64_t valid_fields;

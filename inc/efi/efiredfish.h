@@ -33,7 +33,8 @@ typedef efi_status (EFI_API *efi_redfish_discover_network_list)(
     struct efi_redfish_discover_network_interface **network_interfaces
 );
 
-/* The specification uses this type and lists its 32-bit flags but prints no definition for it. */
+// The specification uses this type and lists its 32-bit flags but prints no
+// definition for it.
 typedef uint32_t efi_redfish_discover_flag;
 
 #define EFI_REDFISH_DISCOVER_HOST_INTERFACE 0x00000001
@@ -68,7 +69,8 @@ struct efi_redfish_discovered_list {
     struct efi_redfish_discovered_instance *redfish_instances;
 };
 
-/* The specification writes SIGNATURE_32, defined nowhere; EFI_SIGNATURE_32 packs the same way. */
+// The specification writes SIGNATURE_32, defined nowhere; EFI_SIGNATURE_32
+// packs the same way.
 #define EFI_REDFISH_DISCOVER_TOKEN_SIGNATURE EFI_SIGNATURE_32('R', 'F', 'T', 'S')
 
 struct efi_redfish_discovered_token {

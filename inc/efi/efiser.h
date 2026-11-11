@@ -98,7 +98,7 @@ struct efi_serial_io_protocol {
     efi_serial_write write;
     efi_serial_read read;
     struct efi_serial_io_mode *mode;
-    /* Present from EFI_SERIAL_IO_PROTOCOL_REVISION1P1 on. */
+    // Present from EFI_SERIAL_IO_PROTOCOL_REVISION1P1 on.
     const struct efi_guid *device_type_guid;
 };
 

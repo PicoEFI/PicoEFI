@@ -50,7 +50,8 @@ struct efi_ip4_icmp_type {
     uint8_t code;
 };
 
-/* route_table points to route_count entries, as described; the structure prints it by value. */
+// route_table points to route_count entries, as described; the structure
+// prints it by value.
 struct efi_ip4_mode_data {
     uint8_t is_started;
     uint32_t max_packet_size;
