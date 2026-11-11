@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
-#include <efi/elf.h>
+#include "../elf.h"
 
 /* EFI_LOAD_ERROR, the status _start returns to the firmware unchanged, as it does 0 (success). */
 #define LOAD_ERROR (~(UINTPTR_MAX >> 1) | 1)
@@ -11,13 +11,13 @@
  * __may_alias__.
  */
 struct unaligned_addr {
-    Elf64_Addr value;
+    uint64_t value;
 } __attribute__((__packed__, __may_alias__));
 
 /* The convention _start calls this with, whatever the user's compiler flags. */
 uintptr_t picoefi_relocate(
     uintptr_t image_base,
-    const Elf64_Dyn *dynamic,
+    const struct elf64_dyn *dynamic,
     uintptr_t data_start,
     uintptr_t data_end
 );
@@ -29,7 +29,7 @@ uintptr_t picoefi_relocate(
  */
 uintptr_t picoefi_relocate(
     uintptr_t image_base,
-    const Elf64_Dyn *dynamic,
+    const struct elf64_dyn *dynamic,
     uintptr_t data_start,
     uintptr_t data_end
 ) {
@@ -39,23 +39,23 @@ uintptr_t picoefi_relocate(
     bool has_relr_table = false;
     bool has_relr_size = false;
     bool has_relr_entry_size = false;
-    Elf64_Addr table = 0;
-    Elf64_Xword size = 0;
-    Elf64_Xword entry_size = 0;
-    Elf64_Addr relr_table = 0;
-    Elf64_Xword relr_size = 0;
-    Elf64_Xword relr_entry_size = 0;
-    Elf64_Addr data_lo;
-    Elf64_Addr data_hi;
-    Elf64_Addr next;
-    Elf64_Xword offset;
-    Elf64_Xword other_offset;
-    Elf64_Addr last = 0;
+    uint64_t table = 0;
+    uint64_t size = 0;
+    uint64_t entry_size = 0;
+    uint64_t relr_table = 0;
+    uint64_t relr_size = 0;
+    uint64_t relr_entry_size = 0;
+    uint64_t data_lo;
+    uint64_t data_hi;
+    uint64_t next;
+    uint64_t offset;
+    uint64_t other_offset;
+    uint64_t last = 0;
 
     /* _start passes the bounds of the data, which is all that relocations may change. */
     if (data_start < image_base || data_end < data_start || (uintptr_t)dynamic < data_start ||
             (uintptr_t)dynamic > data_end ||
-            ((uintptr_t)dynamic & (__alignof__(Elf64_Dyn) - 1)) != 0) {
+            ((uintptr_t)dynamic & (__alignof__(struct elf64_dyn) - 1)) != 0) {
         return LOAD_ERROR;
     }
     data_lo = data_start - image_base;
@@ -63,10 +63,10 @@ uintptr_t picoefi_relocate(
 
     for (;; dynamic++) {
         /* Read anew by every test, so that the tests cannot become a jump table. */
-        volatile Elf64_Sxword tag;
+        volatile int64_t tag;
 
         /* DT_NULL must come before the data ends. */
-        if (data_end - (uintptr_t)dynamic < sizeof(Elf64_Dyn)) {
+        if (data_end - (uintptr_t)dynamic < sizeof(struct elf64_dyn)) {
             return LOAD_ERROR;
         }
         tag = dynamic->d_tag;
@@ -104,15 +104,15 @@ uintptr_t picoefi_relocate(
 
     /* Either table may be left out, but not in part, and must lie aligned before the data. */
     if (has_table != has_size || has_table != has_entry_size ||
-            (has_table && (entry_size != sizeof(Elf64_Rela) || size > data_lo ||
+            (has_table && (entry_size != sizeof(struct elf64_rela) || size > data_lo ||
             table > data_lo - size ||
-            ((image_base + table) & (__alignof__(Elf64_Rela) - 1)) != 0))) {
+            ((image_base + table) & (__alignof__(struct elf64_rela) - 1)) != 0))) {
         return LOAD_ERROR;
     }
     if (has_relr_table != has_relr_size || has_relr_table != has_relr_entry_size ||
-            (has_relr_table && (relr_entry_size != sizeof(Elf64_Relr) || relr_size > data_lo ||
+            (has_relr_table && (relr_entry_size != sizeof(uint64_t) || relr_size > data_lo ||
             relr_table > data_lo - relr_size ||
-            ((image_base + relr_table) & (__alignof__(Elf64_Relr) - 1)) != 0))) {
+            ((image_base + relr_table) & (__alignof__(uint64_t) - 1)) != 0))) {
         return LOAD_ERROR;
     }
 
@@ -120,18 +120,18 @@ uintptr_t picoefi_relocate(
     if (has_table) {
         next = data_lo;
         for (offset = 0; size - offset >= entry_size; offset += entry_size) {
-            const Elf64_Rela *entry = (const Elf64_Rela *)(image_base + table + offset);
-            Elf64_Xword type = ELF64_R_TYPE(entry->r_info);
+            const struct elf64_rela *entry = (const struct elf64_rela *)(image_base + table + offset);
+            uint64_t type = ELF64_R_TYPE(entry->r_info);
 
             if (type == R_LARCH_NONE) {
                 continue;
             }
             /* Relative only, each in the data and after the last, as linkers sort them. */
             if (type != R_LARCH_RELATIVE || ELF64_R_SYM(entry->r_info) != 0 ||
-                    entry->r_offset < next || entry->r_offset > data_hi - sizeof(Elf64_Addr)) {
+                    entry->r_offset < next || entry->r_offset > data_hi - sizeof(uint64_t)) {
                 return LOAD_ERROR;
             }
-            next = entry->r_offset + sizeof(Elf64_Addr);
+            next = entry->r_offset + sizeof(uint64_t);
         }
         /* A partial last entry, found without a division, which may be a library call. */
         if (offset != size) {
@@ -147,9 +147,9 @@ uintptr_t picoefi_relocate(
         next = data_lo;
         other_offset = 0;
         for (offset = 0; relr_size - offset >= relr_entry_size; offset += relr_entry_size) {
-            Elf64_Relr entry = *(const Elf64_Relr *)(image_base + relr_table + offset);
-            Elf64_Addr word;
-            Elf64_Relr bits;
+            uint64_t entry = *(const uint64_t *)(image_base + relr_table + offset);
+            uint64_t word;
+            uint64_t bits;
 
             if ((entry & 1) == 0) {
                 word = entry;
@@ -160,25 +160,25 @@ uintptr_t picoefi_relocate(
                 if (offset == 0 || last >= data_hi) {
                     return LOAD_ERROR;
                 }
-                word = last + sizeof(Elf64_Addr);
+                word = last + sizeof(uint64_t);
                 bits = entry >> 1;
-                last += (sizeof(entry) * 8 - 1) * sizeof(Elf64_Addr);
+                last += (sizeof(entry) * 8 - 1) * sizeof(uint64_t);
             }
-            for (; bits != 0; bits >>= 1, word += sizeof(Elf64_Addr)) {
+            for (; bits != 0; bits >>= 1, word += sizeof(uint64_t)) {
                 if ((bits & 1) == 0) {
                     continue;
                 }
-                if (word < next || word > data_hi - sizeof(Elf64_Addr)) {
+                if (word < next || word > data_hi - sizeof(uint64_t)) {
                     return LOAD_ERROR;
                 }
-                next = word + sizeof(Elf64_Addr);
+                next = word + sizeof(uint64_t);
                 for (; has_table && size - other_offset >= entry_size;
                         other_offset += entry_size) {
-                    const Elf64_Rela *other =
-                        (const Elf64_Rela *)(image_base + table + other_offset);
+                    const struct elf64_rela *other =
+                        (const struct elf64_rela *)(image_base + table + other_offset);
 
                     if (ELF64_R_TYPE(other->r_info) != R_LARCH_NONE &&
-                            other->r_offset + sizeof(Elf64_Addr) > word) {
+                            other->r_offset + sizeof(uint64_t) > word) {
                         if (other->r_offset < next) {
                             return LOAD_ERROR;
                         }
@@ -194,7 +194,7 @@ uintptr_t picoefi_relocate(
 
     if (has_table) {
         for (offset = 0; size - offset >= entry_size; offset += entry_size) {
-            const Elf64_Rela *entry = (const Elf64_Rela *)(image_base + table + offset);
+            const struct elf64_rela *entry = (const struct elf64_rela *)(image_base + table + offset);
 
             if (ELF64_R_TYPE(entry->r_info) == R_LARCH_RELATIVE) {
                 struct unaligned_addr *target =
@@ -206,20 +206,20 @@ uintptr_t picoefi_relocate(
     }
     if (has_relr_table) {
         for (offset = 0; relr_size - offset >= relr_entry_size; offset += relr_entry_size) {
-            Elf64_Relr entry = *(const Elf64_Relr *)(image_base + relr_table + offset);
-            Elf64_Addr word;
-            Elf64_Relr bits;
+            uint64_t entry = *(const uint64_t *)(image_base + relr_table + offset);
+            uint64_t word;
+            uint64_t bits;
 
             if ((entry & 1) == 0) {
                 word = entry;
                 bits = 1;
                 last = entry;
             } else {
-                word = last + sizeof(Elf64_Addr);
+                word = last + sizeof(uint64_t);
                 bits = entry >> 1;
-                last += (sizeof(entry) * 8 - 1) * sizeof(Elf64_Addr);
+                last += (sizeof(entry) * 8 - 1) * sizeof(uint64_t);
             }
-            for (; bits != 0; bits >>= 1, word += sizeof(Elf64_Addr)) {
+            for (; bits != 0; bits >>= 1, word += sizeof(uint64_t)) {
                 if ((bits & 1) != 0) {
                     struct unaligned_addr *target = (struct unaligned_addr *)(image_base + word);
 

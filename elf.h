@@ -3,53 +3,38 @@
 
 #include <stdint.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef uint32_t Elf32_Addr;
-typedef uint32_t Elf32_Word;
-typedef int32_t Elf32_Sword;
-
-typedef uint64_t Elf64_Addr;
-typedef uint64_t Elf64_Xword;
-typedef int64_t Elf64_Sxword;
-
-typedef struct {
-    Elf32_Sword d_tag;
+struct elf32_dyn {
+    int32_t d_tag;
     union {
-        Elf32_Word d_val;
-        Elf32_Addr d_ptr;
+        uint32_t d_val;
+        uint32_t d_ptr;
     } d_un;
-} Elf32_Dyn;
+};
 
-typedef struct {
-    Elf64_Sxword d_tag;
+struct elf64_dyn {
+    int64_t d_tag;
     union {
-        Elf64_Xword d_val;
-        Elf64_Addr d_ptr;
+        uint64_t d_val;
+        uint64_t d_ptr;
     } d_un;
-} Elf64_Dyn;
+};
 
-typedef struct {
-    Elf32_Addr r_offset;
-    Elf32_Word r_info;
-} Elf32_Rel;
+struct elf32_rel {
+    uint32_t r_offset;
+    uint32_t r_info;
+};
 
-typedef struct {
-    Elf32_Addr r_offset;
-    Elf32_Word r_info;
-    Elf32_Sword r_addend;
-} Elf32_Rela;
+struct elf32_rela {
+    uint32_t r_offset;
+    uint32_t r_info;
+    int32_t r_addend;
+};
 
-typedef struct {
-    Elf64_Addr r_offset;
-    Elf64_Xword r_info;
-    Elf64_Sxword r_addend;
-} Elf64_Rela;
-
-typedef Elf32_Word Elf32_Relr;
-typedef Elf64_Xword Elf64_Relr;
+struct elf64_rela {
+    uint64_t r_offset;
+    uint64_t r_info;
+    int64_t r_addend;
+};
 
 #define DT_NULL 0
 #define DT_PLTGOT 3
@@ -107,9 +92,5 @@ typedef Elf64_Xword Elf64_Relr;
 
 #define R_ARM_NONE 0
 #define R_ARM_RELATIVE 23
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
