@@ -4,12 +4,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <efi/efidef.h>
+#include <efi/efierr.h>
 
 #include "../elf.h"
-
-// EFI_LOAD_ERROR, the status _start returns to the firmware unchanged, as it
-// does 0 (success).
-#define LOAD_ERROR (~(UINTPTR_MAX >> 1) | 1)
 
 // A relocation target need not be aligned (a pointer in a packed structure),
 // and not every processor can store a word at an unaligned address. It may
@@ -19,7 +17,8 @@ struct unaligned_addr {
 } __attribute__((__packed__, __may_alias__));
 
 // The convention _start calls this with, whatever the user's compiler flags.
-__attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
+// _start hands its status to the firmware unchanged.
+__attribute__((__ms_abi__)) efi_status picoefi_relocate(
     uintptr_t image_base,
     const struct elf64_dyn *dynamic,
     uintptr_t data_start,
@@ -30,7 +29,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
 // value: no function pointers, no initialised pointers, no calls, and no
 // tables, which compilers make for a switch or for a chain of comparisons of
 // one value.
-__attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
+__attribute__((__ms_abi__)) efi_status picoefi_relocate(
     uintptr_t image_base,
     const struct elf64_dyn *dynamic,
     uintptr_t data_start,
@@ -60,7 +59,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
     if (data_start < image_base || data_end < data_start || (uintptr_t)dynamic < data_start
      || (uintptr_t)dynamic > data_end
      || ((uintptr_t)dynamic & (__alignof__(struct elf64_dyn) - 1)) != 0) {
-        return LOAD_ERROR;
+        return EFI_LOAD_ERROR;
     }
     data_lo = data_start - image_base;
     data_hi = data_end - image_base;
@@ -72,7 +71,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
 
         // DT_NULL must come before the data ends.
         if (data_end - (uintptr_t)dynamic < sizeof(struct elf64_dyn)) {
-            return LOAD_ERROR;
+            return EFI_LOAD_ERROR;
         }
         tag = dynamic->d_tag;
         if (tag == DT_NULL) {
@@ -104,7 +103,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
                 && tag != DT_PREINIT_ARRAY && tag != DT_PREINIT_ARRAYSZ) {
             // Any other tag, or a table given twice, may mean relocations not
             // applied here.
-            return LOAD_ERROR;
+            return EFI_LOAD_ERROR;
         }
     }
 
@@ -114,14 +113,14 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
      || (has_table
       && (entry_size != sizeof(struct elf64_rela) || size > data_lo || table > data_lo - size
        || ((image_base + table) & (__alignof__(struct elf64_rela) - 1)) != 0))) {
-        return LOAD_ERROR;
+        return EFI_LOAD_ERROR;
     }
     if (has_relr_table != has_relr_size || has_relr_table != has_relr_entry_size
      || (has_relr_table
       && (relr_entry_size != sizeof(uint64_t) || relr_size > data_lo
        || relr_table > data_lo - relr_size
        || ((image_base + relr_table) & (__alignof__(uint64_t) - 1)) != 0))) {
-        return LOAD_ERROR;
+        return EFI_LOAD_ERROR;
     }
 
     // Every entry is checked before any is applied, so that a refused image is
@@ -140,14 +139,14 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
             // sort them.
             if (type != R_X86_64_RELATIVE || ELF64_R_SYM(entry->r_info) != 0
              || entry->r_offset < next || entry->r_offset > data_hi - sizeof(uint64_t)) {
-                return LOAD_ERROR;
+                return EFI_LOAD_ERROR;
             }
             next = entry->r_offset + sizeof(uint64_t);
         }
         // A partial last entry, found without a division, which may be a
         // library call.
         if (offset != size) {
-            return LOAD_ERROR;
+            return EFI_LOAD_ERROR;
         }
     }
     // An even RELR entry is the address of a word to relocate, and an odd one
@@ -170,7 +169,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
                 // A bitmap carries on from an address in the data, so it
                 // cannot come first.
                 if (offset == 0 || last >= data_hi) {
-                    return LOAD_ERROR;
+                    return EFI_LOAD_ERROR;
                 }
                 word = last + sizeof(uint64_t);
                 bits = entry >> 1;
@@ -181,7 +180,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
                     continue;
                 }
                 if (word < next || word > data_hi - sizeof(uint64_t)) {
-                    return LOAD_ERROR;
+                    return EFI_LOAD_ERROR;
                 }
                 next = word + sizeof(uint64_t);
                 for (; has_table && size - other_offset >= entry_size;
@@ -192,7 +191,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
                     if (ELF64_R_TYPE(other->r_info) != R_X86_64_NONE
                      && other->r_offset + sizeof(uint64_t) > word) {
                         if (other->r_offset < next) {
-                            return LOAD_ERROR;
+                            return EFI_LOAD_ERROR;
                         }
                         break;
                     }
@@ -200,7 +199,7 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
             }
         }
         if (offset != relr_size) {
-            return LOAD_ERROR;
+            return EFI_LOAD_ERROR;
         }
     }
 
@@ -241,5 +240,5 @@ __attribute__((__ms_abi__)) uintptr_t picoefi_relocate(
             }
         }
     }
-    return 0;
+    return EFI_SUCCESS;
 }
