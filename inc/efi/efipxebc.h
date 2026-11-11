@@ -15,7 +15,7 @@ extern "C" {
 #endif
 
 #define EFI_PXE_BASE_CODE_PROTOCOL_GUID \
-    {0x03C4E603, 0xAC28, 0x11d3, {0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D}}
+    {0x03c4e603, 0xac28, 0x11d3, {0x9a, 0x2d, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}}
 
 #define EFI_PXE_BASE_CODE_PROTOCOL_REVISION 0x00010000
 
@@ -187,7 +187,7 @@ typedef efi_status (EFI_API *efi_pxe_base_code_dhcp)(
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_BEOBOOT 16
 #define EFI_PXE_BASE_CODE_BOOT_TYPE_PXETEST 65535
 
-#define EFI_PXE_BASE_CODE_BOOT_LAYER_MASK 0x7FFF
+#define EFI_PXE_BASE_CODE_BOOT_LAYER_MASK 0x7fff
 #define EFI_PXE_BASE_CODE_BOOT_LAYER_INITIAL 0x0000
 
 struct efi_pxe_base_code_srvlist {
@@ -334,7 +334,7 @@ struct efi_pxe_base_code_protocol {
 };
 
 #define EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL_GUID \
-    {0x245DCA21, 0xFB7B, 0x11d3, {0x8F, 0x01, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B}}
+    {0x245dca21, 0xfb7b, 0x11d3, {0x8f, 0x01, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}}
 
 #define EFI_PXE_BASE_CODE_CALLBACK_PROTOCOL_REVISION 0x00010000
 

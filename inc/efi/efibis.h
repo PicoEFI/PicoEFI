@@ -80,7 +80,7 @@ struct efi_bis_signature_info {
 #define EFI_BIS_CERT_ID_DSA EFI_BIS_ALG_DSA
 #define EFI_BIS_CERT_ID_RSA_MD5 EFI_BIS_ALG_RSA_MD5
 
-#define EFI_BIS_CERT_ID_MASK (0xFF7F7FFF)
+#define EFI_BIS_CERT_ID_MASK (0xff7f7fff)
 
 #define EFI_BIS_ALG_DSA (41)
 #define EFI_BIS_ALG_RSA_MD5 (42)

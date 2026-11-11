@@ -27,7 +27,7 @@ typedef void *efi_user_info_handle;
 
 typedef uint16_t efi_user_info_attribs;
 
-#define EFI_USER_INFO_STORAGE 0x000F
+#define EFI_USER_INFO_STORAGE 0x000f
 #define EFI_USER_INFO_STORAGE_VOLATILE 0x0000
 #define EFI_USER_INFO_STORAGE_CREDENTIAL_NV 0x0001
 #define EFI_USER_INFO_STORAGE_PLATFORM_NV 0x0002
@@ -278,7 +278,7 @@ struct efi_deferred_image_load_protocol {
 // Named only in the table of record types.
 #define EFI_USER_INFO_EMPTY_RECORD 0x00
 
-#define EFI_USER_INFO_ACCESS_POLICY_RECORD 0x0E
+#define EFI_USER_INFO_ACCESS_POLICY_RECORD 0x0e
 
 struct efi_user_info_access_control {
     uint32_t type;
@@ -309,14 +309,14 @@ typedef struct efi_user_info_access_control efi_user_info_access_policy;
 
 typedef uint32_t efi_user_info_access_boot_order_hdr;
 
-#define EFI_USER_INFO_ACCESS_BOOT_ORDER_MASK 0x000F
+#define EFI_USER_INFO_ACCESS_BOOT_ORDER_MASK 0x000f
 #define EFI_USER_INFO_ACCESS_BOOT_ORDER_INSERT 0x0000
 #define EFI_USER_INFO_ACCESS_BOOT_ORDER_APPEND 0x0001
 #define EFI_USER_INFO_ACCESS_BOOT_ORDER_REPLACE 0x0002
 
 #define EFI_USER_INFO_ACCESS_BOOT_ORDER_NODEFAULT 0x0010
 
-#define EFI_USER_INFO_CBEFF_RECORD 0x0B
+#define EFI_USER_INFO_CBEFF_RECORD 0x0b
 typedef void *efi_user_info_cbeff;
 
 #define EFI_USER_INFO_CREATE_DATE_RECORD 0x02
@@ -334,15 +334,15 @@ typedef struct efi_guid efi_user_info_credential_type;
 #define EFI_USER_INFO_CREDENTIAL_TYPE_NAME_RECORD 0x07
 typedef uint16_t *efi_user_info_credential_type_name;
 
-#define EFI_USER_INFO_GUID_RECORD 0xFF
+#define EFI_USER_INFO_GUID_RECORD 0xff
 typedef struct efi_guid efi_user_info_guid;
 
-#define EFI_USER_INFO_FAR_RECORD 0x0C
+#define EFI_USER_INFO_FAR_RECORD 0x0c
 typedef uint8_t efi_user_info_far;
 
 #define EFI_USER_INFO_IDENTIFIER_RECORD 0x05
 
-#define EFI_USER_INFO_IDENTITY_POLICY_RECORD 0x0F
+#define EFI_USER_INFO_IDENTITY_POLICY_RECORD 0x0f
 
 struct efi_user_info_identity_policy {
     uint32_t type;
@@ -360,9 +360,9 @@ struct efi_user_info_identity_policy {
 #define EFI_USER_INFO_NAME_RECORD 0x01
 typedef uint16_t *efi_user_info_name;
 
-#define EFI_USER_INFO_PKCS11_RECORD 0x0A
+#define EFI_USER_INFO_PKCS11_RECORD 0x0a
 
-#define EFI_USER_INFO_RETRY_RECORD 0x0D
+#define EFI_USER_INFO_RETRY_RECORD 0x0d
 typedef uint8_t efi_user_info_retry;
 
 #define EFI_USER_INFO_USAGE_DATE_RECORD 0x03

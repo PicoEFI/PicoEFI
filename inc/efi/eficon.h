@@ -29,8 +29,8 @@ struct efi_input_key {
 #define EFI_CHAR_NULL 0x0000
 #define EFI_CHAR_BACKSPACE 0x0008
 #define EFI_CHAR_TAB 0x0009
-#define EFI_CHAR_LINEFEED 0x000A
-#define EFI_CHAR_CARRIAGE_RETURN 0x000D
+#define EFI_CHAR_LINEFEED 0x000a
+#define EFI_CHAR_CARRIAGE_RETURN 0x000d
 
 #define EFI_SCAN_NULL 0x0000
 #define EFI_SCAN_UP 0x0001
@@ -42,12 +42,12 @@ struct efi_input_key {
 #define EFI_SCAN_INSERT 0x0007
 #define EFI_SCAN_DELETE 0x0008
 #define EFI_SCAN_PAGE_UP 0x0009
-#define EFI_SCAN_PAGE_DOWN 0x000A
-#define EFI_SCAN_F1 0x000B
-#define EFI_SCAN_F2 0x000C
-#define EFI_SCAN_F3 0x000D
-#define EFI_SCAN_F4 0x000E
-#define EFI_SCAN_F5 0x000F
+#define EFI_SCAN_PAGE_DOWN 0x000a
+#define EFI_SCAN_F1 0x000b
+#define EFI_SCAN_F2 0x000c
+#define EFI_SCAN_F3 0x000d
+#define EFI_SCAN_F4 0x000e
+#define EFI_SCAN_F5 0x000f
 #define EFI_SCAN_F6 0x0010
 #define EFI_SCAN_F7 0x0011
 #define EFI_SCAN_F8 0x0012
@@ -189,12 +189,12 @@ typedef efi_status (EFI_API *efi_text_set_attribute)(
 #define EFI_BRIGHT 0x08
 #define EFI_DARKGRAY 0x08
 #define EFI_LIGHTBLUE 0x09
-#define EFI_LIGHTGREEN 0x0A
-#define EFI_LIGHTCYAN 0x0B
-#define EFI_LIGHTRED 0x0C
-#define EFI_LIGHTMAGENTA 0x0D
-#define EFI_YELLOW 0x0E
-#define EFI_WHITE 0x0F
+#define EFI_LIGHTGREEN 0x0a
+#define EFI_LIGHTCYAN 0x0b
+#define EFI_LIGHTRED 0x0c
+#define EFI_LIGHTMAGENTA 0x0d
+#define EFI_YELLOW 0x0e
+#define EFI_WHITE 0x0f
 
 #define EFI_BACKGROUND_BLACK 0x00
 #define EFI_BACKGROUND_BLUE 0x10

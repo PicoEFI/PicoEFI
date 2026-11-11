@@ -115,7 +115,7 @@ struct efi_block_io_crypto_iv_input_aes_cbc_microsoft_bitlocker {
     uint64_t crypto_block_byte_size;
 };
 
-#define EFI_BLOCK_IO_CRYPTO_INDEX_ANY 0xFFFFFFFFFFFFFFFF
+#define EFI_BLOCK_IO_CRYPTO_INDEX_ANY 0xffffffffffffffff
 
 struct efi_block_io_crypto_capabilities {
     uint8_t supported;
@@ -208,7 +208,7 @@ struct efi_block_io_crypto_protocol {
 };
 
 #define EFI_ERASE_BLOCK_PROTOCOL_GUID \
-    {0x95A9A93E, 0xA86E, 0x4926, {0xaa, 0xef, 0x99, 0x18, 0xe7, 0x72, 0xd9, 0x87}}
+    {0x95a9a93e, 0xa86e, 0x4926, {0xaa, 0xef, 0x99, 0x18, 0xe7, 0x72, 0xd9, 0x87}}
 
 #define EFI_ERASE_BLOCK_PROTOCOL_REVISION ((2<<16) | (60))
 
@@ -294,10 +294,10 @@ typedef uint8_t efi_ata_pass_thru_cmd_protocol;
 #define EFI_ATA_PASS_THRU_PROTOCOL_DMA_QUEUED 0x07
 #define EFI_ATA_PASS_THRU_PROTOCOL_DEVICE_DIAGNOSTIC 0x08
 #define EFI_ATA_PASS_THRU_PROTOCOL_DEVICE_RESET 0x09
-#define EFI_ATA_PASS_THRU_PROTOCOL_UDMA_DATA_IN 0x0A
-#define EFI_ATA_PASS_THRU_PROTOCOL_UDMA_DATA_OUT 0x0B
-#define EFI_ATA_PASS_THRU_PROTOCOL_FPDMA 0x0C
-#define EFI_ATA_PASS_THRU_PROTOCOL_RETURN_RESPONSE 0xFF
+#define EFI_ATA_PASS_THRU_PROTOCOL_UDMA_DATA_IN 0x0a
+#define EFI_ATA_PASS_THRU_PROTOCOL_UDMA_DATA_OUT 0x0b
+#define EFI_ATA_PASS_THRU_PROTOCOL_FPDMA 0x0c
+#define EFI_ATA_PASS_THRU_PROTOCOL_RETURN_RESPONSE 0xff
 
 typedef uint8_t efi_ata_pass_thru_length;
 
@@ -309,7 +309,7 @@ typedef uint8_t efi_ata_pass_thru_length;
 #define EFI_ATA_PASS_THRU_LENGTH_SECTOR_COUNT 0x20
 #define EFI_ATA_PASS_THRU_LENGTH_TPSIU 0x30
 
-#define EFI_ATA_PASS_THRU_LENGTH_COUNT 0x0F
+#define EFI_ATA_PASS_THRU_LENGTH_COUNT 0x0f
 
 struct efi_ata_pass_thru_command_packet {
     struct efi_ata_status_block *asb;

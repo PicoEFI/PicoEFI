@@ -153,11 +153,11 @@ struct efi_firmware_management_protocol {
 #define EFI_FMP_DEP_FALSE 0x07
 #define EFI_FMP_DEP_EQ 0x08
 #define EFI_FMP_DEP_GT 0x09
-#define EFI_FMP_DEP_GTE 0x0A
-#define EFI_FMP_DEP_LT 0x0B
-#define EFI_FMP_DEP_LTE 0x0C
-#define EFI_FMP_DEP_END 0x0D
-#define EFI_FMP_DEP_DECLARE_LENGTH 0x0E
+#define EFI_FMP_DEP_GTE 0x0a
+#define EFI_FMP_DEP_LT 0x0b
+#define EFI_FMP_DEP_LTE 0x0c
+#define EFI_FMP_DEP_END 0x0d
+#define EFI_FMP_DEP_DECLARE_LENGTH 0x0e
 
 #define EFI_FIRMWARE_MANAGEMENT_CAPSULE_ID_GUID \
     {0x6dcbd5ed, 0xe82d, 0x4c44, {0xbd, 0xa1, 0x71, 0x94, 0x19, 0x9a, 0xd9, 0x2a}}

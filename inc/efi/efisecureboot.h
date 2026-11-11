@@ -79,8 +79,8 @@ struct efi_win_certificate {
 };
 
 #define EFI_WIN_CERT_TYPE_PKCS_SIGNED_DATA 0x0002
-#define EFI_WIN_CERT_TYPE_EFI_PKCS115 0x0EF0
-#define EFI_WIN_CERT_TYPE_EFI_GUID 0x0EF1
+#define EFI_WIN_CERT_TYPE_EFI_PKCS115 0x0ef0
+#define EFI_WIN_CERT_TYPE_EFI_GUID 0x0ef1
 
 // The signature follows, as long as the key.
 struct efi_win_certificate_efi_pkcs1_15 {

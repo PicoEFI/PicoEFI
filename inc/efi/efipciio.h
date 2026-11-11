@@ -14,7 +14,7 @@ extern "C" {
 #endif
 
 #define EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID \
-    {0x2F707EBB, 0x4A1A, 0x11d4, {0x9A, 0x38, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D}}
+    {0x2f707ebb, 0x4a1a, 0x11d4, {0x9a, 0x38, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}}
 
 struct efi_pci_root_bridge_io_protocol;
 
@@ -146,7 +146,7 @@ typedef efi_status (EFI_API *efi_pci_root_bridge_io_protocol_configuration)(
     void **resources
 );
 
-#define EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR_TAG 0x8A
+#define EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR_TAG 0x8a
 #define EFI_ACPI_END_TAG_DESCRIPTOR_TAG 0x79
 
 #define EFI_ACPI_ADDRESS_SPACE_TYPE_MEM 0x00
@@ -377,8 +377,8 @@ struct efi_pci_io_protocol {
     void *rom_image;
 };
 
-#define EFI_PCI_EXPANSION_ROM_HEADER_SIGNATURE 0xAA55
-#define EFI_PCI_EXPANSION_ROM_HEADER_EFISIGNATURE 0x0EF1
+#define EFI_PCI_EXPANSION_ROM_HEADER_SIGNATURE 0xaa55
+#define EFI_PCI_EXPANSION_ROM_HEADER_EFISIGNATURE 0x0ef1
 #define EFI_PCI_DATA_STRUCTURE_SIGNATURE EFI_SIGNATURE_32('P', 'C', 'I', 'R')
 
 #define EFI_PCI_CODE_TYPE_PCAT_IMAGE 0x00

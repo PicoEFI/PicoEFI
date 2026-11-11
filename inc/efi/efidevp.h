@@ -28,9 +28,9 @@ struct efi_device_path_protocol {
 #define EFI_MESSAGING_DEVICE_PATH 0x03
 #define EFI_MEDIA_DEVICE_PATH 0x04
 #define EFI_BBS_DEVICE_PATH 0x05
-#define EFI_END_DEVICE_PATH_TYPE 0x7F
+#define EFI_END_DEVICE_PATH_TYPE 0x7f
 
-#define EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE 0xFF
+#define EFI_END_ENTIRE_DEVICE_PATH_SUBTYPE 0xff
 #define EFI_END_INSTANCE_DEVICE_PATH_SUBTYPE 0x01
 #define EFI_END_DEVICE_PATH_LENGTH (sizeof(struct efi_device_path_protocol))
 
@@ -82,7 +82,7 @@ struct efi_bmc_device_path {
 
 // The shift is done in uint32_t so that product numbers from 0x8000 up do not
 // overflow.
-#define EFI_PNP_ID(id) ((uint32_t)(((uint32_t)(id) << 16) | 0x41D0))
+#define EFI_PNP_ID(id) ((uint32_t)(((uint32_t)(id) << 16) | 0x41d0))
 #define EFI_EISA_PNP_ID(id) EFI_PNP_ID(id)
 
 #define EFI_PNP_EISA_ID_CONST 0x41d0
@@ -200,7 +200,7 @@ struct efi_device_logical_unit_device_path {
     uint8_t lun;
 } __attribute__((__packed__));
 
-#define EFI_MSG_USB_CLASS_DP 0x0F
+#define EFI_MSG_USB_CLASS_DP 0x0f
 
 struct efi_usb_class_device_path {
     struct efi_device_path_protocol header;
@@ -218,7 +218,7 @@ struct efi_i2o_device_path {
     uint32_t tid;
 } __attribute__((__packed__));
 
-#define EFI_MSG_MAC_ADDR_DP 0x0B
+#define EFI_MSG_MAC_ADDR_DP 0x0b
 
 struct efi_mac_addr_device_path {
     struct efi_device_path_protocol header;
@@ -226,7 +226,7 @@ struct efi_mac_addr_device_path {
     uint8_t if_type;
 } __attribute__((__packed__));
 
-#define EFI_MSG_IPV4_DP 0x0C
+#define EFI_MSG_IPV4_DP 0x0c
 
 struct efi_ipv4_device_path {
     struct efi_device_path_protocol header;
@@ -240,7 +240,7 @@ struct efi_ipv4_device_path {
     struct efi_ipv4_address subnet_mask;
 } __attribute__((__packed__));
 
-#define EFI_MSG_IPV6_DP 0x0D
+#define EFI_MSG_IPV6_DP 0x0d
 
 struct efi_ipv6_device_path {
     struct efi_device_path_protocol header;
@@ -278,7 +278,7 @@ struct efi_infiniband_device_path {
 #define EFI_INFINIBAND_RESOURCE_FLAG_STORAGE_PROTOCOL 0x08
 #define EFI_INFINIBAND_RESOURCE_FLAG_NETWORK_PROTOCOL 0x10
 
-#define EFI_MSG_UART_DP 0x0E
+#define EFI_MSG_UART_DP 0x0e
 
 struct efi_uart_device_path {
     struct efi_device_path_protocol header;
@@ -289,7 +289,7 @@ struct efi_uart_device_path {
     uint8_t stop_bits;
 } __attribute__((__packed__));
 
-#define EFI_MSG_VENDOR_DP 0x0A
+#define EFI_MSG_VENDOR_DP 0x0a
 
 #define EFI_PC_ANSI_GUID \
     {0xe0c14753, 0xf9be, 0x11d2, {0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}}
@@ -382,7 +382,7 @@ struct efi_ufs_device_path {
     uint8_t lun;
 } __attribute__((__packed__));
 
-#define EFI_MSG_SD_DP 0x1A
+#define EFI_MSG_SD_DP 0x1a
 
 struct efi_sd_device_path {
     struct efi_device_path_protocol header;
@@ -398,35 +398,35 @@ struct efi_bluetooth_le_address {
     uint8_t type;
 } __attribute__((__packed__));
 
-#define EFI_MSG_BLUETOOTH_DP 0x1B
+#define EFI_MSG_BLUETOOTH_DP 0x1b
 
 struct efi_bluetooth_device_path {
     struct efi_device_path_protocol header;
     struct efi_bluetooth_address bd_addr;
 } __attribute__((__packed__));
 
-#define EFI_MSG_WIFI_DP 0x1C
+#define EFI_MSG_WIFI_DP 0x1c
 
 struct efi_wifi_device_path {
     struct efi_device_path_protocol header;
     uint8_t ss_id[32];
 } __attribute__((__packed__));
 
-#define EFI_MSG_EMMC_DP 0x1D
+#define EFI_MSG_EMMC_DP 0x1d
 
 struct efi_emmc_device_path {
     struct efi_device_path_protocol header;
     uint8_t slot_number;
 } __attribute__((__packed__));
 
-#define EFI_MSG_BLUETOOTH_LE_DP 0x1E
+#define EFI_MSG_BLUETOOTH_LE_DP 0x1e
 
 struct efi_bluetooth_le_device_path {
     struct efi_device_path_protocol header;
     struct efi_bluetooth_le_address address;
 } __attribute__((__packed__));
 
-#define EFI_MSG_DNS_DP 0x1F
+#define EFI_MSG_DNS_DP 0x1f
 
 __extension__ struct efi_dns_device_path {
     struct efi_device_path_protocol header;
@@ -548,16 +548,16 @@ struct efi_media_ram_disk_device_path {
 } __attribute__((__packed__));
 
 #define EFI_VIRTUAL_DISK_GUID \
-    {0x77AB535A, 0x45FC, 0x624B, {0x55, 0x60, 0xF7, 0xB2, 0x81, 0xD1, 0xF9, 0x6E}}
+    {0x77ab535a, 0x45fc, 0x624b, {0x55, 0x60, 0xf7, 0xb2, 0x81, 0xd1, 0xf9, 0x6e}}
 
 #define EFI_VIRTUAL_CD_GUID \
-    {0x3D5ABD30, 0x4175, 0x87CE, {0x6D, 0x64, 0xD2, 0xAD, 0xE5, 0x23, 0xC4, 0xBB}}
+    {0x3d5abd30, 0x4175, 0x87ce, {0x6d, 0x64, 0xd2, 0xad, 0xe5, 0x23, 0xc4, 0xbb}}
 
 #define EFI_PERSISTENT_VIRTUAL_DISK_GUID \
-    {0x5CEA02C9, 0x4D07, 0x69D3, {0x26, 0x9F, 0x44, 0x96, 0xFB, 0xE0, 0x96, 0xF9}}
+    {0x5cea02c9, 0x4d07, 0x69d3, {0x26, 0x9f, 0x44, 0x96, 0xfb, 0xe0, 0x96, 0xf9}}
 
 #define EFI_PERSISTENT_VIRTUAL_CD_GUID \
-    {0x08018188, 0x42CD, 0xBB48, {0x10, 0x0F, 0x53, 0x87, 0xD5, 0x3D, 0xED, 0x3D}}
+    {0x08018188, 0x42cd, 0xbb48, {0x10, 0x0f, 0x53, 0x87, 0xd5, 0x3d, 0xed, 0x3d}}
 
 #define EFI_BBS_BBS_DP 0x01
 
@@ -575,7 +575,7 @@ struct efi_bbs_bbs_device_path {
 #define EFI_BBS_TYPE_USB 0x05
 #define EFI_BBS_TYPE_EMBEDDED_NETWORK 0x06
 #define EFI_BBS_TYPE_BEV 0x80
-#define EFI_BBS_TYPE_UNKNOWN 0xFF
+#define EFI_BBS_TYPE_UNKNOWN 0xff
 
 union efi_dev_path {
     struct efi_device_path_protocol dev_path;

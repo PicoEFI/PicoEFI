@@ -54,10 +54,10 @@ struct efi_hii_package_header {
 #define EFI_HII_PACKAGE_SIMPLE_FONTS 0x07
 #define EFI_HII_PACKAGE_DEVICE_PATH 0x08
 #define EFI_HII_PACKAGE_KEYBOARD_LAYOUT 0x09
-#define EFI_HII_PACKAGE_ANIMATIONS 0x0A
-#define EFI_HII_PACKAGE_END 0xDF
-#define EFI_HII_PACKAGE_TYPE_SYSTEM_BEGIN 0xE0
-#define EFI_HII_PACKAGE_TYPE_SYSTEM_END 0xFF
+#define EFI_HII_PACKAGE_ANIMATIONS 0x0a
+#define EFI_HII_PACKAGE_END 0xdf
+#define EFI_HII_PACKAGE_TYPE_SYSTEM_BEGIN 0xe0
+#define EFI_HII_PACKAGE_TYPE_SYSTEM_END 0xff
 
 struct efi_hii_package_list_header {
     struct efi_guid package_list_guid;
@@ -626,7 +626,7 @@ union efi_minmaxstep_data {
     } u64;
 } __attribute__((__packed__));
 
-#define EFI_IFR_ACTION_OP 0x0C
+#define EFI_IFR_ACTION_OP 0x0c
 
 struct efi_ifr_action {
     struct efi_ifr_op_header header;
@@ -639,7 +639,7 @@ struct efi_ifr_action_1 {
     struct efi_ifr_question_header question;
 } __attribute__((__packed__));
 
-#define EFI_IFR_ANIMATION_OP 0x1F
+#define EFI_IFR_ANIMATION_OP 0x1f
 
 struct efi_ifr_animation {
     struct efi_ifr_op_header header;
@@ -699,7 +699,7 @@ struct efi_ifr_conditional {
     struct efi_ifr_op_header header;
 } __attribute__((__packed__));
 
-#define EFI_IFR_DATE_OP 0x1A
+#define EFI_IFR_DATE_OP 0x1a
 
 struct efi_ifr_date {
     struct efi_ifr_op_header header;
@@ -818,7 +818,7 @@ struct efi_ifr_form {
     efi_string_id form_title;
 } __attribute__((__packed__));
 
-#define EFI_IFR_FORM_MAP_OP 0x5D
+#define EFI_IFR_FORM_MAP_OP 0x5d
 
 struct efi_ifr_form_map_method {
     efi_string_id method_title;
@@ -834,7 +834,7 @@ struct efi_ifr_form_map {
 #define EFI_HII_STANDARD_FORM_GUID \
     {0x3bd2f4ec, 0xe524, 0x46e4, {0xa9, 0xd8, 0x51, 0x01, 0x17, 0x42, 0x55, 0x62}}
 
-#define EFI_IFR_FORM_SET_OP 0x0E
+#define EFI_IFR_FORM_SET_OP 0x0e
 
 // flags bits 0:1 count the struct efi_guid class_guid[] that follows (printed
 // commented out).
@@ -846,7 +846,7 @@ struct efi_ifr_form_set {
     uint8_t flags;
 } __attribute__((__packed__));
 
-#define EFI_IFR_GET_OP 0x2B
+#define EFI_IFR_GET_OP 0x2b
 
 struct efi_ifr_get {
     struct efi_ifr_op_header header;
@@ -876,7 +876,7 @@ struct efi_ifr_greater_than {
     struct efi_ifr_op_header header;
 } __attribute__((__packed__));
 
-#define EFI_IFR_GUID_OP 0x5F
+#define EFI_IFR_GUID_OP 0x5f
 
 struct efi_ifr_guid {
     struct efi_ifr_op_header header;
@@ -917,7 +917,7 @@ struct efi_ifr_less_than {
     struct efi_ifr_op_header header;
 } __attribute__((__packed__));
 
-#define EFI_IFR_LOCKED_OP 0x0B
+#define EFI_IFR_LOCKED_OP 0x0b
 
 struct efi_ifr_locked {
     struct efi_ifr_op_header header;
@@ -1039,9 +1039,9 @@ struct efi_ifr_one_of_option {
 #define EFI_IFR_TYPE_STRING 0x07
 #define EFI_IFR_TYPE_OTHER 0x08
 #define EFI_IFR_TYPE_UNDEFINED 0x09
-#define EFI_IFR_TYPE_ACTION 0x0A
-#define EFI_IFR_TYPE_BUFFER 0x0B
-#define EFI_IFR_TYPE_REF 0x0C
+#define EFI_IFR_TYPE_ACTION 0x0a
+#define EFI_IFR_TYPE_BUFFER 0x0b
+#define EFI_IFR_TYPE_REF 0x0c
 
 #define EFI_IFR_OPTION_DEFAULT 0x10
 #define EFI_IFR_OPTION_DEFAULT_MFG 0x20
@@ -1103,13 +1103,13 @@ struct efi_ifr_question_ref3_3 {
     struct efi_guid guid;
 } __attribute__((__packed__));
 
-#define EFI_IFR_READ_OP 0x2D
+#define EFI_IFR_READ_OP 0x2d
 
 struct efi_ifr_read {
     struct efi_ifr_op_header header;
 } __attribute__((__packed__));
 
-#define EFI_IFR_REF_OP 0x0F
+#define EFI_IFR_REF_OP 0x0f
 
 struct efi_ifr_ref {
     struct efi_ifr_op_header header;
@@ -1189,7 +1189,7 @@ struct efi_ifr_security {
     struct efi_guid permissions;
 } __attribute__((__packed__));
 
-#define EFI_IFR_SET_OP 0x2C
+#define EFI_IFR_SET_OP 0x2c
 
 struct efi_ifr_set {
     struct efi_ifr_op_header header;
@@ -1223,7 +1223,7 @@ struct efi_ifr_span {
 #define EFI_IFR_FLAGS_FIRST_MATCHING 0x00
 #define EFI_IFR_FLAGS_FIRST_NON_MATCHING 0x01
 
-#define EFI_IFR_STRING_OP 0x1C
+#define EFI_IFR_STRING_OP 0x1c
 
 struct efi_ifr_string {
     struct efi_ifr_op_header header;
@@ -1307,7 +1307,7 @@ struct efi_ifr_token {
     struct efi_ifr_op_header header;
 } __attribute__((__packed__));
 
-#define EFI_IFR_TO_BOOLEAN_OP 0x4A
+#define EFI_IFR_TO_BOOLEAN_OP 0x4a
 
 struct efi_ifr_to_boolean {
     struct efi_ifr_op_header header;
@@ -1426,7 +1426,7 @@ struct efi_ifr_version {
     struct efi_ifr_op_header header;
 } __attribute__((__packed__));
 
-#define EFI_IFR_WRITE_OP 0x2E
+#define EFI_IFR_WRITE_OP 0x2e
 
 struct efi_ifr_write {
     struct efi_ifr_op_header header;
@@ -1475,7 +1475,7 @@ struct efi_hii_animation_block {
 #define EFI_HII_AIBT_RESTORE_SCRN 0x12
 #define EFI_HII_AIBT_OVERLAY_IMAGES_LOOP 0x18
 #define EFI_HII_AIBT_CLEAR_IMAGES_LOOP 0x19
-#define EFI_HII_AIBT_RESTORE_SCRN_LOOP 0x1A
+#define EFI_HII_AIBT_RESTORE_SCRN_LOOP 0x1a
 #define EFI_HII_AIBT_DUPLICATE 0x20
 #define EFI_HII_AIBT_SKIP2 0x21
 #define EFI_HII_AIBT_SKIP1 0x22

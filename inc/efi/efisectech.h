@@ -80,7 +80,7 @@ struct efi_hash2_protocol {
 };
 
 #define EFI_KMS_PROTOCOL_GUID \
-    {0xEC3A978D, 0x7C4E, 0x48FA, {0x9A, 0xBE, 0x6A, 0xD9, 0x1C, 0xC8, 0xF8, 0x11}}
+    {0xec3a978d, 0x7c4e, 0x48fa, {0x9a, 0xbe, 0x6a, 0xd9, 0x1c, 0xc8, 0xf8, 0x11}}
 
 #define EFI_KMS_DATA_TYPE_NONE 0
 #define EFI_KMS_DATA_TYPE_BINARY 1
@@ -198,8 +198,8 @@ struct efi_kms_key_descriptor {
 #define EFI_KMS_ATTRIBUTE_TYPE_TEXT_STRING 0x07
 #define EFI_KMS_ATTRIBUTE_TYPE_DATE_TIME 0x08
 #define EFI_KMS_ATTRIBUTE_TYPE_INTERVAL 0x09
-#define EFI_KMS_ATTRIBUTE_TYPE_STRUCTURE 0x0A
-#define EFI_KMS_ATTRIBUTE_TYPE_DYNAMIC 0x0B
+#define EFI_KMS_ATTRIBUTE_TYPE_STRUCTURE 0x0a
+#define EFI_KMS_ATTRIBUTE_TYPE_DYNAMIC 0x0b
 
 struct efi_kms_dynamic_field {
     uint16_t tag;

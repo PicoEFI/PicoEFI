@@ -35,16 +35,16 @@ extern "C" {
 #   define EFI_IMAGE_MACHINE_IA64 0x0200
 #endif
 #ifndef EFI_IMAGE_MACHINE_EBC
-#   define EFI_IMAGE_MACHINE_EBC 0x0EBC
+#   define EFI_IMAGE_MACHINE_EBC 0x0ebc
 #endif
 #ifndef EFI_IMAGE_MACHINE_X64
 #   define EFI_IMAGE_MACHINE_X64 0x8664
 #endif
 #ifndef EFI_IMAGE_MACHINE_ARMTHUMB_MIXED
-#   define EFI_IMAGE_MACHINE_ARMTHUMB_MIXED 0x01C2
+#   define EFI_IMAGE_MACHINE_ARMTHUMB_MIXED 0x01c2
 #endif
 #ifndef EFI_IMAGE_MACHINE_AARCH64
-#   define EFI_IMAGE_MACHINE_AARCH64 0xAA64
+#   define EFI_IMAGE_MACHINE_AARCH64 0xaa64
 #endif
 #ifndef EFI_IMAGE_MACHINE_RISCV32
 #   define EFI_IMAGE_MACHINE_RISCV32 0x5032
@@ -63,7 +63,7 @@ extern "C" {
 #endif
 
 #ifndef EFI_IMAGE_FILE_MACHINE_EBC
-#   define EFI_IMAGE_FILE_MACHINE_EBC 0x0EBC
+#   define EFI_IMAGE_FILE_MACHINE_EBC 0x0ebc
 #endif
 
 #ifndef EFI_IMAGE_REL_EBC_ABSOLUTE
@@ -456,7 +456,7 @@ typedef efi_status (EFI_API *efi_query_variable_info)(
 );
 
 #define EFI_HARDWARE_ERROR_VARIABLE \
-    {0x414E6BDD, 0xE47B, 0x47cc, {0xB2, 0x44, 0xBB, 0x61, 0x02, 0x0C, 0xF5, 0x16}}
+    {0x414e6bdd, 0xe47b, 0x47cc, {0xb2, 0x44, 0xbb, 0x61, 0x02, 0x0c, 0xf5, 0x16}}
 
 struct efi_time_capabilities {
     uint32_t resolution;
@@ -594,9 +594,9 @@ __extension__ struct efi_capsule_result_variable_json {
     uint8_t resp[];
 };
 
-// Printed as 0xF000000, which is outside the specification-reserved range it
-// belongs to.
-#define EFI_REDFISH_DEFINED_JSON_SCHEMA 0xF0000000
+// The specification prints "0xF000000", outside the range that it reserves for
+// itself and that this belongs to, 0xf0000000 to 0xffffffff.
+#define EFI_REDFISH_DEFINED_JSON_SCHEMA 0xf0000000
 
 #define EFI_SYSTEM_TABLE_SIGNATURE 0x5453595320494249
 #define EFI_2_100_SYSTEM_TABLE_REVISION ((2<<16) | (100))

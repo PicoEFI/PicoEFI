@@ -28,19 +28,19 @@ struct efi_scsi_io_protocol;
 #define EFI_SCSI_IO_TYPE_OPTICAL 0x07
 #define EFI_SCSI_IO_TYPE_MEDIUMCHANGER 0x08
 #define EFI_SCSI_IO_TYPE_COMMUNICATION 0x09
-// MFI_ (not EFI_) is the specification's own, consistent spelling for 0x0A to
+// MFI_ (not EFI_) is the specification's own, consistent spelling for 0x0a to
 // 0x11.
-#define EFI_MFI_SCSI_IO_TYPE_A 0x0A
-#define EFI_MFI_SCSI_IO_TYPE_B 0x0B
-#define EFI_MFI_SCSI_IO_TYPE_RAID 0x0C
-#define EFI_MFI_SCSI_IO_TYPE_SES 0x0D
-#define EFI_MFI_SCSI_IO_TYPE_RBC 0x0E
-#define EFI_MFI_SCSI_IO_TYPE_OCRW 0x0F
+#define EFI_MFI_SCSI_IO_TYPE_A 0x0a
+#define EFI_MFI_SCSI_IO_TYPE_B 0x0b
+#define EFI_MFI_SCSI_IO_TYPE_RAID 0x0c
+#define EFI_MFI_SCSI_IO_TYPE_SES 0x0d
+#define EFI_MFI_SCSI_IO_TYPE_RBC 0x0e
+#define EFI_MFI_SCSI_IO_TYPE_OCRW 0x0f
 #define EFI_MFI_SCSI_IO_TYPE_BRIDGE 0x10
 #define EFI_MFI_SCSI_IO_TYPE_OSD 0x11
 #define EFI_SCSI_IO_TYPE_RESERVED_LOW 0x12
-#define EFI_SCSI_IO_TYPE_RESERVED_HIGH 0x1E
-#define EFI_SCSI_IO_TYPE_UNKNOWN 0x1F
+#define EFI_SCSI_IO_TYPE_RESERVED_HIGH 0x1e
+#define EFI_SCSI_IO_TYPE_UNKNOWN 0x1f
 
 struct efi_scsi_io_scsi_request_packet {
     uint64_t timeout;

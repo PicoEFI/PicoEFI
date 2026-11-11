@@ -11,10 +11,10 @@
 extern "C" {
 #endif
 
-#define EFI_MBR_SIGNATURE 0xAA55
+#define EFI_MBR_SIGNATURE 0xaa55
 #define EFI_MAX_MBR_PARTITIONS 4
-#define EFI_PARTITION 0xEF
-#define EFI_PMBR_GPT_PARTITION 0xEE
+#define EFI_PARTITION 0xef
+#define EFI_PMBR_GPT_PARTITION 0xee
 #define EFI_MBR_SIZE 512
 
 struct efi_mbr_partition_record {

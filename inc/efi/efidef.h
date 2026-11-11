@@ -105,7 +105,7 @@ struct efi_time {
 #define EFI_TIME_ADJUST_DAYLIGHT 0x01
 #define EFI_TIME_IN_DAYLIGHT 0x02
 
-#define EFI_UNSPECIFIED_TIMEZONE 0x07FF
+#define EFI_UNSPECIFIED_TIMEZONE 0x07ff
 
 typedef uint64_t efi_physical_address;
 typedef uint64_t efi_virtual_address;
@@ -149,7 +149,7 @@ typedef uint64_t efi_virtual_address;
 #define EFI_MEMORY_HOT_PLUGGABLE 0x0000000000100000
 #define EFI_MEMORY_RUNTIME 0x8000000000000000
 #define EFI_MEMORY_ISA_VALID 0x4000000000000000
-#define EFI_MEMORY_ISA_MASK 0x0FFFF00000000000
+#define EFI_MEMORY_ISA_MASK 0x0ffff00000000000
 
 #define EFI_MEMORY_DESCRIPTOR_VERSION 1
 
@@ -193,7 +193,7 @@ struct efi_managed_network_config_data {
 };
 
 #define EFI_PAGE_SIZE 4096
-#define EFI_PAGE_MASK 0xFFF
+#define EFI_PAGE_MASK 0xfff
 #define EFI_PAGE_SHIFT 12
 
 // Rounds up without computing a + EFI_PAGE_MASK, which could overflow.
