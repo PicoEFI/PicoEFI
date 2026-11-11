@@ -1,7 +1,14 @@
-#ifndef EFI_EFIFWUPDATE_H_
-#define EFI_EFIFWUPDATE_H_
+#ifndef EFI_EFIFWUPDATE_H
+#define EFI_EFIFWUPDATE_H 1
 
-#include "efisecureboot.h"
+#if !defined(__cplusplus) && (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L)
+#   error "PicoEFI needs C99 or later."
+#endif
+
+#include <stddef.h>
+#include <stdint.h>
+#include <efi/efidef.h>
+#include <efi/efisecureboot.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,7 +1,12 @@
-#ifndef EFI_EFIBTT_H_
-#define EFI_EFIBTT_H_
+#ifndef EFI_EFIBTT_H
+#define EFI_EFIBTT_H 1
 
-#include "efidef.h"
+#if !defined(__cplusplus) && (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L)
+#   error "PicoEFI needs C99 or later."
+#endif
+
+#include <stdint.h>
+#include <efi/efidef.h>
 
 #ifdef __cplusplus
 extern "C" {

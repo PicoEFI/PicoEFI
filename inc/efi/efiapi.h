@@ -1,11 +1,16 @@
-#ifndef EFI_EFIAPI_H_
-#define EFI_EFIAPI_H_
+#ifndef EFI_EFIAPI_H
+#define EFI_EFIAPI_H 1
 
-#include "efidef.h"
-#include "efierr.h"
-#include "efidevp.h"
-#include "eficon.h"
-#include "eficonex.h"
+#if !defined(__cplusplus) && (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L)
+#   error "PicoEFI needs C99 or later."
+#endif
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <efi/eficon.h>
+#include <efi/efidef.h>
+#include <efi/efidevp.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,68 +18,67 @@ extern "C" {
 
 /* Each defined only if not yet defined: a PE/COFF header of the program's may come first. */
 #ifndef EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION
-#define EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION 10
+#   define EFI_IMAGE_SUBSYSTEM_EFI_APPLICATION 10
 #endif
 #ifndef EFI_IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER
-#define EFI_IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER 11
+#   define EFI_IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER 11
 #endif
 #ifndef EFI_IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER
-#define EFI_IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER 12
+#   define EFI_IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER 12
 #endif
 
 #ifndef EFI_IMAGE_MACHINE_IA32
-#define EFI_IMAGE_MACHINE_IA32 0x014c
+#   define EFI_IMAGE_MACHINE_IA32 0x014c
 #endif
 #ifndef EFI_IMAGE_MACHINE_IA64
-#define EFI_IMAGE_MACHINE_IA64 0x0200
+#   define EFI_IMAGE_MACHINE_IA64 0x0200
 #endif
 #ifndef EFI_IMAGE_MACHINE_EBC
-#define EFI_IMAGE_MACHINE_EBC 0x0EBC
+#   define EFI_IMAGE_MACHINE_EBC 0x0EBC
 #endif
 #ifndef EFI_IMAGE_MACHINE_X64
-#define EFI_IMAGE_MACHINE_X64 0x8664
+#   define EFI_IMAGE_MACHINE_X64 0x8664
 #endif
 #ifndef EFI_IMAGE_MACHINE_ARMTHUMB_MIXED
-#define EFI_IMAGE_MACHINE_ARMTHUMB_MIXED 0x01C2
+#   define EFI_IMAGE_MACHINE_ARMTHUMB_MIXED 0x01C2
 #endif
 #ifndef EFI_IMAGE_MACHINE_AARCH64
-#define EFI_IMAGE_MACHINE_AARCH64 0xAA64
+#   define EFI_IMAGE_MACHINE_AARCH64 0xAA64
 #endif
 #ifndef EFI_IMAGE_MACHINE_RISCV32
-#define EFI_IMAGE_MACHINE_RISCV32 0x5032
+#   define EFI_IMAGE_MACHINE_RISCV32 0x5032
 #endif
 #ifndef EFI_IMAGE_MACHINE_RISCV64
-#define EFI_IMAGE_MACHINE_RISCV64 0x5064
+#   define EFI_IMAGE_MACHINE_RISCV64 0x5064
 #endif
 #ifndef EFI_IMAGE_MACHINE_RISCV128
-#define EFI_IMAGE_MACHINE_RISCV128 0x5128
+#   define EFI_IMAGE_MACHINE_RISCV128 0x5128
 #endif
 #ifndef EFI_IMAGE_MACHINE_LOONGARCH32
-#define EFI_IMAGE_MACHINE_LOONGARCH32 0x6232
+#   define EFI_IMAGE_MACHINE_LOONGARCH32 0x6232
 #endif
 #ifndef EFI_IMAGE_MACHINE_LOONGARCH64
-#define EFI_IMAGE_MACHINE_LOONGARCH64 0x6264
+#   define EFI_IMAGE_MACHINE_LOONGARCH64 0x6264
 #endif
 
 #ifndef EFI_IMAGE_FILE_MACHINE_EBC
-#define EFI_IMAGE_FILE_MACHINE_EBC 0x0EBC
+#   define EFI_IMAGE_FILE_MACHINE_EBC 0x0EBC
 #endif
-
 
 #ifndef EFI_IMAGE_REL_EBC_ABSOLUTE
-#define EFI_IMAGE_REL_EBC_ABSOLUTE 0x0000
+#   define EFI_IMAGE_REL_EBC_ABSOLUTE 0x0000
 #endif
 #ifndef EFI_IMAGE_REL_EBC_ADDR32NB
-#define EFI_IMAGE_REL_EBC_ADDR32NB 0x0001
+#   define EFI_IMAGE_REL_EBC_ADDR32NB 0x0001
 #endif
 #ifndef EFI_IMAGE_REL_EBC_REL32
-#define EFI_IMAGE_REL_EBC_REL32 0x0002
+#   define EFI_IMAGE_REL_EBC_REL32 0x0002
 #endif
 #ifndef EFI_IMAGE_REL_EBC_SECTION
-#define EFI_IMAGE_REL_EBC_SECTION 0x0003
+#   define EFI_IMAGE_REL_EBC_SECTION 0x0003
 #endif
 #ifndef EFI_IMAGE_REL_EBC_SECREL
-#define EFI_IMAGE_REL_EBC_SECREL 0x0004
+#   define EFI_IMAGE_REL_EBC_SECREL 0x0004
 #endif
 
 struct efi_system_table;

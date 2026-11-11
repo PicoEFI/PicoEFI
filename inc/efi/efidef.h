@@ -1,31 +1,33 @@
-#ifndef EFI_EFIDEF_H_
-#define EFI_EFIDEF_H_
+#ifndef EFI_EFIDEF_H
+#define EFI_EFIDEF_H 1
 
-#include <stdbool.h>
-#include <stddef.h>
+#if !defined(__cplusplus) && (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L)
+#   error "PicoEFI needs C99 or later."
+#endif
+
 #include <stdint.h>
 
 #if !defined(__x86_64__) && !defined(__amd64__) && !defined(__i386__) && \
     !defined(__aarch64__) && !defined(__arm__) && !defined(__riscv) && !defined(__loongarch__)
-#error "PicoEFI does not support the target architecture."
+#   error "PicoEFI does not support the target architecture."
 #endif
 
 #ifndef EFI_API
-#if defined(__x86_64__) || defined(__amd64__)
-#define EFI_API __attribute__((__ms_abi__))
-#elif defined(__i386__)
+#   if defined(__x86_64__) || defined(__amd64__)
+#       define EFI_API __attribute__((__ms_abi__))
+#   elif defined(__i386__)
 /*
  * Plain cdecl, whatever -mrtd or -mregparm the rest of the program uses. regparm(0) comes first:
  * Clang 9 crashes on the other order when a macro supplies it.
  */
-#define EFI_API __attribute__((__regparm__(0), __cdecl__))
-#elif defined(__arm__)
+#       define EFI_API __attribute__((__regparm__(0), __cdecl__))
+#   elif defined(__arm__)
 /* Base standard: floating-point values go in core registers, whatever the program's float ABI. */
-#define EFI_API __attribute__((__pcs__("aapcs")))
-#else
+#       define EFI_API __attribute__((__pcs__("aapcs")))
+#   else
 /* The platform's standard calling convention is the UEFI one. */
-#define EFI_API
-#endif
+#       define EFI_API
+#   endif
 #endif
 
 #ifdef __cplusplus

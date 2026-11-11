@@ -1,7 +1,14 @@
-#ifndef EFI_EFICONEX_H_
-#define EFI_EFICONEX_H_
+#ifndef EFI_EFICONEX_H
+#define EFI_EFICONEX_H 1
 
-#include "eficon.h"
+#if !defined(__cplusplus) && (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L)
+#   error "PicoEFI needs C99 or later."
+#endif
+
+#include <stdbool.h>
+#include <stdint.h>
+#include <efi/eficon.h>
+#include <efi/efidef.h>
 
 #ifdef __cplusplus
 extern "C" {

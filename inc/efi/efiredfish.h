@@ -1,10 +1,13 @@
-#ifndef EFI_EFIREDFISH_H_
-#define EFI_EFIREDFISH_H_
+#ifndef EFI_EFIREDFISH_H
+#define EFI_EFIREDFISH_H 1
 
-#include "efidef.h"
-#include "efierr.h"
-#include "efidevp.h"
-#include "efiarpdhcp.h"
+#if !defined(__cplusplus) && (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L)
+#   error "PicoEFI needs C99 or later."
+#endif
+
+#include <stddef.h>
+#include <stdint.h>
+#include <efi/efidef.h>
 
 #ifdef __cplusplus
 extern "C" {
