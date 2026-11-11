@@ -424,8 +424,8 @@ typedef efi_status (EFI_API *efi_calculate_crc32)(
 #define EFI_VARIABLE_APPEND_WRITE 0x00000040
 #define EFI_VARIABLE_ENHANCED_AUTHENTICATED_ACCESS 0x00000080
 
-// The runtime services are printed as plain function types; named as in struct
-// efi_runtime_services.
+// The runtime services are printed as plain function types; the names here are
+// the member types of struct efi_runtime_services.
 typedef efi_status (EFI_API *efi_get_variable)(
     uint16_t *variable_name,
     struct efi_guid *vendor_guid,
@@ -619,8 +619,9 @@ __extension__ struct efi_capsule_result_variable_json {
 #define EFI_BOOT_SERVICES_SIGNATURE 0x56524553544f4f42
 #define EFI_BOOT_SERVICES_REVISION EFI_SPECIFICATION_VERSION
 
-// load_image and install_multiple_protocol_interfaces are misprinted as
-// efi_image_unload and efi_uninstall_multiple_protocol_interfaces.
+// The types of load_image and install_multiple_protocol_interfaces are
+// misprinted as efi_image_unload and
+// efi_uninstall_multiple_protocol_interfaces.
 struct efi_boot_services {
     struct efi_table_header hdr;
 

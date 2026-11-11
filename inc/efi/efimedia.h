@@ -690,7 +690,7 @@ __extension__ struct efi_nvdimm_label_index_block {
 
 #define EFI_NVDIMM_LABEL_NAME_LEN 64
 
-// flag bits 0x4 and 0x8 are reserved; the text's
+// flags bits 0x4 and 0x8 are reserved; the text's
 // EFI_NVDIMM_LABEL_FLAGS_UPDATING has no value.
 #define EFI_NVDIMM_LABEL_FLAGS_ROLABEL 0x00000001
 #define EFI_NVDIMM_LABEL_FLAGS_LOCAL 0x00000002

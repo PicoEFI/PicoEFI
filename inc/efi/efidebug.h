@@ -198,7 +198,7 @@ struct efi_system_context_ipf {
     uint64_t int_nat;
 };
 
-// IFAR, the instruction fault address paired with IFSR, is missing from the
+// ifar, the instruction fault address paired with ifsr, is missing from the
 // print.
 struct efi_system_context_arm {
     uint32_t r0;
@@ -343,7 +343,7 @@ struct efi_system_context_loongarch64 {
     uint64_t badi;
 };
 
-// system_context_loongarch64 is misprinted system_context_long_arch64.
+// system_context_loongarch64 is misprinted as system_context_long_arch64.
 union efi_system_context {
     struct efi_system_context_ebc *system_context_ebc;
     struct efi_system_context_ia32 *system_context_ia32;

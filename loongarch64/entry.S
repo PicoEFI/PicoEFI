@@ -79,7 +79,7 @@ efi_load_slide:
 .byte 2 // MajorLinkerVersion
 .byte 38 // MinorLinkerVersion
 .long picoefi_text_size - .Lheader // SizeOfCode
-// SizeOfInitializedData: the file data of .reloc, .rdata and .data.
+// SizeOfInitializedData: the file data of .reloc, .rdata, and .data.
 .long picoefi_initialized_data_size - .Lheader
 .long picoefi_bss_size - .Lheader // SizeOfUninitializedData
 .long _start - .Lheader // AddressOfEntryPoint
@@ -211,9 +211,9 @@ __ctors_end:
 .type _start, %function
 _start:
     // Save what the UEFI convention preserves beyond the C one and the
-    // registers used here, and give the calls the stack alignment, and on x86
-    // the clear direction flag, that not all firmware provides. image_handle
-    // and system_table wait where the relocator leaves them.
+    // registers used here, and give the calls the stack alignment that not all
+    // firmware provides. image_handle and system_table wait where the
+    // relocator leaves them.
     addi.d $sp, $sp, -32
     st.d $ra, $sp, 24
     st.d $fp, $sp, 16

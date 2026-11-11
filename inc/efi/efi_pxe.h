@@ -221,7 +221,7 @@ typedef uint8_t efi_pxe_frame_type;
 
 typedef uint32_t efi_pxe_ipv4;
 
-// Every PXE structure is byte packed, also those printed without the pragma.
+// Every PXE structure is byte-packed, even those printed without the pragma.
 struct efi_pxe_ipv6 {
     uint32_t num[4];
 } __attribute__((__packed__));

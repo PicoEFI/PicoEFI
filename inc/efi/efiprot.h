@@ -464,8 +464,8 @@ struct efi_file_protocol {
 #define EFI_FILE_INFO_ID \
     { 0x09576e92, 0x6d3f, 0x11d2, { 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b } }
 
-// Name arrays have one element, as in firmware ([] in print); SIZE_OF_* is the
-// fixed part.
+// Name arrays have one element, as in firmware ([] in print); EFI_SIZE_OF_* is
+// the fixed part.
 struct efi_file_info {
     uint64_t size;
     uint64_t file_size;
@@ -800,8 +800,8 @@ union efi_hash_output {
     efi_sha512_hash *sha512_hash;
 };
 
-// get_hash_size() and hash() are printed as plain prototypes; named as the
-// protocol types them.
+// get_hash_size() and hash() are printed as plain prototypes; the names here
+// are the member types of the protocol structure.
 typedef efi_status (EFI_API *efi_hash_get_hash_size)(
     const struct efi_hash_protocol *self,
     const struct efi_guid *hash_algorithm,

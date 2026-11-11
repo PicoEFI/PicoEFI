@@ -188,7 +188,7 @@ struct efi_adapter_info_media_state {
 #define EFI_ADAPTER_INFO_NETWORK_BOOT_GUID \
     { 0x1fbd2960, 0x4130, 0x41e5, { 0x94, 0xac, 0xd2, 0xcf, 0x03, 0x7f, 0xb3, 0x7c } }
 
-// The first member is misprinted issci_ipv4_boot_capablity in the structure
+// The first member is misprinted as issci_ipv4_boot_capablity in the structure
 // only.
 struct efi_adapter_info_network_boot {
     uint8_t iscsi_ipv4_boot_capablity;

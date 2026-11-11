@@ -537,7 +537,7 @@ struct efi_context_ia32_register_state {
     uint16_t tr;
 } __attribute__((__packed__));
 
-// The instruction pointer is misprinted EIP.
+// The instruction pointer is misprinted as EIP.
 struct efi_context_x64_register_state {
     uint64_t rax;
     uint64_t rbx;

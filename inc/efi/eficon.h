@@ -205,7 +205,7 @@ typedef efi_status (EFI_API *efi_text_set_attribute)(
 #define EFI_BACKGROUND_BROWN 0x60
 #define EFI_BACKGROUND_LIGHTGRAY 0x70
 
-// Printed commented out (a misprint). background is EFI_BLACK ...
+// Printed commented out (a misprint). background is one of EFI_BLACK to
 // EFI_LIGHTGRAY.
 #define EFI_TEXT_ATTR(foreground, background) ((foreground) | ((background) << 4))
 

@@ -88,8 +88,8 @@ struct efi_cc_event {
     uint8_t event[1];
 } __attribute__((__packed__));
 
-// Printed as a second efi_cc_get_event_log; named as the protocol structure
-// types it.
+// Printed as a second efi_cc_get_event_log; the protocol structure uses this
+// name.
 typedef efi_status (EFI_API *efi_cc_hash_log_extend_event)(
     struct efi_cc_measurement_protocol *self,
     uint64_t flags,

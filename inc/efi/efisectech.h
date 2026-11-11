@@ -39,8 +39,8 @@ union efi_hash2_output {
     efi_sha512_hash2 sha512_hash;
 };
 
-// The five services are printed as plain prototypes; named as the protocol
-// structure types them.
+// The five services are printed as plain prototypes; the names here are the
+// member types of the protocol structure.
 typedef efi_status (EFI_API *efi_hash2_get_hash_size)(
     const struct efi_hash2_protocol *self,
     const struct efi_guid *hash_algorithm,
@@ -355,8 +355,8 @@ struct efi_kms_protocol {
 
 struct efi_pkcs7_verify_protocol;
 
-// Printed under the member names; named as the protocol structure types the
-// members.
+// Printed under the member names; the names here are the member types of the
+// protocol structure.
 typedef efi_status (EFI_API *efi_pkcs7_verify_buffer)(
     struct efi_pkcs7_verify_protocol *self,
     void *signed_data,

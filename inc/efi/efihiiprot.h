@@ -482,7 +482,7 @@ typedef efi_status (EFI_API *efi_hii_generate_glyph_image)(
     bool transparent
 );
 
-// The member types are printed EFI_GENERATE_GLYPH and EFI_GENERATE_IMAGE,
+// The member types are printed as EFI_GENERATE_GLYPH and EFI_GENERATE_IMAGE,
 // defined nowhere.
 struct efi_hii_font_glyph_generator_protocol {
     efi_hii_generate_glyph generate_glyph;

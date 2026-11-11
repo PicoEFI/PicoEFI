@@ -197,7 +197,7 @@ struct efi_pxe_base_code_srvlist {
     union efi_ip_address ip_addr;
 };
 
-// srv_list holds ip_cnt entries (printed srv_list[ip_cnt]).
+// srv_list holds ip_cnt entries (printed as srv_list[ip_cnt]).
 struct efi_pxe_base_code_discover_info {
     uint8_t use_mcast;
     uint8_t use_bcast;

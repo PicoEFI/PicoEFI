@@ -285,7 +285,7 @@ typedef efi_status (EFI_API *efi_bluetooth_config_connect)(
     struct efi_bluetooth_address *bd_addr
 );
 
-// reason is a value, as described and as in the LE protocol; it is printed
+// reason is a value, as described and as in the LE protocol; it is printed as
 // uint8_t *reason.
 typedef efi_status (EFI_API *efi_bluetooth_config_disconnect)(
     struct efi_bluetooth_config_protocol *self,
